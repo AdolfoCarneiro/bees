@@ -215,3 +215,49 @@ Bad:
 ```text
 Implement genetics, NeoForge storage, breeding, analyzer, apiary, assets, and Fabric support.
 ```
+
+## Local Setup (Windows)
+
+### Prerequisites
+
+- JDK 21 installed (Temurin 21 recommended)
+- Git installed
+
+Check versions:
+
+```powershell
+java -version
+git --version
+```
+
+If `java -version` does not show 21, set Java 21 for the current terminal session:
+
+```powershell
+$env:JAVA_HOME="C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot"
+$env:Path="$env:JAVA_HOME\bin;$env:Path"
+java -version
+```
+
+### Run Gradle
+
+From repository root:
+
+```powershell
+.\gradlew.bat tasks
+.\gradlew.bat build
+```
+
+### Open the game client
+
+```powershell
+.\gradlew.bat runClient
+```
+
+The first run downloads Minecraft/NeoForge assets and can take several minutes.
+
+### Troubleshooting
+
+- `Unsupported class file major version 69`: you are running with Java 25; switch to Java 21 in the terminal and retry.
+- `JAVA_HOME` points to wrong JDK: update `JAVA_HOME` and prepend `%JAVA_HOME%\bin` to `PATH`.
+- Wrapper or dependency issues: delete `.gradle` in the project root and retry `.\gradlew.bat build`.
+- Slow or failing first client run: rerun `.\gradlew.bat runClient` after assets finish downloading.
