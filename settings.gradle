@@ -9,3 +9,7 @@ plugins {
 }
 
 rootProject.name = 'curious-bees'
+
+include('common')
+include('neoforge')
+include('fabric')

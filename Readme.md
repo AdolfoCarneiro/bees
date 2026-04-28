@@ -244,13 +244,15 @@ From repository root:
 
 ```powershell
 .\gradlew.bat tasks
-.\gradlew.bat build
+.\gradlew.bat :common:build
+.\gradlew.bat :neoforge:build
+.\gradlew.bat :fabric:build
 ```
 
 ### Open the game client
 
 ```powershell
-.\gradlew.bat runClient
+.\gradlew.bat :neoforge:runClient
 ```
 
 The first run downloads Minecraft/NeoForge assets and can take several minutes.
@@ -259,5 +261,5 @@ The first run downloads Minecraft/NeoForge assets and can take several minutes.
 
 - `Unsupported class file major version 69`: you are running with Java 25; switch to Java 21 in the terminal and retry.
 - `JAVA_HOME` points to wrong JDK: update `JAVA_HOME` and prepend `%JAVA_HOME%\bin` to `PATH`.
-- Wrapper or dependency issues: delete `.gradle` in the project root and retry `.\gradlew.bat build`.
-- Slow or failing first client run: rerun `.\gradlew.bat runClient` after assets finish downloading.
+- Wrapper or dependency issues: delete `.gradle` in the project root and retry `.\gradlew.bat :neoforge:build`.
+- Slow or failing first client run: rerun `.\gradlew.bat :neoforge:runClient` after assets finish downloading.

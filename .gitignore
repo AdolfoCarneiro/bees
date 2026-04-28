@@ -1,0 +1,17 @@
+# Gradle local/cache
+.gradle/
+
+# Build outputs (root and modules)
+build/
+**/build/
+
+# Runtime directories
+run/
+**/run/
+
+# IDE local settings
+.vscode/
+
+# OS junk
+.DS_Store
+Thumbs.db
