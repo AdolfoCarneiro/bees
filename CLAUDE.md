@@ -352,6 +352,49 @@ Avoid:
 - implementation inside event handlers;
 - premature abstractions for future content that does not exist yet.
 
+## Defensive Coding and Logging
+
+### Validation
+
+Every public method that receives external input must validate defensively at the boundary:
+
+```text
+- Use Objects.requireNonNull for every reference parameter — never raw `if (x == null)`.
+- Validate collection contents: if a List/Map is passed to a service, guard against null elements.
+- Validate domain invariants early (e.g., allele ChromosomeType must match the chromosome slot).
+- Model classes (Allele, GenePair, Genome) throw immediately on invalid state.
+- Services log a WARNING before throwing or before skipping invalid inputs.
+```
+
+### Logging
+
+Use `java.util.logging.Logger` in all service classes (not in model classes):
+
+```java
+private static final Logger LOGGER = Logger.getLogger(MyService.class.getName());
+```
+
+Log levels:
+
+```text
+WARNING  — unexpected but recoverable input: null list entries, incompatible genomes, unknown IDs.
+           Always log before throwing or before silently skipping.
+INFO     — significant game events visible to the player: not required in the core yet.
+FINE     — internal operations useful for debugging: mutation applied, breeding completed.
+           FINE is off by default in production; use it freely for traceability.
+```
+
+Rules:
+
+```text
+- Model classes (Allele, GenePair, Genome, MutationDefinition): do NOT log — just throw.
+- Services (BreedingService, MutationService, and future services): log at WARNING for
+  any defensive skip or unexpected state, and at FINE for normal operations.
+- Platform integration (NeoForge events): log at WARNING for recoverable data issues
+  such as a bee entity missing a genome.
+- Never swallow an exception silently — always log before recovering or re-throwing.
+```
+
 ## Package Boundaries
 
 Recommended conceptual modules:
