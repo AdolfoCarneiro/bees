@@ -2,9 +2,17 @@
 
 ## 1. Goal
 
-This document defines the initial content plan for the bee genetics mod.
+This document defines the initial content plan for Curious Bees.
 
 The purpose of the initial content is not to be large. It is to prove the genetic loop with a small, understandable set of species, traits, mutations, and products.
+
+Detailed execution specs:
+
+```text
+docs/implementation/02-initial-content-implementation.md
+docs/implementation/08-data-driven-content.md
+docs/implementation/09-expanded-content-roadmap.md
+```
 
 ## 2. Content Philosophy
 
@@ -12,7 +20,7 @@ The purpose of the initial content is not to be large. It is to prove the geneti
 
 The MVP should use only five species:
 
-```txt
+```text
 Meadow
 Forest
 Arid
@@ -22,14 +30,14 @@ Hardy
 
 This is enough to test:
 
-- Wild species
-- Biome-based starting species
-- Crossbreeding
-- Mutation
-- Hybrids
-- Purebred stabilization
-- Analyzer output
-- Basic production
+- wild species;
+- biome-based starting species;
+- crossbreeding;
+- mutation;
+- hybrids;
+- purebred stabilization;
+- analyzer output;
+- basic production.
 
 ### 2.2 Avoid Resource Bees Early
 
@@ -43,12 +51,12 @@ The MVP should make the breeding system fun before resource production exists.
 
 A species should eventually have:
 
-```txt
-- Environmental preference
-- Trait tendencies
-- Production identity
-- Mutation role
-- Progression position
+```text
+- environmental preference
+- trait tendencies
+- production identity
+- mutation role
+- progression position
 ```
 
 Avoid species that differ only by output item.
@@ -59,18 +67,39 @@ Production should use active and inactive species.
 
 Example:
 
-```txt
+```text
 Cultivated / Forest
 ```
 
 Possible behavior:
 
-```txt
+```text
 Main output comes from Cultivated.
 Small secondary chance comes from Forest.
 ```
 
-This makes hybrid bees interesting instead of just "failed purebreds."
+This makes hybrid bees interesting instead of just failed purebreds.
+
+### 2.5 Built-ins First, JSON Later
+
+Initial content should be hardcoded but centralized.
+
+Future content can be data-driven after the rules stabilize.
+
+Good:
+
+```text
+BuiltinBeeSpecies
+BuiltinBeeTraits
+BuiltinBeeMutations
+BuiltinBeeProducts
+```
+
+Bad:
+
+```text
+if (species == "meadow") scattered across many services
+```
 
 ## 3. Initial Species
 
@@ -78,7 +107,7 @@ This makes hybrid bees interesting instead of just "failed purebreds."
 
 Role:
 
-```txt
+```text
 Starter wild species.
 Common plains/flower field bee.
 Stable generalist.
@@ -86,7 +115,7 @@ Stable generalist.
 
 Spawn context:
 
-```txt
+```text
 Plains
 Flower Forest
 Meadow-like biomes
@@ -95,7 +124,7 @@ Fallback starter biome
 
 Suggested default traits:
 
-```txt
+```text
 Species: Meadow / Meadow
 Lifespan: Normal / Normal
 Productivity: Normal / Normal
@@ -105,20 +134,21 @@ FlowerType: Flowers / Flowers
 
 Dominance:
 
-```txt
+```text
 Dominant
 ```
 
 Production concept:
 
-```txt
+```text
 Honeycomb
 Basic Wax
+Meadow Comb, if unique combs are used
 ```
 
 Mutation role:
 
-```txt
+```text
 Meadow + Forest -> Cultivated
 ```
 
@@ -126,7 +156,7 @@ Meadow + Forest -> Cultivated
 
 Role:
 
-```txt
+```text
 Starter wild species.
 Forest progression bee.
 Useful for early mutation paths.
@@ -134,7 +164,7 @@ Useful for early mutation paths.
 
 Spawn context:
 
-```txt
+```text
 Forest
 Birch Forest
 Dark Forest
@@ -143,7 +173,7 @@ Taiga-like forest variants, if desired later
 
 Suggested default traits:
 
-```txt
+```text
 Species: Forest / Forest
 Lifespan: Normal / Normal
 Productivity: Normal / Normal
@@ -153,26 +183,21 @@ FlowerType: Leaves / Leaves
 
 Dominance:
 
-```txt
-Dominant or Recessive
-```
-
-Initial recommendation:
-
-```txt
+```text
 Dominant
 ```
 
 Production concept:
 
-```txt
+```text
 Honeycomb
 Resin-like forest byproduct
+Forest Comb, if unique combs are used
 ```
 
 Mutation role:
 
-```txt
+```text
 Meadow + Forest -> Cultivated
 Forest + Arid -> Hardy
 ```
@@ -181,14 +206,14 @@ Forest + Arid -> Hardy
 
 Role:
 
-```txt
+```text
 Starter wild species for hot/dry environments.
 Introduces non-flower environmental identity.
 ```
 
 Spawn context:
 
-```txt
+```text
 Desert
 Savanna
 Badlands
@@ -196,7 +221,7 @@ Badlands
 
 Suggested default traits:
 
-```txt
+```text
 Species: Arid / Arid
 Lifespan: Normal / Normal
 Productivity: Slow / Normal
@@ -206,13 +231,13 @@ FlowerType: Cactus / Cactus
 
 Dominance:
 
-```txt
+```text
 Recessive
 ```
 
 Production concept:
 
-```txt
+```text
 Dry Comb
 Wax
 Possible cactus-related byproduct later
@@ -220,7 +245,7 @@ Possible cactus-related byproduct later
 
 Mutation role:
 
-```txt
+```text
 Forest + Arid -> Hardy
 ```
 
@@ -228,7 +253,7 @@ Forest + Arid -> Hardy
 
 Role:
 
-```txt
+```text
 First successful mutation.
 Early proof that breeding can create new species.
 Bridge between wild bees and managed beekeeping.
@@ -236,19 +261,19 @@ Bridge between wild bees and managed beekeeping.
 
 Source:
 
-```txt
+```text
 Meadow + Forest -> Cultivated
 ```
 
 Suggested mutation chance:
 
-```txt
+```text
 12%
 ```
 
 Suggested default traits:
 
-```txt
+```text
 Species: Cultivated
 Lifespan: Normal
 Productivity: Fast
@@ -258,20 +283,20 @@ FlowerType: Flowers
 
 Dominance:
 
-```txt
+```text
 Dominant
 ```
 
 Production concept:
 
-```txt
+```text
 Cultivated Comb
 More efficient honey/wax output
 ```
 
 Progression role:
 
-```txt
+```text
 Used later as parent for improved bees.
 ```
 
@@ -279,26 +304,26 @@ Used later as parent for improved bees.
 
 Role:
 
-```txt
+```text
 Early environmental mutation.
 Represents resilience and difficult climates.
 ```
 
 Source:
 
-```txt
+```text
 Forest + Arid -> Hardy
 ```
 
 Suggested mutation chance:
 
-```txt
+```text
 8%
 ```
 
 Suggested default traits:
 
-```txt
+```text
 Species: Hardy
 Lifespan: Long
 Productivity: Normal
@@ -308,26 +333,20 @@ FlowerType: Flowers or Cactus
 
 Dominance:
 
-```txt
-Recessive or Dominant
-```
-
-Initial recommendation:
-
-```txt
+```text
 Recessive
 ```
 
 Production concept:
 
-```txt
+```text
 Hardy Comb
 Durable wax / future frame-related material
 ```
 
 Progression role:
 
-```txt
+```text
 Foundation for climate-tolerant and harsh-environment bees.
 ```
 
@@ -337,7 +356,7 @@ Foundation for climate-tolerant and harsh-environment bees.
 
 Values:
 
-```txt
+```text
 Short
 Normal
 Long
@@ -345,13 +364,13 @@ Long
 
 Initial gameplay:
 
-```txt
+```text
 Displayed only or lightly used.
 ```
 
 Future gameplay:
 
-```txt
+```text
 Affects tech apiary cycles or productive lifetime.
 ```
 
@@ -359,7 +378,7 @@ Affects tech apiary cycles or productive lifetime.
 
 Values:
 
-```txt
+```text
 Slow
 Normal
 Fast
@@ -367,13 +386,13 @@ Fast
 
 Initial gameplay:
 
-```txt
+```text
 Affects production chance/rate once production exists.
 ```
 
 Suggested multipliers:
 
-```txt
+```text
 Slow: 0.75x
 Normal: 1.00x
 Fast: 1.25x
@@ -385,7 +404,7 @@ These numbers are placeholders.
 
 Values:
 
-```txt
+```text
 One
 Two
 Three
@@ -393,13 +412,13 @@ Three
 
 Initial gameplay:
 
-```txt
+```text
 Displayed only or lightly used.
 ```
 
 Future gameplay:
 
-```txt
+```text
 Affects extra larvae/samples in tech apiaries.
 ```
 
@@ -407,7 +426,7 @@ Affects extra larvae/samples in tech apiaries.
 
 Values:
 
-```txt
+```text
 Flowers
 Cactus
 Leaves
@@ -415,13 +434,13 @@ Leaves
 
 Initial gameplay:
 
-```txt
+```text
 Displayed and used for flavor.
 ```
 
 Future gameplay:
 
-```txt
+```text
 Determines valid breeding/production environment.
 ```
 
@@ -429,7 +448,7 @@ Determines valid breeding/production environment.
 
 MVP tree:
 
-```txt
+```text
 Meadow ─┐
         ├── Cultivated
 Forest ─┘
@@ -441,7 +460,7 @@ Arid ───┘
 
 Future early expansion:
 
-```txt
+```text
 Cultivated + Hardy -> Noble or Resilient
 Cultivated + Meadow -> Diligent
 Hardy + Arid -> Desert-adapted species
@@ -452,18 +471,24 @@ Do not implement future expansion before the first loop works.
 
 ## 6. Production Design
 
+Detailed execution spec:
+
+```text
+docs/implementation/06-production-mvp.md
+```
+
 ## 6.1 Production Rule
 
 Recommended base rule:
 
-```txt
+```text
 Active species controls primary production.
 Inactive species can contribute secondary production.
 ```
 
 Example:
 
-```txt
+```text
 Bee: Cultivated / Forest
 
 Primary:
@@ -483,7 +508,7 @@ Without inactive influence, players only care about active species. With inactiv
 
 MVP products:
 
-```txt
+```text
 Honeycomb
 Meadow Comb
 Forest Comb
@@ -497,9 +522,15 @@ It is acceptable to reduce this further during implementation.
 
 ## 7. Analyzer Content Display
 
+Detailed execution spec:
+
+```text
+docs/implementation/05-analyzer-implementation.md
+```
+
 Initial analyzer report should show:
 
-```txt
+```text
 Species: Cultivated / Forest
 Purity: Hybrid
 Lifespan: Normal / Long
@@ -510,7 +541,7 @@ Flower Type: Flowers / Leaves
 
 Dominance display can use symbols before colors exist:
 
-```txt
+```text
 [D] Dominant
 [R] Recessive
 [A] Active
@@ -519,57 +550,55 @@ Dominance display can use symbols before colors exist:
 
 Example:
 
-```txt
+```text
 Species:
 [A][D] Cultivated
 [I][D] Forest
 ```
 
-## 8. Content Loading Strategy
+## 8. Asset Strategy
+
+Detailed planning:
+
+```text
+docs/art/
+```
+
+Rules:
+
+- no polished assets are required for genetics core;
+- placeholder textures are acceptable for analyzer and comb items;
+- Blockbench becomes useful for custom blocks/machines in the tech phase;
+- Blockbench/MCP automation is future optional tooling, not a MVP dependency.
+
+## 9. Content Loading Strategy
 
 Initial implementation:
 
-```txt
+```text
 Hardcoded content definitions in a centralized built-in content registry.
-```
-
-Do not scatter species definitions throughout code.
-
-Good:
-
-```txt
-BuiltinBeeSpecies
-BuiltinBeeTraits
-BuiltinBeeMutations
-BuiltinBeeProducts
-```
-
-Bad:
-
-```txt
-if (species == "meadow") scattered across many services
 ```
 
 Future implementation:
 
-```txt
+```text
 JSON/datapack-driven content
 ```
 
 Potential future paths:
 
-```txt
-data/bee_genetics/species/meadow.json
-data/bee_genetics/mutations/cultivated_from_meadow_forest.json
-data/bee_genetics/products/cultivated_comb.json
-data/bee_genetics/traits/productivity/fast.json
+```text
+data/curious_bees/species/meadow.json
+data/curious_bees/mutations/cultivated_from_meadow_forest.json
+data/curious_bees/products/cultivated_comb.json
+data/curious_bees/traits/productivity/fast.json
 ```
 
-## 9. Balance Defaults
+## 10. Balance Defaults
 
 These are initial placeholders:
 
-```txt
+```text
 Meadow + Forest -> Cultivated: 12%
 Forest + Arid -> Hardy: 8%
 Partial mutation: 95%
@@ -578,7 +607,7 @@ Full mutation: 5%
 
 Trait multipliers:
 
-```txt
+```text
 Slow productivity: 0.75x
 Normal productivity: 1.00x
 Fast productivity: 1.25x
@@ -586,18 +615,18 @@ Fast productivity: 1.25x
 
 Do not over-balance before gameplay exists.
 
-## 10. Naming Guidelines
+## 11. Naming Guidelines
 
 Species names should be:
 
-- Easy to understand.
-- Thematic.
-- Not too close to Productive Bees if avoidable.
-- Not necessarily identical to Forestry names.
+- easy to understand;
+- thematic;
+- not too close to Productive Bees if avoidable;
+- not necessarily identical to Forestry names.
 
 MVP names can stay simple:
 
-```txt
+```text
 Meadow
 Forest
 Arid
@@ -607,93 +636,33 @@ Hardy
 
 Future resource species can be decided later.
 
-## 11. Future Content Categories
+## 12. Future Content Categories
 
-### 11.1 Biome Bees
+Expanded content is planned in:
 
-Examples:
-
-```txt
-Swamp
-Tundra
-Jungle
-Mountain
-Oceanic
+```text
+docs/implementation/09-expanded-content-roadmap.md
 ```
 
-### 11.2 Nether Bees
+Potential categories:
 
-Examples:
-
-```txt
-Ashen
-Blazing
-Soul
-Basalt
-Crimson
-Warped
+```text
+Biome Bees
+Nether Bees
+End Bees
+Resource Bees
+Industrial Bees
+Magic Bees
+Compatibility Bees
 ```
 
-### 11.3 End Bees
+Do not implement these during the MVP unless explicitly requested.
 
-Examples:
-
-```txt
-Ender
-Void
-Chorus
-Shulker
-Draconic
-```
-
-### 11.4 Resource Bees
-
-Resource bees should come much later.
-
-Possible design directions:
-
-```txt
-Direct names:
-- Iron Bee
-- Copper Bee
-- Redstone Bee
-
-Thematic names:
-- Ferric Bee
-- Cupric Bee
-- Resonant Bee
-```
-
-No decision is needed now.
-
-### 11.5 Industrial Bees
-
-Could support tech progression and machine outputs.
-
-### 11.6 Magic Bees
-
-Could support future magic-themed content or mod compat.
-
-### 11.7 Compatibility Bees
-
-Possible future integrations:
-
-```txt
-Create
-Mekanism
-Thermal
-Farmer's Delight
-Botania-like mods
-Ars Nouveau-like mods
-```
-
-Do not implement compatibility during MVP.
-
-## 12. Acceptance Criteria
+## 13. Acceptance Criteria
 
 Initial content design is complete when:
 
-```txt
+```text
 - Five initial species are defined.
 - Two initial mutations are defined.
 - MVP trait values are defined.

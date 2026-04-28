@@ -4,25 +4,76 @@
 
 The project must support a clean separation between:
 
-1. Pure genetics logic.
-2. Minecraft-independent gameplay orchestration.
-3. NeoForge-specific integration.
-4. Future Fabric-specific integration.
+1. pure genetics logic;
+2. Minecraft-independent gameplay orchestration;
+3. NeoForge-specific integration;
+4. future Fabric-specific integration;
+5. documentation-driven AI implementation.
 
 The most important architectural rule is:
 
-```txt
+```text
 The genetics core must not depend on Minecraft APIs.
 ```
 
 This allows the most complex logic to be tested quickly and safely.
 
-## 2. Recommended Repository Layout
+## 2. Documentation Architecture
+
+The repository documentation is part of the architecture. AI agents should use it as the source of truth before coding.
+
+```text
+docs/
+├── 01-product-vision-and-roadmap.md
+├── 02-technical-architecture.md
+├── 03-genetics-system-spec.md
+├── 04-breeding-and-mutation-spec.md
+├── 05-content-design-spec.md
+├── 06-ai-coding-guidelines.md
+├── 07-initial-backlog.md
+├── implementation/
+├── decisions/
+├── quality/
+├── art/
+└── release/
+```
+
+### 2.1 Core docs
+
+Core docs describe product intent, architecture, genetics rules, breeding/mutation behavior, content direction, and AI workflow.
+
+### 2.2 Implementation docs
+
+`docs/implementation/` contains execution-level specs for each phase.
+
+Implementation docs are the primary source for coding tasks.
+
+If a backlog item is short, do not rely only on the backlog. Read the relevant implementation spec.
+
+### 2.3 ADRs
+
+`docs/decisions/` contains Architectural Decision Records.
+
+ADRs explain why decisions were made. Do not casually reverse an ADR without creating a new decision record.
+
+### 2.4 Quality docs
+
+`docs/quality/` contains unit test plans, integration test plans, manual validation checklists, and release smoke tests.
+
+### 2.5 Art docs
+
+`docs/art/` contains asset strategy, placeholder policy, Blockbench workflow, and future AI/skill tooling plans.
+
+### 2.6 Release docs
+
+`docs/release/` contains versioning, changelog, publishing, release automation, and distribution plans.
+
+## 3. Recommended Repository Layout
 
 Initial repository layout:
 
-```txt
-bee-genetics-mod/
+```text
+curious-bees/
 ├── CLAUDE.md
 ├── README.md
 ├── docs/
@@ -32,23 +83,24 @@ bee-genetics-mod/
 │   ├── 04-breeding-and-mutation-spec.md
 │   ├── 05-content-design-spec.md
 │   ├── 06-ai-coding-guidelines.md
-│   └── 07-initial-backlog.md
-│
+│   ├── 07-initial-backlog.md
+│   ├── implementation/
+│   ├── decisions/
+│   ├── quality/
+│   ├── art/
+│   └── release/
 ├── common/
 │   └── src/
 │       ├── main/java/
 │       └── test/java/
-│
 ├── neoforge/
 │   └── src/
 │       ├── main/java/
 │       └── test/java/
-│
 ├── fabric/
 │   └── src/
 │       ├── main/java/
 │       └── test/java/
-│
 ├── build.gradle
 ├── settings.gradle
 └── gradle.properties
@@ -56,8 +108,8 @@ bee-genetics-mod/
 
 If multiloader setup feels too heavy at the beginning, use this temporary layout:
 
-```txt
-bee-genetics-mod/
+```text
+curious-bees/
 ├── CLAUDE.md
 ├── README.md
 ├── docs/
@@ -69,9 +121,9 @@ bee-genetics-mod/
 
 However, even in a temporary layout, keep package boundaries clear.
 
-## 3. Conceptual Modules
+## 4. Conceptual Modules
 
-### 3.1 common/genetics
+### 4.1 common/genetics
 
 Pure Java.
 
@@ -79,142 +131,147 @@ No Minecraft imports.
 
 Responsible for:
 
-- Alleles
-- Gene pairs
-- Chromosome types
-- Genomes
-- Dominance resolution
-- Mendelian inheritance
-- Mutation evaluation
-- Purebred/hybrid detection
+- alleles;
+- gene pairs;
+- chromosome types;
+- genomes;
+- dominance resolution;
+- Mendelian inheritance;
+- mutation evaluation;
+- purebred/hybrid detection;
+- genetic randomness abstraction.
 
 Example packages:
 
-```txt
-com.example.beegenetics.common.genetics.model
-com.example.beegenetics.common.genetics.breeding
-com.example.beegenetics.common.genetics.mutation
-com.example.beegenetics.common.genetics.random
+```text
+com.curiousbees.common.genetics.model
+com.curiousbees.common.genetics.breeding
+com.curiousbees.common.genetics.mutation
+com.curiousbees.common.genetics.random
 ```
 
-### 3.2 common/content
+### 4.2 common/content
 
 Minecraft-independent definitions for species, traits, mutations, and production.
 
 Responsible for:
 
-- Species definitions
-- Trait definitions
-- Mutation definitions
-- Production definitions
-- Built-in initial content
+- species definitions;
+- trait definitions;
+- mutation definitions;
+- production definitions;
+- built-in initial content;
+- future data-driven conversion models.
 
 Example packages:
 
-```txt
-com.example.beegenetics.common.content.species
-com.example.beegenetics.common.content.traits
-com.example.beegenetics.common.content.mutations
-com.example.beegenetics.common.content.products
+```text
+com.curiousbees.common.content.species
+com.curiousbees.common.content.traits
+com.curiousbees.common.content.mutations
+com.curiousbees.common.content.products
+com.curiousbees.common.content.builtin
 ```
 
-### 3.3 common/gameplay
+### 4.3 common/gameplay
 
-Minecraft-adjacent orchestration, but still ideally avoiding direct loader APIs when possible.
+Minecraft-adjacent orchestration, but still avoiding direct loader APIs when possible.
 
 Responsible for:
 
-- Bee breeding orchestration
-- Analyzer result formatting
-- Spawn genome selection rules
-- Production calculation
-- Environment abstraction usage
+- bee breeding orchestration;
+- analyzer report generation;
+- spawn genome selection rules;
+- production calculation;
+- environment abstraction usage.
 
 Example packages:
 
-```txt
-com.example.beegenetics.common.gameplay.breeding
-com.example.beegenetics.common.gameplay.analysis
-com.example.beegenetics.common.gameplay.spawn
-com.example.beegenetics.common.gameplay.production
+```text
+com.curiousbees.common.gameplay.breeding
+com.curiousbees.common.gameplay.analysis
+com.curiousbees.common.gameplay.spawn
+com.curiousbees.common.gameplay.production
 ```
 
-### 3.4 common/platform
+### 4.4 common/platform
 
 Interfaces that platform modules implement.
 
 Responsible for abstraction over:
 
-- Bee entity data access
-- Random source
-- Biome/environment context
-- Logging
-- Networking if needed later
-- Registry access if needed later
+- bee entity data access;
+- random source adaptation;
+- biome/environment context;
+- logging;
+- networking if needed later;
+- registry access if needed later.
 
 Example interfaces:
 
 ```java
-public interface BeeGenomeStorage {
-    Optional<Genome> getGenome(Object bee);
-    void setGenome(Object bee, Genome genome);
+public interface BeeGenomeStorage<B> {
+    Optional<Genome> getGenome(B bee);
+    void setGenome(B bee, Genome genome);
 }
 
 public interface EnvironmentContext {
     String biomeId();
+    String dimensionId();
     boolean isRaining();
     boolean isDay();
-    boolean hasNearbyBlock(String blockId, int radius);
 }
 ```
 
-Avoid exposing Minecraft classes in the first version of these interfaces if possible. If this becomes awkward, create platform-specific adapters at the edges.
+Avoid exposing Minecraft classes in common APIs when practical. If this becomes awkward, create platform-specific adapters at the edges.
 
-### 3.5 neoforge
+### 4.5 neoforge
 
 NeoForge-specific implementation.
 
 Responsible for:
 
-- Mod initialization
-- Deferred registers
-- Entity data attachment
-- Item data components
-- Events
-- Commands
-- Items
-- Blocks
-- Networking
-- Client rendering later
+- mod initialization;
+- deferred registers;
+- entity data attachments;
+- item data components;
+- events;
+- commands;
+- items;
+- blocks;
+- networking;
+- client rendering later;
+- resource/data loading later.
 
 Example packages:
 
-```txt
-com.example.beegenetics.neoforge
-com.example.beegenetics.neoforge.data
-com.example.beegenetics.neoforge.event
-com.example.beegenetics.neoforge.registry
-com.example.beegenetics.neoforge.command
+```text
+com.curiousbees.neoforge
+com.curiousbees.neoforge.data
+com.curiousbees.neoforge.event
+com.curiousbees.neoforge.registry
+com.curiousbees.neoforge.command
+com.curiousbees.neoforge.item
 ```
 
-### 3.6 fabric
+### 4.6 fabric
 
 Future Fabric-specific implementation.
 
 Responsible for:
 
-- Fabric mod initialization
-- Fabric data attachment/component APIs
-- Fabric events or mixins
-- Fabric registries
-- Fabric commands
-- Fabric item/block/client implementation
+- Fabric mod initialization;
+- Fabric data attachment/component APIs;
+- Fabric events or mixins;
+- Fabric registries;
+- Fabric commands;
+- Fabric item/block/client implementation.
 
-This module should be added only after NeoForge MVP proves the core gameplay.
+This module should be added only after the NeoForge MVP proves the core gameplay.
 
-## 4. Data Flow: Wild Bee Spawn
+## 5. Data Flow: Wild Bee Spawn
 
-```txt
+```text
 1. Minecraft spawns a Bee entity.
 2. NeoForge spawn event/initialization hook runs.
 3. Platform code checks if the bee already has a genome.
@@ -225,13 +282,13 @@ This module should be added only after NeoForge MVP proves the core gameplay.
 
 Important:
 
-- Do not reinitialize an existing bee genome.
-- Do not assign random species on every load.
-- Default genome generation should be deterministic enough for testing but still allow variation.
+- do not reinitialize an existing bee genome;
+- do not assign random species on every load;
+- default genome generation should be deterministic enough for testing but still allow controlled variation later.
 
-## 5. Data Flow: Bee Breeding
+## 6. Data Flow: Bee Breeding
 
-```txt
+```text
 1. Two bees enter love mode through vanilla interaction.
 2. Minecraft creates or attempts to create a baby bee.
 3. NeoForge event/platform hook identifies parents and child.
@@ -240,18 +297,19 @@ Important:
 6. BreedingService creates a child genome.
 7. MutationService evaluates possible mutation.
 8. Final child genome is stored on baby bee.
-9. Optional visual/audio feedback occurs if mutation happened.
+9. Optional feedback occurs if mutation happened.
 ```
 
 Important:
 
-- The core does not know about Bee entities.
-- The core receives only parent genomes and a simplified context.
-- The platform layer handles all entity/event details.
+- the core does not know about Bee entities;
+- the core receives only parent genomes and simplified context;
+- the platform layer handles all entity/event details;
+- event handlers should be thin and delegate to services.
 
-## 6. Data Flow: Analyzer
+## 7. Data Flow: Analyzer
 
-```txt
+```text
 1. Player uses Analyzer on a bee.
 2. NeoForge interaction event reads bee genome.
 3. Common analyzer service converts genome into a player-facing report.
@@ -262,11 +320,11 @@ Initial analyzer output can be simple text.
 
 A GUI is not required for MVP.
 
-## 7. Data Flow: Production
+## 8. Data Flow: Production
 
 Initial production should be simple.
 
-```txt
+```text
 1. A bee or hive has a genome.
 2. Active species determines primary output.
 3. Inactive species may influence secondary output.
@@ -276,7 +334,7 @@ Initial production should be simple.
 
 Production should be implemented after breeding and analyzer.
 
-## 8. Genome Persistence Strategy
+## 9. Genome Persistence Strategy
 
 ### NeoForge
 
@@ -284,64 +342,68 @@ Use entity data storage suitable for vanilla entities.
 
 Conceptually:
 
-```txt
+```text
 Bee entity -> Genome attachment
 ItemStack -> Genome component, if needed later
 BlockEntity -> Inventory + genome/product state, if needed later
 ```
 
+The exact API decision should be recorded in `docs/decisions/` and implemented according to `docs/implementation/03-neoforge-entity-integration.md`.
+
 ### Fabric
 
 Future implementation should use equivalent concepts:
 
-```txt
-Bee entity -> Data attachment
-ItemStack -> Data component
+```text
+Bee entity -> data attachment or component equivalent
+ItemStack -> data component
 BlockEntity -> component/data storage
 ```
 
-## 9. Serialization
+Do not implement Fabric before the NeoForge MVP works.
+
+## 10. Serialization
 
 The genome must be serializable.
 
 Required use cases:
 
-- Save/load bee entity genome.
-- Store genome in items later.
-- Debug commands.
-- Potential network sync.
-- Potential JSON export/import for tests.
+- save/load bee entity genome;
+- store genome in items later;
+- debug commands;
+- potential network sync;
+- potential JSON export/import for tests.
 
 Recommended internal representation:
 
-```txt
+```text
 Genome
 - Map<ChromosomeType, GenePair>
 
 GenePair
-- Allele first
-- Allele second
-- Allele active
-- Allele inactive
+- alleleA
+- alleleB
+- activeAllele
+- inactiveAllele
 
 Allele
 - id
+- chromosomeType
 - dominance
-- value/type
 ```
 
 The active/inactive result should be persisted after creation.
 
 Do not recalculate active/inactive randomly every time the genome is read.
 
-## 10. Randomness
+## 11. Randomness
 
 The genetics core should not directly use global random state.
 
 Prefer injecting a random interface:
 
 ```java
-public interface RandomSource {
+public interface GeneticRandom {
     double nextDouble();
     boolean nextBoolean();
     int nextInt(int bound);
@@ -350,60 +412,95 @@ public interface RandomSource {
 
 This allows deterministic tests.
 
-## 11. Error Handling
+## 12. Error Handling
 
 The core should fail fast for invalid definitions:
 
-- Missing chromosome.
-- Unknown species.
-- Unknown trait.
-- Mutation references unknown species.
-- Gene pair with incompatible allele type.
-- Invalid probability below 0 or above 1.
+- missing chromosome;
+- unknown species;
+- unknown trait;
+- mutation references unknown species;
+- gene pair with incompatible allele type;
+- invalid probability below 0 or above 1.
 
 Platform integration should avoid crashing worlds for recoverable data issues, but development/debug builds should log clearly.
 
-## 12. Testing Strategy
+## 13. Testing Strategy
 
-### Unit Tests
+Detailed test plans are in:
+
+```text
+docs/quality/
+```
+
+### Unit tests
 
 Must cover:
 
-- Dominance resolution
-- Mendelian inheritance
-- Hybrid/purebred detection
-- Mutation probability
-- Active/inactive persistence
-- Invalid content definitions
-- Approximate distributions over many simulations
+- dominance resolution;
+- Mendelian inheritance;
+- hybrid/purebred detection;
+- mutation probability;
+- active/inactive persistence;
+- invalid content definitions;
+- approximate distributions over many simulations.
 
-### Integration Tests
+### Integration tests / manual validation
 
 Later:
 
-- Bee spawn receives genome.
-- Bee genome persists after save/load.
-- Bee breeding event assigns child genome.
-- Analyzer reads genome from entity.
+- bee spawn receives genome;
+- bee genome persists after save/load;
+- bee breeding event assigns child genome;
+- analyzer reads genome from entity;
+- production resolver behaves according to species/traits.
 
-## 13. Future Multiloader Strategy
+## 14. Asset Architecture
+
+Assets are not part of the critical path for the genetics core.
+
+Detailed asset workflow is in:
+
+```text
+docs/art/
+```
+
+Rules:
+
+- use placeholders early;
+- do not block core, storage, breeding, or analyzer on polished art;
+- Blockbench is useful later for custom blocks/machines;
+- Blockbench/MCP automation is optional future tooling, not a dependency.
+
+## 15. Release Architecture
+
+Release and distribution planning is documented in:
+
+```text
+docs/release/
+```
+
+Do not optimize release automation before the MVP works, but keep versioning, changelog, and packaging conventions documented.
+
+## 16. Future Multiloader Strategy
 
 Do not implement Fabric in the first MVP, but keep these rules:
 
-- No NeoForge imports in common genetics.
-- No Fabric imports in common genetics.
-- No direct Minecraft entity dependency in core logic.
-- Keep platform-specific hooks isolated.
-- Keep item/block registration out of the core.
-- Avoid writing logic inside event handlers; event handlers should call services.
+- no NeoForge imports in common genetics;
+- no Fabric imports in common genetics;
+- no direct Minecraft entity dependency in core logic;
+- keep platform-specific hooks isolated;
+- keep item/block registration out of the core;
+- avoid writing logic inside event handlers;
+- event handlers should call services.
 
-## 14. Naming Guidelines
+## 17. Naming Guidelines
 
 Use clear names rather than clever names.
 
 Good:
 
-```txt
+```text
 BreedingService
 MutationService
 Genome
@@ -415,17 +512,17 @@ AnalyzerReport
 
 Avoid:
 
-```txt
+```text
 BeeMagicManager
 GeneticStuff
 MutationThing
 ForestryCompatSomething
 ```
 
-## 15. Suggested First Package Structure
+## 18. Suggested First Package Structure
 
-```txt
-common/src/main/java/com/example/beegenetics/common/
+```text
+common/src/main/java/com/curiousbees/common/
 ├── genetics/
 │   ├── model/
 │   │   ├── Allele.java
@@ -442,27 +539,26 @@ common/src/main/java/com/example/beegenetics/common/
 │   │   └── MutationResult.java
 │   └── random/
 │       └── GeneticRandom.java
-│
 ├── content/
 │   ├── species/
 │   ├── traits/
 │   └── builtin/
-│
 └── gameplay/
     ├── analysis/
     ├── spawn/
     └── production/
 ```
 
-## 16. Anti-Patterns
+## 19. Anti-Patterns
 
 Avoid:
 
-- Implementing genetics directly inside an event handler.
-- Storing raw unstructured NBT everywhere.
-- Hardcoding species checks across many classes.
-- Starting with resource bees.
-- Starting with GUI before analyzer logic exists.
-- Starting with JSON loading before definitions stabilize.
-- Mixing NeoForge and future Fabric logic in the same classes.
-- Letting AI agents generate large unrelated systems in one pass.
+- implementing genetics directly inside an event handler;
+- storing raw unstructured NBT everywhere;
+- hardcoding species checks across many classes;
+- starting with resource bees;
+- starting with GUI before analyzer logic exists;
+- starting with JSON loading before definitions stabilize;
+- mixing NeoForge and future Fabric logic in the same classes;
+- letting AI agents generate large unrelated systems in one pass;
+- treating short backlog text as a substitute for implementation specs.

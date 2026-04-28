@@ -2,48 +2,49 @@
 
 ## 1. Product Vision
 
-This mod brings Forestry-inspired bee genetics to modern Minecraft bees.
+Curious Bees brings Forestry-inspired bee genetics to modern Minecraft bees.
 
 The central fantasy is not simply producing resources from bees. The central fantasy is building, selecting, stabilizing, and improving bee lineages through a real genetic system.
 
 The player should feel that every new generation can matter:
 
-- A baby bee may inherit a valuable recessive trait.
-- A hybrid may carry hidden potential.
-- A rare mutation may appear after several attempts.
-- A purebred species should feel like an achievement.
-- Better tools and tech should improve control, not replace the genetic loop.
+- a baby bee may inherit a valuable recessive trait;
+- a hybrid may carry hidden potential;
+- a rare mutation may appear after several attempts;
+- a purebred species should feel like an achievement;
+- better tools and tech should improve control, not replace the genetic loop.
 
 ## 2. Inspiration
 
-The mod is inspired by:
+Curious Bees is inspired by:
 
-- Forestry's bee genetics and breeding depth.
-- Vanilla Minecraft bees as living entities in the world.
-- The long-term grind and satisfaction of genetic selection.
-- Tech progression and automation from classic modded Minecraft.
+- Forestry's bee genetics and breeding depth;
+- vanilla Minecraft bees as living entities in the world;
+- the long-term grind and satisfaction of genetic selection;
+- tech progression and automation from classic modded Minecraft.
 
 ## 3. What This Mod Is
 
 This mod is:
 
-- A new mod from scratch.
-- A genetics-focused bee breeding mod.
-- A vanilla-bee-based experience.
-- A tech-leaning progression mod.
-- A system where mutation and inheritance are probabilistic.
-- A mod designed to support future expansion through data-driven content.
+- a new mod from scratch;
+- a genetics-focused bee breeding mod;
+- a vanilla-bee-based experience;
+- a tech-leaning progression mod;
+- a system where mutation and inheritance are probabilistic;
+- a mod designed to support future expansion through data-driven content.
 
 ## 4. What This Mod Is Not
 
 This mod is not:
 
-- A port of Forestry.
-- A fork of Productive Bees.
-- A deterministic "A + B = C" recipe system.
-- A resource bee mod as its first priority.
-- A content-heavy mod before the core system is stable.
-- A mod that should start by implementing dozens of bee species.
+- a port of Forestry;
+- a fork of Productive Bees;
+- a deterministic `A + B = C` recipe system;
+- a resource bee mod as its first priority;
+- a content-heavy mod before the core system is stable;
+- a mod that should start by implementing dozens of bee species;
+- a project that should require polished assets before gameplay works.
 
 ## 5. Design Pillars
 
@@ -57,7 +58,7 @@ If the genetic engine is shallow, the mod fails even if it has many species.
 
 The first playable breeding flow should use vanilla-like interaction:
 
-```txt
+```text
 Two bees + flowers -> baby bee
 ```
 
@@ -79,11 +80,15 @@ NeoForge 1.21.1 is the first target.
 
 Fabric support is a future target, so platform-specific code should be isolated.
 
+### 5.6 Specs Before Large Implementation
+
+Implementation should be driven by detailed local specs in `docs/implementation/`, not by short backlog summaries alone.
+
 ## 6. Core Gameplay Loop
 
 Initial loop:
 
-```txt
+```text
 1. Find bees in the world.
 2. Analyze or inspect their genetics.
 3. Breed two bees using flowers.
@@ -100,19 +105,20 @@ Initial loop:
 
 The first MVP should prove:
 
-- Bees can carry a genome.
-- Wild bees receive initial species based on their spawn context.
-- Two bees can breed and produce a baby with inherited genes.
-- Dominance affects active/inactive traits.
-- Mutations can produce a new species.
-- The player can inspect the result.
-- A tiny content set is enough to demonstrate the loop.
+- bees can carry a genome;
+- wild bees receive initial species based on their spawn context;
+- two bees can breed and produce a baby with inherited genes;
+- dominance affects active/inactive traits;
+- mutations can produce a new species;
+- the player can inspect the result;
+- a tiny content set is enough to demonstrate the loop;
+- species identity affects at least one basic production behavior.
 
 ## 8. Initial Species
 
 Wild species:
 
-```txt
+```text
 Meadow Bee
 Forest Bee
 Arid Bee
@@ -120,30 +126,32 @@ Arid Bee
 
 Mutated species:
 
-```txt
+```text
 Cultivated Bee
 Hardy Bee
 ```
 
 ## 9. Initial Mutations
 
-```txt
+```text
 Meadow + Forest -> Cultivated
 Forest + Arid -> Hardy
 ```
 
-These are not final balance numbers, but useful development defaults:
+Development defaults:
 
-```txt
+```text
 Meadow + Forest -> Cultivated: 12%
 Forest + Arid -> Hardy: 8%
 ```
+
+These are placeholders, not final balance values.
 
 ## 10. Initial Traits
 
 MVP chromosomes:
 
-```txt
+```text
 Species
 Lifespan
 Productivity
@@ -153,7 +161,7 @@ FlowerType
 
 Possible future chromosomes:
 
-```txt
+```text
 TemperatureTolerance
 HumidityTolerance
 Territory
@@ -168,160 +176,231 @@ WeatherTolerance
 
 ### Phase 0 — Documentation and Decisions
 
+Detailed execution spec:
+
+```text
+docs/implementation/00-phase-0-documentation-and-decisions.md
+```
+
 Deliverables:
 
-- Product vision
-- Technical architecture
-- Genetics specification
-- Breeding and mutation specification
-- Content design specification
-- AI coding guidelines
-- Initial backlog
+- product vision;
+- technical architecture;
+- genetics specification;
+- breeding and mutation specification;
+- content design specification;
+- AI coding guidelines;
+- initial backlog;
+- implementation specs;
+- ADRs;
+- quality/test plans;
+- asset pipeline plan;
+- release/distribution plan.
 
 Done when:
 
-```txt
-An AI coding agent can read the repository docs and understand what to build first and what not to build yet.
+```text
+An AI coding agent can read the repository docs and understand what to build first, what not to build yet, and how to validate each phase.
 ```
 
 ### Phase 1 — Pure Genetics Core
 
+Detailed execution spec:
+
+```text
+docs/implementation/01-genetics-core-implementation.md
+```
+
 Deliverables:
 
-- Allele model
-- Dominance model
-- Gene pair model
-- Genome model
-- Chromosome types
-- Breeding service
-- Mutation service
-- Unit tests
+- Allele model;
+- Dominance model;
+- Chromosome types;
+- Gene pair model;
+- Genome model;
+- GeneticRandom abstraction;
+- Breeding service;
+- Mutation service;
+- unit and simulation tests.
 
 Done when:
 
-```txt
-The mod can simulate thousands of bee crosses without Minecraft.
+```text
+The project can simulate thousands of bee crosses without Minecraft.
 ```
 
 ### Phase 2 — Minimal Hardcoded Content
 
+Detailed execution spec:
+
+```text
+docs/implementation/02-initial-content-implementation.md
+```
+
 Deliverables:
 
-- Meadow, Forest, Arid, Cultivated, Hardy species definitions
-- Lifespan trait definitions
-- Productivity trait definitions
-- Fertility trait definitions
-- Flower type trait definitions
-- Initial mutation definitions
+- Meadow, Forest, Arid, Cultivated, Hardy species definitions;
+- Lifespan trait definitions;
+- Productivity trait definitions;
+- Fertility trait definitions;
+- Flower type trait definitions;
+- initial mutation definitions;
+- built-in content registry/facade.
 
 Done when:
 
-```txt
+```text
 The pure Java core can generate normal offspring, hybrids, purebreds, and mutations using the initial content.
 ```
 
 ### Phase 3 — NeoForge Bee Genome Storage
 
+Detailed execution spec:
+
+```text
+docs/implementation/03-neoforge-entity-integration.md
+```
+
 Deliverables:
 
-- Attach genome data to vanilla bees.
-- Initialize wild bee genomes.
-- Persist genome through save/load.
-- Provide debug commands for reading bee genome.
+- attach genome data to vanilla bees;
+- serialize and deserialize genome data;
+- initialize wild bee genomes;
+- persist genome through save/load;
+- provide debug commands for reading bee genome.
 
 Done when:
 
-```txt
+```text
 A spawned vanilla bee receives a genome and keeps it after saving and reloading the world.
 ```
 
 ### Phase 4 — Vanilla Breeding Integration
 
+Detailed execution spec:
+
+```text
+docs/implementation/04-vanilla-breeding-integration.md
+```
+
 Deliverables:
 
-- Hook into baby bee creation.
-- Read parent genomes.
-- Generate child genome through the core.
-- Apply mutation context.
-- Save child genome.
-- Add minimal mutation feedback.
+- hook into baby bee creation;
+- read parent genomes;
+- generate child genome through the core;
+- apply mutation context;
+- save child genome;
+- add minimal mutation feedback.
 
 Done when:
 
-```txt
+```text
 Breeding two vanilla bees creates a baby bee with inherited and possibly mutated genetics.
 ```
 
 ### Phase 5 — Basic Analyzer
 
+Detailed execution spec:
+
+```text
+docs/implementation/05-analyzer-implementation.md
+```
+
 Deliverables:
 
-- Analyzer item or debug-first tool.
-- Show active and inactive species.
-- Show important traits.
-- Show purebred/hybrid status.
-- Show dominance clearly.
+- analyzer item or debug-first tool;
+- active and inactive species display;
+- important trait display;
+- purebred/hybrid status display;
+- simple readable formatting.
 
 Done when:
 
-```txt
+```text
 The player can decide which bees to keep without relying only on debug commands.
 ```
 
 ### Phase 6 — Basic Production
 
+Detailed execution spec:
+
+```text
+docs/implementation/06-production-mvp.md
+```
+
 Deliverables:
 
-- Production definitions by species.
-- Active species determines primary output.
-- Inactive species may influence secondary output.
-- Productivity affects speed or output chance.
-- Basic comb items.
+- production definitions by species;
+- active species determines primary output;
+- inactive species may influence secondary output;
+- productivity affects speed or output chance;
+- basic comb items or placeholder outputs.
 
 Done when:
 
-```txt
+```text
 Species identity matters beyond breeding.
 ```
 
 ### Phase 7 — Tech Apiary and Frames
 
+Detailed execution spec:
+
+```text
+docs/implementation/07-tech-apiary-and-automation.md
+```
+
 Deliverables:
 
-- Genetic Apiary
-- Basic frames
-- Mutation frames
-- Productivity frames
-- Optional centrifuge
-- More controlled breeding/production
+- Genetic Apiary;
+- basic frames;
+- mutation frames;
+- productivity frames;
+- optional centrifuge;
+- controlled breeding and production;
+- automation hooks;
+- asset/Blockbench workflow for custom blocks.
 
 Done when:
 
-```txt
+```text
 Players can continue breeding naturally or use tech blocks for more efficient genetic progression.
 ```
 
 ### Phase 8 — Data-Driven Content
 
+Detailed execution spec:
+
+```text
+docs/implementation/08-data-driven-content.md
+```
+
 Deliverables:
 
-- Species JSON
-- Mutation JSON
-- Production JSON
-- Trait JSON
-- Validation and error reporting
+- species data format;
+- mutation data format;
+- production data format;
+- trait data format;
+- validation and error reporting;
+- built-in + loaded definition merge strategy.
 
 Done when:
 
-```txt
+```text
 Adding a new species does not require recompiling the mod.
 ```
 
-### Phase 9 — Expanded Content
+### Phase 9 — Expanded Content Roadmap
+
+Detailed planning spec:
+
+```text
+docs/implementation/09-expanded-content-roadmap.md
+```
 
 Future categories:
 
-```txt
+```text
 Biome Bees
 Nether Bees
 End Bees
@@ -333,17 +412,53 @@ Compatibility Bees
 
 Done when:
 
-```txt
-The genetic system supports a larger progression tree without changing core mechanics.
+```text
+The expansion plan is clear enough to grow content without damaging the core genetic system.
 ```
 
-## 12. Risks
+### Phase 10 — Fabric Support
+
+Detailed execution spec:
+
+```text
+docs/implementation/10-fabric-support-implementation.md
+```
+
+Deliverables:
+
+- Fabric feasibility spike;
+- multiloader build decision;
+- Fabric module setup;
+- Fabric genome storage;
+- Fabric wild bee initialization;
+- Fabric breeding hook/mixin;
+- Fabric analyzer behavior;
+- cross-loader behavior parity tests.
+
+Done when:
+
+```text
+Fabric behavior matches the NeoForge MVP without duplicating genetics logic.
+```
+
+## 12. Transversal Documentation
+
+The roadmap is supported by additional documentation:
+
+```text
+docs/decisions/   -> ADRs and architectural decisions
+docs/quality/     -> testing and validation plans
+docs/art/         -> asset pipeline and Blockbench planning
+docs/release/     -> release and distribution planning
+```
+
+## 13. Risks
 
 ### Risk: Too Much Content Too Early
 
 Mitigation:
 
-```txt
+```text
 Keep the first playable version to five species.
 ```
 
@@ -351,7 +466,7 @@ Keep the first playable version to five species.
 
 Mitigation:
 
-```txt
+```text
 Implement and test the genetics core before touching entities, items, blocks, and events.
 ```
 
@@ -359,7 +474,7 @@ Implement and test the genetics core before touching entities, items, blocks, an
 
 Mitigation:
 
-```txt
+```text
 Design platform boundaries now, but implement NeoForge first.
 ```
 
@@ -367,7 +482,7 @@ Design platform boundaries now, but implement NeoForge first.
 
 Mitigation:
 
-```txt
+```text
 Start with simple text/tooltip output. Build GUI later.
 ```
 
@@ -375,17 +490,25 @@ Start with simple text/tooltip output. Build GUI later.
 
 Mitigation:
 
-```txt
+```text
 Start with hardcoded definitions in centralized registries. Move to JSON after rules stabilize.
 ```
 
-## 13. Open Questions
+### Risk: Assets Blocking Development
+
+Mitigation:
+
+```text
+Use placeholders. Blockbench and polished assets are not required before gameplay works.
+```
+
+## 14. Open Questions
 
 These do not block the MVP:
 
-- Final species names.
-- Whether resource bees use direct resource names or more thematic names.
-- Whether mutation discovery should be fully hidden, partially hidden, or analyzer-tier-based.
-- How much production should happen through vanilla hives versus custom tech blocks.
-- Whether apiaries should use living bees, captured bee items, or both.
-- How to balance bee lifespan without making vanilla breeding frustrating.
+- final species names;
+- whether resource bees use direct resource names or more thematic names;
+- whether mutation discovery should be hidden, partially hidden, or analyzer-tier-based;
+- how much production should happen through vanilla hives versus custom tech blocks;
+- whether apiaries should use living bees, captured bee items, or both;
+- how to balance bee lifespan without making vanilla breeding frustrating.

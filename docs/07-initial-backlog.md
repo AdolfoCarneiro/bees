@@ -2,13 +2,64 @@
 
 ## 1. Purpose
 
-This backlog breaks the bee genetics mod into implementation-friendly tasks.
+This backlog breaks Curious Bees into implementation-friendly tasks.
 
 It is designed for AI-assisted development, where each task should be small enough for Claude Code, Codex, Cursor, or another agent to implement safely.
 
-## 2. Epics
+This is a **high-level planning backlog**.
 
-```txt
+Detailed execution instructions live in:
+
+```text
+docs/implementation/
+```
+
+Testing and validation instructions live in:
+
+```text
+docs/quality/
+```
+
+Architectural decisions live in:
+
+```text
+docs/decisions/
+```
+
+Do not use this backlog as the only prompt for coding.
+
+## 2. Backlog Status Model
+
+Recommended statuses:
+
+```text
+Not Started
+Refining
+Waiting Dependency
+Next
+Ready for AI
+In Progress
+Review
+Blocked
+Done
+```
+
+Meaning:
+
+```text
+Refining = needs more specification
+Waiting Dependency = defined, but depends on another task/decision
+Next = next real candidate to execute
+Ready for AI = can be sent to Claude Code/Codex/Cursor now
+In Progress = actively being worked
+Review = generated/implemented and needs validation
+Blocked = cannot continue until something is resolved
+Done = reviewed and accepted
+```
+
+## 3. Epics
+
+```text
 Epic 1 — Project Documentation
 Epic 2 — Genetics Core
 Epic 3 — Initial Content Definitions
@@ -19,10 +70,29 @@ Epic 7 — Analyzer MVP
 Epic 8 — Basic Production
 Epic 9 — Tech Apiary
 Epic 10 — Data-Driven Content
-Epic 11 — Fabric Support
+Epic 11 — Expanded Content
+Epic 12 — Fabric Support
 ```
 
-## 3. Epic 1 — Project Documentation
+## 4. Phase-Based Implementation Docs
+
+Use these files as execution sources:
+
+```text
+docs/implementation/00-phase-0-documentation-and-decisions.md
+docs/implementation/01-genetics-core-implementation.md
+docs/implementation/02-initial-content-implementation.md
+docs/implementation/03-neoforge-entity-integration.md
+docs/implementation/04-vanilla-breeding-integration.md
+docs/implementation/05-analyzer-implementation.md
+docs/implementation/06-production-mvp.md
+docs/implementation/07-tech-apiary-and-automation.md
+docs/implementation/08-data-driven-content.md
+docs/implementation/09-expanded-content-roadmap.md
+docs/implementation/10-fabric-support-implementation.md
+```
+
+## 5. Epic 1 — Project Documentation
 
 ### US-001 — Add project documentation structure
 
@@ -32,7 +102,7 @@ so AI agents and humans can understand the intended architecture and roadmap.
 
 Acceptance criteria:
 
-```txt
+```text
 - README.md exists.
 - CLAUDE.md exists.
 - docs folder exists.
@@ -43,6 +113,11 @@ Acceptance criteria:
 - Content design spec exists.
 - AI coding guidelines exist.
 - Initial backlog exists.
+- Implementation specs exist.
+- ADRs exist.
+- Quality/test plans exist.
+- Asset pipeline plan exists.
+- Release/distribution plan exists.
 ```
 
 ### US-002 — Add AI agent guidance
@@ -53,25 +128,29 @@ so Claude Code understands the project constraints before coding.
 
 Acceptance criteria:
 
-```txt
+```text
 - CLAUDE.md summarizes project goal.
 - CLAUDE.md states non-goals.
 - CLAUDE.md points to docs.
+- CLAUDE.md points to docs/implementation.
+- CLAUDE.md points to docs/decisions and docs/quality.
 - CLAUDE.md forbids Minecraft dependencies in core genetics.
-- CLAUDE.md recommends the first implementation prompt.
+- CLAUDE.md requires one task at a time.
 ```
 
-## 4. Epic 2 — Genetics Core
+## 6. Epic 2 — Genetics Core
+
+Execution spec:
+
+```text
+docs/implementation/01-genetics-core-implementation.md
+```
 
 ### US-003 — Model dominance
 
-As a system,  
-I want to represent allele dominance,  
-so active traits can be resolved from gene pairs.
-
 Acceptance criteria:
 
-```txt
+```text
 - Dominance enum exists.
 - DOMINANT and RECESSIVE values exist.
 - Unit tests cover dominance values where useful.
@@ -79,13 +158,9 @@ Acceptance criteria:
 
 ### US-004 — Model alleles
 
-As a system,  
-I want to represent a genetic allele,  
-so chromosomes can contain inherited values.
-
 Acceptance criteria:
 
-```txt
+```text
 - Allele has a stable ID.
 - Allele has a chromosome type.
 - Allele has dominance.
@@ -95,13 +170,9 @@ Acceptance criteria:
 
 ### US-005 — Model chromosome types
 
-As a system,  
-I want to define chromosome types,  
-so genomes can organize different genetic traits.
-
 Acceptance criteria:
 
-```txt
+```text
 - ChromosomeType enum exists.
 - MVP types exist:
   - SPECIES
@@ -113,13 +184,9 @@ Acceptance criteria:
 
 ### US-006 — Model gene pairs
 
-As a system,  
-I want a gene pair containing two alleles,  
-so a chromosome can carry active and inactive genetic values.
-
 Acceptance criteria:
 
-```txt
+```text
 - GenePair stores two alleles.
 - GenePair stores active allele.
 - GenePair stores inactive allele.
@@ -132,13 +199,9 @@ Acceptance criteria:
 
 ### US-007 — Model genomes
 
-As a system,  
-I want a genome made of gene pairs,  
-so each bee can have a complete set of genetic traits.
-
 Acceptance criteria:
 
-```txt
+```text
 - Genome stores gene pairs by chromosome type.
 - Genome can get required chromosomes.
 - Genome validates missing required chromosomes.
@@ -147,15 +210,22 @@ Acceptance criteria:
 - No Minecraft classes are used.
 ```
 
-### US-008 — Implement breeding service
-
-As a system,  
-I want to cross two genomes,  
-so offspring can inherit one allele from each parent per chromosome.
+### US-008 — Add random abstraction
 
 Acceptance criteria:
 
-```txt
+```text
+- GeneticRandom interface or equivalent exists.
+- Production implementation wraps Java random.
+- Test implementation can return deterministic values.
+- Core services depend on abstraction instead of global random.
+```
+
+### US-009 — Implement breeding service
+
+Acceptance criteria:
+
+```text
 - BreedingService accepts two parent genomes.
 - For each chromosome, child receives one allele from each parent.
 - Allele selection is 50/50 per parent.
@@ -166,32 +236,19 @@ Acceptance criteria:
 - Statistical tests validate approximate 25/50/25 distribution.
 ```
 
-### US-009 — Add random abstraction
+## 7. Epic 3 — Initial Content Definitions
 
-As a developer,  
-I want genetic randomness to be injectable,  
-so inheritance and mutation can be tested deterministically.
+Execution spec:
 
-Acceptance criteria:
-
-```txt
-- GeneticRandom interface or equivalent exists.
-- Production implementation wraps Java random.
-- Test implementation can return deterministic values.
-- Core services depend on abstraction instead of global random.
+```text
+docs/implementation/02-initial-content-implementation.md
 ```
-
-## 5. Epic 3 — Initial Content Definitions
 
 ### US-010 — Define built-in species model
 
-As a system,  
-I want species definitions,  
-so species alleles have metadata and gameplay identity.
-
 Acceptance criteria:
 
-```txt
+```text
 - BeeSpeciesDefinition exists.
 - Species definition has ID.
 - Species definition has display name.
@@ -202,13 +259,9 @@ Acceptance criteria:
 
 ### US-011 — Add initial wild species
 
-As a player,  
-I want starter bees in the world,  
-so I can begin breeding.
-
 Acceptance criteria:
 
-```txt
+```text
 - Meadow species exists.
 - Forest species exists.
 - Arid species exists.
@@ -218,13 +271,9 @@ Acceptance criteria:
 
 ### US-012 — Add initial mutated species
 
-As a player,  
-I want early mutations,  
-so breeding can produce new species.
-
 Acceptance criteria:
 
-```txt
+```text
 - Cultivated species exists.
 - Hardy species exists.
 - Each has default traits.
@@ -233,42 +282,29 @@ Acceptance criteria:
 
 ### US-013 — Add initial trait alleles
 
-As a system,  
-I want initial alleles for MVP traits,  
-so genomes can represent more than species.
-
 Acceptance criteria:
 
-```txt
-- Lifespan alleles exist:
-  - Short
-  - Normal
-  - Long
-- Productivity alleles exist:
-  - Slow
-  - Normal
-  - Fast
-- Fertility alleles exist:
-  - One
-  - Two
-  - Three
-- FlowerType alleles exist:
-  - Flowers
-  - Cactus
-  - Leaves
+```text
+- Lifespan alleles exist: Short, Normal, Long.
+- Productivity alleles exist: Slow, Normal, Fast.
+- Fertility alleles exist: One, Two, Three.
+- FlowerType alleles exist: Flowers, Cactus, Leaves.
 ```
 
-## 6. Epic 4 — Mutation System
+## 8. Epic 4 — Mutation System
+
+Execution specs:
+
+```text
+docs/implementation/01-genetics-core-implementation.md
+docs/implementation/02-initial-content-implementation.md
+```
 
 ### US-014 — Model mutation definitions
 
-As a system,  
-I want mutation definitions,  
-so species can appear probabilistically during breeding.
-
 Acceptance criteria:
 
-```txt
+```text
 - MutationDefinition exists.
 - Mutation has ID.
 - Mutation has two parent species IDs.
@@ -280,13 +316,9 @@ Acceptance criteria:
 
 ### US-015 — Implement mutation service
 
-As a system,  
-I want to apply mutation rules after inheritance,  
-so new species can appear during breeding.
-
 Acceptance criteria:
 
-```txt
+```text
 - MutationService accepts parent genomes, child genome, context, and mutation definitions.
 - MutationService checks active parent species.
 - MutationService evaluates chance.
@@ -299,45 +331,50 @@ Acceptance criteria:
 
 ### US-016 — Add initial mutation definitions
 
-As a player,  
-I want early crossbreeding paths,  
-so I can discover new species.
-
 Acceptance criteria:
 
-```txt
+```text
 - Meadow + Forest -> Cultivated exists.
 - Forest + Arid -> Hardy exists.
 - Parent order does not matter.
 - Mutation chances are configurable in built-in definitions.
 ```
 
-## 7. Epic 5 — NeoForge Bee Data Integration
+## 9. Epic 5 — NeoForge Bee Data Integration
 
-### US-017 — Store genome on vanilla bee entity
+Execution spec:
 
-As a system,  
-I want vanilla Bee entities to carry genomes,  
-so living bees can participate in genetic breeding.
+```text
+docs/implementation/03-neoforge-entity-integration.md
+```
+
+### US-017 — Research NeoForge genome storage
 
 Acceptance criteria:
 
-```txt
+```text
+- Storage API decision is documented.
+- Serialization requirements are documented.
+- Sync requirements are documented.
+- Risks are documented.
+```
+
+### US-018 — Store genome on vanilla bee entity
+
+Acceptance criteria:
+
+```text
 - Bee entity can store a Genome.
 - Genome persists through save/load.
 - Existing bees without genome are handled safely.
 - NeoForge-specific code is isolated from core genetics.
 ```
 
-### US-018 — Initialize wild bee genomes
-
-As a player,  
-I want naturally spawned bees to have species,  
-so the world contains genetic starting points.
+### US-019 — Initialize wild bee genomes
 
 Acceptance criteria:
 
-```txt
+```text
 - Newly spawned bees receive genome if missing.
 - Plains/flower-like biomes can produce Meadow.
 - Forest-like biomes can produce Forest.
@@ -345,47 +382,52 @@ Acceptance criteria:
 - Unknown biomes use safe fallback.
 ```
 
-### US-019 — Add debug inspect command
-
-As a developer,  
-I want to inspect a bee genome in-game,  
-so I can debug breeding and mutation.
+### US-020 — Add debug inspect command
 
 Acceptance criteria:
 
-```txt
+```text
 - Command or debug item can inspect targeted bee.
 - Output includes active/inactive species.
 - Output includes MVP traits.
 - Output includes hybrid/purebred status.
 ```
 
-## 8. Epic 6 — Vanilla Breeding Integration
+## 10. Epic 6 — Vanilla Breeding Integration
 
-### US-020 — Hook into baby bee creation
+Execution spec:
 
-As a system,  
-I want to detect when vanilla bees create a baby,  
-so the baby can receive inherited genetics.
+```text
+docs/implementation/04-vanilla-breeding-integration.md
+```
+
+### US-021 — Research baby bee creation hook
 
 Acceptance criteria:
 
-```txt
+```text
+- NeoForge hook candidates are researched.
+- Parent availability is documented.
+- Child modification timing is documented.
+- Fallback options are documented.
+```
+
+### US-022 — Hook into baby bee creation
+
+Acceptance criteria:
+
+```text
 - NeoForge hook detects baby bee spawn/creation.
 - Parent bees are identified if possible.
 - Child bee is identified.
 - Logic delegates to common services.
 ```
 
-### US-021 — Assign inherited genome to baby bee
-
-As a player,  
-I want baby bees to inherit genetics from parents,  
-so breeding has meaningful outcomes.
+### US-023 — Assign inherited genome to baby bee
 
 Acceptance criteria:
 
-```txt
+```text
 - Parent genomes are read.
 - Missing parent genomes are safely initialized.
 - BreedingService creates child genome.
@@ -394,61 +436,51 @@ Acceptance criteria:
 - Result persists through save/load.
 ```
 
-### US-022 — Add mutation feedback
-
-As a player,  
-I want to notice when a mutation occurs,  
-so rare breeding results feel exciting.
+### US-024 — Add mutation feedback
 
 Acceptance criteria:
 
-```txt
+```text
 - Mutation event triggers minimal feedback.
 - Feedback may be particles, sound, advancement, or debug message.
 - Feedback does not require a full GUI.
 ```
 
-## 9. Epic 7 — Analyzer MVP
+## 11. Epic 7 — Analyzer MVP
 
-### US-023 — Create Bee Analyzer item
+Execution spec:
 
-As a player,  
-I want a Bee Analyzer,  
-so I can inspect bee genetics.
+```text
+docs/implementation/05-analyzer-implementation.md
+```
+
+### US-025 — Create Bee Analyzer item
 
 Acceptance criteria:
 
-```txt
+```text
 - Analyzer item exists.
 - Analyzer can be used on a bee.
 - Analyzer reads bee genome.
 - Analyzer displays basic report.
 ```
 
-### US-024 — Display species genetics
-
-As a player,  
-I want to see active and inactive species,  
-so I can identify hybrids and purebreds.
+### US-026 — Display species genetics
 
 Acceptance criteria:
 
-```txt
+```text
 - Active species is shown.
 - Inactive species is shown.
 - Purebred/hybrid status is shown.
 - Dominance is shown in a simple way.
 ```
 
-### US-025 — Display trait genetics
-
-As a player,  
-I want to see important traits,  
-so I can select better bees.
+### US-027 — Display trait genetics
 
 Acceptance criteria:
 
-```txt
+```text
 - Lifespan is shown.
 - Productivity is shown.
 - Fertility is shown.
@@ -456,190 +488,205 @@ Acceptance criteria:
 - Active/inactive values are distinguishable.
 ```
 
-## 10. Epic 8 — Basic Production
+## 12. Epic 8 — Basic Production
 
-### US-026 — Define production outputs by species
+Execution spec:
 
-As a system,  
-I want species to define possible products,  
-so bees can produce different outputs.
+```text
+docs/implementation/06-production-mvp.md
+```
+
+### US-028 — Define production outputs by species
 
 Acceptance criteria:
 
-```txt
+```text
 - ProductionDefinition exists.
 - Active species can define primary output.
 - Inactive species can define secondary output.
 - Definitions are centralized.
 ```
 
-### US-027 — Implement basic production calculation
-
-As a system,  
-I want production to consider active species and productivity,  
-so genetic traits affect gameplay.
+### US-029 — Implement basic production calculation
 
 Acceptance criteria:
 
-```txt
+```text
 - Active species determines primary output.
 - Inactive species may add secondary output chance.
 - Productivity modifies output chance/rate.
 - Calculation can be tested without Minecraft.
 ```
 
-## 11. Epic 9 — Tech Apiary
+## 13. Epic 9 — Tech Apiary
+
+Execution spec:
+
+```text
+docs/implementation/07-tech-apiary-and-automation.md
+```
 
 Future scope.
 
-### US-028 — Create Genetic Apiary block
-
-As a tech-focused player,  
-I want a controlled apiary block,  
-so I can breed and produce more efficiently.
+### US-030 — Create Genetic Apiary block
 
 Acceptance criteria:
 
-```txt
+```text
 - Not required for MVP.
 ```
 
-### US-029 — Add frames
-
-As a tech-focused player,  
-I want frames,  
-so I can influence mutation, productivity, and stability.
+### US-031 — Add frames
 
 Acceptance criteria:
 
-```txt
+```text
 - Not required for MVP.
 ```
 
-## 12. Epic 10 — Data-Driven Content
+## 14. Epic 10 — Data-Driven Content
+
+Execution spec:
+
+```text
+docs/implementation/08-data-driven-content.md
+```
 
 Future scope.
 
-### US-030 — Prepare definitions for JSON loading
-
-As a content designer,  
-I want definitions to be JSON-ready,  
-so new species and mutations can be added without code changes.
+### US-032 — Prepare definitions for JSON loading
 
 Acceptance criteria:
 
-```txt
+```text
 - Not required before core gameplay is stable.
 ```
 
-### US-031 — Implement species JSON loading
+### US-033 — Implement species JSON loading
 
 Future acceptance criteria:
 
-```txt
+```text
 - Species can be loaded from data files.
 - Invalid definitions produce clear errors.
 - Built-in species still work.
 ```
 
-### US-032 — Implement mutation JSON loading
+### US-034 — Implement mutation JSON loading
 
 Future acceptance criteria:
 
-```txt
+```text
 - Mutations can be loaded from data files.
 - Parent/result species are validated.
 - Invalid chance values are rejected.
 ```
 
-## 13. Epic 11 — Fabric Support
+## 15. Epic 11 — Expanded Content
+
+Execution roadmap:
+
+```text
+docs/implementation/09-expanded-content-roadmap.md
+```
+
+Future categories:
+
+```text
+Biome Bees
+Nether Bees
+End Bees
+Resource Bees
+Industrial Bees
+Magic Bees
+Compatibility Bees
+```
+
+Do not add expanded content before the MVP loop is working.
+
+## 16. Epic 12 — Fabric Support
+
+Execution spec:
+
+```text
+docs/implementation/10-fabric-support-implementation.md
+```
 
 Future scope.
 
-### US-033 — Add Fabric platform module
-
-As a developer,  
-I want a Fabric implementation,  
-so the mod can support Fabric later.
+### US-035 — Add Fabric platform module
 
 Acceptance criteria:
 
-```txt
+```text
 - Not started until NeoForge MVP works.
 ```
 
-### US-034 — Implement Fabric bee genome storage
+### US-036 — Implement Fabric bee genome storage
 
 Future acceptance criteria:
 
-```txt
+```text
 - Fabric Bee entities can store Genome.
 - Data persists through save/load.
 - Common genetics core remains unchanged.
 ```
 
-## 14. Suggested Task Order
+## 17. Suggested Task Order
 
 Recommended order:
 
-```txt
-1. US-001
-2. US-002
-3. US-003
-4. US-004
-5. US-005
-6. US-006
-7. US-007
-8. US-009
-9. US-008
-10. US-010
-11. US-011
-12. US-012
-13. US-013
-14. US-014
-15. US-015
-16. US-016
-17. US-017
-18. US-018
-19. US-019
-20. US-020
-21. US-021
-22. US-022
-23. US-023
-24. US-024
-25. US-025
-26. US-026
-27. US-027
+```text
+1. Phase 0 documentation and decisions
+2. Genetics core package structure
+3. Dominance / ChromosomeType / Allele
+4. GeneticRandom
+5. GenePair
+6. Genome
+7. BreedingService
+8. MutationDefinition / MutationService
+9. Initial species/traits/mutations
+10. Built-in content registry
+11. Core simulation tests
+12. NeoForge genome storage research
+13. NeoForge genome storage implementation
+14. Wild bee genome initialization
+15. Debug inspect command
+16. Baby bee breeding hook research
+17. Vanilla breeding integration
+18. Mutation feedback
+19. Analyzer MVP
+20. Production MVP
 ```
 
-## 15. First Sprint Recommendation
+## 18. First Sprint Recommendation
 
 If working alone with AI assistance, the first sprint should focus only on:
 
-```txt
-- Documentation setup
-- Pure genetics model
-- Breeding service
-- Mutation model/service
-- Unit tests
+```text
+- documentation setup;
+- pure genetics model;
+- breeding service;
+- mutation model/service;
+- unit tests.
 ```
 
 Do not include:
 
-```txt
-- Minecraft integration
-- Bee entity data
-- Analyzer item
-- GUI
-- Apiary
-- Resource bees
+```text
+- Minecraft integration;
+- Bee entity data;
+- Analyzer item;
+- GUI;
+- Apiary;
+- Resource bees.
 ```
 
-## 16. Definition of MVP
+## 19. Definition of MVP
 
 The MVP is complete when:
 
-```txt
+```text
 - A vanilla bee can have a genome.
 - Wild bees receive starting species.
 - Two bees can breed in the world.

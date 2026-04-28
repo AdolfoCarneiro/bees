@@ -8,11 +8,18 @@ The player should be able to breed two bees in the world using flowers, and the 
 
 Mutation should be probabilistic and should sometimes create a new species.
 
+Detailed execution specs:
+
+```text
+docs/implementation/01-genetics-core-implementation.md
+docs/implementation/04-vanilla-breeding-integration.md
+```
+
 ## 2. Player-Facing Breeding Flow
 
 Initial player flow:
 
-```txt
+```text
 1. Player finds two bees.
 2. Player feeds each bee a valid breeding item, usually flowers.
 3. Bees enter love mode.
@@ -26,7 +33,7 @@ Initial player flow:
 
 Technical flow:
 
-```txt
+```text
 1. Platform hook detects baby bee creation.
 2. Platform layer identifies parent bees and child bee.
 3. Platform layer reads parent genomes.
@@ -49,21 +56,21 @@ There should be a safe fallback for bees without genome data.
 
 Possible cases:
 
-- Bee spawned before the mod was installed.
-- Bee created by another mod.
-- Data failed to deserialize.
-- Development/debug world has old entities.
+- bee spawned before the mod was installed;
+- bee created by another mod;
+- data failed to deserialize;
+- development/debug world has old entities.
 
 Recommended behavior:
 
-```txt
+```text
 If a bee has no genome:
     assign a wild fallback genome based on biome/context.
 ```
 
 Alternative debug behavior:
 
-```txt
+```text
 Log a warning when a parent has no genome.
 ```
 
@@ -73,7 +80,7 @@ Do not crash normal gameplay because a bee is missing a genome.
 
 The breeding service should receive:
 
-```txt
+```text
 ParentGenome A
 ParentGenome B
 GeneticRandom random
@@ -81,7 +88,7 @@ GeneticRandom random
 
 The mutation service should receive:
 
-```txt
+```text
 InheritedChildGenome
 ParentGenome A
 ParentGenome B
@@ -96,7 +103,7 @@ Output should include more than just the child genome.
 
 Recommended:
 
-```txt
+```text
 BreedingResult
 - Genome childGenome
 - List<InheritedChromosomeResult>
@@ -106,17 +113,17 @@ BreedingResult
 
 The extra information is useful for:
 
-- Debug commands
-- Analyzer history later
-- Advancement triggers
-- Visual feedback
-- Unit tests
+- debug commands;
+- analyzer history later;
+- advancement triggers;
+- visual feedback;
+- unit tests.
 
 ## 7. Inheritance Algorithm
 
 For every chromosome:
 
-```txt
+```text
 1. Choose one allele from parent A.
 2. Choose one allele from parent B.
 3. Create a child gene pair.
@@ -126,7 +133,7 @@ For every chromosome:
 
 Pseudo-code:
 
-```txt
+```text
 for each chromosomeType:
     parentAGene = parentA.get(chromosomeType)
     parentBGene = parentB.get(chromosomeType)
@@ -145,7 +152,7 @@ Mutation should happen after normal inheritance.
 
 Recommended order:
 
-```txt
+```text
 1. Generate inherited child genome.
 2. Evaluate mutation rules using parents and environment.
 3. If mutation occurs, modify species chromosome.
@@ -155,7 +162,7 @@ Recommended order:
 
 Reason:
 
-```txt
+```text
 This preserves Mendelian inheritance as the base rule, while mutation acts as an additional event.
 ```
 
@@ -163,7 +170,7 @@ This preserves Mendelian inheritance as the base rule, while mutation acts as an
 
 A mutation should include:
 
-```txt
+```text
 id
 parent species A
 parent species B
@@ -178,9 +185,9 @@ Initial conceptual structure:
 
 ```json
 {
-  "id": "bee_genetics:cultivated_from_meadow_forest",
-  "parents": ["bee_genetics:meadow", "bee_genetics:forest"],
-  "result": "bee_genetics:cultivated",
+  "id": "curious_bees:cultivated_from_meadow_forest",
+  "parents": ["curious_bees:meadow", "curious_bees:forest"],
+  "result": "curious_bees:cultivated",
   "baseChance": 0.12,
   "allowedBiomes": [
     "minecraft:plains",
@@ -202,14 +209,14 @@ Mutation should match parent species regardless of order.
 
 This should match:
 
-```txt
+```text
 Parent A = Meadow
 Parent B = Forest
 ```
 
 And also:
 
-```txt
+```text
 Parent A = Forest
 Parent B = Meadow
 ```
@@ -220,7 +227,7 @@ For MVP, use active species of each parent.
 
 Example:
 
-```txt
+```text
 Parent A active species: Meadow
 Parent B active species: Forest
 
@@ -230,9 +237,9 @@ Meadow + Forest -> Cultivated
 
 Future options:
 
-- Consider inactive species too.
-- Require specific active/inactive combinations.
-- Give lower chance if mutation pair exists only in inactive alleles.
+- consider inactive species too;
+- require specific active/inactive combinations;
+- give lower chance if mutation pair exists only in inactive alleles.
 
 Do not implement those future rules in the first version unless explicitly requested.
 
@@ -240,7 +247,7 @@ Do not implement those future rules in the first version unless explicitly reque
 
 Mutation chance formula for MVP:
 
-```txt
+```text
 finalChance = baseChance * environmentMultiplier * frameMultiplier * otherModifiers
 ```
 
@@ -248,7 +255,7 @@ For initial vanilla breeding, frameMultiplier can be `1.0`.
 
 Environment requirements can be simple:
 
-```txt
+```text
 If mutation requires biome and current biome is not allowed:
     chance = 0
 ```
@@ -263,7 +270,7 @@ One allele becomes the result species.
 
 Example:
 
-```txt
+```text
 Inherited child species: Meadow / Forest
 Mutation result: Cultivated
 Final species: Cultivated / Forest
@@ -277,7 +284,7 @@ Both alleles become the result species.
 
 Example:
 
-```txt
+```text
 Inherited child species: Meadow / Forest
 Mutation result: Cultivated
 Final species: Cultivated / Cultivated
@@ -287,7 +294,7 @@ This should be rare.
 
 Initial default:
 
-```txt
+```text
 Partial mutation: 95%
 Full mutation: 5%
 ```
@@ -300,11 +307,11 @@ When a mutation occurs, the player should receive minimal feedback.
 
 MVP feedback options:
 
-```txt
-- Special particles around the baby bee.
-- Subtle sound.
-- Advancement trigger.
-- Debug log during development.
+```text
+- special particles around the baby bee;
+- subtle sound;
+- advancement trigger;
+- debug log during development.
 ```
 
 Avoid large GUI or complex announcements in the MVP.
@@ -313,13 +320,13 @@ Avoid large GUI or complex announcements in the MVP.
 
 For development:
 
-```txt
+```text
 Show all mutation details in debug/analyzer output.
 ```
 
 For final gameplay, possible progression:
 
-```txt
+```text
 Basic analyzer:
     Shows species and main traits.
 
@@ -338,7 +345,7 @@ Environment context should be passed to the mutation service.
 
 Initial context fields:
 
-```txt
+```text
 biomeId
 dimensionId
 isDay
@@ -350,7 +357,7 @@ nearbyBlocks
 
 MVP may only use:
 
-```txt
+```text
 biomeId
 dimensionId
 ```
@@ -361,13 +368,13 @@ For MVP, keep vanilla flower breeding.
 
 Future rule:
 
-```txt
+```text
 The active FlowerType trait may determine what item can breed that bee.
 ```
 
 Example:
 
-```txt
+```text
 Flowers -> normal flowers
 Cactus -> cactus flower or cactus-related item
 Leaves -> leaves/saplings/forest item
@@ -383,7 +390,7 @@ For MVP, fertility can be stored and displayed but not strongly affect vanilla b
 
 Future possibilities:
 
-```txt
+```text
 - Higher fertility increases chance of extra larvae in apiaries.
 - Higher fertility reduces breeding cooldown.
 - Higher fertility increases chance of multiple genetic samples.
@@ -399,17 +406,33 @@ For MVP, lifespan can be stored and displayed but not heavily used.
 
 Future possibilities:
 
-```txt
+```text
 - Lifespan affects tech apiary cycles.
 - Lifespan affects number of production operations.
 - Lifespan affects bee aging in controlled environments.
 ```
 
-## 20. Acceptance Criteria
+## 20. Validation
+
+Detailed test plans:
+
+```text
+docs/quality/02-genetics-core-test-plan.md
+docs/quality/05-vanilla-breeding-test-plan.md
+```
+
+Implementation execution:
+
+```text
+docs/implementation/01-genetics-core-implementation.md
+docs/implementation/04-vanilla-breeding-integration.md
+```
+
+## 21. Acceptance Criteria
 
 Breeding/mutation is implemented when:
 
-```txt
+```text
 - Two bees with genomes can produce a child genome.
 - The child genome inherits one allele from each parent per chromosome.
 - Active/inactive alleles are resolved and persisted.

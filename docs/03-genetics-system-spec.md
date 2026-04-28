@@ -4,15 +4,21 @@
 
 The genetics system models bee inheritance in a way inspired by Forestry:
 
-- Each relevant trait is represented by a chromosome.
-- Each chromosome has two alleles.
-- One allele becomes active.
-- One allele becomes inactive.
-- Dominance affects which allele is active.
-- Offspring inherit one allele from each parent.
-- Mutations can modify the species chromosome.
+- each relevant trait is represented by a chromosome;
+- each chromosome has two alleles;
+- one allele becomes active;
+- one allele becomes inactive;
+- dominance affects which allele is active;
+- offspring inherit one allele from each parent;
+- mutations can modify the species chromosome.
 
 The system should be deterministic when given deterministic random input, so it can be unit-tested.
+
+Detailed execution tasks for this system are in:
+
+```text
+docs/implementation/01-genetics-core-implementation.md
+```
 
 ## 2. Core Terms
 
@@ -22,7 +28,7 @@ A complete set of chromosomes for one bee.
 
 Example:
 
-```txt
+```text
 Genome
 - Species: Meadow / Forest
 - Lifespan: Normal / Long
@@ -37,7 +43,7 @@ A category of genetic information.
 
 Examples:
 
-```txt
+```text
 Species
 Lifespan
 Productivity
@@ -51,7 +57,7 @@ A single genetic value inside a chromosome.
 
 Examples:
 
-```txt
+```text
 Species allele: Meadow
 Productivity allele: Fast
 Fertility allele: 3
@@ -64,7 +70,7 @@ A pair of alleles for one chromosome.
 
 Example:
 
-```txt
+```text
 Species:
 - first allele: Meadow
 - second allele: Forest
@@ -90,7 +96,7 @@ A gene pair where both alleles are the same.
 
 Example:
 
-```txt
+```text
 Meadow / Meadow
 ```
 
@@ -100,7 +106,7 @@ A gene pair where the two alleles are different.
 
 Example:
 
-```txt
+```text
 Cultivated / Forest
 ```
 
@@ -108,7 +114,7 @@ Cultivated / Forest
 
 MVP chromosome types:
 
-```txt
+```text
 SPECIES
 LIFESPAN
 PRODUCTIVITY
@@ -118,7 +124,7 @@ FLOWER_TYPE
 
 Future chromosome types:
 
-```txt
+```text
 TEMPERATURE_TOLERANCE
 HUMIDITY_TOLERANCE
 TERRITORY
@@ -128,20 +134,22 @@ CAVE_DWELLING
 WEATHER_TOLERANCE
 ```
 
+Do not implement future chromosome behavior in the MVP unless explicitly requested.
+
 ## 4. Dominance
 
 Each allele has a dominance value.
 
 Initial values:
 
-```txt
+```text
 DOMINANT
 RECESSIVE
 ```
 
 Possible future values:
 
-```txt
+```text
 INCOMPLETE_DOMINANT
 CO_DOMINANT
 ```
@@ -154,7 +162,7 @@ When a gene pair is created, active/inactive alleles are resolved once.
 
 Rules:
 
-```txt
+```text
 If one allele is dominant and the other is recessive:
     active = dominant
     inactive = recessive
@@ -166,7 +174,7 @@ If both alleles have the same dominance:
 
 Important:
 
-```txt
+```text
 The active/inactive result must be persisted.
 ```
 
@@ -176,7 +184,7 @@ Do not recalculate active/inactive every time the gene is read.
 
 For each chromosome:
 
-```txt
+```text
 childAlleleA = random allele from parent A gene pair
 childAlleleB = random allele from parent B gene pair
 childGenePair = resolve(childAlleleA, childAlleleB)
@@ -190,20 +198,20 @@ The selection from each parent is 50/50.
 
 Input:
 
-```txt
+```text
 Parent A Species: Meadow / Meadow
 Parent B Species: Forest / Forest
 ```
 
 Possible child:
 
-```txt
+```text
 Meadow / Forest
 ```
 
 Expected distribution:
 
-```txt
+```text
 100% Meadow / Forest
 ```
 
@@ -213,14 +221,14 @@ Active species depends on dominance.
 
 Input:
 
-```txt
+```text
 Parent A Species: Meadow / Forest
 Parent B Species: Meadow / Forest
 ```
 
 Expected approximate distribution:
 
-```txt
+```text
 25% Meadow / Meadow
 50% Meadow / Forest
 25% Forest / Forest
@@ -236,7 +244,7 @@ However, do not destroy active/inactive information.
 
 Possible internal structure:
 
-```txt
+```text
 GenePair
 - alleleA
 - alleleB
@@ -246,7 +254,7 @@ GenePair
 
 Possible helper methods:
 
-```txt
+```text
 isPurebred()
 isHybrid()
 containsAllele(id)
@@ -260,7 +268,7 @@ The species chromosome is special because mutations mainly affect it.
 
 Example:
 
-```txt
+```text
 Species:
 - active: Cultivated
 - inactive: Forest
@@ -268,9 +276,9 @@ Species:
 
 This means:
 
-- The bee behaves primarily as Cultivated.
-- The bee can still pass Forest to offspring.
-- Production may use Cultivated as primary and Forest as secondary.
+- the bee behaves primarily as Cultivated;
+- the bee can still pass Forest to offspring;
+- production may use Cultivated as primary and Forest as secondary.
 
 ## 11. Trait Chromosomes
 
@@ -278,7 +286,7 @@ This means:
 
 Initial values:
 
-```txt
+```text
 SHORT
 NORMAL
 LONG
@@ -286,7 +294,7 @@ LONG
 
 Possible effects:
 
-```txt
+```text
 SHORT: fewer cycles, easier early balance
 NORMAL: default
 LONG: more cycles or longer productive lifetime
@@ -298,7 +306,7 @@ In MVP, lifespan can exist without strong gameplay impact.
 
 Initial values:
 
-```txt
+```text
 SLOW
 NORMAL
 FAST
@@ -306,7 +314,7 @@ FAST
 
 Possible effects:
 
-```txt
+```text
 SLOW: lower production rate
 NORMAL: default production rate
 FAST: higher production rate
@@ -316,7 +324,7 @@ FAST: higher production rate
 
 Initial values:
 
-```txt
+```text
 ONE
 TWO
 THREE
@@ -324,7 +332,7 @@ THREE
 
 Possible effects:
 
-```txt
+```text
 ONE: fewer offspring or lower breeding yield
 TWO: default
 THREE: more offspring or better chance of extra larvae later
@@ -336,7 +344,7 @@ In vanilla-style breeding, one baby normally spawns. Fertility can initially be 
 
 Initial values:
 
-```txt
+```text
 FLOWERS
 CACTUS
 LEAVES
@@ -344,7 +352,7 @@ LEAVES
 
 Possible effects:
 
-```txt
+```text
 FLOWERS: standard flower breeding/production
 CACTUS: desert/arid progression
 LEAVES: forest progression
@@ -358,12 +366,12 @@ Every allele should have a stable ID.
 
 Examples:
 
-```txt
-bee_genetics:species/meadow
-bee_genetics:species/forest
-bee_genetics:productivity/fast
-bee_genetics:fertility/three
-bee_genetics:flower_type/flowers
+```text
+curious_bees:species/meadow
+curious_bees:species/forest
+curious_bees:productivity/fast
+curious_bees:fertility/three
+curious_bees:flower_type/flowers
 ```
 
 Avoid relying on display names as IDs.
@@ -372,7 +380,7 @@ Avoid relying on display names as IDs.
 
 Initial built-in species:
 
-```txt
+```text
 Meadow
 Forest
 Arid
@@ -382,11 +390,17 @@ Hardy
 
 Initial built-in trait alleles:
 
-```txt
+```text
 Lifespan: Short, Normal, Long
 Productivity: Slow, Normal, Fast
 Fertility: One, Two, Three
 FlowerType: Flowers, Cactus, Leaves
+```
+
+Detailed implementation is in:
+
+```text
+docs/implementation/02-initial-content-implementation.md
 ```
 
 ## 14. Genome Creation
@@ -395,7 +409,7 @@ Wild bee genome creation should produce pure or mostly pure species.
 
 Example:
 
-```txt
+```text
 Meadow wild bee:
 Species: Meadow / Meadow
 Lifespan: Normal / Normal
@@ -412,19 +426,19 @@ A genome can have hybrid status at different levels.
 
 Species hybrid:
 
-```txt
+```text
 Species gene pair has two different species alleles.
 ```
 
 Trait hybrid:
 
-```txt
+```text
 Any trait gene pair has two different alleles.
 ```
 
 Overall hybrid:
 
-```txt
+```text
 At least one relevant chromosome is hybrid.
 ```
 
@@ -436,7 +450,7 @@ Mutation normally modifies the species chromosome only.
 
 Possible mutation result modes:
 
-```txt
+```text
 PARTIAL
 FULL
 ```
@@ -447,7 +461,7 @@ Only one species allele is replaced.
 
 Example:
 
-```txt
+```text
 Before: Meadow / Forest
 After: Cultivated / Forest
 ```
@@ -458,7 +472,7 @@ Both species alleles become the mutation result.
 
 Example:
 
-```txt
+```text
 Before: Meadow / Forest
 After: Cultivated / Cultivated
 ```
@@ -471,7 +485,7 @@ Core services should accept an injectable random abstraction.
 
 Example behavior:
 
-```txt
+```text
 random.nextBoolean() chooses inherited allele.
 random.nextDouble() evaluates mutation probability.
 ```
@@ -482,17 +496,23 @@ Statistical tests should allow tolerance.
 
 Example:
 
-```txt
+```text
 Run 10,000 crosses.
 Expected 25/50/25 distribution.
 Accept if each bucket is within tolerance.
+```
+
+Detailed validation is in:
+
+```text
+docs/quality/02-genetics-core-test-plan.md
 ```
 
 ## 18. Required Core Classes
 
 Minimum model:
 
-```txt
+```text
 Allele
 Dominance
 GenePair
@@ -510,7 +530,7 @@ GeneticRandom
 
 The genetics core is complete when:
 
-```txt
+```text
 - It can represent a full bee genome.
 - It can resolve active/inactive alleles by dominance.
 - It persists active/inactive state.
