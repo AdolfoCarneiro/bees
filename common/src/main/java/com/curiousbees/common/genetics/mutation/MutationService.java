@@ -8,8 +8,11 @@ import com.curiousbees.common.genetics.random.GeneticRandom;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public final class MutationService {
+
+    private static final Logger LOGGER = Logger.getLogger(MutationService.class.getName());
 
     /**
      * Evaluates whether a species mutation applies after Mendelian breeding.
@@ -29,10 +32,16 @@ public final class MutationService {
         String activeB = parentB.getActiveAllele(ChromosomeType.SPECIES).id();
 
         for (MutationDefinition def : definitions) {
+            if (def == null) {
+                LOGGER.warning("Null MutationDefinition found in definitions list — skipping entry.");
+                continue;
+            }
             if (!def.matches(activeA, activeB)) continue;
             if (random.nextDouble() >= def.baseChance()) continue;
 
             Genome mutatedGenome = applyMutation(childGenome, def, random);
+            LOGGER.fine("Mutation applied: " + def.id()
+                    + " (" + activeA + " + " + activeB + " -> " + def.resultSpeciesAllele().id() + ")");
             return MutationResult.mutated(mutatedGenome, def);
         }
 

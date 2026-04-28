@@ -54,6 +54,35 @@ class MutationServiceTest {
                 () -> new MutationDefinition("id", "a", "b", null, 0.5, MutationResultMode.PARTIAL));
     }
 
+    @Test
+    void nonSpeciesResultAlleleFails() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new MutationDefinition(
+                        "id",
+                        AlleleFixtures.MEADOW.id(),
+                        AlleleFixtures.FOREST.id(),
+                        AlleleFixtures.PRODUCTIVITY_FAST, // wrong ChromosomeType
+                        0.5,
+                        MutationResultMode.PARTIAL));
+    }
+
+    @Test
+    void nullDefinitionInListIsSkippedSafely() {
+        Genome parentA = GenomeFixtures.pureMeadow();
+        Genome parentB = GenomeFixtures.pureForest();
+        Genome child = GenomeFixtures.hybridMeadowForest();
+
+        // list contains a null entry followed by a real definition at 100%
+        List<MutationDefinition> defs = new java.util.ArrayList<>();
+        defs.add(null);
+        defs.add(meadowForestToCultivated(1.0, MutationResultMode.PARTIAL));
+
+        MutationResult result = service.evaluate(parentA, parentB, child, defs,
+                new DeterministicGeneticRandom().withDoubles(0.0).withBooleans(true));
+
+        assertTrue(result.wasMutated(), "Should mutate despite null entry in list");
+    }
+
     // --- parent order insensitivity ---
 
     @Test

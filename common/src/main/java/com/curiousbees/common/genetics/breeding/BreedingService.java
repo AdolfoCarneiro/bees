@@ -9,8 +9,11 @@ import com.curiousbees.common.genetics.random.GeneticRandom;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public final class BreedingService {
+
+    private static final Logger LOGGER = Logger.getLogger(BreedingService.class.getName());
 
     /**
      * Crosses two parent genomes using Mendelian inheritance.
@@ -42,12 +45,16 @@ public final class BreedingService {
     private void validateCompatibleChromosomeSets(Genome parentA, Genome parentB) {
         for (ChromosomeType type : parentA.genePairs().keySet()) {
             if (!parentB.hasChromosome(type)) {
+                LOGGER.warning("Incompatible parent genomes: parentB is missing chromosome " + type
+                        + ". Breeding aborted.");
                 throw new IllegalArgumentException(
                         "Parent genomes have incompatible chromosome sets: parentB is missing " + type);
             }
         }
         for (ChromosomeType type : parentB.genePairs().keySet()) {
             if (!parentA.hasChromosome(type)) {
+                LOGGER.warning("Incompatible parent genomes: parentA is missing chromosome " + type
+                        + ". Breeding aborted.");
                 throw new IllegalArgumentException(
                         "Parent genomes have incompatible chromosome sets: parentA is missing " + type);
             }

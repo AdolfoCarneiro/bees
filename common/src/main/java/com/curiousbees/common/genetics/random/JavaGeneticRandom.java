@@ -1,5 +1,6 @@
 package com.curiousbees.common.genetics.random;
 
+import java.util.Objects;
 import java.util.random.RandomGenerator;
 
 public final class JavaGeneticRandom implements GeneticRandom {
@@ -7,8 +8,7 @@ public final class JavaGeneticRandom implements GeneticRandom {
     private final RandomGenerator random;
 
     public JavaGeneticRandom(RandomGenerator random) {
-        if (random == null) throw new NullPointerException("random must not be null");
-        this.random = random;
+        this.random = Objects.requireNonNull(random, "random must not be null");
     }
 
     public static JavaGeneticRandom create() {

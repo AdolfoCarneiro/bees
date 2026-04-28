@@ -1,6 +1,7 @@
 package com.curiousbees.common.genetics.mutation;
 
 import com.curiousbees.common.genetics.model.Allele;
+import com.curiousbees.common.genetics.model.ChromosomeType;
 
 import java.util.Objects;
 
@@ -21,6 +22,11 @@ public final class MutationDefinition {
         Objects.requireNonNull(parentSpeciesBId, "parentSpeciesBId must not be null");
         Objects.requireNonNull(resultSpeciesAllele, "resultSpeciesAllele must not be null");
         Objects.requireNonNull(resultMode, "resultMode must not be null");
+        if (resultSpeciesAllele.chromosomeType() != ChromosomeType.SPECIES) {
+            throw new IllegalArgumentException(
+                    "resultSpeciesAllele must be of ChromosomeType SPECIES, got: "
+                    + resultSpeciesAllele.chromosomeType());
+        }
         if (id.isBlank()) throw new IllegalArgumentException("id must not be blank");
         if (parentSpeciesAId.isBlank()) throw new IllegalArgumentException("parentSpeciesAId must not be blank");
         if (parentSpeciesBId.isBlank()) throw new IllegalArgumentException("parentSpeciesBId must not be blank");
