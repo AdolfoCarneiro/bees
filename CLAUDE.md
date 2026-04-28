@@ -247,8 +247,33 @@ For every task:
 7. Implement the smallest complete version.
 8. Add or update tests when applicable.
 9. Run tests or explain why they cannot run.
-10. Summarize changes.
-11. List follow-up tasks if any.
+10. Commit the changes with a small, focused commit message.
+11. Summarize changes.
+12. List follow-up tasks if any.
+```
+
+## Commit Rule
+
+After every completed task, create a small and focused git commit before moving to the next task.
+
+A good commit:
+
+```text
+- covers exactly one task;
+- has a clear message following the pattern: scope: short description;
+- stages only files relevant to that task;
+- does not bundle multiple tasks in one commit.
+```
+
+Suggested message prefixes:
+
+```text
+core:     genetics core tasks
+content:  content definition tasks
+neoforge: NeoForge integration tasks
+test:     test-only changes
+docs:     documentation updates
+build:    build configuration changes
 ```
 
 ## Prompt Template
