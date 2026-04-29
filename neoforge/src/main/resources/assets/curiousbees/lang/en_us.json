@@ -1,3 +1,8 @@
 {
-  "item.curiousbees.bee_analyzer": "Bee Analyzer"
+  "item.curiousbees.bee_analyzer":    "Bee Analyzer",
+  "item.curiousbees.meadow_comb":     "Meadow Comb",
+  "item.curiousbees.forest_comb":     "Forest Comb",
+  "item.curiousbees.arid_comb":       "Arid Comb",
+  "item.curiousbees.cultivated_comb": "Cultivated Comb",
+  "item.curiousbees.hardy_comb":      "Hardy Comb"
 }
