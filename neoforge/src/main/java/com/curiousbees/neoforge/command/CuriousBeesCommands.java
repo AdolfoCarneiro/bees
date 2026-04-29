@@ -1,6 +1,7 @@
 package com.curiousbees.neoforge.command;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -20,6 +21,10 @@ public final class CuriousBeesCommands {
                     .requires(src -> src.hasPermission(2))
                     .then(Commands.literal("inspect_bee")
                         .executes(DebugInspectCommand::execute))
+                    .then(Commands.literal("set_bee_genome")
+                        .then(Commands.argument("species", StringArgumentType.word())
+                            .suggests(DebugSetGenomeCommand.SUGGESTIONS)
+                            .executes(DebugSetGenomeCommand::execute)))
                 )
         );
     }
