@@ -25,6 +25,8 @@ public final class CuriousBeesCommands {
                         .then(Commands.argument("species", StringArgumentType.word())
                             .suggests(DebugSetGenomeCommand.SUGGESTIONS)
                             .executes(DebugSetGenomeCommand::execute)))
+                    .then(Commands.literal("roll_production")
+                        .executes(DebugProductionRollCommand::execute))
                 )
         );
     }
