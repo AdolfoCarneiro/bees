@@ -1,0 +1,9 @@
+{
+  "species": "curious_bees:species/forest",
+  "primaryOutputs": [
+    {
+      "item": "curiousbees:forest_comb",
+      "chance": 0.8
+    }
+  ]
+}

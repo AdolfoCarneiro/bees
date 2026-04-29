@@ -1,0 +1,13 @@
+{
+  "id": "curious_bees:mutations/hardy_from_forest_arid",
+  "parents": [
+    "curious_bees:species/forest",
+    "curious_bees:species/arid"
+  ],
+  "result": "curious_bees:species/hardy",
+  "baseChance": 0.08,
+  "resultModes": {
+    "partialChance": 0.95,
+    "fullChance": 0.05
+  }
+}

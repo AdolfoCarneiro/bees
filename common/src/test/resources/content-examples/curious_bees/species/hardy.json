@@ -1,0 +1,11 @@
+{
+  "id": "curious_bees:species/hardy",
+  "displayName": "Hardy Bee",
+  "dominance": "RECESSIVE",
+  "defaultTraits": {
+    "LIFESPAN": ["curious_bees:traits/lifespan/long", "curious_bees:traits/lifespan/normal"],
+    "PRODUCTIVITY": "curious_bees:traits/productivity/normal",
+    "FERTILITY": "curious_bees:traits/fertility/two",
+    "FLOWER_TYPE": ["curious_bees:traits/flower_type/flowers", "curious_bees:traits/flower_type/cactus"]
+  }
+}

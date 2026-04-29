@@ -1,0 +1,9 @@
+{
+  "id": "curious_bees:traits/productivity/normal",
+  "chromosomeType": "PRODUCTIVITY",
+  "displayName": "Normal",
+  "dominance": "DOMINANT",
+  "values": {
+    "multiplier": 1.0
+  }
+}

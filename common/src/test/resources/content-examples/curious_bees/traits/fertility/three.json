@@ -1,0 +1,6 @@
+{
+  "id": "curious_bees:traits/fertility/three",
+  "chromosomeType": "FERTILITY",
+  "displayName": "Three",
+  "dominance": "RECESSIVE"
+}

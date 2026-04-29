@@ -1,0 +1,6 @@
+{
+  "id": "curious_bees:traits/flower_type/flowers",
+  "chromosomeType": "FLOWER_TYPE",
+  "displayName": "Flowers",
+  "dominance": "DOMINANT"
+}

@@ -1,0 +1,6 @@
+{
+  "id": "curious_bees:traits/lifespan/normal",
+  "chromosomeType": "LIFESPAN",
+  "displayName": "Normal",
+  "dominance": "DOMINANT"
+}

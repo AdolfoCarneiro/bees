@@ -1,0 +1,9 @@
+{
+  "species": "curious_bees:species/hardy",
+  "primaryOutputs": [
+    {
+      "item": "curiousbees:hardy_comb",
+      "chance": 0.8
+    }
+  ]
+}

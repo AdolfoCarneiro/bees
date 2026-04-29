@@ -1,0 +1,6 @@
+{
+  "id": "curious_bees:traits/flower_type/cactus",
+  "chromosomeType": "FLOWER_TYPE",
+  "displayName": "Cactus",
+  "dominance": "RECESSIVE"
+}

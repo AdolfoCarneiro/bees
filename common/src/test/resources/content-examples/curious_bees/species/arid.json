@@ -1,0 +1,12 @@
+{
+  "id": "curious_bees:species/arid",
+  "displayName": "Arid Bee",
+  "dominance": "RECESSIVE",
+  "defaultTraits": {
+    "LIFESPAN": "curious_bees:traits/lifespan/normal",
+    "PRODUCTIVITY": ["curious_bees:traits/productivity/slow", "curious_bees:traits/productivity/normal"],
+    "FERTILITY": ["curious_bees:traits/fertility/one", "curious_bees:traits/fertility/two"],
+    "FLOWER_TYPE": "curious_bees:traits/flower_type/cactus"
+  },
+  "spawnContextNotes": ["desert", "savanna", "badlands"]
+}
