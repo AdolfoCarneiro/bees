@@ -182,7 +182,13 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
         for (int i = 0; i < outputInventory.getSlots() && !remaining.isEmpty(); i++) {
             remaining = outputInventory.insertItem(i, remaining, false);
         }
-        return initialCount - remaining.getCount();
+        int inserted = initialCount - remaining.getCount();
+        if (!remaining.isEmpty()) {
+            CuriousBeesMod.LOGGER.warn(
+                    "Apiary {} output inventory full. Dropped {}x '{}' from production roll.",
+                    getBlockPos(), remaining.getCount(), output.outputId());
+        }
+        return inserted;
     }
 
     private Optional<Item> resolveItem(String outputId) {
