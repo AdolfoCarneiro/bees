@@ -21,6 +21,7 @@ They should help both humans and AI coding agents understand why the project fol
 | 0009 | Genetic Apiary Design | Accepted |
 | 0010 | Data-Driven Content Strategy for Phase 8 | Accepted |
 | 0011 | Expanded Content Naming Strategy | Accepted |
+| 0012 | Resource Bee Readiness | Accepted |
 
 ## ADR Template
 
