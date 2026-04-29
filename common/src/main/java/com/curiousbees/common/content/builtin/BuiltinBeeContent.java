@@ -24,6 +24,7 @@ public final class BuiltinBeeContent {
 
     private static final Map<String, BeeSpeciesDefinition> SPECIES_BY_ID;
     private static final Map<String, Allele> TRAITS_BY_ID;
+    private static final Map<String, Allele> ALL_ALLELES_BY_ID;
 
     static {
         Map<String, BeeSpeciesDefinition> species = new LinkedHashMap<>();
@@ -37,6 +38,12 @@ public final class BuiltinBeeContent {
             traits.put(allele.id(), allele);
         }
         TRAITS_BY_ID = Collections.unmodifiableMap(traits);
+
+        Map<String, Allele> allAlleles = new LinkedHashMap<>(traits);
+        for (BeeSpeciesDefinition def : BuiltinBeeSpecies.ALL) {
+            allAlleles.put(def.speciesAllele().id(), def.speciesAllele());
+        }
+        ALL_ALLELES_BY_ID = Collections.unmodifiableMap(allAlleles);
     }
 
     private BuiltinBeeContent() {}
@@ -71,6 +78,12 @@ public final class BuiltinBeeContent {
 
     public static List<Allele> allTraits() {
         return BuiltinBeeTraits.ALL;
+    }
+
+    /** Looks up any built-in allele by ID — covers both species alleles and trait alleles. */
+    public static Optional<Allele> findAllele(String id) {
+        Objects.requireNonNull(id, "id must not be null");
+        return Optional.ofNullable(ALL_ALLELES_BY_ID.get(id));
     }
 
     // --- mutations ---
