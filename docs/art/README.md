@@ -15,6 +15,7 @@ docs/art/
 ├── 02-mvp-asset-list-and-placeholder-strategy.md
 ├── 03-blockbench-workflow.md
 ├── 04-ai-asset-tooling-plan.md
+├── 05-tech-apiary-assets-phase-7.md
 ├── checklists/
 │   └── asset-review-checklist.md
 ├── templates/
