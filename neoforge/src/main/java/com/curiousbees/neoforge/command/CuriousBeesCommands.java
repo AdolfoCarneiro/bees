@@ -22,6 +22,8 @@ public final class CuriousBeesCommands {
                         .executes(DebugInspectCommand::execute))
                     .then(Commands.literal("inspect_apiary")
                         .executes(DebugInspectApiaryCommand::execute))
+                    .then(Commands.literal("apiary_metrics")
+                        .executes(DebugApiaryMetricsCommand::execute))
                     .then(Commands.literal("set_bee_genome")
                         .then(Commands.argument("species", StringArgumentType.word())
                             .suggests(DebugSetGenomeCommand.SUGGESTIONS)

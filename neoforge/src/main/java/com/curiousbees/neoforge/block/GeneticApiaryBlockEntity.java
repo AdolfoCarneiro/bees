@@ -147,6 +147,10 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
         return automationOutputView;
     }
 
+    public FrameModifiers.CombinedFrameModifier currentFrameModifiers() {
+        return combinedFrameModifier();
+    }
+
     @Override
     public void addOccupant(Entity occupant) {
         boolean hadNectar = occupant instanceof Bee bee && bee.hasNectar();
