@@ -1,11 +1,11 @@
 package com.curiousbees.neoforge.command;
 
-import com.curiousbees.common.content.products.BuiltinProductionDefinitions;
 import com.curiousbees.common.genetics.model.Genome;
 import com.curiousbees.common.genetics.random.JavaGeneticRandom;
 import com.curiousbees.common.gameplay.production.ProductionOutput;
 import com.curiousbees.common.gameplay.production.ProductionResolver;
 import com.curiousbees.common.gameplay.production.ProductionResult;
+import com.curiousbees.neoforge.content.NeoForgeContentRegistry;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -43,7 +43,7 @@ final class DebugProductionRollCommand {
 
         ProductionResult result = RESOLVER.resolve(
                 genome.get(),
-                BuiltinProductionDefinitions.BY_SPECIES_ID,
+                NeoForgeContentRegistry.current().productionBySpeciesId(),
                 new JavaGeneticRandom(new Random()));
 
         sendResult(source, result);

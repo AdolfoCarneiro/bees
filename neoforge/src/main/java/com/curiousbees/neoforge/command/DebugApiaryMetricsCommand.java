@@ -1,12 +1,12 @@
 package com.curiousbees.neoforge.command;
 
-import com.curiousbees.common.content.products.BuiltinProductionDefinitions;
 import com.curiousbees.common.gameplay.frames.FrameModifiers;
 import com.curiousbees.common.gameplay.production.ProductionOutput;
 import com.curiousbees.common.gameplay.production.ProductionResolver;
 import com.curiousbees.common.genetics.model.Genome;
 import com.curiousbees.common.genetics.random.JavaGeneticRandom;
 import com.curiousbees.neoforge.block.GeneticApiaryBlockEntity;
+import com.curiousbees.neoforge.content.NeoForgeContentRegistry;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -71,7 +71,7 @@ final class DebugApiaryMetricsCommand {
         for (int i = 0; i < SAMPLE_ROLLS; i++) {
             var result = RESOLVER.resolve(
                     genome,
-                    BuiltinProductionDefinitions.BY_SPECIES_ID,
+                    NeoForgeContentRegistry.current().productionBySpeciesId(),
                     random,
                     frame.productionMultiplier());
             for (ProductionOutput output : result.generatedOutputs()) {

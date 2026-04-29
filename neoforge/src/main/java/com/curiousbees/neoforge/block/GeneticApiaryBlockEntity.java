@@ -4,13 +4,13 @@ import com.curiousbees.CuriousBeesMod;
 import com.curiousbees.common.content.frames.BuiltinFrameModifiers;
 import com.curiousbees.common.gameplay.frames.FrameModifier;
 import com.curiousbees.common.gameplay.frames.FrameModifiers;
-import com.curiousbees.common.content.products.BuiltinProductionDefinitions;
 import com.curiousbees.common.gameplay.production.ProductionOutput;
 import com.curiousbees.common.gameplay.production.ProductionResolver;
 import com.curiousbees.common.gameplay.production.ProductionResult;
 import com.curiousbees.common.gameplay.spawn.WildBeeSpawnService;
 import com.curiousbees.common.genetics.model.Genome;
 import com.curiousbees.common.genetics.random.JavaGeneticRandom;
+import com.curiousbees.neoforge.content.NeoForgeContentRegistry;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import com.curiousbees.neoforge.registry.ModItems;
@@ -206,7 +206,7 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
         Objects.requireNonNull(genome, "genome must not be null");
         return PRODUCTION_RESOLVER.resolve(
                 genome,
-                BuiltinProductionDefinitions.BY_SPECIES_ID,
+                NeoForgeContentRegistry.current().productionBySpeciesId(),
                 new JavaGeneticRandom(random),
                 frameProductionMultiplier);
     }
