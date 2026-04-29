@@ -1,13 +1,28 @@
 package com.curiousbees.neoforge.block;
 
+import com.curiousbees.CuriousBeesMod;
+import com.curiousbees.common.content.products.BuiltinProductionDefinitions;
+import com.curiousbees.common.gameplay.production.ProductionOutput;
+import com.curiousbees.common.gameplay.production.ProductionResolver;
+import com.curiousbees.common.gameplay.production.ProductionResult;
+import com.curiousbees.common.genetics.model.Genome;
+import com.curiousbees.common.genetics.random.JavaGeneticRandom;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
+
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
 
 /**
  * Block entity for the Genetic Apiary.
@@ -22,7 +37,21 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
 
     public static final int OUTPUT_SLOTS = 6;
 
-    private final ItemStackHandler outputInventory = new ItemStackHandler(OUTPUT_SLOTS);
+    private static final ProductionResolver PRODUCTION_RESOLVER = new ProductionResolver();
+
+    private final Random random = new Random();
+    private final ItemStackHandler outputInventory = new ItemStackHandler(OUTPUT_SLOTS) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            // Output-only inventory. Future automation/manual UI extracts from here.
+            return false;
+        }
+    };
 
     public GeneticApiaryBlockEntity(BlockPos pos, BlockState state) {
         super(pos, state);
@@ -40,6 +69,67 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
 
     public ItemStackHandler outputInventory() {
         return outputInventory;
+    }
+
+    /**
+     * Runs one production roll from a genome using common production rules.
+     * This method is platform orchestration only; production logic stays in common.
+     */
+    public ProductionResult rollProduction(Genome genome) {
+        Objects.requireNonNull(genome, "genome must not be null");
+        return PRODUCTION_RESOLVER.resolve(
+                genome,
+                BuiltinProductionDefinitions.BY_SPECIES_ID,
+                new JavaGeneticRandom(random));
+    }
+
+    /**
+     * Converts generated outputs to ItemStacks and inserts them in the output inventory.
+     *
+     * @return total items inserted across all generated outputs.
+     */
+    public int insertProductionResult(ProductionResult result) {
+        Objects.requireNonNull(result, "result must not be null");
+        int insertedTotal = 0;
+        for (ProductionOutput output : result.generatedOutputs()) {
+            insertedTotal += insertOutput(output);
+        }
+        if (insertedTotal > 0) {
+            setChanged();
+        }
+        return insertedTotal;
+    }
+
+    private int insertOutput(ProductionOutput output) {
+        Optional<Item> maybeItem = resolveItem(output.outputId());
+        if (maybeItem.isEmpty()) {
+            CuriousBeesMod.LOGGER.warn("Unknown production output id '{}' for apiary at {}.",
+                    output.outputId(), getBlockPos());
+            return 0;
+        }
+
+        ItemStack remaining = new ItemStack(maybeItem.get(), output.count());
+        int initialCount = remaining.getCount();
+
+        for (int i = 0; i < outputInventory.getSlots() && !remaining.isEmpty(); i++) {
+            remaining = outputInventory.insertItem(i, remaining, false);
+        }
+        return initialCount - remaining.getCount();
+    }
+
+    private Optional<Item> resolveItem(String outputId) {
+        ResourceLocation key = ResourceLocation.tryParse(outputId);
+        if (key == null) {
+            CuriousBeesMod.LOGGER.warn("Invalid production output id '{}' for apiary at {}.",
+                    outputId, getBlockPos());
+            return Optional.empty();
+        }
+
+        if (!BuiltInRegistries.ITEM.containsKey(key)) {
+            return Optional.empty();
+        }
+        Item item = BuiltInRegistries.ITEM.get(key);
+        return Optional.of(item);
     }
 
     @Override
