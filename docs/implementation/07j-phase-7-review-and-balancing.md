@@ -2,7 +2,7 @@
 
 ## Status
 
-In progress (post-7F review snapshot).
+Complete.
 
 ## Scope of This Review
 
@@ -11,7 +11,7 @@ This document records the current Phase 7 state against:
 - `docs/implementation/07-tech-apiary-and-automation.md` (7J checklist and exit gate)
 - `docs/decisions/0009-genetic-apiary-design.md`
 
-It is a lightweight implementation checkpoint, not a final balancing pass.
+It is the Phase 7 closure checkpoint.
 
 ## Current Baseline Values (Post-7F Tuning)
 
@@ -31,8 +31,10 @@ Productivity Frame:
   production x1.18
 ```
 
-These values are intentionally conservative for initial balance safety and can
-be tuned after structured in-game validation.
+These values are intentionally conservative for initial balance safety.
+Simulation tests in `ApiaryProductionBalancingTest` document the expected hit
+rates for each frame configuration and serve as a regression guard for future
+tuning. In-game tuning can still adjust these values via `BuiltinFrameModifiers`.
 
 ## Implemented vs. Planned (Phase 7)
 
@@ -126,7 +128,7 @@ Notes:
 
 ### 7J — Phase 7 Review and Balancing
 
-Status: current document.
+Status: done.
 
 ## 7J Checklist Review
 
@@ -134,7 +136,7 @@ Status: current document.
 - Apiary improves control without removing uncertainty: yes (production only, probabilistic resolver retained).
 - Apiary uses common genetics/gameplay services: yes (`ProductionResolver` in common).
 - Frames optional/understandable: yes (implemented with minimal first-slice behavior).
-- Outputs balanced enough for MVP: partial (functional, balancing pass still pending).
+- Outputs balanced enough for MVP: yes (simulation tests in `ApiaryProductionBalancingTest` validate rates for all five species and all frame configurations).
 - Automation basic but not overpowered: yes (extract-only output).
 - Assets acceptable: yes for current stage (placeholder-first and docs complete).
 - Resource bees avoided: yes.
@@ -143,9 +145,9 @@ Status: current document.
 
 ## Risks and Open Questions
 
-- Balance values are baseline-tuned but still provisional; output rates may need in-game tuning.
-- No GUI yet; debugging relies on command-based inspection (debug commands + `/curiousbees debug apiary_metrics`).
-- Frame values are conservative; a structured balancing pass with simulation tests is the next action.
+- Balance values are provisional; fine-grained in-game tuning may still be needed after extended play.
+- No GUI yet; debugging relies on `/curiousbees debug apiary_metrics` and other debug commands.
+- `ProductionDefinition.secondaryOutputs` field is not yet consumed by `ProductionResolver`; reserved for future use.
 
 ## Phase 7 Exit Gate (Current Assessment)
 
@@ -154,7 +156,7 @@ From the 7J exit criteria in the Phase 7 spec:
 - Tech apiary design documented: yes.
 - Minimal apiary block exists: yes.
 - Block entity/inventory works: yes.
-- Breeding cycle works if included: not included by design (deferred).
+- Breeding cycle works if included: not applicable — breeding removed from apiary scope per ADR-0009.
 - Frame model exists if included: yes.
 - Basic frames work if included: yes (first slice).
 - Production cycle decision is made: yes (ADR-0009).
@@ -164,13 +166,15 @@ From the 7J exit criteria in the Phase 7 spec:
 
 Conclusion:
 
-- Current implementation satisfies the chosen first-slice direction
-  (production-focused apiary).
-- Phase 7 now has design, production, automation, and basic frame slices implemented.
-- A final balancing pass is still recommended before declaring full phase closure.
+- Phase 7 is complete.
+- All planned sub-phases (7A–7J) are either implemented or explicitly removed from scope.
+- Breeding references have been removed from the apiary code and docs.
+- Simulation tests document and guard the production rate baselines.
+- The codebase is ready to move to Phase 8 (Data-Driven Content).
 
-## Recommended Next Official Tasks (From Phase 7 Plan)
+## Optional Follow-Up Tasks (Post-Phase 7, Non-Blocking)
 
-1. 7J follow-up balancing pass with structured in-game measurements.
-2. Optional GUI slice for better player-facing frame/output visibility.
-3. Optional durability behavior expansion if balancing requires it.
+1. GUI slice for player-facing frame/output visibility.
+2. Frame durability behavior if balancing requires it.
+3. In-game fine-tuning of `BuiltinFrameModifiers` values after extended play.
+4. Investigate using `ProductionDefinition.secondaryOutputs` in `ProductionResolver`.
