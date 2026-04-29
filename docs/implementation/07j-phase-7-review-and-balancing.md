@@ -66,12 +66,14 @@ Notes:
 
 ### 7D — Apiary Breeding Cycle
 
-Status: intentionally deferred.
+Status: removed from scope.
 
 Notes:
 
-- ADR-0009 defines first Genetic Apiary version as production, not breeding.
-- Natural vanilla breeding remains the primary breeding path.
+- ADR-0009 defines the Genetic Apiary as production-only.
+- Breeding via this block is not planned for any future slice.
+- Natural vanilla breeding is the sole breeding path.
+- No breeding logic, parent slots, or cycle progress exists in GeneticApiaryBlockEntity.
 
 ### 7E — Frame Modifier Model
 
@@ -141,9 +143,9 @@ Status: current document.
 
 ## Risks and Open Questions
 
-- Balance values are baseline-tuned but still provisional; output rates may need tuning.
-- No GUI yet; debugging relies on command-based inspection.
-- Frame values are tuned to conservative baselines; further balancing pass is still pending.
+- Balance values are baseline-tuned but still provisional; output rates may need in-game tuning.
+- No GUI yet; debugging relies on command-based inspection (debug commands + `/curiousbees debug apiary_metrics`).
+- Frame values are conservative; a structured balancing pass with simulation tests is the next action.
 
 ## Phase 7 Exit Gate (Current Assessment)
 

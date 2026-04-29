@@ -41,7 +41,9 @@ import java.util.Random;
  * it as a valid hive. getType() is overridden so NBT serialization uses our
  * registered type (curiousbees:genetic_apiary) instead of minecraft:beehive.
  *
- * Production logic (intercepting bee-enters-with-nectar) is added in Phase 7G.
+ * This apiary is production-focused only. When a bee carrying nectar enters,
+ * a production roll fires using the bee's genome and any installed frames.
+ * Breeding remains a vanilla bee interaction — this block does not perform breeding.
  */
 public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
 
