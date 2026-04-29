@@ -1,5 +1,6 @@
 package com.curiousbees;
 
+import com.curiousbees.neoforge.data.BeeGenomeAttachments;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -12,6 +13,7 @@ public final class CuriousBeesMod {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public CuriousBeesMod(IEventBus modEventBus, ModContainer modContainer) {
+        BeeGenomeAttachments.register(modEventBus);
         LOGGER.info("Curious Bees loaded");
     }
 }
