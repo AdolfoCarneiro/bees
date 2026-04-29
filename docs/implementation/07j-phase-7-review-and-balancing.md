@@ -13,6 +13,27 @@ This document records the current Phase 7 state against:
 
 It is a lightweight implementation checkpoint, not a final balancing pass.
 
+## Current Baseline Values (Post-7F Tuning)
+
+Current built-in frame values:
+
+```text
+Basic Frame:
+  mutation x1.03
+  production x1.03
+
+Mutation Frame:
+  mutation x1.18
+  production x1.00
+
+Productivity Frame:
+  mutation x1.00
+  production x1.18
+```
+
+These values are intentionally conservative for initial balance safety and can
+be tuned after structured in-game validation.
+
 ## Implemented vs. Planned (Phase 7)
 
 ### 7A — Tech Apiary Design Decision
@@ -120,9 +141,9 @@ Status: current document.
 
 ## Risks and Open Questions
 
-- Balance values are still placeholder-level; output rates may need tuning.
+- Balance values are baseline-tuned but still provisional; output rates may need tuning.
 - No GUI yet; debugging relies on command-based inspection.
-- Frame values are placeholder-level; tuning pass is still pending.
+- Frame values are tuned to conservative baselines; further balancing pass is still pending.
 
 ## Phase 7 Exit Gate (Current Assessment)
 
@@ -148,6 +169,6 @@ Conclusion:
 
 ## Recommended Next Official Tasks (From Phase 7 Plan)
 
-1. 7J follow-up balancing pass with concrete tuning values.
+1. 7J follow-up balancing pass with structured in-game measurements.
 2. Optional GUI slice for better player-facing frame/output visibility.
 3. Optional durability behavior expansion if balancing requires it.
