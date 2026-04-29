@@ -124,6 +124,12 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
         if (!bee.hasNectar()) {
             return;
         }
+        if (!hasAnyOutputSpace()) {
+            CuriousBeesMod.LOGGER.debug(
+                    "Apiary {} has no output space; skipping production roll for bee {}.",
+                    getBlockPos(), bee.getUUID());
+            return;
+        }
 
         Optional<Genome> genome = resolveOrAssignGenome(bee);
         if (genome.isEmpty()) {
@@ -189,6 +195,16 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
                     getBlockPos(), remaining.getCount(), output.outputId());
         }
         return inserted;
+    }
+
+    private boolean hasAnyOutputSpace() {
+        for (int i = 0; i < outputInventory.getSlots(); i++) {
+            ItemStack stack = outputInventory.getStackInSlot(i);
+            if (stack.isEmpty() || stack.getCount() < stack.getMaxStackSize()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private Optional<Item> resolveItem(String outputId) {
