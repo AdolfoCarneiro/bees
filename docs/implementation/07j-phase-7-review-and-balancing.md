@@ -2,7 +2,7 @@
 
 ## Status
 
-In progress (post-7I review snapshot).
+In progress (post-7F review snapshot).
 
 ## Scope of This Review
 
@@ -54,11 +54,23 @@ Notes:
 
 ### 7E — Frame Modifier Model
 
-Status: not started.
+Status: done.
+
+Notes:
+
+- Common frame model exists (`FrameModifier` + `FrameModifiers`).
+- Frame combination behavior is unit-tested and platform-neutral.
 
 ### 7F — Basic Frames
 
-Status: not started.
+Status: done (first slice).
+
+Notes:
+
+- Basic/Mutation/Productivity frame items are registered.
+- Genetic Apiary has frame slots with validation and persistence.
+- Frame production multipliers are applied during apiary production rolls.
+- Placeholder frame item models and lang entries are in place.
 
 ### 7G — Apiary Production Cycle
 
@@ -98,7 +110,7 @@ Status: current document.
 - Natural breeding still matters: yes.
 - Apiary improves control without removing uncertainty: yes (production only, probabilistic resolver retained).
 - Apiary uses common genetics/gameplay services: yes (`ProductionResolver` in common).
-- Frames optional/understandable: partially (optional, but not implemented yet).
+- Frames optional/understandable: yes (implemented with minimal first-slice behavior).
 - Outputs balanced enough for MVP: partial (functional, balancing pass still pending).
 - Automation basic but not overpowered: yes (extract-only output).
 - Assets acceptable: yes for current stage (placeholder-first and docs complete).
@@ -110,7 +122,7 @@ Status: current document.
 
 - Balance values are still placeholder-level; output rates may need tuning.
 - No GUI yet; debugging relies on command-based inspection.
-- Frame system is still absent, so long-term balancing knobs are limited.
+- Frame values are placeholder-level; tuning pass is still pending.
 
 ## Phase 7 Exit Gate (Current Assessment)
 
@@ -120,8 +132,8 @@ From the 7J exit criteria in the Phase 7 spec:
 - Minimal apiary block exists: yes.
 - Block entity/inventory works: yes.
 - Breeding cycle works if included: not included by design (deferred).
-- Frame model exists if included: not included yet.
-- Basic frames work if included: not included yet.
+- Frame model exists if included: yes.
+- Basic frames work if included: yes (first slice).
 - Production cycle decision is made: yes (ADR-0009).
 - Automation rules documented or implemented: yes (minimal implemented).
 - Placeholder/final assets exist: placeholder strategy and workflow documented.
@@ -131,11 +143,11 @@ Conclusion:
 
 - Current implementation satisfies the chosen first-slice direction
   (production-focused apiary).
-- Full “Phase 7 complete” should wait for explicit decision on whether 7E/7F are required
-  before formal phase close.
+- Phase 7 now has design, production, automation, and basic frame slices implemented.
+- A final balancing pass is still recommended before declaring full phase closure.
 
 ## Recommended Next Official Tasks (From Phase 7 Plan)
 
-1. 7E — Frame Modifier Model (common, testable).
-2. 7F — Basic Frames (registration + slot validation + simple modifiers).
-3. 7J follow-up balancing pass after 7E/7F are in place.
+1. 7J follow-up balancing pass with concrete tuning values.
+2. Optional GUI slice for better player-facing frame/output visibility.
+3. Optional durability behavior expansion if balancing requires it.
