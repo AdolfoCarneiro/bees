@@ -114,6 +114,7 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
 
     @Override
     public void addOccupant(Entity occupant) {
+        boolean hadNectar = occupant instanceof Bee bee && bee.hasNectar();
         super.addOccupant(occupant);
         if (level == null || level.isClientSide()) {
             return;
@@ -121,7 +122,7 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
         if (!(occupant instanceof Bee bee)) {
             return;
         }
-        if (!bee.hasNectar()) {
+        if (!hadNectar) {
             return;
         }
         if (!hasAnyOutputSpace()) {
