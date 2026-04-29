@@ -2,6 +2,7 @@ package com.curiousbees.neoforge.block;
 
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.Containers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BeehiveBlock;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
@@ -9,6 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.SimpleContainer;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -35,5 +37,21 @@ public final class GeneticApiaryBlock extends BeehiveBlock {
         return level.isClientSide ? null
                 : createTickerHelper(type, ModBlockEntities.GENETIC_APIARY.get(),
                         BeehiveBlockEntity::serverTick);
+    }
+
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos,
+                            BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof GeneticApiaryBlockEntity apiary) {
+                SimpleContainer drops = new SimpleContainer(GeneticApiaryBlockEntity.OUTPUT_SLOTS);
+                for (int i = 0; i < apiary.outputInventory().getSlots(); i++) {
+                    drops.setItem(i, apiary.outputInventory().getStackInSlot(i).copy());
+                }
+                Containers.dropContents(level, pos, drops);
+            }
+        }
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 }
