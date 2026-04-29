@@ -47,6 +47,22 @@ Implementation: `GeneticApiaryBlock` extends `BeehiveBlock`.
 `GeneticApiaryBlockEntity` extends `BeehiveBlockEntity`.
 Vanilla bee AI pathfinding already supports custom BeehiveBlock subclasses.
 
+### NeoForge Implementation Notes (7C Addendum)
+
+`BeehiveBlockEntity` internally uses `BlockEntityType.BEEHIVE` in its
+constructor. For a subclassed apiary block entity, this requires two explicit
+overrides to keep vanilla behavior and correct persistence:
+
+1. `GeneticApiaryBlockEntity#getType()` returns
+   `ModBlockEntities.GENETIC_APIARY.get()` so NBT save/load uses
+   `curiousbees:genetic_apiary` instead of `minecraft:beehive`.
+2. `GeneticApiaryBlock#getTicker(...)` is overridden to use
+   `createTickerHelper(type, ModBlockEntities.GENETIC_APIARY.get(), BeehiveBlockEntity::serverTick)`,
+   because vanilla ticker wiring checks `BlockEntityType.BEEHIVE` equality.
+
+This avoids mixins while preserving vanilla bee processing (`instanceof
+BeehiveBlockEntity`) and proper custom block entity serialization.
+
 ### Vanilla Honey Production — Suppressed
 
 The Genetic Apiary does **not** produce:
