@@ -24,8 +24,7 @@ public final class ModBlocks {
                             BlockBehaviour.Properties.of()
                                     .mapColor(MapColor.WOOD)
                                     .sound(SoundType.WOOD)
-                                    .strength(0.6F)
-                                    .noOcclusion()));
+                                    .strength(0.6F)));
 
     public static void register(IEventBus modEventBus) {
         BLOCKS.register(modEventBus);
