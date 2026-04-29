@@ -5,6 +5,7 @@ import com.curiousbees.neoforge.capability.ApiaryCapabilities;
 import com.curiousbees.neoforge.data.BeeGenomeAttachments;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import com.curiousbees.neoforge.registry.ModBlocks;
+import com.curiousbees.neoforge.registry.ModCreativeTabs;
 import com.curiousbees.neoforge.registry.ModItems;
 import com.curiousbees.neoforge.registry.ModPoiTypes;
 import com.mojang.logging.LogUtils;
@@ -25,6 +26,7 @@ public final class CuriousBeesMod {
         ModBlockEntities.register(modEventBus);
         ModPoiTypes.register(modEventBus);
         ModItems.register(modEventBus);
+        ModCreativeTabs.register(modEventBus);
         modEventBus.addListener(ApiaryCapabilities::register);
         NeoForge.EVENT_BUS.addListener(CuriousBeesCommands::register);
         LOGGER.info("Curious Bees loaded");
