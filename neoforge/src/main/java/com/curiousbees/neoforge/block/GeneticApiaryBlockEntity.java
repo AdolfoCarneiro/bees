@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 import java.util.Objects;
@@ -57,6 +58,37 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
             return false;
         }
     };
+    private final IItemHandler automationOutputView = new IItemHandler() {
+        @Override
+        public int getSlots() {
+            return outputInventory.getSlots();
+        }
+
+        @Override
+        public ItemStack getStackInSlot(int slot) {
+            return outputInventory.getStackInSlot(slot);
+        }
+
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            return stack;
+        }
+
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            return outputInventory.extractItem(slot, amount, simulate);
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return outputInventory.getSlotLimit(slot);
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return false;
+        }
+    };
 
     public GeneticApiaryBlockEntity(BlockPos pos, BlockState state) {
         super(pos, state);
@@ -74,6 +106,10 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
 
     public ItemStackHandler outputInventory() {
         return outputInventory;
+    }
+
+    public IItemHandler automationOutputView() {
+        return automationOutputView;
     }
 
     @Override
