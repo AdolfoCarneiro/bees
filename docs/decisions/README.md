@@ -18,6 +18,9 @@ They should help both humans and AI coding agents understand why the project fol
 | 0006 | Add Fabric Support After the NeoForge MVP | Accepted |
 | 0007 | Keep Resource Bees Out of the MVP | Accepted |
 | 0008 | Use Detailed Local Specs for AI Implementation Guidance | Accepted |
+| 0009 | Genetic Apiary Design | Accepted |
+| 0010 | Data-Driven Content Strategy for Phase 8 | Accepted |
+| 0011 | Expanded Content Naming Strategy | Accepted |
 
 ## ADR Template
 
