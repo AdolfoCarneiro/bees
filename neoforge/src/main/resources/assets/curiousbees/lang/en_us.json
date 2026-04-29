@@ -8,5 +8,6 @@
   "item.curiousbees.basic_frame":     "Basic Frame",
   "item.curiousbees.mutation_frame":  "Mutation Frame",
   "item.curiousbees.productivity_frame": "Productivity Frame",
-  "block.curiousbees.genetic_apiary": "Genetic Apiary"
+  "block.curiousbees.genetic_apiary": "Genetic Apiary",
+  "itemGroup.curiousbees.curious_bees": "Curious Bees"
 }
