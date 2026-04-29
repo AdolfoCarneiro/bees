@@ -5,14 +5,19 @@ import com.curiousbees.common.content.products.BuiltinProductionDefinitions;
 import com.curiousbees.common.gameplay.production.ProductionOutput;
 import com.curiousbees.common.gameplay.production.ProductionResolver;
 import com.curiousbees.common.gameplay.production.ProductionResult;
+import com.curiousbees.common.gameplay.spawn.WildBeeSpawnService;
 import com.curiousbees.common.genetics.model.Genome;
 import com.curiousbees.common.genetics.random.JavaGeneticRandom;
+import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
@@ -69,6 +74,33 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
 
     public ItemStackHandler outputInventory() {
         return outputInventory;
+    }
+
+    @Override
+    public void addOccupant(Entity occupant) {
+        super.addOccupant(occupant);
+        if (level == null || level.isClientSide()) {
+            return;
+        }
+        if (!(occupant instanceof Bee bee)) {
+            return;
+        }
+        if (!bee.hasNectar()) {
+            return;
+        }
+
+        Optional<Genome> genome = resolveOrAssignGenome(bee);
+        if (genome.isEmpty()) {
+            return;
+        }
+
+        ProductionResult result = rollProduction(genome.get());
+        int inserted = insertProductionResult(result);
+        if (inserted > 0) {
+            CuriousBeesMod.LOGGER.debug(
+                    "Apiary {} produced {} items from bee {} (species={}).",
+                    getBlockPos(), inserted, bee.getUUID(), result.activeSpeciesId());
+        }
     }
 
     /**
@@ -130,6 +162,38 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
         }
         Item item = BuiltInRegistries.ITEM.get(key);
         return Optional.of(item);
+    }
+
+    private Optional<Genome> resolveOrAssignGenome(Bee bee) {
+        Optional<Genome> existing = BeeGenomeStorage.getGenome(bee);
+        if (existing.isPresent()) {
+            return existing;
+        }
+
+        String category = resolveBiomeCategory();
+        Genome fallback = WildBeeSpawnService.createWildGenome(
+                category,
+                new JavaGeneticRandom(random));
+        BeeGenomeStorage.setGenome(bee, fallback);
+
+        CuriousBeesMod.LOGGER.warn(
+                "Bee {} entered apiary {} without genome. Assigned fallback biome genome '{}'.",
+                bee.getUUID(), getBlockPos(), category);
+        return Optional.of(fallback);
+    }
+
+    private String resolveBiomeCategory() {
+        if (level == null) {
+            return WildBeeSpawnService.CATEGORY_MEADOW;
+        }
+        var biomeHolder = level.getBiome(getBlockPos());
+        if (biomeHolder.is(BiomeTags.IS_FOREST)) {
+            return WildBeeSpawnService.CATEGORY_FOREST;
+        }
+        if (biomeHolder.is(BiomeTags.IS_SAVANNA) || biomeHolder.is(BiomeTags.IS_BADLANDS)) {
+            return WildBeeSpawnService.CATEGORY_ARID;
+        }
+        return WildBeeSpawnService.CATEGORY_MEADOW;
     }
 
     @Override
