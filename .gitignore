@@ -11,6 +11,14 @@ run/
 
 # IDE local settings
 .vscode/
+.idea/
+*.iml
+
+# Eclipse/VSCode compiled output
+**/bin/
+
+# Claude Code local settings
+.claude/settings.local.json
 
 # OS junk
 .DS_Store
