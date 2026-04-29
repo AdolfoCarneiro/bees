@@ -1,6 +1,9 @@
 package com.curiousbees.neoforge.block;
 
 import com.curiousbees.CuriousBeesMod;
+import com.curiousbees.common.content.frames.BuiltinFrameModifiers;
+import com.curiousbees.common.gameplay.frames.FrameModifier;
+import com.curiousbees.common.gameplay.frames.FrameModifiers;
 import com.curiousbees.common.content.products.BuiltinProductionDefinitions;
 import com.curiousbees.common.gameplay.production.ProductionOutput;
 import com.curiousbees.common.gameplay.production.ProductionResolver;
@@ -10,6 +13,7 @@ import com.curiousbees.common.genetics.model.Genome;
 import com.curiousbees.common.genetics.random.JavaGeneticRandom;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
+import com.curiousbees.neoforge.registry.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -42,10 +46,22 @@ import java.util.Random;
 public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
 
     public static final int OUTPUT_SLOTS = 6;
+    public static final int FRAME_SLOTS = 3;
 
     private static final ProductionResolver PRODUCTION_RESOLVER = new ProductionResolver();
 
     private final Random random = new Random();
+    private final ItemStackHandler frameInventory = new ItemStackHandler(FRAME_SLOTS) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return isFrameItem(stack);
+        }
+    };
     private final ItemStackHandler outputInventory = new ItemStackHandler(OUTPUT_SLOTS) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -61,31 +77,46 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
     private final IItemHandler automationOutputView = new IItemHandler() {
         @Override
         public int getSlots() {
-            return outputInventory.getSlots();
+            return frameInventory.getSlots() + outputInventory.getSlots();
         }
 
         @Override
         public ItemStack getStackInSlot(int slot) {
-            return outputInventory.getStackInSlot(slot);
+            if (slot < frameInventory.getSlots()) {
+                return frameInventory.getStackInSlot(slot);
+            }
+            return outputInventory.getStackInSlot(slot - frameInventory.getSlots());
         }
 
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-            return stack;
+            if (slot < frameInventory.getSlots()) {
+                return frameInventory.insertItem(slot, stack, simulate);
+            }
+            return stack; // output slots are extract-only
         }
 
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate) {
-            return outputInventory.extractItem(slot, amount, simulate);
+            if (slot < frameInventory.getSlots()) {
+                return frameInventory.extractItem(slot, amount, simulate);
+            }
+            return outputInventory.extractItem(slot - frameInventory.getSlots(), amount, simulate);
         }
 
         @Override
         public int getSlotLimit(int slot) {
-            return outputInventory.getSlotLimit(slot);
+            if (slot < frameInventory.getSlots()) {
+                return frameInventory.getSlotLimit(slot);
+            }
+            return outputInventory.getSlotLimit(slot - frameInventory.getSlots());
         }
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
+            if (slot < frameInventory.getSlots()) {
+                return frameInventory.isItemValid(slot, stack);
+            }
             return false;
         }
     };
@@ -106,6 +137,10 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
 
     public ItemStackHandler outputInventory() {
         return outputInventory;
+    }
+
+    public ItemStackHandler frameInventory() {
+        return frameInventory;
     }
 
     public IItemHandler automationOutputView() {
@@ -137,12 +172,18 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
             return;
         }
 
-        ProductionResult result = rollProduction(genome.get());
+        FrameModifiers.CombinedFrameModifier combinedFrameModifier = combinedFrameModifier();
+        ProductionResult result = rollProduction(genome.get(), combinedFrameModifier.productionMultiplier());
         int inserted = insertProductionResult(result);
         if (inserted > 0) {
             CuriousBeesMod.LOGGER.debug(
-                    "Apiary {} produced {} items from bee {} (species={}).",
-                    getBlockPos(), inserted, bee.getUUID(), result.activeSpeciesId());
+                    "Apiary {} produced {} items from bee {} (species={}, frameMutationMultiplier={}, frameProductionMultiplier={}).",
+                    getBlockPos(),
+                    inserted,
+                    bee.getUUID(),
+                    result.activeSpeciesId(),
+                    combinedFrameModifier.mutationMultiplier(),
+                    combinedFrameModifier.productionMultiplier());
         }
     }
 
@@ -152,10 +193,16 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
      */
     public ProductionResult rollProduction(Genome genome) {
         Objects.requireNonNull(genome, "genome must not be null");
+        return rollProduction(genome, 1.0);
+    }
+
+    public ProductionResult rollProduction(Genome genome, double frameProductionMultiplier) {
+        Objects.requireNonNull(genome, "genome must not be null");
         return PRODUCTION_RESOLVER.resolve(
                 genome,
                 BuiltinProductionDefinitions.BY_SPECIES_ID,
-                new JavaGeneticRandom(random));
+                new JavaGeneticRandom(random),
+                frameProductionMultiplier);
     }
 
     /**
@@ -208,6 +255,31 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
         return false;
     }
 
+    private FrameModifiers.CombinedFrameModifier combinedFrameModifier() {
+        java.util.ArrayList<FrameModifier> modifiers = new java.util.ArrayList<>();
+        for (int i = 0; i < frameInventory.getSlots(); i++) {
+            ItemStack stack = frameInventory.getStackInSlot(i);
+            if (stack.isEmpty()) {
+                continue;
+            }
+            resolveFrameModifier(stack).ifPresent(modifiers::add);
+        }
+        return FrameModifiers.combine(modifiers);
+    }
+
+    private Optional<FrameModifier> resolveFrameModifier(ItemStack frameStack) {
+        return frameStack.getItemHolder()
+                .unwrapKey()
+                .map(key -> key.location().toString())
+                .map(BuiltinFrameModifiers.BY_ID::get);
+    }
+
+    private boolean isFrameItem(ItemStack stack) {
+        return stack.is(ModItems.BASIC_FRAME.get())
+                || stack.is(ModItems.MUTATION_FRAME.get())
+                || stack.is(ModItems.PRODUCTIVITY_FRAME.get());
+    }
+
     private Optional<Item> resolveItem(String outputId) {
         ResourceLocation key = ResourceLocation.tryParse(outputId);
         if (key == null) {
@@ -258,12 +330,16 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
+        tag.put("FrameInventory", frameInventory.serializeNBT(registries));
         tag.put("OutputInventory", outputInventory.serializeNBT(registries));
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
+        if (tag.contains("FrameInventory")) {
+            frameInventory.deserializeNBT(registries, tag.getCompound("FrameInventory"));
+        }
         if (tag.contains("OutputInventory")) {
             outputInventory.deserializeNBT(registries, tag.getCompound("OutputInventory"));
         }

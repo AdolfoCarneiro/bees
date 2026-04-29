@@ -30,15 +30,26 @@ public final class ProductionResolver {
     public ProductionResult resolve(Genome genome,
                                     Map<String, ProductionDefinition> definitions,
                                     GeneticRandom random) {
+        return resolve(genome, definitions, random, 1.0);
+    }
+
+    public ProductionResult resolve(Genome genome,
+                                    Map<String, ProductionDefinition> definitions,
+                                    GeneticRandom random,
+                                    double externalProductionMultiplier) {
         Objects.requireNonNull(genome,      "genome must not be null");
         Objects.requireNonNull(definitions, "definitions must not be null");
         Objects.requireNonNull(random,      "random must not be null");
+        if (externalProductionMultiplier < 0.0) {
+            throw new IllegalArgumentException("externalProductionMultiplier must be >= 0.0");
+        }
 
         String activeSpeciesId      = genome.getActiveAllele(ChromosomeType.SPECIES).id();
         String inactiveSpeciesId    = genome.getInactiveAllele(ChromosomeType.SPECIES).id();
         String productivityAlleleId = genome.getActiveAllele(ChromosomeType.PRODUCTIVITY).id();
 
-        double productivityMultiplier = ProductivityModifier.forAlleleId(productivityAlleleId);
+        double productivityMultiplier = ProductivityModifier.forAlleleId(productivityAlleleId)
+                * externalProductionMultiplier;
 
         List<ProductionOutput> generated = new ArrayList<>();
 

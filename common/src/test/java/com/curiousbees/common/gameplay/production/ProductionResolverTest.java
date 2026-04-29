@@ -1,6 +1,5 @@
 package com.curiousbees.common.gameplay.production;
 
-import com.curiousbees.common.content.builtin.BuiltinBeeTraits;
 import com.curiousbees.common.genetics.fixtures.AlleleFixtures;
 import com.curiousbees.common.genetics.fixtures.GenomeFixtures;
 import com.curiousbees.common.genetics.random.DeterministicGeneticRandom;
@@ -94,19 +93,11 @@ class ProductionResolverTest {
 
     @Test
     void slowProductivityReducesEffectiveChance() {
-        // Use a chance of exactly 0.8 and slow multiplier -> effectiveChance = 0.6
-        // Roll 0.7 should FAIL (0.7 >= 0.6)
+        // Baseline sanity check: pureMeadow has NORMAL productivity (1.0 multiplier).
         var slowOutput = new ProductionOutput("curiousbees:meadow_comb", 0.8);
         var def = new ProductionDefinition(MEADOW_ID, List.of(slowOutput));
         var defs = Map.of(MEADOW_ID, def);
 
-        // Roll 0.7, which is >= (0.8 * 0.75 = 0.6) -> no output
-        var random = new DeterministicGeneticRandom().withDoubles(0.7);
-
-        // We need a genome with SLOW productivity
-        // pureMeadow uses PRODUCTIVITY_NORMAL; we'll use the resolver with a known roll
-        // Actually let's just verify the resolver calls ProductivityModifier by using NORMAL first:
-        // 0.8 * 1.0 = 0.8; roll 0.7 -> produces
         var randomNormal = new DeterministicGeneticRandom().withDoubles(0.7);
         ProductionResult normalResult = resolver.resolve(GenomeFixtures.pureMeadow(), defs, randomNormal);
         assertTrue(normalResult.hasOutput(), "Normal productivity should produce at roll 0.7 with 0.8 base chance");
@@ -128,5 +119,20 @@ class ProductionResolverTest {
                 Map.of(MEADOW_ID, DEF_MEADOW), random);
         assertFalse(result.hasOutput());
         assertEquals(CULTIVATED_ID, result.activeSpeciesId());
+    }
+
+    @Test
+    void externalProductionMultiplierAffectsRollChance() {
+        var output = new ProductionOutput("curiousbees:meadow_comb", 0.8);
+        var defs = Map.of(MEADOW_ID, new ProductionDefinition(MEADOW_ID, List.of(output)));
+        var random = new DeterministicGeneticRandom().withDoubles(0.95);
+
+        ProductionResult result = resolver.resolve(
+                GenomeFixtures.pureMeadow(),
+                defs,
+                random,
+                2.0);
+
+        assertTrue(result.hasOutput(), "2.0x external multiplier should clamp 0.8 chance to 1.0");
     }
 }

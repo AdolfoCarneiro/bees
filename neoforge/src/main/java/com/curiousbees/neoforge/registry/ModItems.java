@@ -37,6 +37,14 @@ public final class ModItems {
     public static final DeferredHolder<Item, Item> HARDY_COMB =
             ITEMS.register("hardy_comb",     () -> new Item(new Item.Properties()));
 
+    // --- Frame items (Phase 7F) ---
+    public static final DeferredHolder<Item, Item> BASIC_FRAME =
+            ITEMS.register("basic_frame", () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final DeferredHolder<Item, Item> MUTATION_FRAME =
+            ITEMS.register("mutation_frame", () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final DeferredHolder<Item, Item> PRODUCTIVITY_FRAME =
+            ITEMS.register("productivity_frame", () -> new Item(new Item.Properties().stacksTo(1)));
+
     public static void register(IEventBus modEventBus) {
         ITEMS.register(modEventBus);
     }
