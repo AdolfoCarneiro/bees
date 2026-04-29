@@ -2,6 +2,7 @@ package com.curiousbees;
 
 import com.curiousbees.neoforge.command.CuriousBeesCommands;
 import com.curiousbees.neoforge.data.BeeGenomeAttachments;
+import com.curiousbees.neoforge.registry.ModItems;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -17,6 +18,7 @@ public final class CuriousBeesMod {
 
     public CuriousBeesMod(IEventBus modEventBus, ModContainer modContainer) {
         BeeGenomeAttachments.register(modEventBus);
+        ModItems.register(modEventBus);
         NeoForge.EVENT_BUS.addListener(CuriousBeesCommands::register);
         LOGGER.info("Curious Bees loaded");
     }
