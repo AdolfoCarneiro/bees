@@ -3,6 +3,7 @@ package com.curiousbees.neoforge.registry;
 import com.curiousbees.CuriousBeesMod;
 import com.curiousbees.neoforge.item.BeeAnalyzerItem;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -18,6 +19,11 @@ public final class ModItems {
     public static final DeferredHolder<Item, BeeAnalyzerItem> BEE_ANALYZER =
             ITEMS.register("bee_analyzer",
                     () -> new BeeAnalyzerItem(new Item.Properties().stacksTo(1)));
+
+    // --- Block items ---
+    public static final DeferredHolder<Item, BlockItem> GENETIC_APIARY =
+            ITEMS.register("genetic_apiary",
+                    () -> new BlockItem(ModBlocks.GENETIC_APIARY.get(), new Item.Properties()));
 
     // --- Comb items ---
     public static final DeferredHolder<Item, Item> MEADOW_COMB =
