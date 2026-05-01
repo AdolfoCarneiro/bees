@@ -96,7 +96,7 @@ It must not include NeoForge/Fabric event logic, registry calls, item registrati
 
 ## Related Documents
 
-- `docs/02-technical-architecture.md`
-- `docs/03-genetics-system-spec.md`
-- `docs/04-breeding-and-mutation-spec.md`
+- `docs/mvp/02-technical-architecture.md`
+- `docs/mvp/03-genetics-system-spec.md`
+- `docs/mvp/04-breeding-and-mutation-spec.md`
 - `docs/implementation/01-genetics-core-implementation.md`

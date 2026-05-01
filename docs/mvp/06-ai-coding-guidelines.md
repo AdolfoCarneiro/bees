@@ -56,8 +56,8 @@ Before coding, the agent should read:
 
 ```text
 CLAUDE.md
-docs/01-product-vision-and-roadmap.md
-docs/02-technical-architecture.md
+docs/mvp/01-product-vision-and-roadmap.md
+docs/mvp/02-technical-architecture.md
 ```
 
 Then read the relevant implementation spec:
@@ -79,9 +79,9 @@ docs/implementation/10-fabric-support-implementation.md
 Read domain specs as needed:
 
 ```text
-docs/03-genetics-system-spec.md
-docs/04-breeding-and-mutation-spec.md
-docs/05-content-design-spec.md
+docs/mvp/03-genetics-system-spec.md
+docs/mvp/04-breeding-and-mutation-spec.md
+docs/mvp/05-content-design-spec.md
 ```
 
 Read ADRs if a task touches a decision:
@@ -146,7 +146,7 @@ Use the detailed Phase 1 implementation spec.
 ```text
 Read CLAUDE.md.
 Read docs/implementation/01-genetics-core-implementation.md.
-Read docs/03-genetics-system-spec.md.
+Read docs/mvp/03-genetics-system-spec.md.
 
 Focus only on Task 1 from the Phase 1 implementation spec:
 Create genetics core package structure.
@@ -203,7 +203,7 @@ After coding:
 Use only after Phase 1 is implemented.
 
 ```text
-Read CLAUDE.md, docs/implementation/01-genetics-core-implementation.md, docs/03-genetics-system-spec.md, and docs/quality/02-genetics-core-test-plan.md.
+Read CLAUDE.md, docs/implementation/01-genetics-core-implementation.md, docs/mvp/03-genetics-system-spec.md, and docs/quality/02-genetics-core-test-plan.md.
 
 Review the implemented genetics core.
 
@@ -246,7 +246,7 @@ Use only after bee genome storage works.
 ```text
 Read CLAUDE.md.
 Read docs/implementation/04-vanilla-breeding-integration.md.
-Read docs/04-breeding-and-mutation-spec.md.
+Read docs/mvp/04-breeding-and-mutation-spec.md.
 Read relevant quality plans.
 
 Implement only the requested vanilla breeding integration task.
@@ -267,7 +267,7 @@ Do not implement apiary, resource bees, advanced GUI, or Fabric support.
 ```text
 Read CLAUDE.md.
 Read docs/implementation/05-analyzer-implementation.md.
-Read docs/05-content-design-spec.md.
+Read docs/mvp/05-content-design-spec.md.
 
 Implement only the requested Analyzer MVP task.
 

@@ -72,13 +72,13 @@ The repository already has a strong initial documentation set:
 ```text
 CLAUDE.md
 README.md
-docs/01-product-vision-and-roadmap.md
-docs/02-technical-architecture.md
-docs/03-genetics-system-spec.md
-docs/04-breeding-and-mutation-spec.md
-docs/05-content-design-spec.md
-docs/06-ai-coding-guidelines.md
-docs/07-initial-backlog.md
+docs/mvp/01-product-vision-and-roadmap.md
+docs/mvp/02-technical-architecture.md
+docs/mvp/03-genetics-system-spec.md
+docs/mvp/04-breeding-and-mutation-spec.md
+docs/mvp/05-content-design-spec.md
+docs/mvp/06-ai-coding-guidelines.md
+docs/mvp/07-initial-backlog.md
 ```
 
 Phase 0 should refine and connect these docs instead of replacing them blindly.
@@ -181,7 +181,7 @@ It should explain:
 - documentation entry points;
 - first development step.
 
-### 6.3 `docs/01-product-vision-and-roadmap.md`
+### 6.3 `docs/mvp/01-product-vision-and-roadmap.md`
 
 Purpose:
 
@@ -197,7 +197,7 @@ It should answer:
 - how the roadmap evolves;
 - which risks should be avoided.
 
-### 6.4 `docs/02-technical-architecture.md`
+### 6.4 `docs/mvp/02-technical-architecture.md`
 
 Purpose:
 
@@ -215,7 +215,7 @@ It should define:
 - future Fabric-specific implementation;
 - anti-patterns.
 
-### 6.5 `docs/03-genetics-system-spec.md`
+### 6.5 `docs/mvp/03-genetics-system-spec.md`
 
 Purpose:
 
@@ -237,7 +237,7 @@ It should define:
 - random abstraction;
 - testability requirements.
 
-### 6.6 `docs/04-breeding-and-mutation-spec.md`
+### 6.6 `docs/mvp/04-breeding-and-mutation-spec.md`
 
 Purpose:
 
@@ -257,7 +257,7 @@ It should define:
 - environment context;
 - mutation feedback.
 
-### 6.7 `docs/05-content-design-spec.md`
+### 6.7 `docs/mvp/05-content-design-spec.md`
 
 Purpose:
 
@@ -278,7 +278,7 @@ It should define:
 - content loading strategy;
 - future categories.
 
-### 6.8 `docs/06-ai-coding-guidelines.md`
+### 6.8 `docs/mvp/06-ai-coding-guidelines.md`
 
 Purpose:
 
@@ -296,7 +296,7 @@ It should define:
 - review checklist;
 - failure modes.
 
-### 6.9 `docs/07-initial-backlog.md`
+### 6.9 `docs/mvp/07-initial-backlog.md`
 
 Purpose:
 
@@ -517,13 +517,13 @@ Audit:
 ```text
 CLAUDE.md
 README.md
-docs/01-product-vision-and-roadmap.md
-docs/02-technical-architecture.md
-docs/03-genetics-system-spec.md
-docs/04-breeding-and-mutation-spec.md
-docs/05-content-design-spec.md
-docs/06-ai-coding-guidelines.md
-docs/07-initial-backlog.md
+docs/mvp/01-product-vision-and-roadmap.md
+docs/mvp/02-technical-architecture.md
+docs/mvp/03-genetics-system-spec.md
+docs/mvp/04-breeding-and-mutation-spec.md
+docs/mvp/05-content-design-spec.md
+docs/mvp/06-ai-coding-guidelines.md
+docs/mvp/07-initial-backlog.md
 ```
 
 ### Non-goals
@@ -647,7 +647,7 @@ Consequences
 ### Prompt
 
 ```text
-Read CLAUDE.md and docs/01-product-vision-and-roadmap.md.
+Read CLAUDE.md and docs/mvp/01-product-vision-and-roadmap.md.
 
 Create docs/decisions/ with the initial decision records listed in Phase 0.
 
@@ -734,7 +734,7 @@ Do not create prompts that ask agents to implement multiple systems at once.
 ### Prompt
 
 ```text
-Read docs/06-ai-coding-guidelines.md.
+Read docs/mvp/06-ai-coding-guidelines.md.
 
 Create docs/prompts/ with three reusable prompt templates:
 - claude-code-task-template.md
@@ -830,7 +830,7 @@ Do not create MCP configuration.
 ### Prompt
 
 ```text
-Read docs/01-product-vision-and-roadmap.md and docs/06-ai-coding-guidelines.md.
+Read docs/mvp/01-product-vision-and-roadmap.md and docs/mvp/06-ai-coding-guidelines.md.
 
 Create docs/implementation/07-assets-and-art-pipeline.md.
 
@@ -902,13 +902,13 @@ Phase 0 is complete when:
 ```text
 - CLAUDE.md exists and is up to date.
 - README.md exists.
-- docs/01-product-vision-and-roadmap.md exists.
-- docs/02-technical-architecture.md exists.
-- docs/03-genetics-system-spec.md exists.
-- docs/04-breeding-and-mutation-spec.md exists.
-- docs/05-content-design-spec.md exists.
-- docs/06-ai-coding-guidelines.md exists.
-- docs/07-initial-backlog.md exists.
+- docs/mvp/01-product-vision-and-roadmap.md exists.
+- docs/mvp/02-technical-architecture.md exists.
+- docs/mvp/03-genetics-system-spec.md exists.
+- docs/mvp/04-breeding-and-mutation-spec.md exists.
+- docs/mvp/05-content-design-spec.md exists.
+- docs/mvp/06-ai-coding-guidelines.md exists.
+- docs/mvp/07-initial-backlog.md exists.
 - docs/implementation/ exists.
 - docs/implementation/00-phase-0-documentation-and-decisions.md exists.
 - docs/implementation/01-genetics-core-implementation.md exists or is planned.

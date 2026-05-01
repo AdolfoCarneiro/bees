@@ -59,12 +59,12 @@ This phase is about **content infrastructure**, not adding a huge amount of cont
 Before starting Phase 8, these should already exist:
 
 ```text
-docs/01-product-vision-and-roadmap.md
-docs/02-technical-architecture.md
-docs/03-genetics-system-spec.md
-docs/04-breeding-and-mutation-spec.md
-docs/05-content-design-spec.md
-docs/06-ai-coding-guidelines.md
+docs/mvp/01-product-vision-and-roadmap.md
+docs/mvp/02-technical-architecture.md
+docs/mvp/03-genetics-system-spec.md
+docs/mvp/04-breeding-and-mutation-spec.md
+docs/mvp/05-content-design-spec.md
+docs/mvp/06-ai-coding-guidelines.md
 docs/implementation/01-genetics-core-implementation.md
 docs/implementation/02-initial-content-implementation.md
 docs/implementation/06-production-mvp.md
@@ -975,7 +975,7 @@ Do not add final assets.
 ### Prompt
 
 ```text
-Read CLAUDE.md, docs/05-content-design-spec.md and docs/implementation/08-data-driven-content.md.
+Read CLAUDE.md, docs/mvp/05-content-design-spec.md and docs/implementation/08-data-driven-content.md.
 
 Focus only on: Task 8I — Add Example Data Files for MVP Content.
 
@@ -1191,9 +1191,9 @@ Read CLAUDE.md and all docs.
 
 Then read:
 - docs/implementation/08-data-driven-content.md
-- docs/05-content-design-spec.md
-- docs/02-technical-architecture.md
-- docs/06-ai-coding-guidelines.md
+- docs/mvp/05-content-design-spec.md
+- docs/mvp/02-technical-architecture.md
+- docs/mvp/06-ai-coding-guidelines.md
 
 Do not implement code yet.
 

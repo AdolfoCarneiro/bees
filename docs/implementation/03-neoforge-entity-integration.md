@@ -613,7 +613,7 @@ Run or prepare this checklist:
 ## Prompt for Claude Code
 
 ```text
-Read CLAUDE.md, docs/02-technical-architecture.md, docs/03-genetics-system-spec.md, and the storage ADR.
+Read CLAUDE.md, docs/mvp/02-technical-architecture.md, docs/mvp/03-genetics-system-spec.md, and the storage ADR.
 
 Focus only on: Implement NeoForge Bee genome attachment.
 
@@ -1108,9 +1108,9 @@ Read CLAUDE.md and all docs.
 
 Then read:
 - docs/implementation/03-neoforge-entity-integration.md
-- docs/02-technical-architecture.md
-- docs/03-genetics-system-spec.md
-- docs/05-content-design-spec.md
+- docs/mvp/02-technical-architecture.md
+- docs/mvp/03-genetics-system-spec.md
+- docs/mvp/05-content-design-spec.md
 
 Do not implement breeding, analyzer item, production, Fabric support, resource bees, apiary, GUI, or JSON/datapack loading.
 

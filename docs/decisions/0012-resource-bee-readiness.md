@@ -182,4 +182,4 @@ Do not implement a full material tree in the first slice.
 - `docs/implementation/09-expanded-content-roadmap.md`
 - `docs/implementation/09a-expanded-content-categories.md`
 - `docs/implementation/09b-first-post-mvp-mutation-branch.md`
-- `docs/05-content-design-spec.md`
+- `docs/mvp/05-content-design-spec.md`

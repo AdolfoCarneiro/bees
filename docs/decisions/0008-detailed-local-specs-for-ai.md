@@ -73,6 +73,6 @@ docs/implementation/
 ## Related Documents
 
 - `CLAUDE.md`
-- `docs/06-ai-coding-guidelines.md`
+- `docs/mvp/06-ai-coding-guidelines.md`
 - `docs/implementation/00-phase-0-documentation-and-decisions.md`
 - `docs/implementation/01-genetics-core-implementation.md`

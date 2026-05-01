@@ -54,7 +54,7 @@ The project should design for Fabric compatibility by keeping common logic platf
 
 ## Related Documents
 
-- `docs/02-technical-architecture.md`
+- `docs/mvp/02-technical-architecture.md`
 - `docs/implementation/03-neoforge-entity-integration.md`
 - `docs/implementation/04-vanilla-breeding-integration.md`
 - `docs/implementation/10-fabric-support-implementation.md`

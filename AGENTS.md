@@ -41,23 +41,23 @@ Minecraft integration should call the core. The core must not know about Minecra
 ### Always read before coding
 
 ```text
-docs/01-product-vision-and-roadmap.md
-docs/02-technical-architecture.md
-docs/06-ai-coding-guidelines.md
+docs/mvp/01-product-vision-and-roadmap.md
+docs/mvp/02-technical-architecture.md
+docs/mvp/06-ai-coding-guidelines.md
 ```
 
 ### Read for genetics tasks
 
 ```text
-docs/03-genetics-system-spec.md
-docs/04-breeding-and-mutation-spec.md
+docs/mvp/03-genetics-system-spec.md
+docs/mvp/04-breeding-and-mutation-spec.md
 docs/implementation/01-genetics-core-implementation.md
 ```
 
 ### Read for content tasks
 
 ```text
-docs/05-content-design-spec.md
+docs/mvp/05-content-design-spec.md
 docs/implementation/02-initial-content-implementation.md
 ```
 
@@ -319,7 +319,7 @@ Recommended first implementation prompt:
 ```text
 Read AGENTS.md.
 Read docs/implementation/01-genetics-core-implementation.md.
-Read docs/03-genetics-system-spec.md.
+Read docs/mvp/03-genetics-system-spec.md.
 
 Focus only on Task 1 from the Phase 1 implementation spec:
 Create genetics core package structure.

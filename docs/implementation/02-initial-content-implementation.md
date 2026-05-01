@@ -53,12 +53,12 @@ Before implementing this phase, the AI agent should read:
 
 ```text
 CLAUDE.md
-docs/01-product-vision-and-roadmap.md
-docs/02-technical-architecture.md
-docs/03-genetics-system-spec.md
-docs/04-breeding-and-mutation-spec.md
-docs/05-content-design-spec.md
-docs/06-ai-coding-guidelines.md
+docs/mvp/01-product-vision-and-roadmap.md
+docs/mvp/02-technical-architecture.md
+docs/mvp/03-genetics-system-spec.md
+docs/mvp/04-breeding-and-mutation-spec.md
+docs/mvp/05-content-design-spec.md
+docs/mvp/06-ai-coding-guidelines.md
 docs/implementation/01-genetics-core-implementation.md
 ```
 

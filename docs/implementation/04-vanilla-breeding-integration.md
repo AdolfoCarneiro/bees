@@ -385,7 +385,7 @@ orchestrator does not mutate parent genomes
 ### Prompt
 
 ```text
-Read CLAUDE.md, docs/03-genetics-system-spec.md, docs/04-breeding-and-mutation-spec.md, and docs/implementation/01-genetics-core-implementation.md.
+Read CLAUDE.md, docs/mvp/03-genetics-system-spec.md, docs/mvp/04-breeding-and-mutation-spec.md, and docs/implementation/01-genetics-core-implementation.md.
 
 Focus only on: Implement BeeBreedingOrchestrator.
 
@@ -1013,12 +1013,12 @@ Use platform adapters and common request/context objects.
 Read CLAUDE.md.
 
 Then read:
-- docs/01-product-vision-and-roadmap.md
-- docs/02-technical-architecture.md
-- docs/03-genetics-system-spec.md
-- docs/04-breeding-and-mutation-spec.md
-- docs/05-content-design-spec.md
-- docs/06-ai-coding-guidelines.md
+- docs/mvp/01-product-vision-and-roadmap.md
+- docs/mvp/02-technical-architecture.md
+- docs/mvp/03-genetics-system-spec.md
+- docs/mvp/04-breeding-and-mutation-spec.md
+- docs/mvp/05-content-design-spec.md
+- docs/mvp/06-ai-coding-guidelines.md
 - docs/implementation/01-genetics-core-implementation.md
 - docs/implementation/02-initial-content-implementation.md
 - docs/implementation/03-neoforge-entity-integration.md

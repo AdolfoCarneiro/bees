@@ -973,7 +973,7 @@ Stop and verify:
 ### Prompt
 
 ```text
-Read CLAUDE.md, docs/05-content-design-spec.md, and docs/implementation/06-production-mvp.md.
+Read CLAUDE.md, docs/mvp/05-content-design-spec.md, and docs/implementation/06-production-mvp.md.
 
 Focus only on: Task 4 — Define Built-In Production Definitions.
 
