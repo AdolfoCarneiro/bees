@@ -348,6 +348,22 @@ Before coding, summarize the chosen placeholder cost and where it will be checke
 
 Display analyzer reports in a real UI instead of relying on chat/debug output.
 
+### Decided UI Approach
+
+The **Portable Analyzer uses Option A: packet + simple client-side screen**.
+
+Flow:
+
+```text
+1. Player uses analyzer on a living bee.
+2. Server validates cost and marks bee as analyzed.
+3. Server generates AnalyzerReport.
+4. Server sends report to client via a network packet.
+5. Client opens a simple overlay/screen with the report data.
+```
+
+Do NOT use a menu/container (Option B) for the Portable Analyzer. Menu/container is the correct pattern for the future Analyzer Block (Task 7), not for the item.
+
 ### Scope
 
 Initial UI should show:
@@ -367,13 +383,15 @@ Initial UI should show:
 
 Do not implement full research database, mutation tree UI, probability calculator, JEI/REI integration, or advanced animated UI.
 
+Do not use a menu/container for the portable analyzer screen.
+
 ### Acceptance Criteria
 
 ```text
-- Analyzer item opens or displays a UI report.
+- Analyzer item triggers a network packet to the client after successful analysis.
+- Client screen opens from the packet payload, not from a container/menu.
 - UI uses AnalyzerReport or equivalent common report model.
 - UI handles redacted reports.
-- Server/client sync is safe if needed.
 - Chat output can remain only as fallback/debug.
 ```
 
@@ -384,13 +402,17 @@ Read docs/post-mvp/13-analyzer-ux-and-progression.md.
 
 Focus only on Task 5 from docs/implementation/13-analyzer-ux-implementation.md.
 
-Implement a basic Analyzer UI for displaying AnalyzerReport data.
+Implement a basic Analyzer UI for the Portable Analyzer using a network packet + client-side screen (Option A).
+
+The flow is: server validates + analyzes -> server generates AnalyzerReport -> server sends packet -> client opens screen.
+
+Do NOT use a menu/container for this. That pattern belongs to the future Analyzer Block.
 
 Use the common analyzer report model rather than parsing Genome directly in the screen.
 
 Do not implement research database, mutation tree UI, JEI/REI integration, analyzer block or resource bees.
 
-Before coding, explain whether a menu/network packet is needed and list files you expect to modify.
+Before coding, list the packet class, screen class, and any other files you expect to create.
 ```
 
 ## Task 6 — Apply Analyzed-State Display Rules Where Applicable
@@ -436,9 +458,20 @@ Before coding, list where genetic tooltip/display summaries currently exist.
 
 Decide whether the Analyzer Block belongs now or should be split into a future task.
 
+### Decided UI Approach
+
+When the Analyzer Block is eventually implemented, it should use **Option B: menu/container + screen**, the standard NeoForge block GUI pattern.
+
+This is intentionally different from the Portable Analyzer (Task 5), which uses a packet + simple client screen.
+
+```text
+Portable Analyzer -> packet + client-side screen (no container)
+Analyzer Block    -> menu/container + screen (standard block GUI)
+```
+
 ### Recommended Default
 
-Planning only first.
+Planning only for now. The Analyzer Block should be split into a future task or Phase 13 extension, not implemented in the initial Phase 13 scope.
 
 ### Scope
 
@@ -449,6 +482,7 @@ Document:
 - input/output/cost;
 - relation to portable analyzer;
 - whether it analyzes living nearby bees or future samples;
+- that it should use menu/container approach when implemented;
 - non-goals.
 ```
 
@@ -460,6 +494,8 @@ Read docs/post-mvp/13-analyzer-ux-and-progression.md.
 Focus only on Task 7 from docs/implementation/13-analyzer-ux-implementation.md.
 
 Produce a short plan for the Analyzer Block and recommend whether to implement it now or split it into a future task.
+
+When the block is eventually implemented, it should use a menu/container + screen (standard block GUI pattern), not a packet overlay.
 
 Do not implement code unless explicitly asked after review.
 ```
