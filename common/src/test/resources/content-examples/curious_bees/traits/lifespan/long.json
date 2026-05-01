@@ -1,0 +1,6 @@
+{
+  "id": "curious_bees:traits/lifespan/long",
+  "chromosomeType": "LIFESPAN",
+  "displayName": "Long",
+  "dominance": "RECESSIVE"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "curious_bees:mutations/cultivated_from_meadow_forest",
+  "parents": [
+    "curious_bees:species/meadow",
+    "curious_bees:species/forest"
+  ],
+  "result": "curious_bees:species/cultivated",
+  "baseChance": 0.12,
+  "resultModes": {
+    "partialChance": 0.95,
+    "fullChance": 0.05
+  }
+}

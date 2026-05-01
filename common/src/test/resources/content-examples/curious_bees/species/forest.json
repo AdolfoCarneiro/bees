@@ -1,0 +1,12 @@
+{
+  "id": "curious_bees:species/forest",
+  "displayName": "Forest Bee",
+  "dominance": "DOMINANT",
+  "defaultTraits": {
+    "LIFESPAN": "curious_bees:traits/lifespan/normal",
+    "PRODUCTIVITY": "curious_bees:traits/productivity/normal",
+    "FERTILITY": "curious_bees:traits/fertility/two",
+    "FLOWER_TYPE": "curious_bees:traits/flower_type/leaves"
+  },
+  "spawnContextNotes": ["forest", "birch_forest", "dark_forest"]
+}

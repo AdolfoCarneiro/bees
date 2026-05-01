@@ -1,0 +1,9 @@
+{
+  "species": "curious_bees:species/arid",
+  "primaryOutputs": [
+    {
+      "item": "curiousbees:arid_comb",
+      "chance": 0.8
+    }
+  ]
+}

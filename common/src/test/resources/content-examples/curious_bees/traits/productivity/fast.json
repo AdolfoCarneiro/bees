@@ -1,0 +1,9 @@
+{
+  "id": "curious_bees:traits/productivity/fast",
+  "chromosomeType": "PRODUCTIVITY",
+  "displayName": "Fast",
+  "dominance": "RECESSIVE",
+  "values": {
+    "multiplier": 1.25
+  }
+}

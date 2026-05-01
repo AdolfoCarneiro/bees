@@ -1,0 +1,6 @@
+{
+  "id": "curious_bees:traits/flower_type/leaves",
+  "chromosomeType": "FLOWER_TYPE",
+  "displayName": "Leaves",
+  "dominance": "RECESSIVE"
+}

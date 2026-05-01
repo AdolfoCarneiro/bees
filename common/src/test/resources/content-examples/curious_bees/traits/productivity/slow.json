@@ -1,0 +1,9 @@
+{
+  "id": "curious_bees:traits/productivity/slow",
+  "chromosomeType": "PRODUCTIVITY",
+  "displayName": "Slow",
+  "dominance": "RECESSIVE",
+  "values": {
+    "multiplier": 0.75
+  }
+}

@@ -1,7 +1,6 @@
 package com.curiousbees.neoforge.event;
 
 import com.curiousbees.CuriousBeesMod;
-import com.curiousbees.common.content.builtin.BuiltinBeeMutations;
 import com.curiousbees.common.gameplay.breeding.BeeBreedingOrchestrator;
 import com.curiousbees.common.gameplay.breeding.BeeBreedingOutcome;
 import com.curiousbees.common.gameplay.breeding.BeeBreedingRequest;
@@ -11,6 +10,7 @@ import com.curiousbees.common.genetics.model.Genome;
 import com.curiousbees.common.genetics.mutation.MutationService;
 import com.curiousbees.common.genetics.random.JavaGeneticRandom;
 import com.curiousbees.neoforge.bee.BeeParentResolver;
+import com.curiousbees.neoforge.content.NeoForgeContentRegistry;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -53,7 +53,7 @@ public final class BeeBreedingEventHandler {
 
         BeeBreedingRequest request = new BeeBreedingRequest(
                 genomeA.get(), genomeB.get(),
-                BuiltinBeeMutations.ALL,
+                NeoForgeContentRegistry.current().allMutations(),
                 new JavaGeneticRandom(new Random()));
 
         BeeBreedingOutcome outcome = ORCHESTRATOR.breed(request);

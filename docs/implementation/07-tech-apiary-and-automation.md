@@ -1198,20 +1198,18 @@ Review the tech apiary feature set before expanding into data-driven content, Fa
 
 ## Balance Questions
 
+The Genetic Apiary is production-only (see ADR-0009). Breeding is handled exclusively by vanilla bee interaction.
+
 ```text
-- How long should a breeding cycle take?
 - How much should mutation frames increase mutation chance?
-- Should apiary breeding consume parent samples?
-- Should apiary breeding require flowers or flower-type inputs?
-- Should productivity affect apiary output speed?
+- Should productivity affect apiary output rate?
 - Should fertility matter in apiary output?
-- Should lifespan matter in apiary cycles?
+- Should lifespan affect production cycle frequency?
 ```
 
 ## Potential Follow-Up Tasks
 
 ```text
-TASK — Tune apiary breeding cycle duration
 TASK — Tune frame modifier values
 TASK — Add frame durability
 TASK — Add simple apiary GUI

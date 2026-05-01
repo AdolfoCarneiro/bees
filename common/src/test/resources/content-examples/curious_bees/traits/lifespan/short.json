@@ -1,0 +1,6 @@
+{
+  "id": "curious_bees:traits/lifespan/short",
+  "chromosomeType": "LIFESPAN",
+  "displayName": "Short",
+  "dominance": "RECESSIVE"
+}

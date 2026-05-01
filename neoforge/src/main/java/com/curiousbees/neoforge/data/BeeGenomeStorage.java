@@ -1,9 +1,9 @@
 package com.curiousbees.neoforge.data;
 
-import com.curiousbees.common.content.builtin.BuiltinBeeContent;
 import com.curiousbees.common.genetics.model.Genome;
 import com.curiousbees.common.genetics.serial.GenomeData;
 import com.curiousbees.common.genetics.serial.GenomeSerializer;
+import com.curiousbees.neoforge.content.NeoForgeContentRegistry;
 import net.minecraft.world.entity.animal.Bee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ public final class BeeGenomeStorage {
             return Optional.empty();
         }
         GenomeData data = bee.getData(BeeGenomeAttachments.BEE_GENOME);
-        Optional<Genome> genome = GenomeSerializer.fromData(data, BuiltinBeeContent::findAllele);
+        Optional<Genome> genome = GenomeSerializer.fromData(data, NeoForgeContentRegistry.current()::findAllele);
         if (genome.isEmpty()) {
             LOGGER.warn("Failed to deserialize genome for bee {} — returning empty.", bee.getUUID());
         }

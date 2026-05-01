@@ -1,10 +1,10 @@
 package com.curiousbees.neoforge.command;
 
-import com.curiousbees.common.content.builtin.BuiltinBeeContent;
-import com.curiousbees.common.content.builtin.BuiltinBeeSpecies;
+import com.curiousbees.common.content.builtin.DefaultGenomeFactory;
 import com.curiousbees.common.content.species.BeeSpeciesDefinition;
 import com.curiousbees.common.genetics.model.Genome;
 import com.curiousbees.common.genetics.random.JavaGeneticRandom;
+import com.curiousbees.neoforge.content.NeoForgeContentRegistry;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -54,7 +54,7 @@ final class DebugSetGenomeCommand {
         }
 
         Bee bee = nearestBee.get();
-        Genome genome = BuiltinBeeContent.createDefaultGenome(
+        Genome genome = DefaultGenomeFactory.createDefault(
                 definition.get(), new JavaGeneticRandom(new Random()));
         BeeGenomeStorage.setGenome(bee, genome);
 
@@ -70,11 +70,11 @@ final class DebugSetGenomeCommand {
      */
     private static Optional<BeeSpeciesDefinition> resolveSpecies(String arg) {
         // try as full ID first
-        Optional<BeeSpeciesDefinition> byId = BuiltinBeeContent.findSpecies(arg);
+        Optional<BeeSpeciesDefinition> byId = NeoForgeContentRegistry.current().findSpecies(arg);
         if (byId.isPresent()) return byId;
 
         // try as short name by searching known species
-        return BuiltinBeeSpecies.ALL.stream()
+        return NeoForgeContentRegistry.current().allSpecies().stream()
                 .filter(def -> def.id().endsWith("/" + arg))
                 .findFirst();
     }

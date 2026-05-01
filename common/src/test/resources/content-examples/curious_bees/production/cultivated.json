@@ -1,0 +1,15 @@
+{
+  "species": "curious_bees:species/cultivated",
+  "primaryOutputs": [
+    {
+      "item": "curiousbees:cultivated_comb",
+      "chance": 0.9
+    }
+  ],
+  "secondaryOutputs": [
+    {
+      "item": "minecraft:honeycomb",
+      "chance": 0.3
+    }
+  ]
+}
