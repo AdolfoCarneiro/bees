@@ -68,10 +68,12 @@ docs/README.md
 
 Always read:
 
-1. `docs/README.md`
-2. The relevant post-MVP document for the task
-3. The relevant MVP foundation documents
-4. Any related ADRs in `docs/decisions/`
+1. docs/README.md
+2. docs/post-mvp/11-post-mvp-productization-roadmap.md
+3. docs/mvp/02-technical-architecture.md
+4. docs/mvp/03-genetics-system-spec.md
+5. the relevant docs/post-mvp spec
+6. the matching docs/implementation implementation plan
 
 For general post-MVP planning, read:
 
@@ -116,6 +118,42 @@ docs/mvp/02-technical-architecture.md
 docs/mvp/03-genetics-system-spec.md
 docs/mvp/04-breeding-and-mutation-spec.md
 docs/mvp/06-ai-coding-guidelines.md
+```
+
+Task-specific additions:
+
+```text
+Visual species work:
+- docs/post-mvp/12-visual-species-system.md
+- docs/implementation/12-visual-species-system-implementation.md
+
+Analyzer work:
+- docs/post-mvp/13-analyzer-ux-and-progression.md
+- docs/implementation/13-analyzer-ux-implementation.md
+
+Apiary/frames work:
+- docs/post-mvp/14-genetic-apiary-gui-and-frames.md
+- docs/implementation/14-genetic-apiary-gui-and-frames-implementation.md
+
+Content/assets work:
+- docs/post-mvp/15-content-and-asset-pipeline.md
+- docs/implementation/15-content-and-asset-pipeline-implementation.md
+```
+
+Current guardrails:
+
+```text
+Do not implement without explicit request:
+- resource bees;
+- large species trees;
+- lifecycle/death/larvae mechanics;
+- temperature/humidity/environment simulation;
+- Fabric parity;
+- custom model per species as a baseline;
+- itemized bee systems that replace living bees;
+- Automation Upgrade as a gate for automation;
+- complex research systems;
+- mod compatibility trees.
 ```
 
 ## Current Product Direction

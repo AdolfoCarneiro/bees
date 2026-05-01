@@ -154,6 +154,15 @@ For AI-assisted development, agents should usually read:
 4. The relevant MVP foundation documents
 5. Any related ADRs
 
+```text
+Post-MVP implementation plans:
+- implementation/11-post-mvp-productization-foundation-implementation.md
+- implementation/12-visual-species-system-implementation.md
+- implementation/13-analyzer-ux-implementation.md
+- implementation/14-genetic-apiary-gui-and-frames-implementation.md
+- implementation/15-content-and-asset-pipeline-implementation.md
+```
+
 The `common/genetics` architectural rule remains unchanged:
 
 ```txt

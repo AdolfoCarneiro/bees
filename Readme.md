@@ -27,6 +27,12 @@ The project is now entering a post-MVP productization phase.
 
 The current focus is not to add a large amount of content yet. The focus is to turn the validated MVP into a real playable mod with better UX, visuals, apiary interaction, analyzer interfaces, frames, and a sustainable content/asset pipeline.
 
+```text
+Current product direction is documented in docs/post-mvp/.
+Implementation task breakdowns for AI-assisted coding live in docs/implementation/.
+The original MVP planning docs are preserved under docs/mvp/.
+```
+
 ## Target
 
 Initial loader:
