@@ -1,265 +1,236 @@
 # Curious Bees
 
-Curious Bees is a Minecraft mod project focused on bringing Forestry-inspired bee genetics to modern vanilla-style bees.
+Curious Bees is a Minecraft bee genetics mod for modern vanilla-style bees.
 
-The goal is not to port Forestry and not to fork Productive Bees. The goal is to build a new mod from scratch where vanilla bees can carry genetic data, reproduce through Minecraft's natural breeding flow, mutate into new species, and gradually support a deeper tech-oriented bee progression.
+The project is inspired by the genetic depth of Forestry and the polished automation/UX expectations of modern bee mods, while keeping its own identity.
+
+The goal is not to port Forestry and not to fork Productive Bees. The goal is to build a new mod where vanilla bees can carry genetic data, reproduce through Minecraft's natural breeding flow, mutate into new species, receive species-specific visuals, and gradually support a deeper tech-oriented bee progression.
+
+## Current Status
+
+The initial MVP foundation has been validated.
+
+The project already proved the core loop:
+
+```txt
+living bee
+-> genome
+-> breeding
+-> inheritance
+-> mutation
+-> analyzer
+-> production
+-> initial apiary/data-driven foundation
+```
+
+The project is now entering a post-MVP productization phase.
+
+The current focus is not to add a large amount of content yet. The focus is to turn the validated MVP into a real playable mod with better UX, visuals, apiary interaction, analyzer interfaces, frames, and a sustainable content/asset pipeline.
 
 ## Target
 
-- Initial loader: **NeoForge 1.21.1**
-- Future loader: **Fabric**
-- Development style: **AI-assisted coding** with Claude Code, Codex, Cursor, and similar tools
-- Main design rule: **implement the genetics core first, isolated from Minecraft APIs**
+Initial loader:
 
-## Core Fantasy
+```txt
+NeoForge 1.21.1
+```
 
-The player should feel that every generation matters:
+Future target:
 
-- a baby bee may inherit a useful recessive trait;
-- a hybrid may carry hidden potential;
-- a rare mutation may appear after several attempts;
-- stabilizing a purebred lineage should feel like an achievement;
-- later tech should improve control and throughput, not replace the genetic loop.
+```txt
+Fabric
+```
 
-## What This Project Is Not
+Development style:
+
+```txt
+AI-assisted coding with Claude Code, Codex, Cursor, and similar tools.
+```
+
+Main architectural rule:
+
+```txt
+The genetics core must remain pure Java and independent from Minecraft APIs.
+```
+
+## Product Direction
+
+Curious Bees now aims for:
+
+```txt
+Productive Bees-like accessibility, automation quality, and modern UX
++
+Forestry-inspired genetics, inheritance, mutation, hidden alleles, and lineage selection
++
+living vanilla bees as the gameplay foundation
++
+Curious Bees' own identity, progression, visuals, and content structure
+```
+
+## What This Mod Is
+
+Curious Bees is:
+
+- a new mod from scratch;
+- a genetics-focused bee breeding mod;
+- a vanilla-bee-based experience;
+- a tech-leaning progression mod;
+- a mod where mutation and inheritance are probabilistic;
+- a mod where species should eventually have their own visual identity;
+- a mod designed to support future expansion through data-driven content and assets.
+
+## What This Mod Is Not
 
 Curious Bees is not:
 
 - a Forestry port;
 - a Productive Bees fork;
 - a deterministic `A + B = C` recipe system;
-- a resource-bee mod as its first priority;
-- a project that should start by implementing dozens of species;
-- a mod that should begin with GUIs, machines, custom blocks, or polished assets.
+- a mod where bees are only item inputs for machines;
+- a resource bee mod as its immediate next priority;
+- a content-heavy mod before UX, visuals, and asset pipelines are ready.
 
-## Documentation Map
+## Current Post-MVP Priorities
 
-The project documentation is split into layers.
+The current phase focuses on productization:
 
-### Core planning docs
+1. Visual species system
+   - species-specific textures;
+   - fallback visuals;
+   - optional custom models for special species later.
 
-```text
-docs/
-├── 01-product-vision-and-roadmap.md
-├── 02-technical-architecture.md
-├── 03-genetics-system-spec.md
-├── 04-breeding-and-mutation-spec.md
-├── 05-content-design-spec.md
-├── 06-ai-coding-guidelines.md
-└── 07-initial-backlog.md
+2. Analyzer UX
+   - move analysis out of chat/debug output;
+   - add real interfaces;
+   - show genetic details only after a bee has been analyzed.
+
+3. Genetic Apiary GUI
+   - show bees present in the apiary;
+   - show production status;
+   - show frames;
+   - show output inventory;
+   - support automation by design.
+
+4. Frames and Apiary Behavior
+   - frames affect production, mutation, and stability;
+   - apiary behavior can later support containment/simulation-style modifiers;
+   - automation should not require a special automation upgrade.
+
+5. Content and Asset Pipeline
+   - species data should be paired with assets;
+   - adding a species should have clear conventions for JSON/data, textures, lang entries, and optional models.
+
+## Current Non-Goals
+
+Do not implement these without an explicit planning/design task:
+
+- lifecycle/death/larvae mechanics;
+- temperature/humidity/environment simulation;
+- resource bees;
+- large species trees;
+- Fabric gameplay parity;
+- item-only bee systems that replace living bees;
+- custom models for every species;
+- complex research systems;
+- large compatibility layers with other mods.
+
+These are future topics and may be revisited after the post-MVP foundation is solid.
+
+## Documentation
+
+Start here:
+
+```txt
+docs/README.md
 ```
 
-These explain the product, architecture, core genetic model, breeding/mutation rules, initial content direction, AI usage rules, and high-level backlog.
+Current planning lives in:
 
-### Implementation specs
-
-```text
-docs/implementation/
-├── 00-phase-0-documentation-and-decisions.md
-├── 01-genetics-core-implementation.md
-├── 02-initial-content-implementation.md
-├── 03-neoforge-entity-integration.md
-├── 04-vanilla-breeding-integration.md
-├── 05-analyzer-implementation.md
-├── 06-production-mvp.md
-├── 07-tech-apiary-and-automation.md
-├── 08-data-driven-content.md
-├── 09-expanded-content-roadmap.md
-└── 10-fabric-support-implementation.md
+```txt
+docs/post-mvp/
 ```
 
-These are the execution specs. When an AI coding agent implements a task, it should read the relevant implementation document first.
+Original MVP foundation documents live in:
 
-### Decision records
-
-```text
-docs/decisions/
+```txt
+docs/mvp/
 ```
 
-Architectural Decision Records (ADRs) explain why important decisions were made, such as starting with NeoForge, keeping the genetics core pure Java, using hardcoded built-ins before JSON, and delaying Fabric until after the NeoForge MVP.
+The MVP docs remain important for architecture and genetics rules, but they are no longer the current product roadmap.
 
-### Quality and test plans
+## Recommended Reading
 
-```text
-docs/quality/
+For current planning:
+
+```txt
+docs/post-mvp/11-post-mvp-productization-roadmap.md
+docs/post-mvp/12-visual-species-system.md
+docs/post-mvp/13-analyzer-ux-and-progression.md
+docs/post-mvp/14-genetic-apiary-gui-and-frames.md
+docs/post-mvp/15-content-and-asset-pipeline.md
 ```
 
-These files define test plans, validation gates, manual playtest checklists, and release smoke tests.
+For architecture and genetics foundation:
 
-### Art and asset pipeline
-
-```text
-docs/art/
+```txt
+docs/mvp/02-technical-architecture.md
+docs/mvp/03-genetics-system-spec.md
+docs/mvp/04-breeding-and-mutation-spec.md
+docs/mvp/05-content-design-spec.md
+docs/mvp/06-ai-coding-guidelines.md
 ```
 
-This contains the asset pipeline plan, placeholder strategy, Blockbench workflow, optional future AI/skill tooling, and templates for asset requests.
+## Core Architecture Rule
 
-### Release and distribution
+The genetics core must not depend on:
 
-```text
-docs/release/
+```txt
+Minecraft
+NeoForge
+Fabric
+registries
+events
+entities
+NBT
+components
+attachments
+mixins
+client rendering
 ```
 
-These files define release strategy, versioning, changelog conventions, platform publishing, GitHub/Modrinth/CurseForge plans, and release checklists.
+Minecraft integration should call the core, not live inside the core.
 
-## Recommended Repository Layout
+## Development Guidance
 
-```text
-curious-bees/
-├── CLAUDE.md
-├── README.md
-├── docs/
-│   ├── 01-product-vision-and-roadmap.md
-│   ├── 02-technical-architecture.md
-│   ├── 03-genetics-system-spec.md
-│   ├── 04-breeding-and-mutation-spec.md
-│   ├── 05-content-design-spec.md
-│   ├── 06-ai-coding-guidelines.md
-│   ├── 07-initial-backlog.md
-│   ├── implementation/
-│   ├── decisions/
-│   ├── quality/
-│   ├── art/
-│   └── release/
-├── common/
-├── neoforge/
-├── fabric/
-├── build.gradle
-├── settings.gradle
-└── gradle.properties
+Prefer small, testable implementation slices.
+
+Good task:
+
+```txt
+Implement visual metadata for species definitions and fallback texture resolution.
 ```
 
-If the initial build setup is not multiloader yet, the same documentation rules still apply. Keep package boundaries clean even in a temporary single-loader layout.
+Good task:
 
-## Source of Truth Rules
-
-Use the right document for the right kind of decision:
-
-```text
-README.md                    = project map and onboarding
-CLAUDE.md                    = AI agent guardrails
-Core docs                    = product and architecture reference
-Implementation docs          = task execution source
-ADRs                         = architectural decision source
-Quality docs                 = validation and test source
-Art docs                     = asset workflow source
-Release docs                 = publishing source
-Notion/backlog               = planning/status tracking
+```txt
+Implement the first analyzer screen using existing analyzer report data.
 ```
 
-If the backlog and implementation docs disagree, do not guess. Review and update the docs before coding.
+Bad task:
 
-## Recommended Development Flow
-
-```text
-1. Read CLAUDE.md.
-2. Read the relevant implementation phase document.
-3. Read related specs and ADRs.
-4. Pick one small task.
-5. Implement only that task.
-6. Run or describe tests.
-7. Review the diff.
-8. Update backlog/status.
-9. Create follow-up tasks when needed.
+```txt
+Add 40 new bees, resource production, custom models, apiary GUI, JEI integration, and Fabric support.
 ```
 
-## First Development Focus
+Keep the project growing in layers:
 
-Do not start with blocks, items, GUIs, textures, hives, or Minecraft event integration.
-
-Start with the pure Java genetics core:
-
-- `Allele`
-- `Dominance`
-- `ChromosomeType`
-- `GenePair`
-- `Genome`
-- `GeneticRandom`
-- `BreedingService`
-- `MutationDefinition`
-- `MutationService`
-- Unit tests for dominance, active/inactive persistence, inheritance distribution, hybrid/purebred detection, and mutation probability
-
-The detailed execution plan for this is in:
-
-```text
-docs/implementation/01-genetics-core-implementation.md
+```txt
+validated core
+-> productized UX
+-> visual identity
+-> apiary/analyzer polish
+-> asset/content pipeline
+-> expanded content
+-> resource bee progression
+-> Fabric parity
 ```
-
-## MVP Definition
-
-The MVP is complete when:
-
-```text
-- A vanilla bee can have a genome.
-- Wild bees receive starting species.
-- Two vanilla bees can breed in the world.
-- The baby bee inherits genetics from both parents.
-- Mutation can produce Cultivated or Hardy.
-- The player can inspect the result.
-- Species identity affects at least one basic production behavior.
-```
-
-## Important Guardrail
-
-Do not let AI agents implement large unrelated systems in one pass.
-
-Good:
-
-```text
-Implement only GenePair active/inactive resolution with tests.
-```
-
-Bad:
-
-```text
-Implement genetics, NeoForge storage, breeding, analyzer, apiary, assets, and Fabric support.
-```
-
-## Local Setup (Windows)
-
-### Prerequisites
-
-- JDK 21 installed (Temurin 21 recommended)
-- Git installed
-
-Check versions:
-
-```powershell
-java -version
-git --version
-```
-
-If `java -version` does not show 21, set Java 21 for the current terminal session:
-
-```powershell
-$env:JAVA_HOME="C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot"
-$env:Path="$env:JAVA_HOME\bin;$env:Path"
-java -version
-```
-
-### Run Gradle
-
-From repository root:
-
-```powershell
-.\gradlew.bat tasks
-.\gradlew.bat :common:build
-.\gradlew.bat :neoforge:build
-.\gradlew.bat :fabric:build
-```
-
-### Open the game client
-
-```powershell
-.\gradlew.bat :neoforge:runClient
-```
-
-The first run downloads Minecraft/NeoForge assets and can take several minutes.
-
-### Troubleshooting
-
-- `Unsupported class file major version 69`: you are running with Java 25; switch to Java 21 in the terminal and retry.
-- `JAVA_HOME` points to wrong JDK: update `JAVA_HOME` and prepend `%JAVA_HOME%\bin` to `PATH`.
-- Wrapper or dependency issues: delete `.gradle` in the project root and retry `.\gradlew.bat :neoforge:build`.
-- Slow or failing first client run: rerun `.\gradlew.bat :neoforge:runClient` after assets finish downloading.

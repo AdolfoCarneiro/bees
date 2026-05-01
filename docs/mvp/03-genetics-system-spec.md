@@ -1,3 +1,10 @@
+> Status: MVP foundation document.
+>
+> This document describes the original MVP design used to validate the Curious Bees core loop.
+> It is preserved as historical and architectural context.
+> For the current post-MVP direction, see:
+> `docs/post-mvp/11-post-mvp-productization-roadmap.md`.
+
 # 03 — Genetics System Specification
 
 ## 1. Goal
