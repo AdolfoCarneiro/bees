@@ -1,5 +1,6 @@
 package com.curiousbees.common.content.species;
 
+import com.curiousbees.common.content.visual.SpeciesVisualDefinition;
 import com.curiousbees.common.genetics.model.Allele;
 import com.curiousbees.common.genetics.model.ChromosomeType;
 
@@ -9,6 +10,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -29,15 +31,20 @@ public final class BeeSpeciesDefinition {
     private final Allele speciesAllele;
     private final Map<ChromosomeType, Allele[]> defaultTraitAlleles;
     private final List<String> spawnContextNotes;
+    private final SpeciesVisualDefinition visualDefinition;
 
     /**
+     * Full constructor including optional visual metadata.
+     *
      * @param defaultTraitAlleles map from trait ChromosomeType to a two-element array [first, second].
      *                            Must contain LIFESPAN, PRODUCTIVITY, FERTILITY, and FLOWER_TYPE.
      *                            Must NOT contain SPECIES — species is set via speciesAllele.
+     * @param visualDefinition    optional visual metadata; null if not yet defined.
      */
     public BeeSpeciesDefinition(String id, String displayName, Allele speciesAllele,
                                  Map<ChromosomeType, Allele[]> defaultTraitAlleles,
-                                 List<String> spawnContextNotes) {
+                                 List<String> spawnContextNotes,
+                                 SpeciesVisualDefinition visualDefinition) {
         Objects.requireNonNull(id, "id must not be null");
         Objects.requireNonNull(displayName, "displayName must not be null");
         Objects.requireNonNull(speciesAllele, "speciesAllele must not be null");
@@ -58,6 +65,14 @@ public final class BeeSpeciesDefinition {
         this.speciesAllele = speciesAllele;
         this.defaultTraitAlleles = copyTraitAlleles(defaultTraitAlleles);
         this.spawnContextNotes = List.copyOf(spawnContextNotes);
+        this.visualDefinition = visualDefinition;
+    }
+
+    /** Convenience constructor without visual metadata. */
+    public BeeSpeciesDefinition(String id, String displayName, Allele speciesAllele,
+                                 Map<ChromosomeType, Allele[]> defaultTraitAlleles,
+                                 List<String> spawnContextNotes) {
+        this(id, displayName, speciesAllele, defaultTraitAlleles, spawnContextNotes, null);
     }
 
     private static void validateTraitAlleles(Map<ChromosomeType, Allele[]> traits) {
@@ -101,6 +116,11 @@ public final class BeeSpeciesDefinition {
     public String id() { return id; }
     public String displayName() { return displayName; }
     public Allele speciesAllele() { return speciesAllele; }
+
+    /** Visual metadata for this species, if defined. Empty when no visual profile has been set. */
+    public Optional<SpeciesVisualDefinition> visualDefinition() {
+        return Optional.ofNullable(visualDefinition);
+    }
 
     /** Returns the [first, second] default allele pair for the given trait chromosome. */
     public Allele[] defaultTraitAlleles(ChromosomeType type) {

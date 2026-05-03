@@ -93,4 +93,29 @@ class BuiltinBeeSpeciesTest {
             assertFalse(def.id().contains("diamond"), "Unexpected resource species: " + def.id());
         }
     }
+
+    @Test
+    void allMvpSpeciesHaveVisualDefinition() {
+        for (var def : ALL) {
+            assertTrue(def.visualDefinition().isPresent(),
+                    def.id() + " must have a visual definition");
+        }
+    }
+
+    @Test
+    void mvpSpeciesVisualTexturePathsFollowConvention() {
+        assertEquals("curiousbees:textures/entity/bee/meadow.png",     MEADOW.visualDefinition().get().textureId());
+        assertEquals("curiousbees:textures/entity/bee/forest.png",     FOREST.visualDefinition().get().textureId());
+        assertEquals("curiousbees:textures/entity/bee/arid.png",       ARID.visualDefinition().get().textureId());
+        assertEquals("curiousbees:textures/entity/bee/cultivated.png", CULTIVATED.visualDefinition().get().textureId());
+        assertEquals("curiousbees:textures/entity/bee/hardy.png",      HARDY.visualDefinition().get().textureId());
+    }
+
+    @Test
+    void mvpSpeciesVisualUseDefaultModel() {
+        for (var def : ALL) {
+            assertTrue(def.visualDefinition().get().usesDefaultModel(),
+                    def.id() + " should use default model in MVP");
+        }
+    }
 }
