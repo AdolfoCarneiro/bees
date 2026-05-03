@@ -374,35 +374,55 @@ Do not implement custom bee entities, custom models, hybrid blending, Fabric sup
 Before coding, summarize how the renderer will access genome data and where texture resolution code will live.
 ```
 
-## Task 6 — Create Species Asset Prompts and Integrate Final Textures
+## Task 6 — Create Bee UV Template And Species Asset Prompts
 
 ### Objective
 
-Create complete asset prompts for the MVP species textures and integrate the generated final textures into the mod.
+Create the default bee UV template and UV-template-driven asset prompts for all MVP species textures.
+
+Text-only prompts are not sufficient for entity textures that must fit a specific UV layout.
+The template must be created first. Species prompts reference it.
 
 ### Scope
 
-For each MVP species (Meadow, Forest, Arid, Cultivated, Hardy), create a prompt file under:
+This task must produce:
 
 ```text
-docs/art/prompts/species/
+docs/art/templates/bee/default_bee_uv_template.png  ← prerequisite, must exist first
+docs/art/prompts/species/textures-entity-bee-meadow.md
+docs/art/prompts/species/textures-entity-bee-forest.md
+docs/art/prompts/species/textures-entity-bee-arid.md
+docs/art/prompts/species/textures-entity-bee-cultivated.md
+docs/art/prompts/species/textures-entity-bee-hardy.md
 ```
 
-Each prompt must define:
+The UV template (`default_bee_uv_template.png`) must show:
 
 ```text
-- species name and visual identity;
-- target texture path;
-- default bee model/UV compatibility;
-- required image size;
-- transparent background requirement if applicable;
-- visual palette;
-- do/don't rules;
-- output requirements;
-- acceptance checklist.
+- exact 64x32 canvas
+- body region boundary
+- head region boundary (all cube faces)
+- wing region boundaries
+- leg region boundaries
+- stinger/antennae region boundaries
+- transparent background outside all UV regions
+- region labels if useful for clarity
 ```
 
-When the user provides final generated textures, integrate them into the mod and validate all references.
+Each species prompt must:
+
+```text
+- reference docs/art/templates/bee/default_bee_uv_template.png explicitly
+- include a ready-to-paste Image Generation Prompt block
+- instruct the generator to use the UV template as a fixed canvas and fill regions only
+- instruct the generator not to move, resize, or rearrange UV islands
+- instruct the generator to preserve all transparent areas
+- include exact 64x32 output size requirement
+- include a Rejection Criteria section
+- include palette with approximate hex codes
+```
+
+When the user provides final generated textures, integrate them and validate all references.
 
 ### Non-goals
 
@@ -412,36 +432,47 @@ When the user provides final generated textures, integrate them into the mod and
 - Do not mark the task complete with temporary assets.
 - Do not copy vanilla bee textures.
 - Do not create resource bee visuals.
+- Do not generate generic bee sprites — the prompt must specify UV texture fill, not sprite generation.
 ```
 
 ### Acceptance Criteria
 
 ```text
+- default_bee_uv_template.png exists at docs/art/templates/bee/.
 - A complete prompt exists for each MVP species under docs/art/prompts/species/.
-- Each prompt references the correct target path.
-- Each prompt states that the texture must fit the default bee model/UV.
+- Each prompt references the UV template path.
+- Each prompt's Image Generation Prompt block explicitly instructs UV-fill, not sprite generation.
+- Each prompt includes a Rejection Criteria section.
+- Each prompt includes palette hex codes.
 - Generated final textures are integrated when provided by the user.
-- Visual definitions point to the final texture paths.
-- Missing/fallback texture behavior exists but is not treated as final art.
+- Results that do not match the UV template layout are rejected, not integrated.
 - No placeholder texture is accepted as final.
 ```
 
 ### Prompt for Claude Code
 
 ```text
-Read CLAUDE.md and docs/art/asset-prompt-workflow.md.
+Read CLAUDE.md, docs/art/asset-prompt-workflow.md, and docs/post-mvp/12-visual-species-system.md.
 
 Focus only on Task 6 from docs/implementation/12-visual-species-system-implementation.md.
 
 Do not generate images.
 
-Create complete asset prompt files for the MVP species: Meadow, Forest, Arid, Cultivated, Hardy.
+Step 1: Check whether docs/art/templates/bee/default_bee_uv_template.png exists.
+If it does not exist, stop and report that the UV template must be created before proceeding.
+The UV template is a prerequisite — do not create species prompts without it.
 
-Each prompt must include: target path, species visual identity, palette, model/UV requirements, output requirements, and acceptance checklist.
+Step 2 (only if UV template exists): Create or update asset prompt files for the five MVP species
+(Meadow, Forest, Arid, Cultivated, Hardy) following the template in docs/art/asset-prompt-workflow.md.
+
+Each prompt must include: UV template reference, ready-to-paste Image Generation Prompt block
+instructing UV-fill (not sprite generation), palette with hex codes, Rejection Criteria section,
+target path, and acceptance checklist.
 
 Do not create placeholder textures as final deliverables.
 
-If final PNGs are not provided yet, stop after creating the prompts and report which assets are waiting for user generation.
+If final PNGs are not provided yet, stop after creating the prompts and report which assets
+are waiting for user generation.
 ```
 
 ## Task 7 — Update Visual Authoring Documentation

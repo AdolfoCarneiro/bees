@@ -1,5 +1,10 @@
 # Asset Prompt — Cultivated Bee Texture
 
+> **This is not a request for a sprite, icon, or character portrait.**
+> This prompt is for a UV-mapped entity texture that fills specific regions of the default bee model.
+> The UV template at `docs/art/templates/bee/default_bee_uv_template.png` must exist and be
+> attached or referenced before generation begins.
+
 ## Target Path
 
 ```text
@@ -24,19 +29,26 @@ The Cultivated Bee is the first mutation result — created when a Meadow Bee an
 
 ## Palette Notes
 
-- Brighter, cleaner yellow than Meadow Bee — more vivid, less sun-baked.
-- Softer gold or pale amber stripes — more polished than wild bees.
-- Near-white or pale cream belly — cleaner than the starter bees.
-- Dark warm brown outlines — avoid pure black.
-- Optional: a very subtle greenish or golden sheen in the fuzz to hint at its Forest Bee heritage.
-- Avoid: dark, muted, or earthy tones — it should feel cultivated/managed, not wild.
+Core colors with approximate hex anchors:
 
-## UV / Model Reference
+- Base coat: bright clean yellow — approx. `#F8D840`
+- Stripes: pale soft gold / amber — approx. `#D8A820`
+- Outlines: dark warm brown — approx. `#2A1400`
+- Belly/accent: near-white / pale cream — approx. `#FAF0C8`
 
-Matches the vanilla Minecraft bee entity model UV layout:
-- Body, head, wing, and leg regions follow vanilla Bee texture layout (`minecraft:textures/entity/bee/bee.png`).
-- Use the vanilla bee texture as UV template only — do not copy the pixel art directly.
-- Transparent background (PNG with alpha).
+Additional rules:
+- Avoid dark, muted, or earthy tones — it should feel managed, not wild.
+- No pure black (`#000000`) in outlines.
+
+## UV Template Reference
+
+```text
+UV template path: docs/art/templates/bee/default_bee_uv_template.png
+```
+
+The UV template must be attached to the generation tool or referenced explicitly.
+The template defines the exact 64×32 canvas with labeled regions for body, head, wings, legs,
+stinger, and antennae. All transparent areas outside these regions must remain transparent.
 
 ## Usage
 
@@ -65,19 +77,63 @@ Gameplay reward: first successful mutation the player achieves
 - Don't copy vanilla bee or any other mod texture.
 - Don't use cool blues, purples, or neon colors.
 
+## Image Generation Prompt
+
+Attach `docs/art/templates/bee/default_bee_uv_template.png` to the tool, then paste:
+
+```
+This is not a request for a sprite, icon, or character portrait.
+
+Use the attached UV template as the exact fixed canvas.
+Fill the UV regions with the Cultivated Bee color scheme described below.
+Do not move, resize, rearrange, crop, rotate, or reinterpret any UV island.
+Keep all transparent areas transparent.
+Output must be exactly 64x32 pixels.
+
+Color scheme:
+- Body region: bright clean yellow, approximately #F8D840.
+- Stripe region: pale soft gold / amber, approximately #D8A820.
+- Outline region: dark warm brown, approximately #2A1400.
+- Belly region: near-white / pale cream, approximately #FAF0C8.
+- Wing region: pale semi-transparent cream.
+
+Feel: clean, bright, and polished — more refined than wild starter bees, a rewarding early mutation.
+Do not use: dark earthy tones, sandy/orange hues, greens, blues, pure black, anti-aliasing, gradients.
+Style: flat pixel art, no anti-aliasing, no gradients, hard edges, limited palette of 6 to 8 colors.
+```
+
+> If the tool cannot accept an image attachment, add: `The UV layout is: body center-left,
+> head faces top-left, wings top-right, legs/stinger lower edges, transparent background
+> everywhere outside UV regions.`
+
 ## Acceptance Criteria
 
+- [ ] UV template exists at `docs/art/templates/bee/default_bee_uv_template.png`.
 - [ ] File exists at target path.
 - [ ] Dimensions are exactly 64x32 pixels.
 - [ ] Transparent PNG (alpha channel on non-body areas).
-- [ ] UV regions align with vanilla bee model layout.
+- [ ] UV regions visually align with the UV template.
 - [ ] Visually distinct from Meadow, Forest, Arid, and Hardy bee textures.
 - [ ] Feels like a rewarding upgrade from starter species.
 - [ ] No copied third-party assets.
 - [ ] Dev placeholder removed when this asset is committed.
 
+## Rejection Criteria
+
+Reject the generated result if:
+
+- [ ] It looks like a free-form bee sprite or character portrait.
+- [ ] It rearranges, resizes, or reinterprets UV islands.
+- [ ] It creates detached pixels outside expected UV regions.
+- [ ] It does not visually align with the UV template layout.
+- [ ] It fills transparent background areas with color.
+- [ ] It uses anti-aliasing, gradients, or more than ~8 colors.
+- [ ] It cannot be applied to the default bee model without manual rework.
+
 ## Status
 
 - [x] Prompt created
+- [ ] UV template available at `docs/art/templates/bee/default_bee_uv_template.png`
 - [ ] Asset generated/provided
-- [ ] Asset integrated and validated
+- [ ] Asset validated against UV template
+- [ ] Asset integrated

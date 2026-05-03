@@ -93,6 +93,68 @@ docs/art/prompts/
 
 Resolved prompts may be archived or marked with a `[RESOLVED]` prefix rather than deleted, so the design intent is preserved.
 
+## UV-Template Requirement For Entity And Model Textures
+
+Text-only prompts are not acceptable as the sole input for entity textures or model textures that must fit a specific UV layout.
+
+Text prompts describe color and feel well. They do not communicate UV island positions, transparency regions, or canvas layout. Feeding a text-only prompt to a text-to-image tool produces a free-form sprite, not a UV-compatible skin.
+
+For any asset that maps to a model UV layout, the workflow must be:
+
+```text
+1. Identify the model used by the asset.
+2. Obtain or create the UV template image for that model.
+3. Save the UV template under docs/art/templates/.
+4. Create an asset prompt that explicitly references the template.
+5. Instruct the image generator to use the template as a fixed canvas — fill regions, do not rearrange.
+6. Validate the generated result against the UV template before accepting it.
+```
+
+Asset types that require a UV template:
+
+```text
+- bee entity textures
+- custom entity textures
+- custom block model textures
+- any Blockbench model texture
+```
+
+Text-only prompts may be used for concept art, color palette exploration, or style references. They must not be used as the sole prompt for a final UV-mapped texture.
+
+## Bee Texture Rule
+
+All default bee species textures must use the default bee UV template:
+
+```text
+docs/art/templates/bee/default_bee_uv_template.png
+```
+
+This template does not yet exist. It must be created before any species texture generation begins.
+
+The template must show:
+
+```text
+- exact 64x32 canvas
+- body region boundary
+- head region boundary
+- wing region boundaries
+- leg region boundaries
+- stinger/antennae region boundaries
+- transparent background outside all UV regions
+```
+
+Every bee species prompt must:
+
+```text
+- reference the UV template path
+- instruct the generator to use the template as a fixed canvas
+- tell the generator not to move, resize, or rearrange UV islands
+- tell the generator to preserve all transparent areas
+- include a Rejection Criteria section
+```
+
+Prompts that do not reference the UV template must not be used for final texture generation.
+
 ## Prompt Document Template
 
 Use this template when creating a new asset prompt.
@@ -146,30 +208,50 @@ the remaining small regions. Transparent background (PNG with alpha) outside all
 
 {where this asset is used — e.g. rendered on vanilla Bee entity when active species is Meadow}
 
+## UV Template Reference
+
+> **Required for entity textures.** If this asset maps to a model UV layout, a UV template
+> must exist at `docs/art/templates/` before generation begins. Reference it explicitly below.
+
+```text
+UV template path: {e.g. docs/art/templates/bee/default_bee_uv_template.png — or N/A if not a model texture}
+```
+
 ## Image Generation Prompt
 
-Paste the block below directly into GPT Images, DALL-E, or a similar text-to-image tool.
-Do not modify the structural keywords — replace only the bracketed fields.
+> **This section is mandatory.** It must contain a ready-to-paste block for GPT Images, DALL-E,
+> or a similar text-to-image tool. Do not leave it as a description — write the actual prompt text.
 
-> **Workflow note:** text-to-image tools cannot output a 64×32 UV-mapped texture directly.
-> Use the generated image as a **color and style reference**.
-> Then paint the final texture in Aseprite or a similar pixel art tool using the vanilla bee
-> UV layout (64×32) as your canvas. The vanilla bee PNG shows the exact UV regions to fill.
+For **entity/model textures**, the prompt must reference the UV template and instruct the
+generator to fill UV regions, not generate a free-form sprite. Use the format below:
 
 ---
 
 ```
-Minecraft Java Edition pixel art bee character, {SPECIES_NAME} bee.
-Body: {MAIN_COLOR_DESCRIPTION}, approximately {HEX1}.
-Stripes: {STRIPE_COLOR_DESCRIPTION}, approximately {HEX2}.
-Outlines: {OUTLINE_COLOR_DESCRIPTION}, approximately {HEX3}.
+This is not a request for a sprite, icon, or character portrait.
+
+Use the attached UV template [{UV_TEMPLATE_PATH}] as the exact fixed canvas.
+Fill the UV regions with the {SPECIES_NAME} Bee color scheme described below.
+Do not move, resize, rearrange, crop, rotate, or reinterpret any UV island.
+Keep all transparent areas transparent.
+Output must be exactly {WIDTHx HEIGHT} pixels.
+
+Color scheme:
+- Body region: {DESCRIPTION}, approximately {HEX1}.
+- Stripe region: {DESCRIPTION}, approximately {HEX2}.
+- Outline region: {DESCRIPTION}, approximately {HEX3}.
+- Wing region: {DESCRIPTION}, approximately {HEX4} with partial transparency.
+- {any additional regions}
+
 Feel: {one sentence — e.g. sun-bleached and harsh, earthy and woodland, warm and friendly}.
-Do not include: {comma-separated list of colors or styles to avoid}.
-Style rules: flat pixel art, no anti-aliasing, no gradients, hard edges, limited palette of 6 to 8 colors, transparent background.
-Composition: single bee character viewed from the side, centered, no background, no text, no extra objects.
+Do not use: {comma-separated exclusions — e.g. greens, blues, pure black, anti-aliasing}.
+Style: flat pixel art, no anti-aliasing, no gradients, hard edges, limited palette of 6 to 8 colors.
 ```
 
 ---
+
+> **If a UV template image cannot be attached** (tool limitation), also include this line:
+> `The UV layout is: body center-left, head faces top-left, wings top-right, legs/stinger lower edges, transparent background everywhere outside UV regions.`
 
 ## Species Identity
 
@@ -196,11 +278,25 @@ Feel: {one-line visual identity}
 - [ ] No copied third-party assets.
 - [ ] Dev placeholder replaced or removed.
 
+## Rejection Criteria
+
+Reject the generated result if:
+
+- [ ] It looks like a free-form bee sprite, icon, or character portrait.
+- [ ] It rearranges, resizes, or reinterprets UV islands.
+- [ ] It creates detached decorative pixels outside expected UV regions.
+- [ ] It does not visually align with the UV template layout.
+- [ ] It fills transparent background areas with color.
+- [ ] It uses anti-aliasing, gradients, or more than ~8 colors.
+- [ ] It cannot be applied directly to the target model without manual rework.
+
 ## Status
 
+- [ ] UV template available at referenced path
 - [ ] Prompt created
 - [ ] Asset generated/provided
-- [ ] Asset integrated and validated
+- [ ] Asset validated against UV template
+- [ ] Asset integrated
 ```
 
 ## Dev Placeholder Rule

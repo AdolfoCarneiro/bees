@@ -1,5 +1,10 @@
 # Asset Prompt — Forest Bee Texture
 
+> **This is not a request for a sprite, icon, or character portrait.**
+> This prompt is for a UV-mapped entity texture that fills specific regions of the default bee model.
+> The UV template at `docs/art/templates/bee/default_bee_uv_template.png` must exist and be
+> attached or referenced before generation begins.
+
 ## Target Path
 
 ```text
@@ -24,19 +29,27 @@ The Forest Bee lives in dark forests, birch forests, and oak forests. It should 
 
 ## Palette Notes
 
-- Muted olive or earthy yellow base coat — less warm than Meadow, shifted toward yellow-green.
-- Brown and deep forest-green accents on stripes or limbs.
-- Dark bark-brown or forest shadow tones for outlines — avoid pure black.
-- Optional: subtle moss-green or leaf-green fuzz hints on the back or head.
-- Avoid bright saturated greens. Keep it earthy, not tropical.
+Core colors with approximate hex anchors:
+
+- Base coat: muted olive / earthy yellow — approx. `#A89830`
+- Stripes: forest green / bark brown — approx. `#4A6830`
+- Outlines: dark bark brown — approx. `#2A1800`
+- Belly/accent: dull olive cream — approx. `#C0AA60`
+
+Additional rules:
+- Avoid bright saturated greens — keep earthy, not tropical.
 - Avoid greys or blues.
+- No pure black (`#000000`) in outlines.
 
-## UV / Model Reference
+## UV Template Reference
 
-Matches the vanilla Minecraft bee entity model UV layout:
-- Body, head, wing, and leg regions follow vanilla Bee texture layout (`minecraft:textures/entity/bee/bee.png`).
-- Use the vanilla bee texture as UV template only — do not copy the pixel art directly.
-- Transparent background (PNG with alpha).
+```text
+UV template path: docs/art/templates/bee/default_bee_uv_template.png
+```
+
+The UV template must be attached to the generation tool or referenced explicitly.
+The template defines the exact 64×32 canvas with labeled regions for body, head, wings, legs,
+stinger, and antennae. All transparent areas outside these regions must remain transparent.
 
 ## Usage
 
@@ -64,18 +77,62 @@ Feel: earthy, woodland, natural — not tropical or mossy-bright
 - Don't copy vanilla bee or any other mod's texture.
 - Don't use cool blues or purples.
 
+## Image Generation Prompt
+
+Attach `docs/art/templates/bee/default_bee_uv_template.png` to the tool, then paste:
+
+```
+This is not a request for a sprite, icon, or character portrait.
+
+Use the attached UV template as the exact fixed canvas.
+Fill the UV regions with the Forest Bee color scheme described below.
+Do not move, resize, rearrange, crop, rotate, or reinterpret any UV island.
+Keep all transparent areas transparent.
+Output must be exactly 64x32 pixels.
+
+Color scheme:
+- Body region: muted olive / earthy yellow, approximately #A89830.
+- Stripe region: forest green / bark brown, approximately #4A6830.
+- Outline region: dark bark brown, approximately #2A1800.
+- Belly region: dull olive cream, approximately #C0AA60.
+- Wing region: pale semi-transparent cream.
+
+Feel: earthy, woodland, and grounded — a bee that belongs in dark and birch forests.
+Do not use: bright saturated greens, warm golden yellows, sandy/orange tones, blues, greys, anti-aliasing, gradients.
+Style: flat pixel art, no anti-aliasing, no gradients, hard edges, limited palette of 6 to 8 colors.
+```
+
+> If the tool cannot accept an image attachment, add: `The UV layout is: body center-left,
+> head faces top-left, wings top-right, legs/stinger lower edges, transparent background
+> everywhere outside UV regions.`
+
 ## Acceptance Criteria
 
+- [ ] UV template exists at `docs/art/templates/bee/default_bee_uv_template.png`.
 - [ ] File exists at target path.
 - [ ] Dimensions are exactly 64x32 pixels.
 - [ ] Transparent PNG (alpha channel on non-body areas).
-- [ ] UV regions align with vanilla bee model layout.
+- [ ] UV regions visually align with the UV template.
 - [ ] Visually distinct from Meadow, Arid, Cultivated, and Hardy bee textures.
 - [ ] No copied third-party assets.
 - [ ] Dev placeholder removed when this asset is committed.
 
+## Rejection Criteria
+
+Reject the generated result if:
+
+- [ ] It looks like a free-form bee sprite or character portrait.
+- [ ] It rearranges, resizes, or reinterprets UV islands.
+- [ ] It creates detached pixels outside expected UV regions.
+- [ ] It does not visually align with the UV template layout.
+- [ ] It fills transparent background areas with color.
+- [ ] It uses anti-aliasing, gradients, or more than ~8 colors.
+- [ ] It cannot be applied to the default bee model without manual rework.
+
 ## Status
 
 - [x] Prompt created
+- [ ] UV template available at `docs/art/templates/bee/default_bee_uv_template.png`
 - [ ] Asset generated/provided
-- [ ] Asset integrated and validated
+- [ ] Asset validated against UV template
+- [ ] Asset integrated

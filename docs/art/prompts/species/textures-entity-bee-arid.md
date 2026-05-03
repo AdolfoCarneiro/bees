@@ -1,5 +1,10 @@
 # Asset Prompt — Arid Bee Texture
 
+> **This is not a request for a sprite, icon, or character portrait.**
+> This prompt is for a UV-mapped entity texture that fills specific regions of the default bee model.
+> The UV template at `docs/art/templates/bee/default_bee_uv_template.png` must exist and be
+> attached or referenced before generation begins.
+
 ## Target Path
 
 ```text
@@ -24,19 +29,30 @@ The Arid Bee lives in deserts, savannas, and badlands. It should feel dry, sun-b
 
 ## Palette Notes
 
-- Sandy tan or buff base coat — bleached, warm-beige with a hint of orange.
-- Terracotta orange or burnt sienna stripes — desert-sand feel.
-- Dark amber or deep brown outlines — no pure black.
-- Optional: very slight dust-orange particles on fuzz hints.
-- Avoid yellows that read as Meadow Bee. Shift toward orange-tan.
+Core colors with approximate hex anchors:
+
+- Base coat: sandy tan / bleached warm-beige — approx. `#C8A878`
+- Stripes: terracotta orange / burnt sienna — approx. `#B05B30`
+- Outlines: dark amber / deep brown — approx. `#4A2800`
+- Belly/accent: muted buff cream — approx. `#D4B98A`
+
+Additional rules:
+- Avoid yellows that read as Meadow Bee — shift toward orange-tan.
 - Avoid greens of any shade.
+- No pure black (`#000000`) in outlines.
 
-## UV / Model Reference
+## UV Template Reference
 
-Matches the vanilla Minecraft bee entity model UV layout:
-- Body, head, wing, and leg regions follow vanilla Bee texture layout (`minecraft:textures/entity/bee/bee.png`).
-- Use the vanilla bee texture as UV template only — do not copy the pixel art directly.
-- Transparent background (PNG with alpha).
+```text
+UV template path: docs/art/templates/bee/default_bee_uv_template.png
+```
+
+The UV template must be attached to the generation tool or referenced explicitly.
+The template defines the exact 64×32 canvas with labeled regions for body, head, wings, legs,
+stinger, and antennae. All transparent areas outside these regions must remain transparent.
+
+Do not use the vanilla bee texture as a pixel art source — use it only to understand UV region
+boundaries if the template above is not yet available.
 
 ## Usage
 
@@ -64,18 +80,62 @@ Feel: sun-bleached, dry, tougher — slightly harsher than starter bees
 - Don't copy vanilla bee or any other mod texture.
 - Don't use blues, purples, or cool tones.
 
+## Image Generation Prompt
+
+Attach `docs/art/templates/bee/default_bee_uv_template.png` to the tool, then paste:
+
+```
+This is not a request for a sprite, icon, or character portrait.
+
+Use the attached UV template as the exact fixed canvas.
+Fill the UV regions with the Arid Bee color scheme described below.
+Do not move, resize, rearrange, crop, rotate, or reinterpret any UV island.
+Keep all transparent areas transparent.
+Output must be exactly 64x32 pixels.
+
+Color scheme:
+- Body region: sandy tan / bleached warm-beige, approximately #C8A878.
+- Stripe region: terracotta orange / burnt sienna, approximately #B05B30.
+- Outline region: dark amber / deep brown, approximately #4A2800.
+- Belly region: muted buff cream, approximately #D4B98A.
+- Wing region: pale semi-transparent cream.
+
+Feel: sun-bleached, dry, and slightly harsh — a desert bee that has survived arid conditions.
+Do not use: greens, blues, purples, bright yellows, pure black, anti-aliasing, gradients.
+Style: flat pixel art, no anti-aliasing, no gradients, hard edges, limited palette of 6 to 8 colors.
+```
+
+> If the tool cannot accept an image attachment, add: `The UV layout is: body center-left,
+> head faces top-left, wings top-right, legs/stinger lower edges, transparent background
+> everywhere outside UV regions.`
+
 ## Acceptance Criteria
 
+- [ ] UV template exists at `docs/art/templates/bee/default_bee_uv_template.png`.
 - [ ] File exists at target path.
 - [ ] Dimensions are exactly 64x32 pixels.
 - [ ] Transparent PNG (alpha channel on non-body areas).
-- [ ] UV regions align with vanilla bee model layout.
+- [ ] UV regions visually align with the UV template.
 - [ ] Visually distinct from Meadow, Forest, Cultivated, and Hardy bee textures.
 - [ ] No copied third-party assets.
 - [ ] Dev placeholder removed when this asset is committed.
 
+## Rejection Criteria
+
+Reject the generated result if:
+
+- [ ] It looks like a free-form bee sprite or character portrait.
+- [ ] It rearranges, resizes, or reinterprets UV islands.
+- [ ] It creates detached pixels outside expected UV regions.
+- [ ] It does not visually align with the UV template layout.
+- [ ] It fills transparent background areas with color.
+- [ ] It uses anti-aliasing, gradients, or more than ~8 colors.
+- [ ] It cannot be applied to the default bee model without manual rework.
+
 ## Status
 
 - [x] Prompt created
+- [ ] UV template available at `docs/art/templates/bee/default_bee_uv_template.png`
 - [ ] Asset generated/provided
-- [ ] Asset integrated and validated
+- [ ] Asset validated against UV template
+- [ ] Asset integrated

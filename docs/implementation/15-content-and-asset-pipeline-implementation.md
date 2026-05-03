@@ -185,6 +185,41 @@ Rules:
 
 The mod runtime should not depend on an AI image generation service.
 
+### UV-Mapped Textures Require a Template
+
+Text-only prompts are not sufficient for entity textures or model textures that must fit a specific
+UV layout. A text prompt describes color and feel. It does not communicate UV island positions,
+transparent regions, or canvas structure.
+
+Feeding a text-only prompt to a text-to-image tool for a UV-mapped texture produces a free-form
+sprite. The result will have parts in wrong positions, will not align to the model, and cannot be
+used directly as a texture.
+
+For all entity textures and model textures, the pipeline must be:
+
+```text
+UV template → prompt referencing template → generator fills UV regions → validate → integrate
+```
+
+Validation rules for UV-mapped texture results:
+
+```text
+- Reject if it looks like a free-form sprite rather than a UV skin.
+- Reject if UV islands have been moved, resized, or rearranged.
+- Reject if transparent background areas are filled with color.
+- Reject if it uses anti-aliasing, gradients, or more than ~8 colors.
+- Reject if body parts do not align to the expected UV regions.
+- Accept only if the result can be applied to the model without rework.
+```
+
+For bee entity textures, the required UV template path is:
+
+```text
+docs/art/templates/bee/default_bee_uv_template.png
+```
+
+This template must be created before any species texture generation begins.
+
 ## 10. Task Breakdown
 
 ## Task 1 — Review Existing Data-Driven Content Pipeline

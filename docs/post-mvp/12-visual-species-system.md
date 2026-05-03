@@ -158,6 +158,35 @@ docs/art/prompts/species/
 
 The prompt must describe the species identity, target texture path, expected dimensions, palette, vanilla/default bee model compatibility, and UV/template requirements.
 
+## Species Texture Generation Rule
+
+Species textures are UV-mapped entity textures. They are not free-form sprites, icons, or
+character portraits.
+
+A text-only prompt fed to a text-to-image tool will produce a sprite-style output that does not
+fit the bee model UV layout. Body parts, head, wings, and legs will not align to the correct
+canvas regions. The result cannot be used as a final texture without extensive manual correction.
+
+The correct generation workflow for bee species textures is:
+
+```text
+UV template first → prompt referencing template → fill UV regions → validate → integrate
+```
+
+This means:
+
+```text
+1. A default bee UV template must exist at docs/art/templates/bee/default_bee_uv_template.png
+   before any species texture is generated.
+2. Every species texture prompt must attach or reference this template.
+3. The generation prompt must explicitly instruct the tool to fill UV regions, not create a sprite.
+4. The result must be validated against the UV template before it is accepted.
+5. Results that rearrange, resize, or reinterpret UV regions must be rejected.
+```
+
+The default bee UV template is a prerequisite for all MVP species textures. It must be created
+as part of Task 6 in the visual species system implementation plan.
+
 A species visual task is complete only when:
 
 ```text
