@@ -4,13 +4,19 @@ This file provides project guidance for Codex and other AI coding agents working
 
 ## Project Summary
 
-Curious Bees is a new Minecraft bee genetics mod inspired by the genetic depth of Forestry, applied to modern vanilla-style Minecraft bees.
+Curious Bees is a Minecraft bee genetics mod inspired by the genetic depth of Forestry and the polished automation/UX expectations of modern bee mods.
 
-It is not a Forestry port, not a Productive Bees fork, and not intended to start as a deterministic resource-bee mod.
+It is not a Forestry port, not a Productive Bees fork, and not a deterministic resource-bee recipe system.
 
-The first playable goal is:
+The initial MVP proved the core loop:
 
-> Two vanilla bees breed in the world using the normal Minecraft flower interaction, and the baby bee receives a genome generated through Mendelian inheritance, dominance rules, and probabilistic mutation.
+> Living vanilla bees can carry genomes, breed through Minecraft's natural flow, inherit alleles through Mendelian rules, express active/inactive traits through dominance, and sometimes produce probabilistic mutations.
+
+The project is now in a **post-MVP productization phase**.
+
+Current goal:
+
+> Turn the validated MVP into a real playable mod with species visuals, analyzer UI, genetic apiary GUI, useful frames, automation-ready apiary behavior, and a healthy content/asset pipeline.
 
 ## Target Platform
 
@@ -41,72 +47,54 @@ Minecraft integration should call the core. The core must not know about Minecra
 ### Always read before coding
 
 ```text
-docs/mvp/01-product-vision-and-roadmap.md
+docs/README.md
+docs/post-mvp/11-post-mvp-productization-roadmap.md
 docs/mvp/02-technical-architecture.md
-docs/mvp/06-ai-coding-guidelines.md
+docs/mvp/03-genetics-system-spec.md
 ```
 
-### Read for genetics tasks
+### Read for visual species work
 
 ```text
+docs/post-mvp/12-visual-species-system.md
+docs/implementation/12-visual-species-system-implementation.md
+docs/mvp/05-content-design-spec.md
+docs/art/asset-prompt-workflow.md
+```
+
+### Read for analyzer work
+
+```text
+docs/post-mvp/13-analyzer-ux-and-progression.md
+docs/implementation/13-analyzer-ux-implementation.md
+docs/mvp/03-genetics-system-spec.md
+docs/mvp/05-content-design-spec.md
+```
+
+### Read for apiary or frame work
+
+```text
+docs/post-mvp/14-genetic-apiary-gui-and-frames.md
+docs/implementation/14-genetic-apiary-gui-and-frames-implementation.md
+docs/mvp/02-technical-architecture.md
+docs/mvp/04-breeding-and-mutation-spec.md
+```
+
+### Read for content and asset pipeline work
+
+```text
+docs/post-mvp/15-content-and-asset-pipeline.md
+docs/implementation/15-content-and-asset-pipeline-implementation.md
+docs/mvp/05-content-design-spec.md
+```
+
+### Read for genetics or breeding changes
+
+```text
+docs/mvp/02-technical-architecture.md
 docs/mvp/03-genetics-system-spec.md
 docs/mvp/04-breeding-and-mutation-spec.md
-docs/implementation/01-genetics-core-implementation.md
-```
-
-### Read for content tasks
-
-```text
-docs/mvp/05-content-design-spec.md
-docs/implementation/02-initial-content-implementation.md
-```
-
-### Read for NeoForge entity data tasks
-
-```text
-docs/implementation/03-neoforge-entity-integration.md
-```
-
-### Read for vanilla breeding integration tasks
-
-```text
-docs/implementation/04-vanilla-breeding-integration.md
-```
-
-### Read for analyzer tasks
-
-```text
-docs/implementation/05-analyzer-implementation.md
-```
-
-### Read for production tasks
-
-```text
-docs/implementation/06-production-mvp.md
-```
-
-### Read for tech apiary tasks
-
-```text
-docs/implementation/07-tech-apiary-and-automation.md
-```
-
-### Read for data-driven content tasks
-
-```text
-docs/implementation/08-data-driven-content.md
-```
-
-### Read for expanded content planning
-
-```text
-docs/implementation/09-expanded-content-roadmap.md
-```
-
-### Read for Fabric support
-
-```text
-docs/implementation/10-fabric-support-implementation.md
+docs/mvp/06-ai-coding-guidelines.md
 ```
 
 ### Read for architectural decisions
@@ -129,9 +117,10 @@ If a task changes behavior, read the relevant test plan or validation checklist.
 
 ```text
 docs/art/
+docs/art/asset-prompt-workflow.md
 ```
 
-Use placeholder assets until gameplay requires polish. Do not block core systems on Blockbench or polished art.
+Do not create placeholder textures as final deliverables. If an asset is required, create a prompt document under `docs/art/prompts/` instead.
 
 ### Read for releases
 
@@ -147,91 +136,75 @@ Use these sources in this order:
 
 ```text
 1. AGENTS.md for agent behavior and guardrails.
-2. ADRs for architectural decisions.
-3. docs/implementation/*.md for execution details.
-4. Core specs for domain rules.
-5. Quality docs for validation.
-6. Backlog/Notion for status and planning.
+2. docs/post-mvp/ for current product direction.
+3. ADRs for architectural decisions.
+4. docs/implementation/*.md for execution details.
+5. docs/mvp/ for genetics/architecture foundation.
+6. docs/quality/ for validation.
 ```
 
-If a backlog task is short, do not assume it contains the full implementation detail. Find the relevant implementation spec.
+## Current Non-Goals
 
-## Non-Goals for the Initial MVP
+Do not implement these without an explicit planning/design task:
 
-Do not implement these during the initial core/MVP phases unless explicitly requested:
+- resource bees (iron, gold, diamond, redstone, emerald, netherite, etc.);
+- large species trees;
+- lifecycle/death/larvae mechanics;
+- temperature/humidity/environment simulation;
+- full Fabric gameplay support;
+- item-only bee systems that replace living bees;
+- custom models for every species as a baseline requirement;
+- complex research systems;
+- large mod compatibility layers;
+- JEI/REI integration unless specifically scoped;
+- placeholder textures submitted as final assets — create a prompt doc instead.
 
-- resource bees such as iron, gold, diamond, redstone, emerald, netherite, etc.;
-- Fabric support;
-- full GUI screens;
-- advanced apiaries;
-- automation systems;
-- Create, Mekanism, Thermal, Farmer's Delight, Botania, Ars Nouveau, or other mod compatibility;
-- complex JSON/datapack loading before the core rules are stable;
-- Forestry-compatible items or systems;
-- Productive Bees-style deterministic recipes;
-- polished assets as a blocker for core systems;
-- Blockbench/MCP automation as a dependency for MVP.
+## Current Post-MVP Scope
 
-## Initial MVP Scope
+The project is in the productization phase.
 
-The first MVP should include:
+Allowed when explicitly scoped:
 
-- pure Java genetics core;
-- small hardcoded content set;
-- vanilla bee genome storage in NeoForge;
-- vanilla-style bee breeding with inherited genetics;
-- basic mutation;
-- basic analyzer feedback;
-- basic production identity;
-- five initial species:
-  - Meadow
-  - Forest
-  - Arid
-  - Cultivated
-  - Hardy
+```text
+- visual metadata in species definitions;
+- species-to-texture resolution;
+- fallback texture strategy;
+- renderer/client-side integration for species textures;
+- analyzer UI (screen, progression, analyzed/unanalyzed state);
+- genetic apiary GUI;
+- frame behavior and frame slot integration;
+- automation-ready apiary inventory behavior;
+- content and asset pipeline tooling and conventions.
+```
+
+Not yet allowed:
+
+```text
+- resource bees;
+- large species trees;
+- lifecycle/death mechanics;
+- temperature/humidity simulation;
+- Fabric gameplay parity;
+- advanced networking beyond what a scoped feature requires.
+```
 
 ## Development Order
 
-Follow this order unless explicitly told otherwise:
+The initial MVP sequence (phases 0–10) has been completed.
+
+The current post-MVP productization order is:
 
 ```text
-0. Documentation and decisions
-1. Pure genetics core
-2. Initial built-in content
-3. NeoForge bee genome storage
-4. Vanilla breeding integration
-5. Analyzer MVP
-6. Production MVP
-7. Tech apiary and automation
-8. Data-driven content
-9. Expanded content roadmap
-10. Fabric support
+11. Post-MVP foundation and documentation (complete)
+12. Visual species system
+13. Analyzer UX and progression
+14. Genetic apiary GUI
+15. Frames and apiary behavior
+16. Content and asset pipeline
+17. First expanded species branch (only after 12–16 are solid)
 ```
 
-Do not invert this order without a documented reason.
-
-## Task Execution Rule
-
-Work on one small task at a time.
-
-A good task is usually:
-
-```text
-- one model class plus tests;
-- one service plus tests;
-- one platform integration hook;
-- one item with simple behavior;
-- one narrow refactor.
-```
-
-A risky task is:
-
-```text
-- genetics + NeoForge + UI in one request;
-- common + NeoForge + Fabric in one request;
-- blocks + GUI + networking + content in one request;
-- adding future systems early.
-```
+Do not skip to content expansion before the product foundation is ready.
 
 ## Required Agent Workflow
 
@@ -239,17 +212,18 @@ For every task:
 
 ```text
 1. Read AGENTS.md.
-2. Read the relevant implementation spec.
-3. Read related domain specs and ADRs.
-4. Restate the task scope.
-5. List files expected to be created or modified.
-6. List assumptions and risks.
-7. Implement the smallest complete version.
-8. Add or update tests when applicable.
-9. Run tests or explain why they cannot run.
-10. Commit the changes with a small, focused commit message.
-11. Summarize changes.
-12. List follow-up tasks if any.
+2. Read docs/post-mvp/ for the relevant phase.
+3. Read the matching docs/implementation/ spec.
+4. Read related domain specs from docs/mvp/ as needed.
+5. Restate the task scope.
+6. List files expected to be created or modified.
+7. List assumptions and risks.
+8. Implement the smallest complete version.
+9. Add or update tests when applicable.
+10. Run tests or explain why they cannot run.
+11. Commit the changes with a small, focused commit message.
+12. Summarize changes.
+13. List follow-up tasks if any.
 ```
 
 ## Commit Rule
@@ -271,6 +245,7 @@ Suggested message prefixes:
 core:     genetics core tasks
 content:  content definition tasks
 neoforge: NeoForge integration tasks
+client:   client-side rendering or UI tasks
 test:     test-only changes
 docs:     documentation updates
 build:    build configuration changes
@@ -284,8 +259,9 @@ Use this pattern for implementation:
 Read AGENTS.md first.
 
 Then read:
-- [relevant implementation spec]
-- [relevant domain spec]
+- docs/post-mvp/[relevant phase doc]
+- docs/implementation/[relevant implementation spec]
+- [relevant docs/mvp/ foundation specs if needed]
 - [relevant ADRs if any]
 - [relevant quality/test plan]
 
@@ -295,6 +271,7 @@ Focus only on:
 Do not implement unrelated features.
 Do not implement future backlog items early.
 Do not introduce Minecraft, NeoForge, or Fabric dependencies into common genetics code.
+Do not add placeholder textures as final deliverables — create a prompt doc instead.
 
 Before coding:
 1. summarize your understanding;
@@ -310,26 +287,18 @@ After coding:
 4. mention any deviation from the docs/specs.
 ```
 
-## First Recommended Implementation Prompt
+## Asset Rule
 
-Do not ask for the whole core at once unless intentionally doing a prototype.
+When implementation requires a new visual asset, do not create a placeholder as a final deliverable.
 
-Recommended first implementation prompt:
+Instead:
 
-```text
-Read AGENTS.md.
-Read docs/implementation/01-genetics-core-implementation.md.
-Read docs/mvp/03-genetics-system-spec.md.
+1. Create a complete prompt document under `docs/art/prompts/`.
+2. Include target path, size, style, palette, UV/model reference, usage, and acceptance criteria.
+3. Wait for the user-provided asset before marking the visual task complete.
+4. After the asset is provided, integrate it into the repo and validate all references.
 
-Focus only on Task 1 from the Phase 1 implementation spec:
-Create genetics core package structure.
-
-Do not implement alleles, genomes, breeding, mutation, Minecraft integration, NeoForge integration, Fabric support, items, blocks or UI.
-
-Before coding, summarize your understanding and list the files/directories you expect to create or modify.
-```
-
-Then proceed task by task through `docs/implementation/01-genetics-core-implementation.md`.
+A temporary fallback texture is allowed only for development safety so the game does not crash. It must be clearly marked as a dev placeholder.
 
 ## Coding Style
 
@@ -379,7 +348,7 @@ Log levels:
 ```text
 WARNING  — unexpected but recoverable input: null list entries, incompatible genomes, unknown IDs.
            Always log before throwing or before silently skipping.
-INFO     — significant game events visible to the player: not required in the core yet.
+INFO     — significant game events visible to the player.
 FINE     — internal operations useful for debugging: mutation applied, breeding completed.
            FINE is off by default in production; use it freely for traceability.
 ```
@@ -411,7 +380,8 @@ neoforge/
   event integration
   registry integration
   item/component integration
-  commands
+  block/entity/menu/screen integration
+  client rendering
 
 fabric/
   future implementation
@@ -419,36 +389,46 @@ fabric/
 
 `common/genetics` must remain independent from Minecraft APIs.
 
-## Asset Rule
-
-Assets are not part of the critical path until Analyzer MVP / Production MVP.
-
-Use placeholders when needed.
-
-Blockbench is useful later for custom blocks and machines, especially Tech Apiary. Blockbench/MCP automation is optional future tooling and must not block the MVP.
+Client rendering and UI code must stay in platform/client layers.
 
 ## Review Checklist
 
 After every AI-generated implementation, check:
 
 ```text
-- Did it follow the relevant implementation spec?
-- Did it implement only the requested scope?
-- Did it add tests where appropriate?
-- Did it avoid platform imports in common genetics?
-- Did it avoid inventing mechanics?
-- Did it avoid future systems?
-- Did it keep content centralized?
-- Did it preserve future Fabric support?
-- Is the code explainable and testable?
+- Did it follow the current post-MVP docs?
+- Did it accidentally follow the old MVP roadmap as if it were current?
+- Did it preserve common/genetics as pure Java?
+- Did it keep platform-specific code outside the genetics core?
+- Did it keep bees as living entities?
+- Did it avoid resource bees?
+- Did it avoid lifecycle/death/larvae mechanics?
+- Did it avoid temperature/humidity simulation?
+- Did it avoid inventing large species trees?
+- Did it add tests for common/core logic where appropriate?
+- Did it avoid hardcoding species behavior in random places?
+- Did it respect analysis state before showing genetic details?
+- Did it keep the apiary automation-ready without requiring an automation unlock?
+- Did it keep visual species support extensible without requiring custom models for every bee?
+- Did it avoid silently committing placeholder textures as final assets?
+- If a new asset was needed, did it create a prompt under docs/art/prompts/ instead?
 ```
 
 ## Final Rule
 
-The project should grow like this:
+The project should now grow like this:
 
 ```text
-Correct core -> small content -> NeoForge storage -> breeding -> analyzer -> production -> tech -> JSON -> expanded content -> Fabric
+validated MVP core
+-> post-MVP productization
+-> visual identity
+-> analyzer UX
+-> apiary GUI
+-> frames and apiary behavior
+-> content and asset pipeline
+-> small expanded species branches
+-> later resource bee progression
+-> future Fabric parity
 ```
 
-Do not skip the foundation.
+Do not skip directly from MVP core to large content or resource bees.
