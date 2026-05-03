@@ -126,21 +126,113 @@ For the post-MVP phase, every built-in species should have:
 - optional icon if needed by UI
 ```
 
-Recommended paths:
+Required texture path convention:
 
 ```txt
-assets/curiousbees/textures/entity/bee/{species_id}.png
-assets/curiousbees/lang/en_us.json
-assets/curiousbees/lang/pt_br.json
+neoforge/src/main/resources/assets/curiousbees/textures/entity/bee/{species_slug}.png
+```
+
+Examples:
+
+```txt
+neoforge/src/main/resources/assets/curiousbees/textures/entity/bee/meadow.png
+neoforge/src/main/resources/assets/curiousbees/textures/entity/bee/forest.png
+neoforge/src/main/resources/assets/curiousbees/textures/entity/bee/arid.png
+neoforge/src/main/resources/assets/curiousbees/textures/entity/bee/cultivated.png
+neoforge/src/main/resources/assets/curiousbees/textures/entity/bee/hardy.png
+```
+
+Language files:
+
+```txt
+neoforge/src/main/resources/assets/curiousbees/lang/en_us.json
+neoforge/src/main/resources/assets/curiousbees/lang/pt_br.json
 ```
 
 Optional future paths:
 
 ```txt
 assets/curiousbees/models/entity/bee/{model_id}.json
-assets/curiousbees/textures/item/comb/{species_id}_comb.png
-assets/curiousbees/models/item/{species_id}_comb.json
+assets/curiousbees/textures/item/comb/{species_slug}_comb.png
+assets/curiousbees/models/item/{species_slug}_comb.json
 ```
+
+## 5a. Visual Authoring Conventions — Implemented
+
+This section documents the visual system as implemented in Phase 12.
+
+### Visual metadata format
+
+Species definitions support an optional `visual` field.
+
+Simple string form (preferred for default model):
+
+```json
+{
+  "visual": "curiousbees:textures/entity/bee/meadow.png"
+}
+```
+
+Object form (used when model must be specified):
+
+```json
+{
+  "visual": {
+    "texture": "curiousbees:textures/entity/bee/meadow.png",
+    "model": "curiousbees:bee/custom_model"
+  }
+}
+```
+
+The `texture` field uses the full resource path including `textures/`. The `model` field is optional and defaults to `curiousbees:bee/default` (the shared vanilla-style bee model).
+
+### Default visual strategy
+
+All MVP species use the shared vanilla bee model with a species-specific texture:
+
+```txt
+- model: curiousbees:bee/default  (shared — uses vanilla bee geometry)
+- texture: curiousbees:textures/entity/bee/{species}.png  (per species)
+```
+
+Custom models are supported by the `SpeciesVisualDefinition` class but are not required for any species by default. Custom models are future scope for special species only.
+
+### Texture dimensions
+
+Standard Minecraft bee texture UV layout:
+
+```txt
+64 × 32 pixels
+PNG with alpha channel
+Transparent background on non-body areas (wings, gaps)
+```
+
+### Fallback behavior
+
+When a bee entity has no genome, unknown species, missing visual definition, or invalid texture ID, the renderer falls back to the vanilla bee texture:
+
+```txt
+minecraft:textures/entity/bee/bee.png
+```
+
+Fallback is logged at DEBUG level so developers can identify missing assets during development.
+
+### How the renderer works
+
+1. `CuriousBeeBeeRenderer` extends vanilla `BeeRenderer` and overrides `getTextureLocation`.
+2. It calls `SpeciesTextureResolver.resolve(bee)` to get the species texture.
+3. The resolver reads the genome via `BeeGenomeStorage`, gets the active species allele, looks up the species definition in `NeoForgeContentRegistry`, and reads the `SpeciesVisualDefinition.textureId()`.
+4. If any step fails, the resolver returns the vanilla fallback.
+5. When the species texture is returned, `CuriousBeeBeeRenderer` uses it instead of calling `super.getTextureLocation` — preserving vanilla state-based texture logic (angry, nectar) only for unregistered bees.
+
+### Adding a new species texture
+
+1. Define the texture path in the species definition `visual` field.
+2. Place the texture PNG at the referenced path.
+3. Ensure dimensions are 64×32 with correct UV layout.
+4. Verify with `SpeciesTextureResolver` that the path resolves without fallback.
+
+If the asset does not exist yet, create an asset prompt under `docs/art/prompts/species/` following the template in `docs/art/asset-prompt-workflow.md`.
 
 ## 6. Production Asset Requirements
 
