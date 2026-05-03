@@ -6,6 +6,7 @@ import com.curiousbees.common.genetics.model.Genome;
 import com.curiousbees.common.genetics.random.JavaGeneticRandom;
 import com.curiousbees.neoforge.content.NeoForgeContentRegistry;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
+import com.curiousbees.neoforge.network.CuriousBeesNetwork;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
@@ -57,6 +58,7 @@ final class DebugSetGenomeCommand {
         Genome genome = DefaultGenomeFactory.createDefault(
                 definition.get(), new JavaGeneticRandom(new Random()));
         BeeGenomeStorage.setGenome(bee, genome);
+        CuriousBeesNetwork.syncToTracking(bee);
 
         source.sendSuccess(() -> Component.literal(
                 "Assigned " + definition.get().displayName()

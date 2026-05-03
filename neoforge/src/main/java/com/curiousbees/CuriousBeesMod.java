@@ -5,6 +5,7 @@ import com.curiousbees.neoforge.client.ClientEventHandler;
 import com.curiousbees.neoforge.command.CuriousBeesCommands;
 import com.curiousbees.neoforge.content.ContentReloadListener;
 import com.curiousbees.neoforge.data.BeeGenomeAttachments;
+import com.curiousbees.neoforge.network.CuriousBeesNetwork;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import com.curiousbees.neoforge.registry.ModBlocks;
 import com.curiousbees.neoforge.registry.ModCreativeTabs;
@@ -16,7 +17,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 
@@ -33,8 +33,10 @@ public final class CuriousBeesMod {
         ModItems.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
         modEventBus.addListener(ApiaryCapabilities::register);
+        modEventBus.addListener(CuriousBeesNetwork::onRegisterPayloads);
         NeoForge.EVENT_BUS.addListener(ContentReloadListener::addReloadListener);
         NeoForge.EVENT_BUS.addListener(CuriousBeesCommands::register);
+        NeoForge.EVENT_BUS.addListener(CuriousBeesNetwork::onStartTracking);
         if (FMLEnvironment.dist == Dist.CLIENT) {
             modEventBus.addListener(ClientEventHandler::onRegisterRenderers);
         }
