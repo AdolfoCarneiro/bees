@@ -471,6 +471,31 @@ Fix:
 Point it to docs/implementation/<phase>.md and rerun with a narrow prompt.
 ```
 
+### 18.7 The Agent Stores Client-Visible Data Without Syncing
+
+Symptom:
+
+```text
+A NeoForge AttachmentType is written server-side but the renderer,
+tooltip, or GUI reads it client-side — always returning empty and
+falling back to a default (e.g. vanilla bee texture).
+```
+
+Fix:
+
+```text
+Any data that affects client rendering or UI (species texture, genome
+display, analysis state) needs an explicit sync packet.
+
+Two sync points are required:
+- PlayerEvent.StartTracking: send to the player who just started seeing the entity.
+- After every server-side change: send to all players already tracking the entity
+  via PacketDistributor.sendToPlayersTrackingEntity.
+
+NeoForge AttachmentType serialization (NBT codec) handles save/load only.
+It does NOT sync to clients automatically.
+```
+
 ## 19. Final Rule
 
 The project should grow like this:

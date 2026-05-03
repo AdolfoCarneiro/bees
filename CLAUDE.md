@@ -409,6 +409,7 @@ After any AI-generated implementation, check:
 - Did it keep visual species support extensible without requiring custom models for every bee?
 - Did it avoid silently committing placeholder textures as final assets?
 - If a new asset was needed, did it create a prompt under docs/art/prompts/ instead?
+- Did any server-side `AttachmentType` that affects client rendering or UI also get synced via a network packet?
 ```
 
 ## Suggested Post-MVP Implementation Order
