@@ -8,6 +8,11 @@ Current roadmap document.
 
 This document defines the first major direction after the initial Curious Bees MVP.
 
+> **Foundation document:** before reading this roadmap in detail, read
+> `docs/post-mvp/10-5-species-hives-and-habitat-system.md`. It defines how species exist
+> in the world (habitat + hive blocks) and reserves the design space for the future
+> custom bee entity migration. Several phases below depend on it.
+
 The original MVP documentation is preserved under:
 
 ```txt
@@ -377,12 +382,86 @@ Done when:
 A human or AI coding agent can clearly understand that the MVP is complete and that the next focus is productization, not immediate content explosion.
 ```
 
+## Phase 11.5 — Species Hives And Habitat System
+
+Purpose:
+
+```txt
+Give world-spawnable species a natural home (species hive blocks) and define the
+extensible spec format for adding new species (data + visual + optional habitat).
+```
+
+This phase is fully designed in:
+
+```txt
+docs/post-mvp/10-5-species-hives-and-habitat-system.md
+```
+
+Deliverables:
+
+```txt
+- SpeciesHabitatDefinition + HiveCompatibilityService in common (pure Java).
+- Optional habitat field on BeeSpeciesDefinition.
+- Three species hive blocks: Meadow, Forest, Arid (extends vanilla BeehiveBlock).
+- World gen entries for species hives in their respective biomes.
+- Hive entry/exit restricted to matching species.
+- Bees emerging from species hives carry the matching genome.
+- New asset prompts under docs/art/prompts/hives/.
+- New UV template at docs/art/templates/hive/default_hive_uv_template.png.
+- Documented species spec format used by all future species.
+- Reserved design space for Phase 11.6 (Custom Bee Entity Architecture).
+```
+
+Done when:
+
+```txt
+A player can find species-specific hives in the world, bees emerging from them
+carry the matching species, and a new species can be added by following the
+documented spec format.
+```
+
+## Phase 11.6 — Custom Bee Entity Architecture (deferred)
+
+Purpose:
+
+```txt
+Decide and document the migration from vanilla-bees-with-attached-genome toward
+custom bee entities per species (with spawn eggs), while keeping vanilla bees
+functional and breedable as a "wild" default species.
+```
+
+Status:
+
+```txt
+Design only. No implementation in this phase. The detailed ADR will live at
+docs/post-mvp/11-6-custom-bee-entity-architecture.md when authored.
+```
+
+Constraints documented in:
+
+```txt
+docs/post-mvp/10-5-species-hives-and-habitat-system.md (section 7.2)
+```
+
+Done when:
+
+```txt
+A future implementer can read the ADR and execute the migration without
+revisiting open architectural questions.
+```
+
 ## Phase 12 — Visual Species System
 
 Purpose:
 
 ```txt
 Make species visible and recognizable in-game.
+```
+
+Depends on:
+
+```txt
+Phase 11.5 — visual definitions for habitat-bearing species must align with hive textures.
 ```
 
 Deliverables:
@@ -718,26 +797,35 @@ Until then, resource bees remain out of scope.
 
 ## 9. Documentation Updates Needed After This Document
 
-The following documents should be created or expanded next:
+Already authored:
 
 ```txt
+docs/post-mvp/10-5-species-hives-and-habitat-system.md   (foundational)
 docs/post-mvp/12-visual-species-system.md
 docs/post-mvp/13-analyzer-ux-and-progression.md
 docs/post-mvp/14-genetic-apiary-gui-and-frames.md
 docs/post-mvp/15-content-and-asset-pipeline.md
+```
+
+Still to be authored:
+
+```txt
+docs/post-mvp/11-6-custom-bee-entity-architecture.md   (deferred ADR; see Phase 11.6)
 docs/research/existing-bee-mods-review.md
 ```
 
-The most important next document is:
+The most important next implementation work derives from:
 
 ```txt
-docs/post-mvp/12-visual-species-system.md
+docs/post-mvp/10-5-species-hives-and-habitat-system.md
 ```
 
 Reason:
 
 ```txt
-Visual species representation affects renderer code, species JSON, asset naming, Blockbench workflow, resource pack conventions, and future content expansion.
+Phase 12 (Visual Species System) and Phase 16 (Content And Asset Pipeline) both depend
+on the habitat data model and species spec format defined in 10.5. Implementing 10.5
+unblocks the rest of the productization roadmap.
 ```
 
 ## 10. Recommended Implementation Order
@@ -745,19 +833,26 @@ Visual species representation affects renderer code, species JSON, asset naming,
 Recommended order after this roadmap:
 
 ```txt
-1. Define visual species system.
-2. Add visual metadata to species definitions.
-3. Implement species texture resolution.
-4. Add first species-specific textures for MVP bees.
-5. Define analyzer UX and analyzed-state rules.
-6. Implement portable analyzer UI improvements.
-7. Implement genetic data visibility only after analysis.
-8. Define apiary GUI layout and behavior.
-9. Implement apiary GUI.
-10. Refine frame behavior.
-11. Separate frames from apiary behavior modifiers.
-12. Document content and asset pipeline.
-13. Only then plan first expanded species branch.
+1.  Add SpeciesHabitatDefinition + HiveCompatibilityService in common.
+2.  Add optional habitat to BeeSpeciesDefinition and built-in species.
+3.  Implement three species hive blocks (Meadow, Forest, Arid) in NeoForge.
+4.  Implement world gen entries for species hives.
+5.  Restrict hive entry/exit to matching species; stamp genomes on emergence.
+6.  Create UV template + asset prompts for hive textures; integrate final hive textures.
+7.  Define visual species system (Phase 12).
+8.  Add visual metadata to species definitions.
+9.  Implement species texture resolution.
+10. Add first species-specific textures for MVP bees.
+11. Define analyzer UX and analyzed-state rules.
+12. Implement portable analyzer UI improvements.
+13. Implement genetic data visibility only after analysis.
+14. Define apiary GUI layout and behavior.
+15. Implement apiary GUI.
+16. Refine frame behavior.
+17. Separate frames from apiary behavior modifiers.
+18. Document content and asset pipeline (formalize species spec format from 10.5).
+19. Author Phase 11.6 ADR for custom bee entity migration (design only).
+20. Only then plan first expanded species branch.
 ```
 
 ## 11. AI Agent Guidance

@@ -1,7 +1,12 @@
 # 15 — Content and Asset Pipeline
 
-> Status: Post-MVP planning document.  
+> Status: Post-MVP planning document.
 > This document defines how Curious Bees should add species, production, mutations, visuals, and assets after the MVP.
+>
+> **Species spec format reference:** the canonical "what makes a species complete" format
+> (genetic + visual + optional habitat) is defined in
+> `docs/post-mvp/10-5-species-hives-and-habitat-system.md`, section 9. This document
+> formalizes that format into authoring guides, templates, and validation rules.
 
 ## 1. Purpose
 
