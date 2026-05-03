@@ -7,5 +7,8 @@
     "PRODUCTIVITY": "curious_bees:traits/productivity/normal",
     "FERTILITY": "curious_bees:traits/fertility/two",
     "FLOWER_TYPE": ["curious_bees:traits/flower_type/flowers", "curious_bees:traits/flower_type/cactus"]
+  },
+  "visual": {
+    "texture": "curiousbees:textures/entity/bee/hardy.png"
   }
 }

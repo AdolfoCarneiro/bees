@@ -4,6 +4,7 @@ import com.curiousbees.common.content.data.MutationDefinitionData;
 import com.curiousbees.common.content.data.ProductionDefinitionData;
 import com.curiousbees.common.content.data.ProductionOutputData;
 import com.curiousbees.common.content.data.SpeciesDefinitionData;
+import com.curiousbees.common.content.data.SpeciesVisualData;
 import com.curiousbees.common.content.data.TraitAlleleDefinitionData;
 import com.curiousbees.common.content.data.TraitAllelePairData;
 
@@ -157,6 +158,16 @@ public final class ContentValidator {
         // Trait chromosomeType consistency: if the allele id belongs to a known allele,
         // that allele's chromosomeType must match the slot. This is checked in conversion;
         // validation here only checks referential presence.
+
+        SpeciesVisualData visual = dto.visual();
+        if (visual != null) {
+            if (visual.textureId() == null || visual.textureId().isBlank()) {
+                errors.add(ctx + ": visual.texture must not be blank");
+            }
+            if (visual.modelId() != null && visual.modelId().isBlank()) {
+                errors.add(ctx + ": visual.model must not be blank when present");
+            }
+        }
     }
 
     // -------------------------------------------------------------------------

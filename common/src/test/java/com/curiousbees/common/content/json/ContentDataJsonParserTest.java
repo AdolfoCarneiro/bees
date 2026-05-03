@@ -7,6 +7,9 @@ import com.curiousbees.common.content.data.SpeciesDefinitionData;
 import com.curiousbees.common.content.data.TraitAlleleDefinitionData;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -184,6 +187,76 @@ class ContentDataJsonParserTest {
                 () -> ContentDataJsonParser.parseValidatedProduction(json, KNOWN_SPECIES_IDS));
 
         org.junit.jupiter.api.Assertions.assertTrue(exception.getMessage().contains("item"));
+    }
+
+    @Test
+    void parsesSpeciesVisualObjectForm() {
+        String json = """
+                {
+                  "id": "curious_bees:species/meadow",
+                  "displayName": "Meadow Bee",
+                  "dominance": "DOMINANT",
+                  "defaultTraits": {
+                    "LIFESPAN": "curious_bees:traits/lifespan/normal",
+                    "PRODUCTIVITY": "curious_bees:traits/productivity/normal",
+                    "FERTILITY": "curious_bees:traits/fertility/two",
+                    "FLOWER_TYPE": "curious_bees:traits/flower_type/flowers"
+                  },
+                  "visual": {
+                    "texture": "curiousbees:textures/entity/bee/meadow.png"
+                  }
+                }
+                """;
+
+        SpeciesDefinitionData data = ContentDataJsonParser.parseValidatedSpecies(json, KNOWN_TRAIT_IDS);
+
+        assertNotNull(data.visual());
+        assertEquals("curiousbees:textures/entity/bee/meadow.png", data.visual().textureId());
+        assertNull(data.visual().modelId());
+    }
+
+    @Test
+    void parsesSpeciesVisualStringShorthand() {
+        String json = """
+                {
+                  "id": "curious_bees:species/meadow",
+                  "displayName": "Meadow Bee",
+                  "dominance": "DOMINANT",
+                  "defaultTraits": {
+                    "LIFESPAN": "curious_bees:traits/lifespan/normal",
+                    "PRODUCTIVITY": "curious_bees:traits/productivity/normal",
+                    "FERTILITY": "curious_bees:traits/fertility/two",
+                    "FLOWER_TYPE": "curious_bees:traits/flower_type/flowers"
+                  },
+                  "visual": "curiousbees:textures/entity/bee/meadow.png"
+                }
+                """;
+
+        SpeciesDefinitionData data = ContentDataJsonParser.parseValidatedSpecies(json, KNOWN_TRAIT_IDS);
+
+        assertNotNull(data.visual());
+        assertEquals("curiousbees:textures/entity/bee/meadow.png", data.visual().textureId());
+    }
+
+    @Test
+    void parsesSpeciesWithoutVisual() {
+        String json = """
+                {
+                  "id": "curious_bees:species/meadow",
+                  "displayName": "Meadow Bee",
+                  "dominance": "DOMINANT",
+                  "defaultTraits": {
+                    "LIFESPAN": "curious_bees:traits/lifespan/normal",
+                    "PRODUCTIVITY": "curious_bees:traits/productivity/normal",
+                    "FERTILITY": "curious_bees:traits/fertility/two",
+                    "FLOWER_TYPE": "curious_bees:traits/flower_type/flowers"
+                  }
+                }
+                """;
+
+        SpeciesDefinitionData data = ContentDataJsonParser.parseValidatedSpecies(json, KNOWN_TRAIT_IDS);
+
+        assertNull(data.visual());
     }
 
     @Test

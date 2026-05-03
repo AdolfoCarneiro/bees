@@ -8,5 +8,8 @@
     "FERTILITY": "curious_bees:traits/fertility/two",
     "FLOWER_TYPE": "curious_bees:traits/flower_type/flowers"
   },
-  "spawnContextNotes": ["plains", "flower_forest", "meadow"]
+  "spawnContextNotes": ["plains", "flower_forest", "meadow"],
+  "visual": {
+    "texture": "curiousbees:textures/entity/bee/meadow.png"
+  }
 }

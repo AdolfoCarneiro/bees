@@ -4,9 +4,11 @@ import com.curiousbees.common.content.data.MutationDefinitionData;
 import com.curiousbees.common.content.data.ProductionDefinitionData;
 import com.curiousbees.common.content.data.ProductionOutputData;
 import com.curiousbees.common.content.data.SpeciesDefinitionData;
+import com.curiousbees.common.content.data.SpeciesVisualData;
 import com.curiousbees.common.content.data.TraitAlleleDefinitionData;
 import com.curiousbees.common.content.data.TraitAllelePairData;
 import com.curiousbees.common.content.species.BeeSpeciesDefinition;
+import com.curiousbees.common.content.visual.SpeciesVisualDefinition;
 import com.curiousbees.common.gameplay.production.ProductionDefinition;
 import com.curiousbees.common.gameplay.production.ProductionOutput;
 import com.curiousbees.common.genetics.model.Allele;
@@ -95,9 +97,19 @@ public final class ContentConverter {
             traitAlleles.put(type, new Allele[]{first, second});
         }
 
+        SpeciesVisualDefinition visual = convertVisual(dto.visual());
+
         LOGGER.fine(() -> "Converting species: " + dto.id());
         return new BeeSpeciesDefinition(dto.id(), dto.displayName(), speciesAllele,
-                traitAlleles, dto.spawnContextNotes());
+                traitAlleles, dto.spawnContextNotes(), visual);
+    }
+
+    private static SpeciesVisualDefinition convertVisual(SpeciesVisualData data) {
+        if (data == null) return null;
+        if (data.modelId() != null) {
+            return SpeciesVisualDefinition.of(data.textureId(), data.modelId());
+        }
+        return SpeciesVisualDefinition.ofTexture(data.textureId());
     }
 
     // -------------------------------------------------------------------------

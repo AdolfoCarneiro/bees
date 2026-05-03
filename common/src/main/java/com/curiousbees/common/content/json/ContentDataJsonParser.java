@@ -5,6 +5,7 @@ import com.curiousbees.common.content.data.MutationResultModesData;
 import com.curiousbees.common.content.data.ProductionDefinitionData;
 import com.curiousbees.common.content.data.ProductionOutputData;
 import com.curiousbees.common.content.data.SpeciesDefinitionData;
+import com.curiousbees.common.content.data.SpeciesVisualData;
 import com.curiousbees.common.content.data.TraitAlleleDefinitionData;
 import com.curiousbees.common.content.data.TraitAllelePairData;
 import com.curiousbees.common.content.validation.ContentValidationResult;
@@ -51,7 +52,8 @@ public final class ContentDataJsonParser {
                 requireString(root, "displayName", "species"),
                 requireString(root, "dominance", "species"),
                 requireDefaultTraits(root, "species"),
-                optionalStringList(root, "spawnContextNotes", "species"));
+                optionalStringList(root, "spawnContextNotes", "species"),
+                optionalVisual(root, "species"));
     }
 
     public static SpeciesDefinitionData parseValidatedSpecies(String json, Set<String> knownTraitAlleleIds) {
@@ -186,6 +188,27 @@ public final class ContentDataJsonParser {
             values.put(entry.getKey(), number.doubleValue());
         }
         return values;
+    }
+
+    private static SpeciesVisualData optionalVisual(Map<String, Object> root, String context) {
+        Object value = root.get("visual");
+        if (value == null) {
+            return null;
+        }
+        // Simple string form: "visual": "curiousbees:textures/entity/bee/meadow.png"
+        if (value instanceof String textureId) {
+            return new SpeciesVisualData(textureId);
+        }
+        // Object form: "visual": { "texture": "...", "model": "..." }
+        if (value instanceof Map<?, ?> rawMap) {
+            Map<String, Object> object = castObject(rawMap, context + ".visual");
+            String textureId = requireString(object, "texture", context + ".visual");
+            String modelId = object.containsKey("model")
+                    ? requireString(object, "model", context + ".visual")
+                    : null;
+            return new SpeciesVisualData(textureId, modelId);
+        }
+        throw parseError(context + ".visual must be a string or object");
     }
 
     private static Map<String, TraitAllelePairData> requireDefaultTraits(Map<String, Object> root, String context) {
