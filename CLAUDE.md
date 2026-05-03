@@ -86,6 +86,7 @@ For visual/species work, read:
 ```txt
 docs/post-mvp/12-visual-species-system.md
 docs/mvp/05-content-design-spec.md
+docs/art/asset-prompt-workflow.md
 ```
 
 For analyzer work, read:
@@ -273,6 +274,25 @@ Resource bees belong to a later content expansion phase after:
 - content and asset pipeline is ready;
 - a dedicated resource-bee progression design exists.
 
+## Asset Generation Rule
+
+When implementation requires a new visual asset — species texture, GUI background, item icon, block texture, or model texture — do not create a placeholder as a final deliverable.
+
+Instead:
+
+1. Create a complete prompt document under `docs/art/prompts/`.
+2. Include target path, size, style, palette, UV/model reference, usage, and acceptance criteria.
+3. Wait for the user-provided asset before marking the visual task complete.
+4. After the asset is provided, integrate it into the repo and validate all references.
+
+A temporary fallback texture is allowed only for development safety so the game does not crash. It must be clearly marked as a dev placeholder and must not count as a completed asset.
+
+For the full workflow and prompt template, read:
+
+```text
+docs/art/asset-prompt-workflow.md
+```
+
 ## Current Non-Goals
 
 Do not implement without explicit request:
@@ -287,7 +307,8 @@ Do not implement without explicit request:
 - custom model for every species;
 - broad mod compatibility layers;
 - JEI/REI integration unless specifically scoped;
-- advanced networking beyond what the scoped feature requires.
+- advanced networking beyond what the scoped feature requires;
+- final placeholder textures for species, items, blocks, or GUIs — if an asset is required, generate a prompt document instead.
 
 ## Package Boundaries
 
@@ -386,6 +407,8 @@ After any AI-generated implementation, check:
 - Did it respect analysis state before showing genetic details?
 - Did it keep automation-ready apiary behavior rather than adding an automation unlock?
 - Did it keep visual species support extensible without requiring custom models for every bee?
+- Did it avoid silently committing placeholder textures as final assets?
+- If a new asset was needed, did it create a prompt under docs/art/prompts/ instead?
 ```
 
 ## Suggested Post-MVP Implementation Order
