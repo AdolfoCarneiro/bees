@@ -15,7 +15,7 @@ By the end of this phase, the project should be able to:
 - load/resolve visual metadata from built-in and data-driven species;
 - render vanilla Bee entities with a texture based on active species;
 - fall back safely when a visual profile or asset is missing;
-- provide placeholder textures for Meadow, Forest, Arid, Cultivated and Hardy;
+- create asset prompts for Meadow, Forest, Arid, Cultivated and Hardy and integrate final textures when provided;
 - document asset naming conventions for future species.
 ```
 
@@ -60,7 +60,8 @@ built-in visual profiles for Meadow, Forest, Arid, Cultivated, Hardy
 validation for invalid visual references
 NeoForge client-side texture resolution by active species
 fallback texture handling
-placeholder species textures
+asset prompts for all MVP species under docs/art/prompts/species/
+final species textures integrated when provided by user
 updated asset/content authoring docs
 ```
 
@@ -373,46 +374,74 @@ Do not implement custom bee entities, custom models, hybrid blending, Fabric sup
 Before coding, summarize how the renderer will access genome data and where texture resolution code will live.
 ```
 
-## Task 6 — Add Placeholder Species Textures
+## Task 6 — Create Species Asset Prompts and Integrate Final Textures
 
 ### Objective
 
-Provide initial texture assets for the five current species and fallback.
+Create complete asset prompts for the MVP species textures and integrate the generated final textures into the mod.
 
 ### Scope
 
-Add placeholder PNGs for:
+For each MVP species (Meadow, Forest, Arid, Cultivated, Hardy), create a prompt file under:
 
 ```text
-default
-meadow
-forest
-arid
-cultivated
-hardy
+docs/art/prompts/species/
+```
+
+Each prompt must define:
+
+```text
+- species name and visual identity;
+- target texture path;
+- default bee model/UV compatibility;
+- required image size;
+- transparent background requirement if applicable;
+- visual palette;
+- do/don't rules;
+- output requirements;
+- acceptance checklist.
+```
+
+When the user provides final generated textures, integrate them into the mod and validate all references.
+
+### Non-goals
+
+```text
+- Do not create custom models for MVP species.
+- Do not generate final placeholder textures as deliverables.
+- Do not mark the task complete with temporary assets.
+- Do not copy vanilla bee textures.
+- Do not create resource bee visuals.
 ```
 
 ### Acceptance Criteria
 
 ```text
-- All referenced texture files exist.
-- Textures are visually distinguishable enough for testing.
-- Texture names follow documented convention.
-- No copied third-party assets are committed.
+- A complete prompt exists for each MVP species under docs/art/prompts/species/.
+- Each prompt references the correct target path.
+- Each prompt states that the texture must fit the default bee model/UV.
+- Generated final textures are integrated when provided by the user.
+- Visual definitions point to the final texture paths.
+- Missing/fallback texture behavior exists but is not treated as final art.
+- No placeholder texture is accepted as final.
 ```
 
 ### Prompt for Claude Code
 
 ```text
-Read docs/post-mvp/12-visual-species-system.md and docs/post-mvp/15-content-and-asset-pipeline.md.
+Read CLAUDE.md and docs/art/asset-prompt-workflow.md.
 
 Focus only on Task 6 from docs/implementation/12-visual-species-system-implementation.md.
 
-Add placeholder texture assets for default, Meadow, Forest, Arid, Cultivated and Hardy bees using the documented paths.
+Do not generate images.
 
-Do not copy assets from other mods. Do not implement rendering logic in this task. Do not add new species.
+Create complete asset prompt files for the MVP species: Meadow, Forest, Arid, Cultivated, Hardy.
 
-Before changing files, list the exact asset paths you plan to create.
+Each prompt must include: target path, species visual identity, palette, model/UV requirements, output requirements, and acceptance checklist.
+
+Do not create placeholder textures as final deliverables.
+
+If final PNGs are not provided yet, stop after creating the prompts and report which assets are waiting for user generation.
 ```
 
 ## Task 7 — Update Visual Authoring Documentation
@@ -455,7 +484,7 @@ Before editing, list the docs you plan to modify.
 - Data-driven species can declare visual metadata.
 - NeoForge client can render bees with active-species textures.
 - Fallback texture behavior exists.
-- Placeholder textures exist for all current species.
+- Asset prompts exist for all current species; final textures are integrated when provided.
 - Visual authoring docs are updated.
 - No resource bees or large species tree were added.
 - No custom model-per-species requirement was introduced.
@@ -489,7 +518,8 @@ content: add species visual definition model
 content: add visual metadata to built-in species
 content: support visual metadata in data-driven species
 neoforge: resolve bee texture by active species
-assets: add placeholder bee species textures
+docs: add species asset prompts under docs/art/prompts/species/
+assets: integrate final bee species textures when provided
 docs: document species visual authoring
 ```
 

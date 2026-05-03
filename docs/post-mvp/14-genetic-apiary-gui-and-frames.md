@@ -425,6 +425,29 @@ Do not put frame or apiary operation logic directly inside renderer classes.
 
 Do not put Minecraft imports into common/genetics.
 
+## Apiary, Frames, and Block Asset Policy
+
+The Genetic Apiary block, frame items, and GUI visuals must use generated final assets instead of placeholders.
+
+Required prompt categories:
+
+```text
+docs/art/prompts/blocks/
+docs/art/prompts/items/
+docs/art/prompts/gui/
+```
+
+Block and model-related textures should reference a known model or UV layout whenever possible.
+
+For custom block models:
+
+```text
+- define or export the Blockbench model first;
+- identify the UV texture layout;
+- generate texture prompts using that UV reference;
+- integrate generated textures after validation.
+```
+
 ## 16. Out of Scope For This Phase
 
 Do not implement yet:

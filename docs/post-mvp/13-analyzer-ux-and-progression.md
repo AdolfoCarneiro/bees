@@ -405,6 +405,29 @@ Do not:
 - Store analysis rules inside random GUI classes.
 ```
 
+## Analyzer Visual Assets
+
+Analyzer UI and item visuals require final generated assets, not placeholders.
+
+Required assets may include:
+
+```text
+- analyzer item icon;
+- analyzer GUI background;
+- analyzer screen widgets or icons;
+- genetic trait icons;
+- analyzed/unanalyzed state indicators.
+```
+
+For each required asset, the implementation must create an asset prompt under:
+
+```text
+docs/art/prompts/items/
+docs/art/prompts/gui/
+```
+
+The analyzer UI can be implemented structurally before final art exists, but the visual task is not complete until generated assets are integrated and validated.
+
 ## 16. Acceptance Criteria
 
 This phase is successful when:

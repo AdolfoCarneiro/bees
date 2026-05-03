@@ -468,6 +468,104 @@ Do not define or add resource bees, large species trees or compatibility content
 Before editing, list where the checklist will be added.
 ```
 
+## Task 8 — Add Missing Asset Report
+
+### Objective
+
+Create a local tool or script that reports required assets that do not yet exist.
+
+### Scope
+
+The tool should detect missing assets from:
+
+```text
+- species visual definitions;
+- item model references;
+- block model references;
+- GUI texture references if listed in a manifest;
+- prompt manifest if present.
+```
+
+### Acceptance Criteria
+
+```text
+- Tool reports missing required assets with expected target paths.
+- Tool distinguishes missing final assets from intentional fallback assets.
+- Tool can be run locally before release.
+- Normal gameplay does not crash when the tool is not running.
+```
+
+### Prompt for Claude Code
+
+```text
+Read docs/post-mvp/15-content-and-asset-pipeline.md.
+
+Focus only on Task 8 from docs/implementation/15-content-and-asset-pipeline-implementation.md.
+
+Implement the smallest useful missing asset report for species visual definitions.
+
+Do not crash normal gameplay. Do not add new species, resource bees or custom model systems.
+
+Before coding, recommend whether this should be a debug command, a startup log scan, or a standalone script.
+```
+
+## Task 9 — Add Asset Prompt Manifest
+
+### Objective
+
+Create a manifest tracking all asset prompts and their current status.
+
+### Suggested file
+
+```text
+docs/art/asset-manifest.md
+```
+
+### Required fields per entry
+
+```text
+- asset ID;
+- asset type (entity texture / item icon / block texture / GUI);
+- prompt path;
+- target path;
+- required size;
+- status;
+- notes.
+```
+
+### Status values
+
+```text
+- prompt-needed;
+- prompt-created;
+- generated;
+- integrated;
+- validated.
+```
+
+### Acceptance Criteria
+
+```text
+- Manifest tracks species, item, block, and GUI assets.
+- It is clear which assets still need user generation.
+- Placeholders are not listed as integrated or validated.
+- Manifest is committed and kept up to date.
+```
+
+### Prompt for Claude Code
+
+```text
+Read docs/art/asset-prompt-workflow.md and docs/post-mvp/15-content-and-asset-pipeline.md.
+
+Focus only on Task 9 from docs/implementation/15-content-and-asset-pipeline-implementation.md.
+
+Create the initial asset prompt manifest at docs/art/asset-manifest.md.
+
+Populate it with all known required assets from Phase 12, 13, and 14 with status prompt-needed or prompt-created as appropriate.
+
+Do not create placeholder PNGs or generate images.
+```
+
 ## 11. Phase Completion Checklist
 
 ```text

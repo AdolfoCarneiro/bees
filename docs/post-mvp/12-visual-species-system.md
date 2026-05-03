@@ -146,6 +146,27 @@ Example conceptual species visual definition:
 
 This is future scope. The first implementation should not require custom models.
 
+## Asset Creation Policy
+
+Species visuals must not be completed using placeholder textures.
+
+For each species texture required by this phase, the implementation must create an asset prompt under:
+
+```text
+docs/art/prompts/species/
+```
+
+The prompt must describe the species identity, target texture path, expected dimensions, palette, vanilla/default bee model compatibility, and UV/template requirements.
+
+A species visual task is complete only when:
+
+```text
+- the generated texture exists at the expected path;
+- the visual definition points to it;
+- fallback behavior exists for missing assets;
+- the asset is not a temporary placeholder.
+```
+
 ## 5. Active Species Rendering Rule
 
 Initial rendering rule:
@@ -387,7 +408,7 @@ Scope:
 - Add visual metadata support to species definitions.
 - Add client-side texture selection by active species.
 - Add fallback texture handling.
-- Add placeholder textures for MVP species.
+- Create asset prompts for MVP species under docs/art/prompts/species/ and integrate final textures when provided.
 
 Out of scope:
 - Custom models for all species.

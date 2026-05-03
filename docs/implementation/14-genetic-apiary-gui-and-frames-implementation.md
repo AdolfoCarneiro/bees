@@ -510,6 +510,86 @@ Document containment/simulation as a future or separate implementation slice.
 Do not implement code.
 ```
 
+## Task 9 — Create Genetic Apiary Asset Prompts
+
+### Objective
+
+Create complete prompts for the Genetic Apiary block and GUI assets.
+
+### Scope
+
+Create prompt files under `docs/art/prompts/blocks/` and `docs/art/prompts/gui/` for:
+
+```text
+- Genetic Apiary block texture(s);
+- Genetic Apiary GUI background;
+- production progress indicator;
+- frame slot visuals if custom;
+- bee occupancy or status icons if used.
+```
+
+### Acceptance Criteria
+
+```text
+- Prompt files exist for every required apiary visual asset.
+- Prompts include target paths and dimensions.
+- Block prompts reference model/UV requirements.
+- GUI prompts include layout constraints and slot/progress positions.
+- No placeholder is accepted as final.
+```
+
+### Prompt for Claude Code
+
+```text
+Read CLAUDE.md and docs/art/asset-prompt-workflow.md.
+
+Focus only on Task 9 from docs/implementation/14-genetic-apiary-gui-and-frames-implementation.md.
+
+Create complete asset prompt files for the Genetic Apiary block texture, GUI background, progress indicator, and any other required apiary visuals.
+
+Do not create placeholder PNGs. Do not generate images.
+```
+
+## Task 10 — Create Frame Item Asset Prompts
+
+### Objective
+
+Create prompts for frame item icons.
+
+### Scope
+
+Create prompt files under `docs/art/prompts/items/` for:
+
+```text
+- Basic Frame;
+- Productivity Frame;
+- Mutation Frame;
+- Stability Frame.
+```
+
+### Acceptance Criteria
+
+```text
+- Each frame has a prompt under docs/art/prompts/items/.
+- Each prompt defines a clear visual identity.
+- Icons are described as Minecraft-style item textures (16x16).
+- No generated placeholder icon counts as final.
+```
+
+### Prompt for Claude Code
+
+```text
+Read CLAUDE.md and docs/art/asset-prompt-workflow.md.
+
+Focus only on Task 10 from docs/implementation/14-genetic-apiary-gui-and-frames-implementation.md.
+
+Create complete asset prompt files for the four frame item icons: Basic, Productivity, Mutation, Stability.
+
+Do not create placeholder PNGs. Do not generate images.
+
+Place prompts under docs/art/prompts/items/.
+```
+
 ## 11. Phase Completion Checklist
 
 ```text

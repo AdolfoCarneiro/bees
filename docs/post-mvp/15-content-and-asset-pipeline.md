@@ -290,6 +290,62 @@ Recommended workflow for new built-in species:
 
 Do not start by generating random bee textures without species design.
 
+## AI-Assisted Asset Prompt Pipeline
+
+The content and asset pipeline is not only about paths and JSON references. It must also define how final assets are requested and delivered.
+
+Curious Bees uses an AI-assisted but user-approved asset workflow:
+
+```text
+content definition
+-> visual metadata
+-> missing asset detection
+-> asset prompt generation
+-> external image generation by user
+-> asset import
+-> validation
+-> final integration
+```
+
+Coding agents are responsible for:
+
+```text
+- detecting required assets;
+- creating complete prompt files under docs/art/prompts/;
+- integrating generated files when provided;
+- validating dimensions, paths, alpha, and references;
+- updating models, blockstates, lang entries, and visual definitions.
+```
+
+Coding agents are not responsible for:
+
+```text
+- generating final image files directly;
+- inventing final placeholder art;
+- marking asset tasks complete without generated assets.
+```
+
+### Prompt Files as Deliverables
+
+For every missing required asset, the agent must create a prompt file under:
+
+```text
+docs/art/prompts/
+```
+
+Prompt files are project deliverables and should be committed. They document the intended visual identity of the asset and allow consistent regeneration later.
+
+### Asset Completion Rule
+
+An asset task is complete only when:
+
+```text
+- prompt exists;
+- generated asset exists at the expected path;
+- asset passes validation (dimensions, alpha, references);
+- no temporary placeholder is used as final art.
+```
+
 ## 13. AI-Assisted Content Workflow
 
 AI tools can help with:

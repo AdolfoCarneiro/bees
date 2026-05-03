@@ -415,6 +415,55 @@ Do not implement research database, mutation tree UI, JEI/REI integration, analy
 Before coding, list the packet class, screen class, and any other files you expect to create.
 ```
 
+## Task 5b — Create Analyzer Asset Prompts
+
+### Objective
+
+Create complete prompts for all required analyzer-related visual assets.
+
+### Scope
+
+Generate prompt files under `docs/art/prompts/items/` and `docs/art/prompts/gui/` for:
+
+```text
+- portable analyzer item icon;
+- analyzer screen background;
+- trait or status icons if used;
+- analyzed/unknown state indicators if used.
+```
+
+### Non-goals
+
+```text
+- Do not create final placeholder PNGs.
+- Do not generate images directly.
+- Do not block core analyzer logic on polished art.
+- Do not mark UI art as complete without generated assets.
+```
+
+### Acceptance Criteria
+
+```text
+- Prompt files exist under docs/art/prompts/items/ and docs/art/prompts/gui/.
+- Each prompt includes target path, size, style, usage, and acceptance criteria.
+- UI implementation references expected final paths.
+- Temporary fallback is allowed only for dev safety and does not count as final.
+```
+
+### Prompt for Claude Code
+
+```text
+Read CLAUDE.md and docs/art/asset-prompt-workflow.md.
+
+Focus only on Task 5b from docs/implementation/13-analyzer-ux-implementation.md.
+
+Create complete asset prompt files for the portable analyzer item icon, analyzer screen background, and any trait/status icons needed.
+
+Do not create placeholder PNGs. Do not generate images.
+
+Place prompts under docs/art/prompts/items/ and docs/art/prompts/gui/.
+```
+
 ## Task 6 — Apply Analyzed-State Display Rules Where Applicable
 
 ### Objective
