@@ -281,7 +281,7 @@ When implementation requires a new visual asset — species texture, GUI backgro
 Instead:
 
 1. Create a complete prompt document under `docs/art/prompts/`.
-2. Include target path, size, style, palette, UV/model reference, usage, and acceptance criteria.
+2. Include target path, size, style, palette with hex codes, UV/model reference, usage, acceptance criteria, and a ready-to-paste `## Image Generation Prompt` block formatted for text-to-image tools (GPT Images, DALL-E, etc.).
 3. Wait for the user-provided asset before marking the visual task complete.
 4. After the asset is provided, integrate it into the repo and validate all references.
 

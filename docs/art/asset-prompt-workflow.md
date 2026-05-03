@@ -95,7 +95,11 @@ Resolved prompts may be archived or marked with a `[RESOLVED]` prefix rather tha
 
 ## Prompt Document Template
 
-Use this template when creating a new asset prompt:
+Use this template when creating a new asset prompt.
+
+The `## Image Generation Prompt` section is mandatory — it must contain a ready-to-paste block
+that can be dropped directly into GPT Images, DALL-E, or a similar text-to-image tool without editing.
+The `## Palette Notes` section must include approximate hex codes, not only verbal descriptions.
 
 ```markdown
 # Asset Prompt — {asset description}
@@ -119,15 +123,70 @@ Minecraft Java Edition pixel art style.
 
 ## Palette Notes
 
-{palette guidance, e.g. warm yellows, browns, soft golds — avoid pure black outlines}
+Core colors with approximate hex anchors:
+
+- Base coat: {description} — approx. `#{HEX}`
+- Stripes: {description} — approx. `#{HEX}`
+- Outlines: {description} — approx. `#{HEX}`
+- Belly/accent: {description} — approx. `#{HEX}`
+
+{any additional color rules or exclusions}
 
 ## UV / Model Reference
 
 {reference to model or UV layout this texture maps to, if applicable}
 
+For bee entity textures: the canvas is 64×32 pixels and follows the vanilla Minecraft bee UV layout
+(`minecraft:textures/entity/bee/bee.png`). Use the vanilla texture as UV template only — trace
+the region boundaries, do not copy the pixel art. Key regions: body occupies the center-left of
+the canvas, head faces across the top-left, wings span the top-right, stinger and antennae fill
+the remaining small regions. Transparent background (PNG with alpha) outside all body regions.
+
 ## Usage
 
 {where this asset is used — e.g. rendered on vanilla Bee entity when active species is Meadow}
+
+## Image Generation Prompt
+
+Paste the block below directly into GPT Images, DALL-E, or a similar text-to-image tool.
+Do not modify the structural keywords — replace only the bracketed fields.
+
+> **Workflow note:** text-to-image tools cannot output a 64×32 UV-mapped texture directly.
+> Use the generated image as a **color and style reference**.
+> Then paint the final texture in Aseprite or a similar pixel art tool using the vanilla bee
+> UV layout (64×32) as your canvas. The vanilla bee PNG shows the exact UV regions to fill.
+
+---
+
+```
+Minecraft Java Edition pixel art bee character, {SPECIES_NAME} bee.
+Body: {MAIN_COLOR_DESCRIPTION}, approximately {HEX1}.
+Stripes: {STRIPE_COLOR_DESCRIPTION}, approximately {HEX2}.
+Outlines: {OUTLINE_COLOR_DESCRIPTION}, approximately {HEX3}.
+Feel: {one sentence — e.g. sun-bleached and harsh, earthy and woodland, warm and friendly}.
+Do not include: {comma-separated list of colors or styles to avoid}.
+Style rules: flat pixel art, no anti-aliasing, no gradients, hard edges, limited palette of 6 to 8 colors, transparent background.
+Composition: single bee character viewed from the side, centered, no background, no text, no extra objects.
+```
+
+---
+
+## Species Identity
+
+```text
+Name: {display name}
+Role: {role in genetics progression}
+Biomes: {biomes}
+Feel: {one-line visual identity}
+```
+
+## Do
+
+- {specific things the image should achieve}
+
+## Don't
+
+- {specific things to avoid}
 
 ## Acceptance Criteria
 
