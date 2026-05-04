@@ -1,5 +1,10 @@
 {
   "item.curiousbees.bee_analyzer":    "Bee Analyzer",
+  "item.curiousbees.meadow_bee_spawn_egg": "Meadow Bee Spawn Egg",
+  "item.curiousbees.forest_bee_spawn_egg": "Forest Bee Spawn Egg",
+  "item.curiousbees.arid_bee_spawn_egg": "Arid Bee Spawn Egg",
+  "item.curiousbees.cultivated_bee_spawn_egg": "Cultivated Bee Spawn Egg",
+  "item.curiousbees.hardy_bee_spawn_egg": "Hardy Bee Spawn Egg",
   "item.curiousbees.meadow_comb":     "Meadow Comb",
   "item.curiousbees.forest_comb":     "Forest Comb",
   "item.curiousbees.arid_comb":       "Arid Comb",

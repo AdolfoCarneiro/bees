@@ -17,6 +17,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
@@ -34,6 +35,8 @@ public final class CuriousBeesMod {
         ModItems.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
         ModFeatures.register(modEventBus);
+        modEventBus.addListener((FMLCommonSetupEvent event) ->
+                event.enqueueWork(ModItems::registerBeeSpawnEggDispenserBehaviors));
         modEventBus.addListener(ApiaryCapabilities::register);
         modEventBus.addListener(CuriousBeesNetwork::onRegisterPayloads);
         NeoForge.EVENT_BUS.addListener(ContentReloadListener::addReloadListener);
@@ -41,6 +44,7 @@ public final class CuriousBeesMod {
         NeoForge.EVENT_BUS.addListener(CuriousBeesNetwork::onStartTracking);
         if (FMLEnvironment.dist == Dist.CLIENT) {
             modEventBus.addListener(ClientEventHandler::onRegisterRenderers);
+            modEventBus.addListener(ClientEventHandler::onRegisterItemColors);
         }
         LOGGER.info("Curious Bees loaded");
     }

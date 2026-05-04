@@ -1,13 +1,19 @@
 package com.curiousbees.neoforge.registry;
 
 import com.curiousbees.CuriousBeesMod;
+import com.curiousbees.common.content.builtin.BuiltinBeeSpecies;
 import com.curiousbees.neoforge.item.BeeAnalyzerItem;
+import com.curiousbees.neoforge.item.CuriousBeeSpawnEggDispenseBehavior;
+import com.curiousbees.neoforge.item.CuriousBeeSpeciesSpawnEggItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.List;
 
 public final class ModItems {
 
@@ -57,7 +63,43 @@ public final class ModItems {
     public static final DeferredHolder<Item, Item> PRODUCTIVITY_FRAME =
             ITEMS.register("productivity_frame", () -> new Item(new Item.Properties().stacksTo(1)));
 
+    // --- Species spawn eggs (vanilla Bee + fixed genome; not SpawnEggItem to avoid BY_ID conflicts) ---
+    public static final DeferredHolder<Item, CuriousBeeSpeciesSpawnEggItem> MEADOW_BEE_SPAWN_EGG =
+            ITEMS.register("meadow_bee_spawn_egg",
+                    () -> new CuriousBeeSpeciesSpawnEggItem(BuiltinBeeSpecies.MEADOW, 0xFFFFC41E, 0xFF422E2C,
+                            new Item.Properties()));
+    public static final DeferredHolder<Item, CuriousBeeSpeciesSpawnEggItem> FOREST_BEE_SPAWN_EGG =
+            ITEMS.register("forest_bee_spawn_egg",
+                    () -> new CuriousBeeSpeciesSpawnEggItem(BuiltinBeeSpecies.FOREST, 0xFF2D5A27, 0xFF3D2914,
+                            new Item.Properties()));
+    public static final DeferredHolder<Item, CuriousBeeSpeciesSpawnEggItem> ARID_BEE_SPAWN_EGG =
+            ITEMS.register("arid_bee_spawn_egg",
+                    () -> new CuriousBeeSpeciesSpawnEggItem(BuiltinBeeSpecies.ARID, 0xFFE8D4B8, 0xFF7B4F2D,
+                            new Item.Properties()));
+    public static final DeferredHolder<Item, CuriousBeeSpeciesSpawnEggItem> CULTIVATED_BEE_SPAWN_EGG =
+            ITEMS.register("cultivated_bee_spawn_egg",
+                    () -> new CuriousBeeSpeciesSpawnEggItem(BuiltinBeeSpecies.CULTIVATED, 0xFFFFF2A8, 0xFF8B6914,
+                            new Item.Properties()));
+    public static final DeferredHolder<Item, CuriousBeeSpeciesSpawnEggItem> HARDY_BEE_SPAWN_EGG =
+            ITEMS.register("hardy_bee_spawn_egg",
+                    () -> new CuriousBeeSpeciesSpawnEggItem(BuiltinBeeSpecies.HARDY, 0xFFC0C0C0, 0xFF36454F,
+                            new Item.Properties()));
+
+    public static final List<DeferredHolder<Item, CuriousBeeSpeciesSpawnEggItem>> BEE_SPAWN_EGGS = List.of(
+            MEADOW_BEE_SPAWN_EGG,
+            FOREST_BEE_SPAWN_EGG,
+            ARID_BEE_SPAWN_EGG,
+            CULTIVATED_BEE_SPAWN_EGG,
+            HARDY_BEE_SPAWN_EGG);
+
     public static void register(IEventBus modEventBus) {
         ITEMS.register(modEventBus);
+    }
+
+    /** Call from {@code FMLCommonSetupEvent#enqueueWork}. */
+    public static void registerBeeSpawnEggDispenserBehaviors() {
+        for (DeferredHolder<Item, CuriousBeeSpeciesSpawnEggItem> egg : BEE_SPAWN_EGGS) {
+            DispenserBlock.registerBehavior(egg.get(), CuriousBeeSpawnEggDispenseBehavior.INSTANCE);
+        }
     }
 }

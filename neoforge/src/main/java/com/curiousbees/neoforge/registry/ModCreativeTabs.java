@@ -22,6 +22,9 @@ public final class ModCreativeTabs {
                     .icon(() -> new ItemStack(ModItems.BEE_ANALYZER.get()))
                     .displayItems((parameters, output) -> {
                         output.accept(ModItems.BEE_ANALYZER.get());
+                        for (var egg : ModItems.BEE_SPAWN_EGGS) {
+                            output.accept(egg.get());
+                        }
                         output.accept(ModItems.GENETIC_APIARY.get());
                         output.accept(ModItems.MEADOW_HIVE.get());
                         output.accept(ModItems.FOREST_HIVE.get());
