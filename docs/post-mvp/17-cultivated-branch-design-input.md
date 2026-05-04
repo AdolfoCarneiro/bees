@@ -1,12 +1,15 @@
+> **Status:** Design input para Phase 17 — First Expanded Species Branch.
+> Não implementado. Consulte `docs/post-mvp/11-post-mvp-productization-roadmap.md` (Phase 17) antes de executar.
+
 # 09B - First Post-MVP Mutation Branch
 
 ## Status
 
-Complete.
+Complete (as design input only; not implemented in-game).
 
 ## Scope
 
-This document completes Task 9.3 from `docs/implementation/09-expanded-content-roadmap.md`.
+This document was migrated from `docs/implementation/09b-first-post-mvp-mutation-branch.md`. It originally completed Task 9.3 from the MVP expanded content roadmap (removed from the repo as historical).
 
 It drafts one small post-MVP branch for future implementation.
 
@@ -282,7 +285,7 @@ Production identity should emphasize:
 
 Before implementing this branch, verify:
 
-- Phase 8 data-driven content loading is stable in-game;
+- data-driven content loading is stable in-game;
 - example external datapack loading has been manually tested;
 - analyzer output remains readable with more species;
 - production outputs for new combs have placeholder assets or a placeholder policy;
@@ -321,5 +324,5 @@ Reason:
 
 1. Task 9.4 - Resource Bee Readiness Decision.
 2. Task 9.5 - Asset Roadmap for Expanded Content.
-3. Manual in-game validation of Phase 8 datapack loading before implementing this branch.
+3. Manual in-game validation of datapack loading before implementing this branch.
 4. Future implementation spec for the managed branch, if approved.
