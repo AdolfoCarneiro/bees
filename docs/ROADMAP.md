@@ -216,7 +216,9 @@ flowchart LR
 
 ## Operating model (how to run this roadmap)
 
-1. **Issues:** one issue per deliverable **row** where possible; title includes phase id (`P3-GUI-frames`).
+**Operational breakdown:** each phase is broken into **epics + tasks** in [`TASKS.md`](TASKS.md). Use that file to open issues; use this one to argue about phase order.
+
+1. **Issues:** one issue per task row in `TASKS.md`; title uses the task id (e.g. `E3-T05`).
 2. **Exit gates:** closing a phase = **all Exit bullets true**; if not, split scope rather than lowering the bar.
 3. **ADR hygiene:** open-decision table rows graduate to `docs/decisions/` with status **Accepted** before merge-heavy work lands.
 4. **Playtests:** short `docs/research/` or issue notes after each phase (what confused players).
