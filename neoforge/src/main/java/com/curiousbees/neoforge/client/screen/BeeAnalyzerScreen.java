@@ -1,7 +1,6 @@
 package com.curiousbees.neoforge.client.screen;
 
 import com.curiousbees.common.gameplay.analysis.BeeAnalysisReport;
-import com.curiousbees.common.gameplay.analysis.BeeAnalysisFormatter;
 import com.curiousbees.common.gameplay.analysis.GeneReport;
 import com.curiousbees.common.genetics.model.Dominance;
 import net.minecraft.client.gui.GuiGraphics;
@@ -82,7 +81,8 @@ public final class BeeAnalyzerScreen extends Screen {
 
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
-        renderBackground(g, mouseX, mouseY, partialTick);
+        // super.render calls renderBackground once; drawing the panel before super would get blurred again.
+        super.render(g, mouseX, mouseY, partialTick);
 
         int x = (width  - PANEL_W) / 2;
         int y = (height - PANEL_H) / 2;
@@ -108,8 +108,6 @@ public final class BeeAnalyzerScreen extends Screen {
 
         // Dismiss hint
         g.drawString(font, "[ESC] close", x + PAD, y + PANEL_H - PAD - font.lineHeight, DIM_COL, false);
-
-        super.render(g, mouseX, mouseY, partialTick);
     }
 
     @Override
