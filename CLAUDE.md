@@ -70,3 +70,9 @@ Use `java.util.logging.Logger` in services: **WARNING** before skip/throw on bad
 ## Art
 
 See [`docs/asset-generation-guidelines.md`](docs/asset-generation-guidelines.md). Hard rule: every dev placeholder is tagged `DEV-PLACEHOLDER` so a single grep finds them before release.
+
+## gstack
+
+Use `/browse` from gstack for all web browsing. Never use `mcp__claude-in-chrome__*` tools.
+
+Available gstack skills: `/office-hours`, `/plan-ceo-review`, `/plan-eng-review`, `/plan-design-review`, `/design-consultation`, `/design-shotgun`, `/design-html`, `/review`, `/ship`, `/land-and-deploy`, `/canary`, `/benchmark`, `/browse`, `/connect-chrome`, `/qa`, `/qa-only`, `/design-review`, `/setup-browser-cookies`, `/setup-deploy`, `/setup-gbrain`, `/retro`, `/investigate`, `/document-release`, `/codex`, `/cso`, `/autoplan`, `/plan-devex-review`, `/devex-review`, `/careful`, `/freeze`, `/guard`, `/unfreeze`, `/gstack-upgrade`, `/learn`.
