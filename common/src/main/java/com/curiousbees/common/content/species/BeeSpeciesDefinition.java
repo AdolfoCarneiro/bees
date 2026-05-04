@@ -1,5 +1,6 @@
 package com.curiousbees.common.content.species;
 
+import com.curiousbees.common.content.habitat.SpeciesHabitatDefinition;
 import com.curiousbees.common.content.visual.SpeciesVisualDefinition;
 import com.curiousbees.common.genetics.model.Allele;
 import com.curiousbees.common.genetics.model.ChromosomeType;
@@ -32,19 +33,22 @@ public final class BeeSpeciesDefinition {
     private final Map<ChromosomeType, Allele[]> defaultTraitAlleles;
     private final List<String> spawnContextNotes;
     private final SpeciesVisualDefinition visualDefinition;
+    private final SpeciesHabitatDefinition habitatDefinition;
 
     /**
-     * Full constructor including optional visual metadata.
+     * Full constructor including optional visual and habitat metadata.
      *
      * @param defaultTraitAlleles map from trait ChromosomeType to a two-element array [first, second].
      *                            Must contain LIFESPAN, PRODUCTIVITY, FERTILITY, and FLOWER_TYPE.
      *                            Must NOT contain SPECIES — species is set via speciesAllele.
      * @param visualDefinition    optional visual metadata; null if not yet defined.
+     * @param habitatDefinition   optional habitat metadata; null for mutation-only species.
      */
     public BeeSpeciesDefinition(String id, String displayName, Allele speciesAllele,
                                  Map<ChromosomeType, Allele[]> defaultTraitAlleles,
                                  List<String> spawnContextNotes,
-                                 SpeciesVisualDefinition visualDefinition) {
+                                 SpeciesVisualDefinition visualDefinition,
+                                 SpeciesHabitatDefinition habitatDefinition) {
         Objects.requireNonNull(id, "id must not be null");
         Objects.requireNonNull(displayName, "displayName must not be null");
         Objects.requireNonNull(speciesAllele, "speciesAllele must not be null");
@@ -66,13 +70,22 @@ public final class BeeSpeciesDefinition {
         this.defaultTraitAlleles = copyTraitAlleles(defaultTraitAlleles);
         this.spawnContextNotes = List.copyOf(spawnContextNotes);
         this.visualDefinition = visualDefinition;
+        this.habitatDefinition = habitatDefinition;
     }
 
-    /** Convenience constructor without visual metadata. */
+    /** Convenience constructor with visual metadata but no habitat (mutation-only species). */
+    public BeeSpeciesDefinition(String id, String displayName, Allele speciesAllele,
+                                 Map<ChromosomeType, Allele[]> defaultTraitAlleles,
+                                 List<String> spawnContextNotes,
+                                 SpeciesVisualDefinition visualDefinition) {
+        this(id, displayName, speciesAllele, defaultTraitAlleles, spawnContextNotes, visualDefinition, null);
+    }
+
+    /** Convenience constructor without visual or habitat metadata. */
     public BeeSpeciesDefinition(String id, String displayName, Allele speciesAllele,
                                  Map<ChromosomeType, Allele[]> defaultTraitAlleles,
                                  List<String> spawnContextNotes) {
-        this(id, displayName, speciesAllele, defaultTraitAlleles, spawnContextNotes, null);
+        this(id, displayName, speciesAllele, defaultTraitAlleles, spawnContextNotes, null, null);
     }
 
     private static void validateTraitAlleles(Map<ChromosomeType, Allele[]> traits) {
@@ -120,6 +133,15 @@ public final class BeeSpeciesDefinition {
     /** Visual metadata for this species, if defined. Empty when no visual profile has been set. */
     public Optional<SpeciesVisualDefinition> visualDefinition() {
         return Optional.ofNullable(visualDefinition);
+    }
+
+    /**
+     * Habitat metadata for this species.
+     * Present for world-spawnable species (Meadow, Forest, Arid).
+     * Empty for mutation-only species (Cultivated, Hardy).
+     */
+    public Optional<SpeciesHabitatDefinition> habitat() {
+        return Optional.ofNullable(habitatDefinition);
     }
 
     /** Returns the [first, second] default allele pair for the given trait chromosome. */

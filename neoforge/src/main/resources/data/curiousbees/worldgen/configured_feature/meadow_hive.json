@@ -1,0 +1,12 @@
+{
+  "type": "curiousbees:species_hive",
+  "config": {
+    "state": {
+      "Name": "curiousbees:meadow_hive",
+      "Properties": {
+        "facing": "south",
+        "honey_level": "0"
+      }
+    }
+  }
+}

@@ -23,6 +23,9 @@ public final class ModCreativeTabs {
                     .displayItems((parameters, output) -> {
                         output.accept(ModItems.BEE_ANALYZER.get());
                         output.accept(ModItems.GENETIC_APIARY.get());
+                        output.accept(ModItems.MEADOW_HIVE.get());
+                        output.accept(ModItems.FOREST_HIVE.get());
+                        output.accept(ModItems.ARID_HIVE.get());
                         output.accept(ModItems.MEADOW_COMB.get());
                         output.accept(ModItems.FOREST_COMB.get());
                         output.accept(ModItems.ARID_COMB.get());

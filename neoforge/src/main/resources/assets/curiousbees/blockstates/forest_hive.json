@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=north,honey_level=0": { "model": "curiousbees:block/forest_hive", "y": 180 },
+    "facing=north,honey_level=1": { "model": "curiousbees:block/forest_hive", "y": 180 },
+    "facing=north,honey_level=2": { "model": "curiousbees:block/forest_hive", "y": 180 },
+    "facing=north,honey_level=3": { "model": "curiousbees:block/forest_hive", "y": 180 },
+    "facing=north,honey_level=4": { "model": "curiousbees:block/forest_hive", "y": 180 },
+    "facing=north,honey_level=5": { "model": "curiousbees:block/forest_hive_honey", "y": 180 },
+    "facing=south,honey_level=0": { "model": "curiousbees:block/forest_hive" },
+    "facing=south,honey_level=1": { "model": "curiousbees:block/forest_hive" },
+    "facing=south,honey_level=2": { "model": "curiousbees:block/forest_hive" },
+    "facing=south,honey_level=3": { "model": "curiousbees:block/forest_hive" },
+    "facing=south,honey_level=4": { "model": "curiousbees:block/forest_hive" },
+    "facing=south,honey_level=5": { "model": "curiousbees:block/forest_hive_honey" },
+    "facing=west,honey_level=0":  { "model": "curiousbees:block/forest_hive", "y": 90 },
+    "facing=west,honey_level=1":  { "model": "curiousbees:block/forest_hive", "y": 90 },
+    "facing=west,honey_level=2":  { "model": "curiousbees:block/forest_hive", "y": 90 },
+    "facing=west,honey_level=3":  { "model": "curiousbees:block/forest_hive", "y": 90 },
+    "facing=west,honey_level=4":  { "model": "curiousbees:block/forest_hive", "y": 90 },
+    "facing=west,honey_level=5":  { "model": "curiousbees:block/forest_hive_honey", "y": 90 },
+    "facing=east,honey_level=0":  { "model": "curiousbees:block/forest_hive", "y": 270 },
+    "facing=east,honey_level=1":  { "model": "curiousbees:block/forest_hive", "y": 270 },
+    "facing=east,honey_level=2":  { "model": "curiousbees:block/forest_hive", "y": 270 },
+    "facing=east,honey_level=3":  { "model": "curiousbees:block/forest_hive", "y": 270 },
+    "facing=east,honey_level=4":  { "model": "curiousbees:block/forest_hive", "y": 270 },
+    "facing=east,honey_level=5":  { "model": "curiousbees:block/forest_hive_honey", "y": 270 }
+  }
+}

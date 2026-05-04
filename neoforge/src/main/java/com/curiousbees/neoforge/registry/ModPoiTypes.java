@@ -23,6 +23,27 @@ public final class ModPoiTypes {
                             1,
                             1));
 
+    public static final DeferredHolder<PoiType, PoiType> MEADOW_HIVE =
+            POI_TYPES.register("meadow_hive",
+                    () -> new PoiType(
+                            Set.copyOf(ModBlocks.MEADOW_HIVE.get().getStateDefinition().getPossibleStates()),
+                            1,
+                            1));
+
+    public static final DeferredHolder<PoiType, PoiType> FOREST_HIVE =
+            POI_TYPES.register("forest_hive",
+                    () -> new PoiType(
+                            Set.copyOf(ModBlocks.FOREST_HIVE.get().getStateDefinition().getPossibleStates()),
+                            1,
+                            1));
+
+    public static final DeferredHolder<PoiType, PoiType> ARID_HIVE =
+            POI_TYPES.register("arid_hive",
+                    () -> new PoiType(
+                            Set.copyOf(ModBlocks.ARID_HIVE.get().getStateDefinition().getPossibleStates()),
+                            1,
+                            1));
+
     public static void register(IEventBus modEventBus) {
         POI_TYPES.register(modEventBus);
     }

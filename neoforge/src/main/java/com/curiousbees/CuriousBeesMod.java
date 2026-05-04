@@ -9,6 +9,7 @@ import com.curiousbees.neoforge.network.CuriousBeesNetwork;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import com.curiousbees.neoforge.registry.ModBlocks;
 import com.curiousbees.neoforge.registry.ModCreativeTabs;
+import com.curiousbees.neoforge.registry.ModFeatures;
 import com.curiousbees.neoforge.registry.ModItems;
 import com.curiousbees.neoforge.registry.ModPoiTypes;
 import com.mojang.logging.LogUtils;
@@ -32,6 +33,7 @@ public final class CuriousBeesMod {
         ModPoiTypes.register(modEventBus);
         ModItems.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
+        ModFeatures.register(modEventBus);
         modEventBus.addListener(ApiaryCapabilities::register);
         modEventBus.addListener(CuriousBeesNetwork::onRegisterPayloads);
         NeoForge.EVENT_BUS.addListener(ContentReloadListener::addReloadListener);

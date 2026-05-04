@@ -25,6 +25,18 @@ public final class ModItems {
             ITEMS.register("genetic_apiary",
                     () -> new BlockItem(ModBlocks.GENETIC_APIARY.get(), new Item.Properties()));
 
+    public static final DeferredHolder<Item, BlockItem> MEADOW_HIVE =
+            ITEMS.register("meadow_hive",
+                    () -> new BlockItem(ModBlocks.MEADOW_HIVE.get(), new Item.Properties()));
+
+    public static final DeferredHolder<Item, BlockItem> FOREST_HIVE =
+            ITEMS.register("forest_hive",
+                    () -> new BlockItem(ModBlocks.FOREST_HIVE.get(), new Item.Properties()));
+
+    public static final DeferredHolder<Item, BlockItem> ARID_HIVE =
+            ITEMS.register("arid_hive",
+                    () -> new BlockItem(ModBlocks.ARID_HIVE.get(), new Item.Properties()));
+
     // --- Comb items ---
     public static final DeferredHolder<Item, Item> MEADOW_COMB =
             ITEMS.register("meadow_comb",    () -> new Item(new Item.Properties()));
