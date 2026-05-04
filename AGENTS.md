@@ -15,7 +15,7 @@ Minecraft bee genetics mod (NeoForge 1.21.1): living bees, genomes, breeding, do
 1. [docs/README.md](docs/README.md)  
 2. [docs/post-mvp/gameplay-direction.md](docs/post-mvp/gameplay-direction.md)  
 3. [docs/ROADMAP.md](docs/ROADMAP.md)  
-4. [docs/mvp/02-technical-architecture.md](docs/mvp/02-technical-architecture.md), [03](docs/mvp/03-genetics-system-spec.md), [04](docs/mvp/04-breeding-and-mutation-spec.md), [05](docs/mvp/05-content-design-spec.md) as the task requires  
+4. [docs/architecture/02-technical-architecture.md](docs/architecture/02-technical-architecture.md), [03](docs/architecture/03-genetics-system-spec.md), [04](docs/architecture/04-breeding-and-mutation-spec.md), [05](docs/architecture/05-content-design-spec.md) as the task requires  
 5. [docs/decisions/](docs/decisions/) when changing an ADR-covered area  
 6. [docs/art/asset-prompt-workflow.md](docs/art/asset-prompt-workflow.md) for any new asset  
 
@@ -39,7 +39,7 @@ Frames with real effects; production tuning; analyzer/apiary UX; automation-frie
 
 1. Read AGENTS.md + CLAUDE.md.  
 2. Read `gameplay-direction.md` / `ROADMAP.md` if direction is involved.  
-3. Read relevant `docs/mvp/` and ADRs.  
+3. Read relevant `docs/architecture/` specs and ADRs.  
 4. Restate scope; list files; smallest complete change; tests for core Java where relevant; **commit** one focused task per commit when practical.
 
 ## Commits
@@ -48,7 +48,7 @@ Prefix examples: `core:`, `content:`, `neoforge:`, `client:`, `test:`, `docs:`, 
 
 ## Prompt template (short)
 
-Read AGENTS + CLAUDE → `gameplay-direction.md` if needed → relevant `docs/mvp/` → ADRs → quality doc if behavior changes. No Minecraft inside `common/genetics`. New textures → prompt doc first.
+Read AGENTS + CLAUDE → `gameplay-direction.md` if needed → relevant `docs/architecture/` → ADRs → quality doc if behavior changes. No Minecraft inside `common/genetics`. New textures → prompt doc first.
 
 ## Assets
 

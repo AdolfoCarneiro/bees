@@ -89,6 +89,6 @@ BuiltinBeeContent
 
 ## Related Documents
 
-- `docs/mvp/05-content-design-spec.md`
+- `docs/architecture/05-content-design-spec.md`
 - `docs/implementation/02-initial-content-implementation.md`
 - `docs/implementation/08-data-driven-content.md`

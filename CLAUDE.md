@@ -24,7 +24,7 @@ The **genetics core** (`common/genetics` or equivalent) must **not** import Mine
 | 1 | [docs/README.md](docs/README.md) — what exists in the mod, doc map |
 | 2 | [docs/post-mvp/gameplay-direction.md](docs/post-mvp/gameplay-direction.md) — product intent, hybrid bee model, UX goals |
 | 3 | [docs/ROADMAP.md](docs/ROADMAP.md) — forward priorities only |
-| Genetics / breeding tasks | [docs/mvp/02-technical-architecture.md](docs/mvp/02-technical-architecture.md), [03](docs/mvp/03-genetics-system-spec.md), [04](docs/mvp/04-breeding-and-mutation-spec.md); content traits: [05](docs/mvp/05-content-design-spec.md) |
+| Genetics / breeding tasks | [docs/architecture/02-technical-architecture.md](docs/architecture/02-technical-architecture.md), [03](docs/architecture/03-genetics-system-spec.md), [04](docs/architecture/04-breeding-and-mutation-spec.md); content traits: [05](docs/architecture/05-content-design-spec.md) |
 | ADRs | [docs/decisions/](docs/decisions/) when a decision is locked |
 | Assets | [docs/art/asset-prompt-workflow.md](docs/art/asset-prompt-workflow.md) — prompts, not silent final placeholders |
 
@@ -45,7 +45,7 @@ The **genetics core** (`common/genetics` or equivalent) must **not** import Mine
 ## Workflow (every task)
 
 1. Read `docs/README.md` + `gameplay-direction.md` if the task touches player-facing direction.  
-2. Read relevant `docs/mvp/02–05` for genetics/content rules.  
+2. Read relevant `docs/architecture/` specs (02–05) for genetics/content rules.  
 3. Restate scope, list files, implement the smallest complete slice, add tests for core Java where it matters, commit with a clear message (`docs:`, `neoforge:`, `core:`, etc.).
 
 ## Logging (services)

@@ -2,11 +2,11 @@
 
 ## What the mod does today (shipped direction)
 
-- **Genetics:** Genomes on bees; breeding; chromosomes/alleles; dominance; mutations — see `docs/mvp/03` and `04`.
+- **Genetics:** Genomes on bees; breeding; chromosomes/alleles; dominance; mutations — see `docs/architecture/03` and `04`.
 - **World:** Species bee nests, habitat-style spawning, compatibility rules — behavior details also in `docs/reference/bee-nest-targeting-behavior.md`.
 - **Player tools:** Portable analyzer, analysis state, tooltips respecting analyzed/unanalyzed where implemented.
 - **Blocks:** Genetic apiary with GUI, frames slots, bees tied to production, automation-facing inventories.
-- **Presentation:** Species textures on bees; content/data conventions for species — see `docs/mvp/05` and `docs/art/`.
+- **Presentation:** Species textures on bees; content/data conventions for species — see `docs/architecture/05` and `docs/art/`.
 
 ## What we are building next
 
@@ -16,15 +16,17 @@ See **`docs/ROADMAP.md`** (ordered list only). High-level intent and UX parity g
 
 1. `docs/post-mvp/gameplay-direction.md`  
 2. `docs/ROADMAP.md`  
-3. `docs/mvp/02-technical-architecture.md`  
-4. `docs/mvp/03-genetics-system-spec.md`  
-5. `CLAUDE.md` and `AGENTS.md`  
+3. `docs/architecture/02-technical-architecture.md`  
+4. `docs/architecture/03-genetics-system-spec.md`  
+5. `docs/architecture/04-breeding-and-mutation-spec.md`  
+6. `docs/architecture/05-content-design-spec.md` (when editing species / traits / products)  
+7. `CLAUDE.md` and `AGENTS.md`  
 
 For new species content steps, see `.claude/plugins/local/skills/new-bee-species.md`.
 
 ## Other folders (one line each)
 
-- **`docs/mvp/`** — Foundation specs (02–05); genetics source of truth.  
+- **`docs/architecture/`** — Technical specs 02–05 (genetics, breeding, content data); canonical rules.  
 - **`docs/decisions/`** — ADRs; read when touching a locked decision.  
 - **`docs/art/`** — Prompts, workflow, manifests — not optional for new art.  
 - **`docs/quality/`** — Playtest and smoke lists.  

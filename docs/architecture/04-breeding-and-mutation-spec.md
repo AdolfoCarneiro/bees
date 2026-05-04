@@ -1,9 +1,6 @@
-> Status: MVP foundation document.
->
-> This document describes the original MVP design used to validate the Curious Bees core loop.
-> It is preserved as historical and architectural context.
-> For current product direction and priorities, see:
-> `docs/post-mvp/gameplay-direction.md` and `docs/ROADMAP.md`.
+> **Canonical technical spec — breeding and mutation.**  
+> Vanilla-style breeding flow with genetic rules and mutation behavior.  
+> Product direction: `docs/post-mvp/gameplay-direction.md`, priorities: `docs/ROADMAP.md`.
 
 # 04 — Breeding and Mutation Specification
 

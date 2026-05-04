@@ -70,6 +70,6 @@ A tech apiary is future scope and should be introduced only after the natural br
 ## Related Documents
 
 - `docs/mvp/01-product-vision-and-roadmap.md`
-- `docs/mvp/04-breeding-and-mutation-spec.md`
+- `docs/architecture/04-breeding-and-mutation-spec.md`
 - `docs/implementation/04-vanilla-breeding-integration.md`
 - `docs/implementation/07-tech-apiary-and-automation.md`

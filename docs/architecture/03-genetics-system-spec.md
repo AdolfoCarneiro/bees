@@ -1,9 +1,6 @@
-> Status: MVP foundation document.
->
-> This document describes the original MVP design used to validate the Curious Bees core loop.
-> It is preserved as historical and architectural context.
-> For current product direction and priorities, see:
-> `docs/post-mvp/gameplay-direction.md` and `docs/ROADMAP.md`.
+> **Canonical technical spec — genetics.**  
+> Chromosomes, alleles, dominance, genome model.  
+> Product direction: `docs/post-mvp/gameplay-direction.md`, priorities: `docs/ROADMAP.md`.
 
 # 03 — Genetics System Specification
 

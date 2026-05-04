@@ -60,6 +60,6 @@ Fabric support is a future goal, but it is not part of the first MVP implementat
 ## Related Documents
 
 - `docs/mvp/01-product-vision-and-roadmap.md`
-- `docs/mvp/02-technical-architecture.md`
+- `docs/architecture/02-technical-architecture.md`
 - `docs/implementation/03-neoforge-entity-integration.md`
 - `docs/implementation/10-fabric-support-implementation.md`

@@ -68,6 +68,6 @@ Resource bees may be designed later after the genetic system, breeding loop, ana
 ## Related Documents
 
 - `docs/mvp/01-product-vision-and-roadmap.md`
-- `docs/mvp/05-content-design-spec.md`
+- `docs/architecture/05-content-design-spec.md`
 - `docs/implementation/02-initial-content-implementation.md`
 - `docs/implementation/09-expanded-content-roadmap.md`

@@ -1,9 +1,6 @@
-> Status: MVP foundation document.
->
-> This document describes the original MVP design used to validate the Curious Bees core loop.
-> It is preserved as historical and architectural context.
-> For current product direction and priorities, see:
-> `docs/post-mvp/gameplay-direction.md` and `docs/ROADMAP.md`.
+> **Canonical technical spec — content data.**  
+> Species, traits, mutations, products as data-driven definitions.  
+> Product direction: `docs/post-mvp/gameplay-direction.md`, priorities: `docs/ROADMAP.md`.
 
 # 05 — Content Design Specification
 

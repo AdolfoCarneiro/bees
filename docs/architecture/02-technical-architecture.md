@@ -1,9 +1,6 @@
-> Status: MVP foundation document.
->
-> This document describes the original MVP design used to validate the Curious Bees core loop.
-> It is preserved as historical and architectural context.
-> For current product direction and priorities, see:
-> `docs/post-mvp/gameplay-direction.md` and `docs/ROADMAP.md`.
+> **Canonical technical spec — architecture.**  
+> Describes module boundaries, platform split, and documentation layout.  
+> Product direction: `docs/post-mvp/gameplay-direction.md`, priorities: `docs/ROADMAP.md`.
 
 # 02 — Technical Architecture
 
@@ -31,21 +28,22 @@ The repository documentation is part of the architecture. AI agents should use i
 
 ```text
 docs/
-├── mvp/              (02–05 foundation specs)
-├── post-mvp/       (current product direction)
-├── reference/      (technical behavior notes)
+├── architecture/   (02–05 technical specs: this folder)
+├── post-mvp/       (gameplay-direction.md — product intent)
+├── reference/      (short technical behavior notes)
 ├── decisions/
 ├── quality/
 ├── art/
 ├── content/
 ├── research/
 ├── release/
-└── implementation/ (reserved; historical phase plans removed)
+├── ROADMAP.md
+└── implementation/ (reserved; optional migration notes)
 ```
 
-### 2.1 Core docs
+### 2.1 Core technical specs
 
-Core docs describe product intent, architecture, genetics rules, breeding/mutation behavior, content direction, and AI workflow.
+`docs/architecture/` holds the canonical **02–05** specifications: platform boundaries, genetics model, breeding/mutations, and content data rules. Product **intent** lives in `docs/post-mvp/gameplay-direction.md`.
 
 ### 2.2 Implementation docs
 
@@ -78,14 +76,8 @@ curious-bees/
 ├── CLAUDE.md
 ├── README.md
 ├── docs/
-│   ├── 01-product-vision-and-roadmap.md
-│   ├── 02-technical-architecture.md
-│   ├── 03-genetics-system-spec.md
-│   ├── 04-breeding-and-mutation-spec.md
-│   ├── 05-content-design-spec.md
-│   ├── 06-ai-coding-guidelines.md
-│   ├── 07-initial-backlog.md
-│   ├── implementation/
+│   ├── architecture/   (02–05 technical specs)
+│   ├── post-mvp/
 │   ├── decisions/
 │   ├── quality/
 │   ├── art/

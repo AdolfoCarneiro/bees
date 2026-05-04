@@ -263,5 +263,5 @@ Avoid making compatibility species mandatory for the base mod.
 
 - `docs/implementation/09-expanded-content-roadmap.md`
 - `docs/implementation/09a-expanded-content-categories.md`
-- `docs/mvp/05-content-design-spec.md`
+- `docs/architecture/05-content-design-spec.md`
 - `docs/decisions/0007-no-resource-bees-in-mvp.md`

@@ -180,4 +180,4 @@ Do not implement a full material tree in the first slice.
 - `docs/decisions/0007-no-resource-bees-in-mvp.md`
 - `docs/decisions/0011-expanded-content-naming-strategy.md`
 - `docs/post-mvp/gameplay-direction.md` (species expansion sketch; historical branch detail in git history)
-- `docs/mvp/05-content-design-spec.md`
+- `docs/architecture/05-content-design-spec.md`

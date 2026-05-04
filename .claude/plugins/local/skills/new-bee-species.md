@@ -41,5 +41,5 @@ File: `docs/art/asset-manifest.md`
 ## Guardrails
 - Do NOT implement without a texture prompt doc ready
 - Do NOT add resource-output species without explicit phase approval
-- Read docs/mvp/05-content-design-spec.md for trait defaults reference
+- Read docs/architecture/05-content-design-spec.md for trait defaults reference
 - Read docs/art/asset-prompt-workflow.md for the full asset workflow

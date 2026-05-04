@@ -208,4 +208,4 @@ No duplication of genetics or content logic is needed for Fabric support.
 
 - `docs/implementation/08-data-driven-content.md`
 - `docs/decisions/0003-hardcoded-builtins-before-json.md`
-- `docs/mvp/05-content-design-spec.md`
+- `docs/architecture/05-content-design-spec.md`

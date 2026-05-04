@@ -105,7 +105,7 @@ git -C "C:\Users\Adolfo\source\repos\bees" commit -m "docs: remove completed MVP
 - Delete: `docs/mvp/01-product-vision-and-roadmap.md` (supersedido pelo post-mvp roadmap)
 - Delete: `docs/mvp/06-ai-coding-guidelines.md` (conteúdo já está em CLAUDE.md)
 - Delete: `docs/mvp/07-initial-backlog.md` (todas as tasks MVP concluídas)
-- Keep: `docs/mvp/02`, `03`, `04`, `05` (fundação arquitetural ainda válida)
+- Keep: technical specs (now `docs/architecture/02`–`05`)
 
 - [ ] **Step 1: Deletar os 3 arquivos**
 
@@ -454,7 +454,7 @@ File: `docs/art/asset-manifest.md`
 ## Guardrails
 - Do NOT implement without a texture prompt doc ready
 - Do NOT add resource-output species without explicit phase approval
-- Read docs/mvp/05-content-design-spec.md for trait defaults reference
+- Read docs/architecture/05-content-design-spec.md for trait defaults reference
 - Read docs/art/asset-prompt-workflow.md for the full asset workflow
 ```
 
@@ -491,7 +491,7 @@ git -C "C:\Users\Adolfo\source\repos\bees" commit -m "docs: add new-bee-species 
 - `docs/art/` — pipeline ativo, fica tudo
 - `docs/release/` — estratégia de release futura, fica tudo
 - `docs/content/` — guias de authoring, ficam todos
-- `docs/mvp/02–05` — fundação arquitetural ainda 100% válida
+- `docs/architecture/02–05` — especificação técnica canónica
 - `docs/post-mvp/10-5, 12–15` — specs de design de referência, ficam todos
 
 ### Total de operações

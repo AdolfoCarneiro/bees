@@ -29,7 +29,7 @@ The current focus is not to add a large amount of content yet. The focus is to t
 
 ```text
 Product direction: docs/post-mvp/gameplay-direction.md and docs/ROADMAP.md
-MVP foundation specs (genetics, architecture, content rules): docs/mvp/
+Technical specs (genetics, architecture, content rules): docs/architecture/
 ```
 
 ## Target
@@ -133,7 +133,7 @@ docs/ROADMAP.md
 Original MVP foundation documents live in:
 
 ```txt
-docs/mvp/
+docs/architecture/
 ```
 
 The MVP docs are the genetics and architecture source of truth; high-level UX and next steps are in `gameplay-direction.md` and `ROADMAP.md`.
@@ -157,10 +157,10 @@ docs/research/existing-bee-mods-review.md
 For architecture and genetics foundation:
 
 ```txt
-docs/mvp/02-technical-architecture.md
-docs/mvp/03-genetics-system-spec.md
-docs/mvp/04-breeding-and-mutation-spec.md
-docs/mvp/05-content-design-spec.md
+docs/architecture/02-technical-architecture.md
+docs/architecture/03-genetics-system-spec.md
+docs/architecture/04-breeding-and-mutation-spec.md
+docs/architecture/05-content-design-spec.md
 CLAUDE.md
 AGENTS.md
 ```

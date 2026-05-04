@@ -1,6 +1,6 @@
 # Curious Bees — gameplay direction
 
-Short-lived product intent. Genetics rules live in `docs/mvp/03` and `04`; architecture in `docs/mvp/02`. Next milestones: `docs/ROADMAP.md`.
+Short-lived product intent. Genetics rules live in `docs/architecture/03` and `04`; platform boundaries in `docs/architecture/02`. Next milestones: `docs/ROADMAP.md`.
 
 ## Positioning
 
@@ -27,7 +27,7 @@ Short-lived product intent. Genetics rules live in `docs/mvp/03` and `04`; archi
 
 - **Living bees** remain the default in the world: breeding, flight, nests, analyzer on entity.
 - **Item or container representation** is allowed where it clearly improves UX (e.g. advanced hive insertion, transport, automation) — scoped by feature, not as a silent replacement for the whole mod.
-- Do not contradict `docs/mvp/` genetics; platform code owns Minecraft types.
+- Do not contradict `docs/architecture/` genetics specs; platform code owns Minecraft types.
 
 ## First expanded species branch (sketch only)
 
