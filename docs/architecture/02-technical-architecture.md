@@ -28,15 +28,13 @@ The repository documentation is part of the architecture. AI agents should use i
 
 ```text
 docs/
-├── architecture/   (02–05 technical specs: this folder)
+├── architecture/   (02–05 technical specs)
 ├── post-mvp/       (gameplay-direction.md — product intent)
 ├── reference/      (short technical behavior notes)
-├── decisions/
-├── quality/
-├── art/
-├── content/
+├── decisions/      (ADRs)
 ├── research/
-├── release/
+├── art/            (prompts, workflow, manifest)
+├── quality/      (optional checklists; stub README if empty)
 ├── ROADMAP.md
 └── implementation/ (reserved; optional migration notes)
 ```
@@ -57,15 +55,15 @@ ADRs explain why decisions were made. Do not casually reverse an ADR without cre
 
 ### 2.4 Quality docs
 
-`docs/quality/` contains unit test plans, integration test plans, manual validation checklists, and release smoke tests.
+`docs/quality/` holds validation checklists when present; see `docs/quality/README.md`. Older per-phase test plans may live only in **git history**.
 
 ### 2.5 Art docs
 
-`docs/art/` contains asset strategy, placeholder policy, Blockbench workflow, and future AI/skill tooling plans.
+`docs/art/` holds prompt workflow, templates, and manifest — see `docs/art/README.md`.
 
 ### 2.6 Release docs
 
-`docs/release/` contains versioning, changelog, publishing, release automation, and distribution plans.
+`docs/release/` is optional (versioning, changelog). Add files there when you publish releases.
 
 ## 3. Recommended Repository Layout
 
@@ -420,11 +418,7 @@ Platform integration should avoid crashing worlds for recoverable data issues, b
 
 ## 13. Testing Strategy
 
-Detailed test plans are in:
-
-```text
-docs/quality/
-```
+Checklists and validation notes: **`docs/quality/README.md`** (add concrete files as needed). Older plans: **git history**.
 
 ### Unit tests
 
@@ -452,11 +446,7 @@ Later:
 
 Assets are not part of the critical path for the genetics core.
 
-Detailed asset workflow is in:
-
-```text
-docs/art/
-```
+Workflow and prompts: **`docs/art/README.md`**, **`docs/art/asset-prompt-workflow.md`**.
 
 Rules:
 

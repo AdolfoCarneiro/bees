@@ -18,11 +18,7 @@ The genetics system models bee inheritance in a way inspired by Forestry:
 
 The system should be deterministic when given deterministic random input, so it can be unit-tested.
 
-Detailed execution tasks for this system are in:
-
-```text
-docs/implementation/01-genetics-core-implementation.md
-```
+Historical implementation task lists lived under `docs/implementation/`; see **git history** if you need the old filenames.
 
 ## 2. Core Terms
 
@@ -506,11 +502,7 @@ Expected 25/50/25 distribution.
 Accept if each bucket is within tolerance.
 ```
 
-Detailed validation is in:
-
-```text
-docs/quality/02-genetics-core-test-plan.md
-```
+Detailed validation plans historically lived under `docs/quality/`; retrieve from **git history** or add a new checklist under `docs/quality/` if needed.
 
 ## 18. Required Core Classes
 

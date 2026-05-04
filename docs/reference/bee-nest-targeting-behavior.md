@@ -1,6 +1,6 @@
 # Bee species nest targeting and nectar rendering
 
-This note describes Curious Bees behavior for **species bee nests**, **hive AI targeting**, and **nectar/pollen visuals** on species-textured bees.
+Curious Bees behavior for **species bee nests**, **hive AI targeting**, and **nectar/pollen visuals** on species-textured bees.
 
 ## Entry (occupancy)
 

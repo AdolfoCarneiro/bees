@@ -1,64 +1,21 @@
-# Asset Request Template
+# Asset request: `<name>`
 
-## Asset Name
+## Target
 
-```text
-[asset_id]
-```
+- **Resource path:** `assets/curiousbees/...`
+- **Dimensions / format:**
+- **In-game usage:**
 
-## Phase
+## Style
 
-```text
-[Phase number/name]
-```
+- Palette (hex):
+- References (vanilla UV, Blockbench, etc.):
 
-## Asset Type
+## Acceptance criteria
 
-```text
-item texture | block texture | block model | item model | GUI | other
-```
+- [ ] Readable at game scale
+- [ ] Matches species / UI context
 
-## Required for MVP?
+## Image generation prompt
 
-```text
-yes | no | optional
-```
-
-## Placeholder Acceptable?
-
-```text
-yes | no
-```
-
-## Visual Direction
-
-```text
-Describe the desired look.
-```
-
-## Runtime Paths
-
-```text
-assets/<modid>/textures/...
-assets/<modid>/models/...
-assets/<modid>/blockstates/...
-```
-
-## Source Paths
-
-```text
-assets-source/...
-```
-
-## Acceptance Criteria
-
-```text
-- [ ] ...
-- [ ] ...
-```
-
-## Notes
-
-```text
-Any references, constraints, or future polish notes.
-```
+(Paste-ready block for your image tool.)

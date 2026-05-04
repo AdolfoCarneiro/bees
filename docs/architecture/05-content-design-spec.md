@@ -10,13 +10,7 @@ This document defines the initial content plan for Curious Bees.
 
 The purpose of the initial content is not to be large. It is to prove the genetic loop with a small, understandable set of species, traits, mutations, and products.
 
-Detailed execution specs:
-
-```text
-docs/implementation/02-initial-content-implementation.md
-docs/implementation/08-data-driven-content.md
-docs/implementation/09-expanded-content-roadmap.md
-```
+Historical implementation notes lived under `docs/implementation/`; see **git history**.
 
 ## 2. Content Philosophy
 
@@ -475,11 +469,7 @@ Do not implement future expansion before the first loop works.
 
 ## 6. Production Design
 
-Detailed execution spec:
-
-```text
-docs/implementation/06-production-mvp.md
-```
+Historical production implementation notes: **git history** (`docs/implementation/`).
 
 ## 6.1 Production Rule
 
@@ -526,11 +516,7 @@ It is acceptable to reduce this further during implementation.
 
 ## 7. Analyzer Content Display
 
-Detailed execution spec:
-
-```text
-docs/implementation/05-analyzer-implementation.md
-```
+Historical analyzer implementation notes: **git history** (`docs/implementation/`).
 
 Initial analyzer report should show:
 
@@ -562,11 +548,7 @@ Species:
 
 ## 8. Asset Strategy
 
-Detailed planning:
-
-```text
-docs/art/
-```
+Detailed planning: **`docs/art/README.md`**, **`docs/art/asset-prompt-workflow.md`**, prompts under **`docs/art/prompts/`**.
 
 Rules:
 
@@ -642,11 +624,7 @@ Future resource species can be decided later.
 
 ## 12. Future Content Categories
 
-Expanded content is planned in:
-
-```text
-docs/implementation/09-expanded-content-roadmap.md
-```
+Expanded content was historically sketched in removed `docs/implementation/` specs — see **git history**. Current forward priorities: `docs/ROADMAP.md`.
 
 Potential categories:
 

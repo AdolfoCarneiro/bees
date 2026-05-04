@@ -12,12 +12,7 @@ The player should be able to breed two bees in the world using flowers, and the 
 
 Mutation should be probabilistic and should sometimes create a new species.
 
-Detailed execution specs:
-
-```text
-docs/implementation/01-genetics-core-implementation.md
-docs/implementation/04-vanilla-breeding-integration.md
-```
+Historical implementation notes lived under `docs/implementation/`; see **git history**.
 
 ## 2. Player-Facing Breeding Flow
 
@@ -418,19 +413,9 @@ Future possibilities:
 
 ## 20. Validation
 
-Detailed test plans:
+Detailed test plans historically lived under `docs/quality/` (e.g. genetics core, vanilla breeding). See **git history** or `docs/quality/README.md`.
 
-```text
-docs/quality/02-genetics-core-test-plan.md
-docs/quality/05-vanilla-breeding-test-plan.md
-```
-
-Implementation execution:
-
-```text
-docs/implementation/01-genetics-core-implementation.md
-docs/implementation/04-vanilla-breeding-integration.md
-```
+Implementation phase notes lived under `docs/implementation/`; see **git history** for old filenames.
 
 ## 21. Acceptance Criteria
 
