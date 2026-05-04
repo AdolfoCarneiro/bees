@@ -12,6 +12,7 @@ import com.curiousbees.neoforge.registry.ModBlocks;
 import com.curiousbees.neoforge.registry.ModCreativeTabs;
 import com.curiousbees.neoforge.registry.ModFeatures;
 import com.curiousbees.neoforge.registry.ModItems;
+import com.curiousbees.neoforge.registry.ModMenuTypes;
 import com.curiousbees.neoforge.registry.ModPoiTypes;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
@@ -34,6 +35,7 @@ public final class CuriousBeesMod {
         ModBlockEntities.register(modEventBus);
         ModPoiTypes.register(modEventBus);
         ModItems.register(modEventBus);
+        ModMenuTypes.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
         ModFeatures.register(modEventBus);
         modEventBus.addListener((FMLCommonSetupEvent event) ->
@@ -46,6 +48,7 @@ public final class CuriousBeesMod {
         NeoForge.EVENT_BUS.register(BeeSpeciesHiveTargetHandler.class);
         if (FMLEnvironment.dist == Dist.CLIENT) {
             modEventBus.addListener(ClientEventHandler::onRegisterRenderers);
+            modEventBus.addListener(ClientEventHandler::onRegisterMenuScreens);
             modEventBus.addListener(ClientEventHandler::onRegisterItemColors);
         }
         LOGGER.info("Curious Bees loaded");

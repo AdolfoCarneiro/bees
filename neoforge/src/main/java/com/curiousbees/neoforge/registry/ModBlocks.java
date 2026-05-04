@@ -7,6 +7,7 @@ import com.curiousbees.neoforge.block.beenest.ForestBeeNestBlock;
 import com.curiousbees.neoforge.block.beenest.MeadowBeeNestBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -22,12 +23,9 @@ public final class ModBlocks {
             DeferredRegister.create(Registries.BLOCK, CuriousBeesMod.MOD_ID);
 
     public static final DeferredHolder<Block, GeneticApiaryBlock> GENETIC_APIARY =
-            BLOCKS.register("genetic_apiary",
-                    () -> new GeneticApiaryBlock(
-                            BlockBehaviour.Properties.of()
-                                    .mapColor(MapColor.WOOD)
-                                    .sound(SoundType.WOOD)
-                                    .strength(0.6F)));
+            BLOCKS.register(
+                    "genetic_apiary",
+                    () -> new GeneticApiaryBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BEEHIVE)));
 
     // --- Species bee nest blocks ---
 

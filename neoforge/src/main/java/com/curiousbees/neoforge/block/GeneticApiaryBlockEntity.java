@@ -13,15 +13,21 @@ import com.curiousbees.common.genetics.random.JavaGeneticRandom;
 import com.curiousbees.neoforge.content.NeoForgeContentRegistry;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
+import com.curiousbees.neoforge.menu.GeneticApiaryMenu;
 import com.curiousbees.neoforge.registry.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
@@ -41,11 +47,14 @@ import java.util.Random;
  * it as a valid hive. getType() is overridden so NBT serialization uses our
  * registered type (curiousbees:genetic_apiary) instead of minecraft:beehive.
  *
- * This apiary is production-focused only. When a bee carrying nectar enters,
- * a production roll fires using the bee's genome and any installed frames.
- * Breeding remains a vanilla bee interaction — this block does not perform breeding.
+ * <p>Behavior matches a vanilla crafted {@link net.minecraft.world.level.block.BeehiveBlock}:
+ * facing, honey level, shear/bottle harvest, and bee occupancy through inherited ticking.
+ * Any bee species may enter (no species gate — unlike species bee nests).
+ *
+ * <p>When a bee carrying nectar enters, Curious Bees also runs a production roll into the
+ * output inventory using the bee's genome and installed frames. Breeding remains vanilla.
  */
-public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
+public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements MenuProvider {
 
     public static final int OUTPUT_SLOTS = 6;
     public static final int FRAME_SLOTS = 3;
@@ -151,6 +160,16 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity {
 
     public FrameModifiers.CombinedFrameModifier currentFrameModifiers() {
         return combinedFrameModifier();
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.translatable("block.curiousbees.genetic_apiary");
+    }
+
+    @Override
+    public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
+        return new GeneticApiaryMenu(containerId, playerInventory, this);
     }
 
     @Override

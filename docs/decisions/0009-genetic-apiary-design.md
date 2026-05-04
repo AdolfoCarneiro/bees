@@ -63,25 +63,26 @@ overrides to keep vanilla behavior and correct persistence:
 This avoids mixins while preserving vanilla bee processing (`instanceof
 BeehiveBlockEntity`) and proper custom block entity serialization.
 
-### Vanilla Honey Production — Suppressed
+### Vanilla Beehive Parity (Crafted Hive)
 
-The Genetic Apiary does **not** produce:
-- honey level increments;
-- honey bottles;
-- vanilla honeycombs;
-- any vanilla hive output.
+The Genetic Beehive is the mod’s **crafted hive** analog to `minecraft:beehive`:
 
-When a bee with nectar enters the apiary, instead of incrementing the honey
-level, the block entity runs the mod's production logic and places combs in
-its output inventory.
+- Same placement rules, block properties (`Properties.ofFullCopy(Blocks.BEEHIVE)`), `facing`, and `honey_level` blockstate variants.
+- Vanilla honey progression (level 0–5), honey bottle and honeycomb harvest with shears/bottle, and bee occupancy behavior come from `BeehiveBlock` / `BeehiveBlockEntity` ticking.
+- World assets reuse vanilla beehive textures so the block reads like the vanilla crafted hive.
+- Recipe matches the vanilla beehive pattern (planks + honeycomb), producing `curiousbees:genetic_apiary`.
 
-### Production Logic
+Species-specific wild nests remain separate (`SpeciesBeeNestBlock`); the Genetic Beehive has **no species filter** — all bees may enter.
 
-When a bee carrying nectar enters the apiary:
+### Curious Bees Production (Additive)
+
+When a bee carrying nectar enters the hive, **after** `super.addOccupant`, the block entity may also run mod production:
+
 1. Read the bee's genome via `BeeGenomeStorage.getGenome(bee)`.
-2. Run `ProductionResolver.resolve(genome, BuiltinProductionDefinitions.BY_SPECIES_ID, random)`.
-3. Add generated `ProductionOutput` items to the apiary's output inventory.
-4. Do not increment honey level.
+2. Run `ProductionResolver.resolve(...)` with frame modifiers.
+3. Add generated outputs to the apiary output inventory.
+
+This is **in addition to** vanilla honey fill where applicable, not instead of it.
 
 ### No-Genome Fallback
 
@@ -98,21 +99,17 @@ No bee is silently skipped. No crash occurs.
 ### Inventory Layout
 
 ```
-Slot 0–5  — Output (combs produced)
-Frame slots — Reserved for future Phase 7F; not implemented in first version.
+Slots — Vanilla hive occupancy + honey via BeehiveBlockEntity (unchanged).
+Slots — Frames + outputs exposed through GeneticBeehive menu / automation capability (NeoForge).
 ```
 
-Bee occupant list is tracked by the inherited BeehiveBlockEntity logic.
+Bee occupant list remains tracked by the inherited BeehiveBlockEntity logic.
 
-### GUI (First Version — Basic)
+### GUI
 
-A minimal screen showing:
-- Which bee species are currently inside the apiary (read from stored bee data + genome).
-- The output inventory where players manually extract combs.
+Right-click with an **empty hand** opens the Genetic Beehive menu (shears / glass bottle still use vanilla harvest on `useItemOn`).
 
-No genome detail, no production progress bar, no frame slots visible yet.
-These are intentional deferrals — the GUI can be improved without
-touching production logic.
+The screen shows frame slots, extract-only output slots, synced vanilla honey level, and a simple bees-present indicator. Deeper genome readouts can be layered in later without changing housing behavior.
 
 ### Energy
 
@@ -138,10 +135,9 @@ No input slots for automation — bees enter on their own.
 - Centrifuge
 - Resource bees
 - Fabric support
-- Polished Blockbench model (placeholder cube is acceptable)
-- Complex GUI (progress bars, genome display, frame slots)
+- Polished custom hive texture set (vanilla beehive textures are acceptable for parity)
+- Complex GUI (progress bars, full genome display)
 - Specific mod automation compat (Create, AE2, etc.)
-- Vanilla honey bottle or honeycomb output
 ```
 
 ---
@@ -169,7 +165,7 @@ once both systems are stable independently.
 
 - `GeneticApiaryBlock` and `GeneticApiaryBlockEntity` must extend vanilla
   hive classes, not be standalone blocks.
-- Honey level logic must be overridden/suppressed in the block entity.
+- Honey level logic stays on the inherited `BeehiveBlockEntity` tick path (not suppressed).
 - The production intercept point is when a bee with nectar enters the hive
   (vanilla: `addOccupant` / `releaseAllOccupants` logic).
 - A simple GUI screen + menu is needed for the first version.

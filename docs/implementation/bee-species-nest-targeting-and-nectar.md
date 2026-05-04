@@ -10,7 +10,7 @@ This note describes Curious Bees behavior for **species bee nests**, **hive AI t
 
 Vanilla bee “home” discovery uses the `minecraft:bee_home` POI tag. Curious Bees adds nest POIs to that tag (`data/minecraft/tags/point_of_interest_type/bee_home.json`), so bees can still **select** any tagged hive as a navigation target.
 
-Because POI lookup is not species-aware, bees may briefly path toward an incompatible species nest. **Server-side steering** (`BeeSpeciesHiveTargetHandler`) clears the bee’s saved hive when its current hive position is a `SpeciesBeeNestBlock` whose species does not match the bee’s active species (`setHivePos(null)` plus a short stay-out countdown). Compatible targets (matching nest, genetic apiary, vanilla hive/nest) are left unchanged.
+Because POI lookup is not species-aware, bees may briefly path toward an incompatible species nest. **Server-side steering** (`BeeSpeciesHiveTargetHandler`) clears the bee’s saved hive when its current hive position is a `SpeciesBeeNestBlock` whose species does not match the bee’s active species (`setHivePos(null)` plus a short stay-out countdown). Compatible targets (matching species nest, **Genetic Beehive / genetic apiary** — universal hive with no species check — vanilla hive/nest) are left unchanged.
 
 ## Vanilla hives and nests
 

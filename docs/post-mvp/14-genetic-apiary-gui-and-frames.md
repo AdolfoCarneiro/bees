@@ -27,6 +27,8 @@ Rule:
 The apiary does not transform bees into normal items as its main workflow.
 ```
 
+Product implementation note (NeoForge): the **Genetic Beehive** (`genetic_apiary`) block extends vanilla `BeehiveBlock`, uses the same crafted-hive recipe pattern and honey mechanics as `minecraft:beehive`, reuses vanilla hive textures for parity, and keeps **no species restriction** on bee entry (contrast with wild species bee nests). Right-click with an empty hand opens the genetics GUI (frames + outputs + honey readouts).
+
 The GUI may display bees associated with the apiary, but those bees are still living entities in the world or simulated as living bees through a future containment system.
 
 ### 2.2 Apiary Is Automation-Ready By Default

@@ -3,6 +3,9 @@ package com.curiousbees.neoforge.block;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BeehiveBlock;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
@@ -10,20 +13,34 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.SimpleContainer;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Genetic Apiary block. Extends BeehiveBlock so vanilla bee AI recognizes it
- * as a valid home (bees choose it and enter/exit automatically).
+ * Player-crafted hive block matching vanilla {@link BeehiveBlock} behavior (facing, honey level,
+ * shear/bottle harvest). Open with an empty hand to access genetics GUI (frames + outputs).
+ * Any bee species may enter — no nest affinity checks (contrast with {@link com.curiousbees.neoforge.block.beenest.SpeciesBeeNestBlock}).
  *
- * getTicker() is overridden to use our registered BlockEntityType instead of
- * BlockEntityType.BEEHIVE — vanilla's createTickerHelper checks type equality.
+ * <p>getTicker() is overridden to use our registered BlockEntityType instead of
+ * {@link BlockEntityType#BEEHIVE} — vanilla's createTickerHelper checks type equality.
  */
 public final class GeneticApiaryBlock extends BeehiveBlock {
 
     public GeneticApiaryBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (!level.isClientSide()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof GeneticApiaryBlockEntity apiary && player instanceof ServerPlayer serverPlayer) {
+                serverPlayer.openMenu(apiary, buf -> buf.writeBlockPos(pos));
+                return InteractionResult.CONSUME;
+            }
+        }
+        return InteractionResult.SUCCESS;
     }
 
     @Override
