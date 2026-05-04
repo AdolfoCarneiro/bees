@@ -1,5 +1,6 @@
 package com.curiousbees.neoforge.network;
 
+import com.curiousbees.common.gameplay.analysis.BeeAnalysisReport;
 import com.curiousbees.common.genetics.serial.GenomeData;
 import com.curiousbees.neoforge.data.BeeGenomeAttachments;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
@@ -28,6 +29,15 @@ public final class CuriousBeesNetwork {
                 SyncBeeGenomePayload.TYPE,
                 SyncBeeGenomePayload.STREAM_CODEC,
                 ClientNetworkHandlers::onSyncBeeGenome);
+        registrar.playToClient(
+                ShowAnalyzerReportPayload.TYPE,
+                ShowAnalyzerReportPayload.STREAM_CODEC,
+                ClientNetworkHandlers::onShowAnalyzerReport);
+    }
+
+    /** Sends the analyzer report to a specific player (after analysis). */
+    public static void sendAnalyzerReport(ServerPlayer player, BeeAnalysisReport report) {
+        PacketDistributor.sendToPlayer(player, new ShowAnalyzerReportPayload(report));
     }
 
     /** Called when a player begins tracking any entity — syncs genome if the entity is a bee with one. */

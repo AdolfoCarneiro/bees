@@ -5,6 +5,7 @@ import com.curiousbees.neoforge.client.ClientEventHandler;
 import com.curiousbees.neoforge.command.CuriousBeesCommands;
 import com.curiousbees.neoforge.content.ContentReloadListener;
 import com.curiousbees.neoforge.event.BeeSpeciesHiveTargetHandler;
+import com.curiousbees.neoforge.data.BeeAnalysisAttachments;
 import com.curiousbees.neoforge.data.BeeGenomeAttachments;
 import com.curiousbees.neoforge.network.CuriousBeesNetwork;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
@@ -31,6 +32,7 @@ public final class CuriousBeesMod {
 
     public CuriousBeesMod(IEventBus modEventBus, ModContainer modContainer) {
         BeeGenomeAttachments.register(modEventBus);
+        BeeAnalysisAttachments.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModPoiTypes.register(modEventBus);

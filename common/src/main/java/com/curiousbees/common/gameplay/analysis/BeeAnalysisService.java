@@ -11,7 +11,7 @@ public final class BeeAnalysisService {
 
     public BeeAnalysisReport analyze(Genome genome) {
         Objects.requireNonNull(genome, "genome must not be null");
-        return new BeeAnalysisReport(
+        return BeeAnalysisReport.analyzed(
                 toGeneReport(genome, ChromosomeType.SPECIES),
                 toGeneReport(genome, ChromosomeType.LIFESPAN),
                 toGeneReport(genome, ChromosomeType.PRODUCTIVITY),

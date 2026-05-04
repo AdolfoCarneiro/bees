@@ -16,20 +16,27 @@ public final class BeeAnalysisFormatter {
 
     /**
      * Formats a BeeAnalysisReport into a list of readable lines.
+     * Unanalyzed reports show "Unknown" for all fields.
      *
-     * Example output:
+     * Example (analyzed):
      *   === Bee Genetics ===
      *   Species:      [A] Cultivated (D) / [I] Forest (D)  — Hybrid
      *   Lifespan:     [A] Normal / [I] Long
-     *   Productivity: [A] Fast / [I] Normal
-     *   Fertility:    [A] Two / [I] Three
-     *   Flower Type:  [A] Flowers / [I] Leaves
+     *   ...
+     *
+     * Example (unanalyzed):
+     *   === Bee Genetics ===
+     *   Analysis Required — Genetics Unknown
      */
     public static List<String> format(BeeAnalysisReport report) {
         Objects.requireNonNull(report, "report must not be null");
         List<String> lines = new ArrayList<>();
 
         lines.add("=== Bee Genetics ===");
+        if (!report.isAnalyzed()) {
+            lines.add("Analysis Required — Genetics Unknown");
+            return List.copyOf(lines);
+        }
         lines.add(speciesLine(report.species()));
         lines.add(traitLine("Lifespan",     report.lifespan()));
         lines.add(traitLine("Productivity", report.productivity()));

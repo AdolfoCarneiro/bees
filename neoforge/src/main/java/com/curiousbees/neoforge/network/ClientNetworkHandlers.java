@@ -1,5 +1,6 @@
 package com.curiousbees.neoforge.network;
 
+import com.curiousbees.neoforge.client.screen.BeeAnalyzerScreen;
 import com.curiousbees.neoforge.data.BeeGenomeAttachments;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
@@ -20,5 +21,10 @@ public final class ClientNetworkHandlers {
                 bee.setData(BeeGenomeAttachments.BEE_GENOME, payload.genomeData());
             }
         });
+    }
+
+    public static void onShowAnalyzerReport(ShowAnalyzerReportPayload payload, IPayloadContext ctx) {
+        ctx.enqueueWork(() ->
+                Minecraft.getInstance().setScreen(new BeeAnalyzerScreen(payload.report())));
     }
 }
