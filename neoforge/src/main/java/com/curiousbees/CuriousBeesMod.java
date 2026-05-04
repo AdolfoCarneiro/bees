@@ -4,6 +4,7 @@ import com.curiousbees.neoforge.capability.ApiaryCapabilities;
 import com.curiousbees.neoforge.client.ClientEventHandler;
 import com.curiousbees.neoforge.command.CuriousBeesCommands;
 import com.curiousbees.neoforge.content.ContentReloadListener;
+import com.curiousbees.neoforge.event.BeeSpeciesHiveTargetHandler;
 import com.curiousbees.neoforge.data.BeeGenomeAttachments;
 import com.curiousbees.neoforge.network.CuriousBeesNetwork;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
@@ -42,6 +43,7 @@ public final class CuriousBeesMod {
         NeoForge.EVENT_BUS.addListener(ContentReloadListener::addReloadListener);
         NeoForge.EVENT_BUS.addListener(CuriousBeesCommands::register);
         NeoForge.EVENT_BUS.addListener(CuriousBeesNetwork::onStartTracking);
+        NeoForge.EVENT_BUS.register(BeeSpeciesHiveTargetHandler.class);
         if (FMLEnvironment.dist == Dist.CLIENT) {
             modEventBus.addListener(ClientEventHandler::onRegisterRenderers);
             modEventBus.addListener(ClientEventHandler::onRegisterItemColors);

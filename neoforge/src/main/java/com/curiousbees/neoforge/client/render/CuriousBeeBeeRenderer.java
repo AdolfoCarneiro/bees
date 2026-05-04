@@ -8,13 +8,15 @@ import net.minecraft.world.entity.animal.Bee;
 
 /**
  * Custom renderer for vanilla Bee entities that selects texture by active species genome.
- * Extends the vanilla BeeRenderer so all vanilla states (angry, nectar) are preserved.
- * When a species texture is not available, falls back to the vanilla bee texture.
+ * Extends the vanilla {@link BeeRenderer}; bees without a mod genome still use vanilla
+ * texture selection (including angry and nectar variants). Species-skinned bees use a base
+ * species texture plus {@link CuriousBeePollenLayer} for nectar visibility.
  */
 public final class CuriousBeeBeeRenderer extends BeeRenderer {
 
     public CuriousBeeBeeRenderer(EntityRendererProvider.Context context) {
         super(context);
+        addLayer(new CuriousBeePollenLayer(this));
     }
 
     @Override
