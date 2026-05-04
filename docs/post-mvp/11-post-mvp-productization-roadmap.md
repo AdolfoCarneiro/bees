@@ -400,14 +400,14 @@ docs/post-mvp/10-5-species-hives-and-habitat-system.md
 Deliverables:
 
 ```txt
-- SpeciesHabitatDefinition + HiveCompatibilityService in common (pure Java).
+- SpeciesHabitatDefinition + BeeNestCompatibilityService in common (pure Java).
 - Optional habitat field on BeeSpeciesDefinition.
 - Three species hive blocks: Meadow, Forest, Arid (extends vanilla BeehiveBlock).
 - World gen entries for species hives in their respective biomes.
 - Hive entry/exit restricted to matching species.
 - Bees emerging from species hives carry the matching genome.
-- New asset prompts under docs/art/prompts/hives/.
-- New UV template at docs/art/templates/hive/default_hive_uv_template.png.
+- New asset prompts under docs/art/prompts/bee_nests/.
+- Bee nest UV/layout reference at docs/art/templates/bee_nest/README.md.
 - Documented species spec format used by all future species.
 - Reserved design space for Phase 11.6 (Custom Bee Entity Architecture).
 ```
@@ -833,7 +833,7 @@ unblocks the rest of the productization roadmap.
 Recommended order after this roadmap:
 
 ```txt
-1.  Add SpeciesHabitatDefinition + HiveCompatibilityService in common.
+1.  Add SpeciesHabitatDefinition + BeeNestCompatibilityService in common.
 2.  Add optional habitat to BeeSpeciesDefinition and built-in species.
 3.  Implement three species hive blocks (Meadow, Forest, Arid) in NeoForge.
 4.  Implement world gen entries for species hives.

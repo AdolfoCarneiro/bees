@@ -42,8 +42,8 @@ Entity:         minecraft:bee
 Genome:         attached via NeoForge DataAttachment (BeeGenomeStorage)
 Species ID:     read from active SPECIES allele in the genome
 Visual:         CuriousBeeBeeRenderer overrides the texture for minecraft:bee entities
-Hive entry:     SpeciesHiveBlockEntity.addOccupant enforces genome-based species check
-Hive exit:      SpeciesHiveFeature stamps species genome on world-gen-placed bees
+Nest entry:     SpeciesBeeNestBlockEntity.addOccupant enforces genome-based species check
+Nest exit:      SpeciesBeeNestFeature stamps species genome on world-gen-placed bees
 Breeding:       BeeBreedingEventHandler intercepts BabyEntitySpawnEvent
 Spawn:          BeeSpawnEventHandler stamps wild genome on EntityJoinLevelEvent
 ```
@@ -101,8 +101,8 @@ must address all of the following:
 ### 4.3 Hive system compatibility
 
 ```text
-- SpeciesHiveBlock and SpeciesHiveBlockEntity must continue to work.
-- Entry policy (HiveCompatibilityService.canEnter) must remain valid.
+- SpeciesBeeNestBlock and SpeciesBeeNestBlockEntity must continue to work.
+- Entry policy (BeeNestCompatibilityService.canEnter) must remain valid.
 - Custom entity types must be recognized by hive AI as valid occupants.
 - Vanilla bee nests must continue to be the home for vanilla minecraft:bee entities.
 ```
@@ -215,7 +215,7 @@ this migration is designed.
 ```text
 Phase 11.5 — Species Hives And Habitat System
   Foundational. Valid for both vanilla-bee and custom-entity approaches.
-  HiveCompatibilityService and SpeciesHabitatDefinition are stable.
+  BeeNestCompatibilityService and SpeciesHabitatDefinition are stable.
 
 Phase 12 — Visual Species System
   Must stabilize the renderer pattern before custom entities inherit from it.

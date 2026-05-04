@@ -23,24 +23,24 @@ public final class ModPoiTypes {
                             1,
                             1));
 
-    public static final DeferredHolder<PoiType, PoiType> MEADOW_HIVE =
-            POI_TYPES.register("meadow_hive",
+    public static final DeferredHolder<PoiType, PoiType> MEADOW_BEE_NEST =
+            POI_TYPES.register("meadow_bee_nest",
                     () -> new PoiType(
-                            Set.copyOf(ModBlocks.MEADOW_HIVE.get().getStateDefinition().getPossibleStates()),
+                            Set.copyOf(ModBlocks.MEADOW_BEE_NEST.get().getStateDefinition().getPossibleStates()),
                             1,
                             1));
 
-    public static final DeferredHolder<PoiType, PoiType> FOREST_HIVE =
-            POI_TYPES.register("forest_hive",
+    public static final DeferredHolder<PoiType, PoiType> FOREST_BEE_NEST =
+            POI_TYPES.register("forest_bee_nest",
                     () -> new PoiType(
-                            Set.copyOf(ModBlocks.FOREST_HIVE.get().getStateDefinition().getPossibleStates()),
+                            Set.copyOf(ModBlocks.FOREST_BEE_NEST.get().getStateDefinition().getPossibleStates()),
                             1,
                             1));
 
-    public static final DeferredHolder<PoiType, PoiType> ARID_HIVE =
-            POI_TYPES.register("arid_hive",
+    public static final DeferredHolder<PoiType, PoiType> ARID_BEE_NEST =
+            POI_TYPES.register("arid_bee_nest",
                     () -> new PoiType(
-                            Set.copyOf(ModBlocks.ARID_HIVE.get().getStateDefinition().getPossibleStates()),
+                            Set.copyOf(ModBlocks.ARID_BEE_NEST.get().getStateDefinition().getPossibleStates()),
                             1,
                             1));
 

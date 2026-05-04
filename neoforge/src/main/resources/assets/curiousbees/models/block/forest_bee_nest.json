@@ -1,0 +1,11 @@
+{
+  "_comment": "DEV PLACEHOLDER textures — see docs/art/prompts/bee_nests/forest_bee_nest.md",
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "curiousbees:block/forest_bee_nest_bottom",
+    "front": "curiousbees:block/forest_bee_nest_front",
+    "particle": "curiousbees:block/forest_bee_nest_side",
+    "side": "curiousbees:block/forest_bee_nest_side",
+    "top": "curiousbees:block/forest_bee_nest_top"
+  }
+}

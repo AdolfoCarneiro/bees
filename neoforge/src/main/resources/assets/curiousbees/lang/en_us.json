@@ -14,8 +14,8 @@
   "item.curiousbees.mutation_frame":  "Mutation Frame",
   "item.curiousbees.productivity_frame": "Productivity Frame",
   "block.curiousbees.genetic_apiary": "Genetic Apiary",
-  "block.curiousbees.meadow_hive":    "Meadow Hive",
-  "block.curiousbees.forest_hive":    "Forest Hive",
-  "block.curiousbees.arid_hive":      "Arid Hive",
+  "block.curiousbees.meadow_bee_nest": "Meadow Bee Nest",
+  "block.curiousbees.forest_bee_nest": "Forest Bee Nest",
+  "block.curiousbees.arid_bee_nest":   "Arid Bee Nest",
   "itemGroup.curiousbees.curious_bees": "Curious Bees"
 }

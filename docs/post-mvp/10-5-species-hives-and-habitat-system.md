@@ -1,4 +1,4 @@
-# 10.5 — Species Hives And Habitat System
+# 10.5 — Species Bee Nests And Habitat System
 
 > Status: Post-MVP foundation document.
 >
@@ -29,13 +29,13 @@ for that decision without forcing it now.
 
 ```text
 - New Java model: SpeciesHabitatDefinition (common, pure Java).
-- New Java service: HiveCompatibilityService (common, pure Java).
+- New Java service: BeeNestCompatibilityService (common, pure Java).
 - Optional habitat field on BeeSpeciesDefinition.
-- Three new species hive blocks in NeoForge: Meadow, Forest, Arid.
-- World gen entries placing species hives in their respective biomes.
-- Hive entry/exit restricted to matching species.
-- Bees emerging from a species hive receive that species' genome.
-- Asset pipeline additions for hive textures (prompts, UV template).
+- Three new species bee nest blocks in NeoForge: Meadow, Forest, Arid (vanilla bee nest shape, multi-face textures).
+- World gen entries placing species bee nests in their respective biomes.
+- Nest entry/exit restricted to matching species.
+- Bees emerging from a species bee nest receive that species' genome.
+- Asset pipeline additions for bee nest textures (prompts; see `docs/art/templates/bee_nest/`).
 - Updated species spec format documentation.
 ```
 
@@ -131,8 +131,8 @@ already supports it today through the genome attached to every vanilla bee.
 ### 4.1 Common holds the truth, platform layer wires it
 
 ```text
-common  = SpeciesHabitatDefinition, HiveCompatibilityService, species data
-neoforge = SpeciesHiveBlock implementations, registry, world gen, event handlers
+common  = SpeciesHabitatDefinition, BeeNestCompatibilityService, species data
+neoforge = SpeciesBeeNestBlock implementations, registry, world gen, event handlers
 fabric   = future mirror of neoforge using Fabric APIs; reuses everything in common
 ```
 
@@ -144,7 +144,7 @@ registries, blocks, and events.
 ### 4.2 One hive block per species, not a generic "species hive" block
 
 Each world-spawnable species gets its own dedicated block class:
-`MeadowHiveBlock`, `ForestHiveBlock`, `AridHiveBlock`. This is verbose but keeps:
+`MeadowBeeNestBlock`, `ForestBeeNestBlock`, `AridBeeNestBlock`. This is verbose but keeps:
 
 ```text
 - world gen targeting trivial (one block, one biome list);
@@ -163,18 +163,18 @@ honey level, smoker pacification, shears interaction — all vanilla. Curious Be
 
 ```text
 - entry: a bee may only enter if its species matches the hive species
-        (delegated to HiveCompatibilityService).
+        (delegated to BeeNestCompatibilityService).
 - exit:  bees released from the hive are stamped with the hive's species genome
         if they do not already have one (handles wild spawns into the hive).
 ```
 
 > **Implementation note (NeoForge 1.21.1):**
 > NeoForge 1.21.1 does not ship `AnimalEnterLeaveHiveEvent`. Entry enforcement is implemented
-> via a thin `SpeciesHiveBlockEntity extends BeehiveBlockEntity` that overrides `addOccupant`.
+> via a thin `SpeciesBeeNestBlockEntity extends BeehiveBlockEntity` that overrides `addOccupant`.
 > All storage/tick behavior remains vanilla — the subclass only adds the species check.
-> A single `BlockEntityType` (`curiousbees:species_hive`) covers all three hive blocks.
+> A single `BlockEntityType` (`curiousbees:species_bee_nest`) covers all three bee nest blocks.
 > World-gen bees receive their species genome before `addOccupant` is called in
-> `SpeciesHiveFeature`; naturally-spawning bees receive genomes via `BeeSpawnEventHandler`
+> `SpeciesBeeNestFeature`; naturally-spawning bees receive genomes via `BeeSpawnEventHandler`
 > and are already stamped before bee AI can direct them to a hive.
 
 ### 4.4 Defer custom entity migration
@@ -191,20 +191,20 @@ Pure Java, string IDs only:
 
 ```java
 public final class SpeciesHabitatDefinition {
-    private final String hiveBlockId;        // "curiousbees:meadow_hive"
-    private final String hiveTextureId;      // "curiousbees:textures/block/meadow_hive.png"
+    private final String beeNestBlockId;                 // "curiousbees:meadow_bee_nest"
+    private final String beeNestRepresentativeTextureId; // "curiousbees:textures/block/meadow_bee_nest_side.png"
     private final List<String> spawnBiomes;  // ["plains", "flower_forest", "meadow"]
     // immutable, validates non-blank ids and non-empty biomes
 }
 ```
 
-### 5.2 New: HiveCompatibilityService (common)
+### 5.2 New: BeeNestCompatibilityService (common)
 
 Pure Java policy:
 
 ```java
-public final class HiveCompatibilityService {
-    public boolean canEnter(String beeSpeciesId, String hiveSpeciesId);
+public final class BeeNestCompatibilityService {
+    public boolean canEnter(String beeSpeciesId, String nestSpeciesId);
     // trivial id match today; isolated so both NeoForge and future Fabric call the same logic
 }
 ```
@@ -221,9 +221,9 @@ public final class BeeSpeciesDefinition {
 ### 5.4 Built-in species populated
 
 ```text
-Meadow      -> habitat: meadow_hive,   biomes [plains, flower_forest, meadow]
-Forest      -> habitat: forest_hive,   biomes [forest, birch_forest, dark_forest]
-Arid        -> habitat: arid_hive,     biomes [desert, savanna, badlands]
+Meadow      -> habitat: meadow_bee_nest,   biomes [plains, flower_forest, meadow]
+Forest      -> habitat: forest_bee_nest,   biomes [forest, birch_forest, dark_forest]
+Arid        -> habitat: arid_bee_nest,     biomes [desert, savanna, badlands]
 Cultivated  -> no habitat (mutation-only)
 Hardy       -> no habitat (mutation-only)
 ```
@@ -249,8 +249,8 @@ for habitat-bearing species. It may be deprecated or absorbed into the habitat i
     "texture": "curiousbees:textures/entity/bee/x.png"
   },
   "habitat": {
-    "hiveBlockId":   "curiousbees:x_hive",
-    "hiveTextureId": "curiousbees:textures/block/x_hive.png",
+    "beeNestBlockId": "curiousbees:x_bee_nest",
+    "beeNestRepresentativeTextureId": "curiousbees:textures/block/x_bee_nest_side.png",
     "spawnBiomes":   ["biome1", "biome2"]
   }
 }
@@ -264,12 +264,12 @@ three fields if present).
 ### 6.1 Implementation outline
 
 ```text
-SpeciesHiveBlock (abstract or interface) extends BeehiveBlock:
+SpeciesBeeNestBlock (abstract) extends BeehiveBlock:
 - knows its associated species id (compile-time per subclass)
-- override entity-tries-to-enter: HiveCompatibilityService.canEnter(...)
+- override entity-tries-to-enter: BeeNestCompatibilityService.canEnter(...)
 - override bee-released-from-hive: stamp species genome via existing BeeGenomeStorage
 
-MeadowHiveBlock, ForestHiveBlock, AridHiveBlock:
+MeadowBeeNestBlock, ForestBeeNestBlock, AridBeeNestBlock:
 - thin subclasses, each tied to its species id and texture
 - registered via existing ModBlocks.register(...)
 ```
@@ -330,31 +330,31 @@ vanilla bees with attached genomes remain the implementation.
 ### 8.1 New prompt directory
 
 ```text
-docs/art/prompts/hives/
-  ├── textures-block-meadow-hive.md
-  ├── textures-block-forest-hive.md
-  └── textures-block-arid-hive.md
+docs/art/prompts/bee_nests/
+  ├── meadow_bee_nest.md
+  ├── forest_bee_nest.md
+  └── arid_bee_nest.md
 ```
 
 Each prompt follows the template in `docs/art/asset-prompt-workflow.md` with one important
 difference: the asset type is **block texture**, not entity texture. Block textures use a
 different UV layout from entity textures.
 
-### 8.2 New UV template for hive blocks
+### 8.2 UV / layout reference for bee nest blocks
 
 ```text
-docs/art/templates/hive/default_hive_uv_template.png
+docs/art/templates/bee_nest/README.md
 ```
 
-Required before any hive texture is generated, mirroring the bee entity UV template
-requirement already established. The template must show all six block faces with their
-boundaries and labels.
+Blocks use the vanilla bee nest model (`orientable_with_bottom`): five 16×16 face tiles per species
+plus a honey front variant. Use the README links to vanilla 1.21.1 textures as a **layout** guide
+(proportions, hole placement); Curious Bees species prompts live under `docs/art/prompts/bee_nests/`.
 
 ### 8.3 Asset deliverables per world-spawnable species
 
 ```text
 neoforge/.../textures/entity/bee/<species>.png   (already required by Phase 12)
-neoforge/.../textures/block/<species>_hive.png   (new)
+neoforge/.../textures/block/<species>_bee_nest_{bottom,top,side,front,front_honey}.png   (new)
 ```
 
 ## 9. Extensible Species Spec Format
@@ -367,7 +367,7 @@ Adding a new species — now or in the future — means producing exactly this s
 1. JSON definition (or built-in Java entry) with:
    - genetic data (id, allele, dominance, default traits)
    - visual block with bee model + texture
-   - optional habitat block with hive block id + hive texture + spawn biomes
+   - optional habitat block with bee nest block id + representative side texture + spawn biomes
 
 2. Bee entity texture asset.
 3. Bee entity texture prompt (under docs/art/prompts/species/).
@@ -376,7 +376,7 @@ Adding a new species — now or in the future — means producing exactly this s
    a. Hive block subclass + registry entry.
    b. World gen feature targeting spawnBiomes.
    c. Hive block texture asset.
-   d. Hive block texture prompt (under docs/art/prompts/hives/).
+   d. Bee nest texture prompts (under docs/art/prompts/bee_nests/).
 
 5. If habitat absent:
    a. At least one mutation entry must produce this species
@@ -437,7 +437,7 @@ The Productization Roadmap is already updated to:
 When working on tasks derived from this document, agents must:
 
 ```text
-- keep SpeciesHabitatDefinition and HiveCompatibilityService in common as pure Java;
+- keep SpeciesHabitatDefinition and BeeNestCompatibilityService in common as pure Java;
 - not import Minecraft, NeoForge, or Fabric classes into the habitat data model;
 - not introduce a generic "species hive" block — one block per species is the chosen design;
 - not implement custom bee entities as part of this work (deferred to Phase 11.5);

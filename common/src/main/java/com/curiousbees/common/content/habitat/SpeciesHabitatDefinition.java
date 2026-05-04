@@ -5,46 +5,61 @@ import java.util.Objects;
 
 /**
  * Minecraft-independent habitat metadata for a world-spawnable bee species.
- * Describes where the species' hive block exists in the world and which biomes it inhabits.
+ * Describes where the species' bee nest block exists in the world and which biomes it inhabits.
  * Uses plain string IDs — no ResourceLocation, Block, or registry references.
  */
 public final class SpeciesHabitatDefinition {
 
-    private final String hiveBlockId;
-    private final String hiveTextureId;
+    private final String beeNestBlockId;
+    private final String beeNestRepresentativeTextureId;
     private final List<String> spawnBiomes;
 
     /**
-     * @param hiveBlockId   registry ID of the hive block, e.g. {@code curiousbees:meadow_hive}
-     * @param hiveTextureId texture resource path, e.g. {@code curiousbees:textures/block/meadow_hive.png}
-     * @param spawnBiomes   non-empty list of vanilla biome IDs where this hive generates naturally
+     * @param beeNestBlockId                  registry ID of the bee nest block, e.g. {@code curiousbees:meadow_bee_nest}
+     * @param beeNestRepresentativeTextureId 16×16 texture path for UI/preview; use the {@code side} face tile, e.g.
+     *                                         {@code curiousbees:textures/block/meadow_bee_nest_side.png}
+     * @param spawnBiomes                     non-empty list of vanilla biome IDs where this nest generates naturally
      */
-    public SpeciesHabitatDefinition(String hiveBlockId, String hiveTextureId, List<String> spawnBiomes) {
-        Objects.requireNonNull(hiveBlockId, "hiveBlockId must not be null");
-        Objects.requireNonNull(hiveTextureId, "hiveTextureId must not be null");
+    public SpeciesHabitatDefinition(
+            String beeNestBlockId,
+            String beeNestRepresentativeTextureId,
+            List<String> spawnBiomes) {
+        Objects.requireNonNull(beeNestBlockId, "beeNestBlockId must not be null");
+        Objects.requireNonNull(beeNestRepresentativeTextureId, "beeNestRepresentativeTextureId must not be null");
         Objects.requireNonNull(spawnBiomes, "spawnBiomes must not be null");
 
-        if (hiveBlockId.isBlank()) throw new IllegalArgumentException("hiveBlockId must not be blank");
-        if (hiveTextureId.isBlank()) throw new IllegalArgumentException("hiveTextureId must not be blank");
+        if (beeNestBlockId.isBlank()) throw new IllegalArgumentException("beeNestBlockId must not be blank");
+        if (beeNestRepresentativeTextureId.isBlank()) {
+            throw new IllegalArgumentException("beeNestRepresentativeTextureId must not be blank");
+        }
         if (spawnBiomes.isEmpty()) throw new IllegalArgumentException("spawnBiomes must not be empty");
 
-        this.hiveBlockId = hiveBlockId;
-        this.hiveTextureId = hiveTextureId;
+        this.beeNestBlockId = beeNestBlockId;
+        this.beeNestRepresentativeTextureId = beeNestRepresentativeTextureId;
         this.spawnBiomes = List.copyOf(spawnBiomes);
     }
 
-    /** Registry ID of the hive block, e.g. {@code curiousbees:meadow_hive}. */
-    public String hiveBlockId() { return hiveBlockId; }
+    /** Registry ID of the bee nest block, e.g. {@code curiousbees:meadow_bee_nest}. */
+    public String beeNestBlockId() {
+        return beeNestBlockId;
+    }
 
-    /** Texture resource path, e.g. {@code curiousbees:textures/block/meadow_hive.png}. */
-    public String hiveTextureId() { return hiveTextureId; }
+    /**
+     * Representative 16×16 texture (typically the {@code side} face) for future UI, e.g.
+     * {@code curiousbees:textures/block/meadow_bee_nest_side.png}.
+     */
+    public String beeNestRepresentativeTextureId() {
+        return beeNestRepresentativeTextureId;
+    }
 
-    /** Immutable list of vanilla biome IDs where this hive generates naturally. */
-    public List<String> spawnBiomes() { return spawnBiomes; }
+    /** Immutable list of vanilla biome IDs where this bee nest generates naturally. */
+    public List<String> spawnBiomes() {
+        return spawnBiomes;
+    }
 
     @Override
     public String toString() {
-        return "SpeciesHabitatDefinition{hiveBlockId='" + hiveBlockId
+        return "SpeciesHabitatDefinition{beeNestBlockId='" + beeNestBlockId
                 + "', spawnBiomes=" + spawnBiomes + '}';
     }
 
@@ -52,13 +67,13 @@ public final class SpeciesHabitatDefinition {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof SpeciesHabitatDefinition other)) return false;
-        return hiveBlockId.equals(other.hiveBlockId)
-                && hiveTextureId.equals(other.hiveTextureId)
+        return beeNestBlockId.equals(other.beeNestBlockId)
+                && beeNestRepresentativeTextureId.equals(other.beeNestRepresentativeTextureId)
                 && spawnBiomes.equals(other.spawnBiomes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(hiveBlockId, hiveTextureId, spawnBiomes);
+        return Objects.hash(beeNestBlockId, beeNestRepresentativeTextureId, spawnBiomes);
     }
 }

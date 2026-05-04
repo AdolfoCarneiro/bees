@@ -14,7 +14,7 @@ class BuiltinBeeSpeciesHabitatTest {
     void meadowHabitatPresent() {
         Optional<SpeciesHabitatDefinition> habitat = BuiltinBeeSpecies.MEADOW.habitat();
         assertTrue(habitat.isPresent(), "Meadow Bee must have a habitat definition");
-        assertEquals("curiousbees:meadow_hive", habitat.get().hiveBlockId());
+        assertEquals("curiousbees:meadow_bee_nest", habitat.get().beeNestBlockId());
         assertFalse(habitat.get().spawnBiomes().isEmpty());
         assertTrue(habitat.get().spawnBiomes().contains("minecraft:plains"));
     }
@@ -23,7 +23,7 @@ class BuiltinBeeSpeciesHabitatTest {
     void forestHabitatPresent() {
         Optional<SpeciesHabitatDefinition> habitat = BuiltinBeeSpecies.FOREST.habitat();
         assertTrue(habitat.isPresent(), "Forest Bee must have a habitat definition");
-        assertEquals("curiousbees:forest_hive", habitat.get().hiveBlockId());
+        assertEquals("curiousbees:forest_bee_nest", habitat.get().beeNestBlockId());
         assertTrue(habitat.get().spawnBiomes().contains("minecraft:forest"));
     }
 
@@ -31,7 +31,7 @@ class BuiltinBeeSpeciesHabitatTest {
     void aridHabitatPresent() {
         Optional<SpeciesHabitatDefinition> habitat = BuiltinBeeSpecies.ARID.habitat();
         assertTrue(habitat.isPresent(), "Arid Bee must have a habitat definition");
-        assertEquals("curiousbees:arid_hive", habitat.get().hiveBlockId());
+        assertEquals("curiousbees:arid_bee_nest", habitat.get().beeNestBlockId());
         assertTrue(habitat.get().spawnBiomes().contains("minecraft:desert"));
     }
 

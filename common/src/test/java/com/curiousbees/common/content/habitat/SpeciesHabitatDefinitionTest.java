@@ -11,20 +11,20 @@ class SpeciesHabitatDefinitionTest {
     @Test
     void constructsWithValidArguments() {
         SpeciesHabitatDefinition def = new SpeciesHabitatDefinition(
-                "curiousbees:meadow_hive",
-                "curiousbees:textures/block/meadow_hive.png",
+                "curiousbees:meadow_bee_nest",
+                "curiousbees:textures/block/meadow_bee_nest_side.png",
                 List.of("minecraft:plains", "minecraft:meadow"));
 
-        assertEquals("curiousbees:meadow_hive", def.hiveBlockId());
-        assertEquals("curiousbees:textures/block/meadow_hive.png", def.hiveTextureId());
+        assertEquals("curiousbees:meadow_bee_nest", def.beeNestBlockId());
+        assertEquals("curiousbees:textures/block/meadow_bee_nest_side.png", def.beeNestRepresentativeTextureId());
         assertEquals(List.of("minecraft:plains", "minecraft:meadow"), def.spawnBiomes());
     }
 
     @Test
     void spawnBiomesIsImmutable() {
         SpeciesHabitatDefinition def = new SpeciesHabitatDefinition(
-                "curiousbees:meadow_hive",
-                "curiousbees:textures/block/meadow_hive.png",
+                "curiousbees:meadow_bee_nest",
+                "curiousbees:textures/block/meadow_bee_nest_side.png",
                 List.of("minecraft:plains"));
 
         assertThrows(UnsupportedOperationException.class,
@@ -32,25 +32,25 @@ class SpeciesHabitatDefinitionTest {
     }
 
     @Test
-    void rejectsNullHiveBlockId() {
+    void rejectsNullBeeNestBlockId() {
         assertThrows(NullPointerException.class, () ->
                 new SpeciesHabitatDefinition(null, "tex", List.of("biome")));
     }
 
     @Test
-    void rejectsBlankHiveBlockId() {
+    void rejectsBlankBeeNestBlockId() {
         assertThrows(IllegalArgumentException.class, () ->
                 new SpeciesHabitatDefinition("  ", "tex", List.of("biome")));
     }
 
     @Test
-    void rejectsNullHiveTextureId() {
+    void rejectsNullRepresentativeTextureId() {
         assertThrows(NullPointerException.class, () ->
                 new SpeciesHabitatDefinition("block", null, List.of("biome")));
     }
 
     @Test
-    void rejectsBlankHiveTextureId() {
+    void rejectsBlankRepresentativeTextureId() {
         assertThrows(IllegalArgumentException.class, () ->
                 new SpeciesHabitatDefinition("block", "", List.of("biome")));
     }
@@ -70,11 +70,11 @@ class SpeciesHabitatDefinitionTest {
     @Test
     void equalityBasedOnAllFields() {
         SpeciesHabitatDefinition a = new SpeciesHabitatDefinition(
-                "curiousbees:meadow_hive", "tex", List.of("plains"));
+                "curiousbees:meadow_bee_nest", "tex", List.of("plains"));
         SpeciesHabitatDefinition b = new SpeciesHabitatDefinition(
-                "curiousbees:meadow_hive", "tex", List.of("plains"));
+                "curiousbees:meadow_bee_nest", "tex", List.of("plains"));
         SpeciesHabitatDefinition c = new SpeciesHabitatDefinition(
-                "curiousbees:forest_hive", "tex", List.of("plains"));
+                "curiousbees:forest_bee_nest", "tex", List.of("plains"));
 
         assertEquals(a, b);
         assertNotEquals(a, c);

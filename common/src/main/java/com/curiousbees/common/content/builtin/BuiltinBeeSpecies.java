@@ -34,18 +34,18 @@ public final class BuiltinBeeSpecies {
 
     // Habitat definitions — world-spawnable species only
     public static final SpeciesHabitatDefinition HABITAT_MEADOW = new SpeciesHabitatDefinition(
-            "curiousbees:meadow_hive",
-            "curiousbees:textures/block/meadow_hive.png",
+            "curiousbees:meadow_bee_nest",
+            "curiousbees:textures/block/meadow_bee_nest_side.png",
             List.of("minecraft:plains", "minecraft:flower_forest", "minecraft:meadow"));
 
     public static final SpeciesHabitatDefinition HABITAT_FOREST = new SpeciesHabitatDefinition(
-            "curiousbees:forest_hive",
-            "curiousbees:textures/block/forest_hive.png",
+            "curiousbees:forest_bee_nest",
+            "curiousbees:textures/block/forest_bee_nest_side.png",
             List.of("minecraft:forest", "minecraft:birch_forest", "minecraft:dark_forest"));
 
     public static final SpeciesHabitatDefinition HABITAT_ARID = new SpeciesHabitatDefinition(
-            "curiousbees:arid_hive",
-            "curiousbees:textures/block/arid_hive.png",
+            "curiousbees:arid_bee_nest",
+            "curiousbees:textures/block/arid_bee_nest_side.png",
             List.of("minecraft:desert", "minecraft:savanna", "minecraft:badlands"));
 
     // Species definitions

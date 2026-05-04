@@ -2,8 +2,8 @@
   "replace": false,
   "values": [
     "curiousbees:genetic_apiary",
-    "curiousbees:meadow_hive",
-    "curiousbees:forest_hive",
-    "curiousbees:arid_hive"
+    "curiousbees:meadow_bee_nest",
+    "curiousbees:forest_bee_nest",
+    "curiousbees:arid_bee_nest"
   ]
 }

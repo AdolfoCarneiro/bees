@@ -2,7 +2,7 @@ package com.curiousbees.neoforge.registry;
 
 import com.curiousbees.CuriousBeesMod;
 import com.curiousbees.neoforge.block.GeneticApiaryBlockEntity;
-import com.curiousbees.neoforge.block.hive.SpeciesHiveBlockEntity;
+import com.curiousbees.neoforge.block.beenest.SpeciesBeeNestBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
@@ -22,13 +22,13 @@ public final class ModBlockEntities {
                             .of(GeneticApiaryBlockEntity::new, ModBlocks.GENETIC_APIARY.get())
                             .build(null));
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SpeciesHiveBlockEntity>>
-            SPECIES_HIVE = BLOCK_ENTITY_TYPES.register("species_hive",
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SpeciesBeeNestBlockEntity>>
+            SPECIES_BEE_NEST = BLOCK_ENTITY_TYPES.register("species_bee_nest",
                     () -> BlockEntityType.Builder
-                            .of(SpeciesHiveBlockEntity::new,
-                                    ModBlocks.MEADOW_HIVE.get(),
-                                    ModBlocks.FOREST_HIVE.get(),
-                                    ModBlocks.ARID_HIVE.get())
+                            .of(SpeciesBeeNestBlockEntity::new,
+                                    ModBlocks.MEADOW_BEE_NEST.get(),
+                                    ModBlocks.FOREST_BEE_NEST.get(),
+                                    ModBlocks.ARID_BEE_NEST.get())
                             .build(null));
 
     public static void register(IEventBus modEventBus) {

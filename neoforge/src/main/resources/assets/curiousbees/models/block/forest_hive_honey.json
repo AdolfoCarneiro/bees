@@ -1,7 +1,0 @@
-{
-  "_comment": "DEV PLACEHOLDER — awaiting real texture from docs/art/prompts/hives/forest_hive.md",
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "curiousbees:block/forest_hive"
-  }
-}
