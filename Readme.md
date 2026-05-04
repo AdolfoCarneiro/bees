@@ -28,8 +28,8 @@ The project is now entering a post-MVP productization phase.
 The current focus is not to add a large amount of content yet. The focus is to turn the validated MVP into a real playable mod with better UX, visuals, apiary interaction, analyzer interfaces, frames, and a sustainable content/asset pipeline.
 
 ```text
-Current product direction is documented in docs/post-mvp/.
-MVP foundation specs (genetics, architecture, content rules) live under docs/mvp/.
+Product direction: docs/post-mvp/gameplay-direction.md and docs/ROADMAP.md
+MVP foundation specs (genetics, architecture, content rules): docs/mvp/
 ```
 
 ## Target
@@ -95,35 +95,9 @@ Curious Bees is not:
 - a resource bee mod as its immediate next priority;
 - a content-heavy mod before UX, visuals, and asset pipelines are ready.
 
-## Current Post-MVP Priorities
+## Priorities
 
-The current phase focuses on productization:
-
-1. Visual species system
-   - species-specific textures;
-   - fallback visuals;
-   - optional custom models for special species later.
-
-2. Analyzer UX
-   - move analysis out of chat/debug output;
-   - add real interfaces;
-   - show genetic details only after a bee has been analyzed.
-
-3. Genetic Apiary GUI
-   - show bees present in the apiary;
-   - show production status;
-   - show frames;
-   - show output inventory;
-   - support automation by design.
-
-4. Frames and Apiary Behavior
-   - frames affect production, mutation, and stability;
-   - apiary behavior can later support containment/simulation-style modifiers;
-   - automation should not require a special automation upgrade.
-
-5. Content and Asset Pipeline
-   - species data should be paired with assets;
-   - adding a species should have clear conventions for JSON/data, textures, lang entries, and optional models.
+Ordered next steps live in **`docs/ROADMAP.md`**. UX and parity goals: **`docs/post-mvp/gameplay-direction.md`**.
 
 ## Current Non-Goals
 
@@ -134,7 +108,7 @@ Do not implement these without an explicit planning/design task:
 - resource bees;
 - large species trees;
 - Fabric gameplay parity;
-- item-only bee systems that replace living bees;
+- replacing the entire gameplay loop with item-only bees (scoped item/container UX is allowed — see docs/post-mvp/gameplay-direction.md);
 - custom models for every species;
 - complex research systems;
 - large compatibility layers with other mods.
@@ -149,10 +123,11 @@ Start here:
 docs/README.md
 ```
 
-Current planning lives in:
+Product direction and forward priorities:
 
 ```txt
-docs/post-mvp/
+docs/post-mvp/gameplay-direction.md
+docs/ROADMAP.md
 ```
 
 Original MVP foundation documents live in:
@@ -161,20 +136,16 @@ Original MVP foundation documents live in:
 docs/mvp/
 ```
 
-The MVP docs remain important for architecture and genetics rules, but they are no longer the current product roadmap.
+The MVP docs are the genetics and architecture source of truth; high-level UX and next steps are in `gameplay-direction.md` and `ROADMAP.md`.
 
 ## Recommended Reading
 
 For current planning:
 
 ```txt
-docs/post-mvp/10-5-species-bee-nests-and-habitat-system.md  (foundational — read first)
-docs/post-mvp/11-post-mvp-productization-roadmap.md
-docs/post-mvp/12-visual-species-system.md
-docs/post-mvp/13-analyzer-ux-and-progression.md
-docs/post-mvp/14-genetic-apiary-gui-and-frames.md
-docs/post-mvp/15-content-and-asset-pipeline.md
-docs/post-mvp/11-6-custom-bee-entity-architecture.md    (deferred ADR)
+docs/post-mvp/gameplay-direction.md
+docs/ROADMAP.md
+docs/README.md
 ```
 
 For design context and reference:

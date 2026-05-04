@@ -319,5 +319,5 @@ A dev placeholder must not be:
 
 ## Related Docs
 
-- `docs/post-mvp/12-visual-species-system.md`
-- `docs/post-mvp/15-content-and-asset-pipeline.md`
+- `docs/post-mvp/gameplay-direction.md`
+- `docs/README.md`

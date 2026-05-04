@@ -2,8 +2,8 @@
 >
 > This document describes the original MVP design used to validate the Curious Bees core loop.
 > It is preserved as historical and architectural context.
-> For the current post-MVP direction, see:
-> `docs/post-mvp/11-post-mvp-productization-roadmap.md`.
+> For current product direction and priorities, see:
+> `docs/post-mvp/gameplay-direction.md` and `docs/ROADMAP.md`.
 
 # 02 — Technical Architecture
 
@@ -49,7 +49,7 @@ Core docs describe product intent, architecture, genetics rules, breeding/mutati
 
 ### 2.2 Implementation docs
 
-`docs/implementation/` is reserved for narrow migration or execution notes when needed. Historical per-phase implementation plans were removed from the repo; use `docs/post-mvp/` for design intent and the codebase as the source of truth for shipped behavior. Git history retains old implementation specs if needed.
+`docs/implementation/` is reserved for narrow migration or execution notes when needed. Historical per-phase implementation plans were removed from the repo; use **`docs/post-mvp/gameplay-direction.md`**, **`docs/ROADMAP.md`**, and the codebase as the source of truth for shipped behavior. Git history retains old specs if needed.
 
 ### 2.3 ADRs
 

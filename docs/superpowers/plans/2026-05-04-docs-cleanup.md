@@ -1,3 +1,5 @@
+> **Obsolete checklist.** This file described an older docs layout. **Current direction:** [`docs/post-mvp/gameplay-direction.md`](../../post-mvp/gameplay-direction.md) and [`docs/ROADMAP.md`](../../ROADMAP.md). Kept for historical context only.
+
 # Docs Cleanup Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
