@@ -9,4 +9,4 @@ Ordered priorities. No legacy phase numbers.
 5. **Species expansion** — first small branch (e.g. managed/cultivated line), new prompts per texture, data + habitat together.
 6. **Custom bee entity ADR** — design-only when the above is stable; no rush.
 
-Cross-cutting: prompts under `docs/art/prompts/` for new visuals; `docs/art/asset-prompt-workflow.md` for workflow.
+Cross-cutting: technical rules in `docs/architecture/` (02–05); prompts under `docs/art/prompts/` for new visuals; `docs/art/asset-prompt-workflow.md` for workflow.
