@@ -1,0 +1,23 @@
+{
+  "_template": "Copy this file, remove _template and _notes fields, fill in your values.",
+
+  "id": "your_namespace:species/your_species",
+  "displayName": "Your Species Bee",
+
+  "_notes_dominance": "DOMINANT or RECESSIVE. DOMINANT species win trait expression over RECESSIVE ones.",
+  "dominance": "RECESSIVE",
+
+  "defaultTraits": {
+    "_notes": "Use allele IDs from the built-in trait set or define your own traits first.",
+    "LIFESPAN":     "curious_bees:traits/lifespan/normal",
+    "PRODUCTIVITY": "curious_bees:traits/productivity/normal",
+    "FERTILITY":    "curious_bees:traits/fertility/two",
+    "FLOWER_TYPE":  "curious_bees:traits/flower_type/flowers"
+  },
+
+  "_notes_visual": "Required for rendering. Without this, bees of this species use the fallback texture.",
+  "visual": "your_namespace:textures/entity/bee/your_species.png",
+
+  "_notes_spawn": "Optional. List biome IDs where this species spawns naturally (wild hive).",
+  "spawnContextNotes": []
+}

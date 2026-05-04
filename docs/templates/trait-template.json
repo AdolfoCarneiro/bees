@@ -1,0 +1,19 @@
+{
+  "_template": "Copy this file, remove _template and _notes fields, fill in your values.",
+  "_notes": "Only needed when adding a new trait value not covered by the built-in set.",
+
+  "id": "your_namespace:traits/flower_type/mushrooms",
+
+  "_notes_chromosome": "One of: LIFESPAN, PRODUCTIVITY, FERTILITY, FLOWER_TYPE. Cannot use SPECIES.",
+  "chromosomeType": "FLOWER_TYPE",
+
+  "displayName": "Mushrooms",
+
+  "_notes_dominance": "DOMINANT or RECESSIVE.",
+  "dominance": "RECESSIVE",
+
+  "_notes_values": "Optional numeric modifier. Most gameplay currently uses the allele ID, not this value.",
+  "values": {
+    "multiplier": 1.0
+  }
+}

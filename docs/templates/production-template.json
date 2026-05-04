@@ -1,0 +1,24 @@
+{
+  "_template": "Copy this file, remove _template and _notes fields, fill in your values.",
+
+  "_notes_species": "Must reference a registered species ID. Only one production definition per species.",
+  "species": "your_namespace:species/your_species",
+
+  "_notes_primary": "Required. Main drop(s) from this species. chance is between 0.0 and 1.0.",
+  "primaryOutputs": [
+    {
+      "item": "your_namespace:your_species_comb",
+      "chance": 0.65,
+      "min": 1,
+      "max": 1
+    }
+  ],
+
+  "_notes_secondary": "Optional. Additional drops with lower probability.",
+  "secondaryOutputs": [
+    {
+      "item": "minecraft:honeycomb",
+      "chance": 0.15
+    }
+  ]
+}

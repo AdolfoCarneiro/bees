@@ -58,6 +58,34 @@ public final class ContentReloadListener extends SimplePreparableReloadListener<
                 result.registry().allTraitAlleles().size(),
                 result.registry().allMutations().size(),
                 result.registry().allProductionDefinitions().size());
+
+        reportVisualCompleteness(result);
+    }
+
+    /**
+     * Logs a debug summary of which species have visual definitions and which are using fallback.
+     * Helps developers identify species with missing textures during content authoring.
+     */
+    private static void reportVisualCompleteness(ContentLoadResult result) {
+        java.util.List<String> missingVisual = new java.util.ArrayList<>();
+        java.util.List<String> hasVisual = new java.util.ArrayList<>();
+
+        for (var species : result.registry().allSpecies()) {
+            if (species.visualDefinition().isEmpty()) {
+                missingVisual.add(species.id());
+            } else {
+                hasVisual.add(species.id());
+            }
+        }
+
+        if (!missingVisual.isEmpty()) {
+            CuriousBeesMod.LOGGER.warn(
+                    "Curious Bees: {} species have no visual definition (will use fallback texture): {}",
+                    missingVisual.size(), missingVisual);
+        }
+        CuriousBeesMod.LOGGER.debug(
+                "Curious Bees visual completeness: {}/{} species have visual definitions.",
+                hasVisual.size(), hasVisual.size() + missingVisual.size());
     }
 
     private static List<ContentDefinitionSource> discover(ResourceManager resourceManager, String path) {
