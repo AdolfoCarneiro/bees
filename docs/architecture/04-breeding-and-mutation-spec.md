@@ -1,6 +1,5 @@
 > **Canonical technical spec — breeding and mutation.**  
-> Vanilla-style breeding flow with genetic rules and mutation behavior.  
-> Product direction: `docs/post-mvp/gameplay-direction.md`, priorities: `docs/ROADMAP.md`.
+> Vanilla-style breeding flow with genetic rules and mutation behavior.
 
 # 04 — Breeding and Mutation Specification
 
@@ -413,7 +412,7 @@ Future possibilities:
 
 ## 20. Validation
 
-Detailed test plans historically lived under `docs/quality/` (e.g. genetics core, vanilla breeding). See **git history** or `docs/quality/README.md`.
+Detailed test plans historically lived under `docs/quality/` (e.g. genetics core, vanilla breeding). See **git history**.
 
 Implementation phase notes lived under `docs/implementation/`; see **git history** for old filenames.
 

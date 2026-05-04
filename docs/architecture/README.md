@@ -9,7 +9,6 @@ Canonical definitions for Curious Bees **platform boundaries**, **genetics model
 | [04-breeding-and-mutation-spec.md](04-breeding-and-mutation-spec.md) | Breeding flow, inheritance, mutations |
 | [05-content-design-spec.md](05-content-design-spec.md) | Species, traits, products as data |
 
-**Product intent** (goals, UX parity, hybrid bee model): [`../post-mvp/gameplay-direction.md`](../post-mvp/gameplay-direction.md)  
-**Priorities:** [`../ROADMAP.md`](../ROADMAP.md)
+Product goals and roadmap live outside this folder (issues, git history, or whatever you add later). **`docs/architecture/`** is only the **technical contract** (02–05).
 
-The former `docs/mvp/` path was renamed to `docs/architecture/` to reflect that these files are **living technical specs**, not an MVP roadmap.
+The former `docs/mvp/` path was renamed here so these stay **living specs**, not a legacy MVP label.

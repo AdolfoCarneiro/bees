@@ -17,7 +17,7 @@ import java.util.List;
  */
 public final class BeeAnalyzerScreen extends Screen {
 
-    // DEV PLACEHOLDER background — awaiting final asset from docs/art/prompts/gui/analyzer-screen-bg.md
+    // DEV PLACEHOLDER background — final asset tracked outside repo (see CLAUDE.md Art section)
     private static final int BG_COLOR   = 0xE0_1A1006;
     private static final int BORDER_COL = 0xFF_8B6914;
     private static final int TEXT_COL   = 0xFF_FFD860;

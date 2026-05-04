@@ -11,8 +11,8 @@ import net.minecraft.world.entity.player.Inventory;
  * GUI for the Genetic Beehive: frame slots, output slots, honey/occupancy readouts,
  * associated bee summary respecting analyzed state.
  *
- * DEV PLACEHOLDER: uses vanilla dispenser texture as background. Awaiting final asset from
- * docs/art/prompts/gui/genetic-apiary-bg.md.
+ * DEV PLACEHOLDER: uses vanilla dispenser texture as background. Final asset tracked outside
+ * the repo (see CLAUDE.md Art section).
  */
 public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticApiaryMenu> {
 

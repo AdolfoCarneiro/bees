@@ -1,6 +1,5 @@
 > **Canonical technical spec — genetics.**  
-> Chromosomes, alleles, dominance, genome model.  
-> Product direction: `docs/post-mvp/gameplay-direction.md`, priorities: `docs/ROADMAP.md`.
+> Chromosomes, alleles, dominance, genome model.
 
 # 03 — Genetics System Specification
 
@@ -502,7 +501,7 @@ Expected 25/50/25 distribution.
 Accept if each bucket is within tolerance.
 ```
 
-Detailed validation plans historically lived under `docs/quality/`; retrieve from **git history** or add a new checklist under `docs/quality/` if needed.
+Detailed validation plans historically lived under `docs/quality/`; retrieve from **git history** or add a new checklist under `docs/` if needed.
 
 ## 18. Required Core Classes
 

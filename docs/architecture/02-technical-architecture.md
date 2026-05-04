@@ -1,6 +1,6 @@
 > **Canonical technical spec — architecture.**  
-> Describes module boundaries, platform split, and documentation layout.  
-> Product direction: `docs/post-mvp/gameplay-direction.md`, priorities: `docs/ROADMAP.md`.
+> Module boundaries, platform split, documentation layout.  
+> Product goals are not duplicated here — see root `CLAUDE.md` / `AGENTS.md` and `docs/decisions/`.
 
 # 02 — Technical Architecture
 
@@ -29,23 +29,20 @@ The repository documentation is part of the architecture. AI agents should use i
 ```text
 docs/
 ├── architecture/   (02–05 technical specs)
-├── post-mvp/       (gameplay-direction.md — product intent)
-├── reference/      (short technical behavior notes)
 ├── decisions/      (ADRs)
 ├── research/
-├── art/            (prompts, workflow, manifest)
-├── quality/      (optional checklists; stub README if empty)
-├── ROADMAP.md
 └── implementation/ (reserved; optional migration notes)
 ```
 
+Other folders (`art/`, `quality/`, product-only markdown) may be reintroduced later; anything removed lives in **git history**.
+
 ### 2.1 Core technical specs
 
-`docs/architecture/` holds the canonical **02–05** specifications: platform boundaries, genetics model, breeding/mutations, and content data rules. Product **intent** lives in `docs/post-mvp/gameplay-direction.md`.
+`docs/architecture/` holds the canonical **02–05** specifications: platform boundaries, genetics model, breeding/mutations, and content data rules.
 
 ### 2.2 Implementation docs
 
-`docs/implementation/` is reserved for narrow migration or execution notes when needed. Historical per-phase implementation plans were removed from the repo; use **`docs/post-mvp/gameplay-direction.md`**, **`docs/ROADMAP.md`**, and the codebase as the source of truth for shipped behavior. Git history retains old specs if needed.
+`docs/implementation/` is reserved for narrow migration or execution notes when needed. Shipped behavior is defined by **this folder + code**; older planning docs live in **git history** if needed.
 
 ### 2.3 ADRs
 
@@ -53,15 +50,11 @@ docs/
 
 ADRs explain why decisions were made. Do not casually reverse an ADR without creating a new decision record.
 
-### 2.4 Quality docs
+### 2.4 Quality and art docs
 
-`docs/quality/` holds validation checklists when present; see `docs/quality/README.md`. Older per-phase test plans may live only in **git history**.
+Validation checklists and art prompt workflows are **not** bundled under `docs/` in this snapshot. Recover from **git history** or add new files when you revive those workflows.
 
-### 2.5 Art docs
-
-`docs/art/` holds prompt workflow, templates, and manifest — see `docs/art/README.md`.
-
-### 2.6 Release docs
+### 2.5 Release docs
 
 `docs/release/` is optional (versioning, changelog). Add files there when you publish releases.
 
@@ -75,11 +68,8 @@ curious-bees/
 ├── README.md
 ├── docs/
 │   ├── architecture/   (02–05 technical specs)
-│   ├── post-mvp/
 │   ├── decisions/
-│   ├── quality/
-│   ├── art/
-│   └── release/
+│   └── research/
 ├── common/
 │   └── src/
 │       ├── main/java/
@@ -418,7 +408,7 @@ Platform integration should avoid crashing worlds for recoverable data issues, b
 
 ## 13. Testing Strategy
 
-Checklists and validation notes: **`docs/quality/README.md`** (add concrete files as needed). Older plans: **git history**.
+Checklists and validation notes: add under `docs/` when needed; older plans: **git history**.
 
 ### Unit tests
 
@@ -446,7 +436,7 @@ Later:
 
 Assets are not part of the critical path for the genetics core.
 
-Workflow and prompts: **`docs/art/README.md`**, **`docs/art/asset-prompt-workflow.md`**.
+Workflow and prompts: not bundled here; see **git history** or maintainer process (root **CLAUDE.md**).
 
 Rules:
 

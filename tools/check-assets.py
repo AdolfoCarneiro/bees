@@ -84,7 +84,7 @@ def main():
         print(f"MISSING: {len(all_missing)} asset(s) not found:")
         for path in all_missing:
             print(f"  - {path}")
-        print("\nCreate asset prompts under docs/art/prompts/ and generate these assets.")
+        print("\nAdd missing assets or track prompts via maintainer process (see CLAUDE.md Art section).")
         print("=" * 60)
         sys.exit(1)
     else:

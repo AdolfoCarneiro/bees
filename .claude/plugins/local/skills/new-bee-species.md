@@ -14,10 +14,9 @@ File: `src/main/resources/data/curiousbees/species/<id>.json`
 - optional habitat definition
 
 ## 2. Texture Prompt Document
-File: `docs/art/prompts/species/textures-entity-bee-<id>.md`
-- Use template from `docs/art/templates/asset-request-template.md`
-- Include: target path, size (64x64), style notes, palette with hex codes, UV reference
+Add a **prompt / asset request** where your team tracks art (GitHub issue, PR description, or a markdown file you agree on). Include: target resource path, size (e.g. 64x64), style notes, palette with hex codes, UV reference.
 - DO NOT commit placeholder texture as final asset
+- There is no fixed `docs/art/prompts/` layout in this repo right now
 
 ## 3. Habitat Definition (if world-spawnable)
 File: included in species JSON OR `data/curiousbees/habitat/<id>.json`
@@ -34,12 +33,11 @@ File: `src/main/resources/data/curiousbees/mutations/<mutation_id>.json`
 File: `src/main/resources/assets/curiousbees/lang/en_us.json`
 - `species.curiousbees.<id>` key with display name
 
-## 6. Asset Manifest
-File: `docs/art/asset-manifest.md`
-- Add entry for the new texture (status: PENDING until asset provided)
+## 6. Asset tracking
+If you keep an asset manifest or checklist, update it in the same place you track other textures (not a fixed path in this repo).
 
 ## Guardrails
-- Do NOT implement without a texture prompt doc ready
+- Do NOT implement without a texture prompt doc ready (wherever you track it)
 - Do NOT add resource-output species without explicit phase approval
 - Read docs/architecture/05-content-design-spec.md for trait defaults reference
-- Read docs/art/asset-prompt-workflow.md for the full asset workflow
+- Read CLAUDE.md (Art section) for placeholder / final asset rules

@@ -4,7 +4,7 @@ Agent rules for this repo. **Also read [CLAUDE.md](CLAUDE.md).**
 
 ## Summary
 
-Minecraft bee genetics mod (NeoForge 1.21.1): living bees, genomes, breeding, dominance, mutations — Curious Bees identity and goals in **`docs/post-mvp/gameplay-direction.md`**.
+Minecraft bee genetics mod (NeoForge 1.21.1): living bees, genomes, breeding, dominance, mutations. Product framing: root **Readme.md** + **CLAUDE.md**; rules and models: **`docs/architecture/`** (02–05).
 
 ## Hard rule
 
@@ -12,18 +12,15 @@ Minecraft bee genetics mod (NeoForge 1.21.1): living bees, genomes, breeding, do
 
 ## Documentation order
 
-1. [docs/README.md](docs/README.md)  
-2. [docs/post-mvp/gameplay-direction.md](docs/post-mvp/gameplay-direction.md)  
-3. [docs/ROADMAP.md](docs/ROADMAP.md)  
-4. [docs/architecture/02-technical-architecture.md](docs/architecture/02-technical-architecture.md), [03](docs/architecture/03-genetics-system-spec.md), [04](docs/architecture/04-breeding-and-mutation-spec.md), [05](docs/architecture/05-content-design-spec.md) as the task requires  
-5. [docs/decisions/](docs/decisions/) when changing an ADR-covered area  
-6. [docs/art/asset-prompt-workflow.md](docs/art/asset-prompt-workflow.md) for any new asset  
+1. [Readme.md](Readme.md)  
+2. [docs/architecture/README.md](docs/architecture/README.md) then [02](docs/architecture/02-technical-architecture.md), [03](docs/architecture/03-genetics-system-spec.md), [04](docs/architecture/04-breeding-and-mutation-spec.md), [05](docs/architecture/05-content-design-spec.md) as the task requires  
+3. [docs/decisions/](docs/decisions/) when changing an ADR-covered area  
 
-**Task hints:** nests/world reference → `docs/reference/bee-nest-targeting-behavior.md`; new species checklist → `.claude/plugins/local/skills/new-bee-species.md`.
+**Task hints:** species hive / nest targeting behavior → `neoforge/src/main/java/com/curiousbees/neoforge/event/BeeSpeciesHiveTargetHandler.java`; new species checklist → `.claude/plugins/local/skills/new-bee-species.md`.
 
 ## Hybrid model
 
-Living bees are the default world loop. **Scoped** item/container UX (transport, advanced hive) is allowed when a feature calls for it — not a global replacement for entities. Details: `gameplay-direction.md`.
+Living bees are the default world loop. **Scoped** item/container UX (transport, advanced hive) is allowed when a feature calls for it — not a global replacement for entities. Same intent as **Readme.md** / **CLAUDE.md**.
 
 ## Non-goals (without explicit design sign-off)
 
@@ -33,14 +30,13 @@ Resource bees; huge species trees in one drop; enforced lifecycle/death/larvae; 
 
 ## Allowed when scoped
 
-Frames with real effects; production tuning; analyzer/apiary UX; automation-friendly inventories; datapack-style species content; prompts and pipelines under `docs/art/`.
+Frames with real effects; production tuning; analyzer/apiary UX; automation-friendly inventories; datapack-style species content.
 
 ## Workflow
 
 1. Read AGENTS.md + CLAUDE.md.  
-2. Read `gameplay-direction.md` / `ROADMAP.md` if direction is involved.  
-3. Read relevant `docs/architecture/` specs and ADRs.  
-4. Restate scope; list files; smallest complete change; tests for core Java where relevant; **commit** one focused task per commit when practical.
+2. Read relevant `docs/architecture/` specs and ADRs.  
+3. Restate scope; list files; smallest complete change; tests for core Java where relevant; **commit** one focused task per commit when practical.
 
 ## Commits
 
@@ -48,11 +44,11 @@ Prefix examples: `core:`, `content:`, `neoforge:`, `client:`, `test:`, `docs:`, 
 
 ## Prompt template (short)
 
-Read AGENTS + CLAUDE → `gameplay-direction.md` if needed → relevant `docs/architecture/` → ADRs → quality doc if behavior changes. No Minecraft inside `common/genetics`. New textures → prompt doc first.
+Read AGENTS + CLAUDE → relevant `docs/architecture/` → ADRs. No Minecraft inside `common/genetics`. New textures: follow maintainer process (see CLAUDE Art section); no silent placeholder finals.
 
 ## Assets
 
-No silent placeholder-as-final. Prompt under `docs/art/prompts/`; dev fallback only if crash-proofing and clearly marked.
+No silent placeholder-as-final. Dev fallback only if crash-proofing and clearly marked.
 
 ## Style and validation
 
@@ -64,7 +60,7 @@ Prefer small classes, explicit validation, `Objects.requireNonNull` at boundarie
 
 ## Review checklist
 
-Follows `gameplay-direction` / `ROADMAP`; genetics pure Java; no accidental resource-bee tree; analysis gating respected where applicable; no final placeholder art; automation not artificially paywalled; server/client sync story intact for UI-driving state.
+Aligned with **Readme.md** / guardrails here; genetics pure Java; no accidental resource-bee tree; analysis gating respected where applicable; no final placeholder art; automation not artificially paywalled; server/client sync story intact for UI-driving state.
 
 ## Growth line
 

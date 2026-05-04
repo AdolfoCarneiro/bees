@@ -1,6 +1,5 @@
 > **Canonical technical spec — content data.**  
-> Species, traits, mutations, products as data-driven definitions.  
-> Product direction: `docs/post-mvp/gameplay-direction.md`, priorities: `docs/ROADMAP.md`.
+> Species, traits, mutations, products as data-driven definitions.
 
 # 05 — Content Design Specification
 
@@ -548,7 +547,7 @@ Species:
 
 ## 8. Asset Strategy
 
-Detailed planning: **`docs/art/README.md`**, **`docs/art/asset-prompt-workflow.md`**, prompts under **`docs/art/prompts/`**.
+Detailed art planning (prompts, manifest) is not bundled in this repo snapshot; see **git history** or **CLAUDE.md** for current expectations.
 
 Rules:
 
@@ -624,7 +623,7 @@ Future resource species can be decided later.
 
 ## 12. Future Content Categories
 
-Expanded content was historically sketched in removed `docs/implementation/` specs — see **git history**. Current forward priorities: `docs/ROADMAP.md`.
+Expanded content was historically sketched in removed `docs/implementation/` specs — see **git history**. Forward priorities: **issues** or whatever roadmap you maintain outside this tree.
 
 Potential categories:
 

@@ -28,7 +28,7 @@ The project is now entering a post-MVP productization phase.
 The current focus is not to add a large amount of content yet. The focus is to turn the validated MVP into a real playable mod with better UX, visuals, apiary interaction, analyzer interfaces, frames, and a sustainable content/asset pipeline.
 
 ```text
-Product direction: docs/post-mvp/gameplay-direction.md and docs/ROADMAP.md
+Product direction: this file + CLAUDE.md + AGENTS.md
 Technical specs (genetics, architecture, content rules): docs/architecture/
 ```
 
@@ -97,7 +97,7 @@ Curious Bees is not:
 
 ## Priorities
 
-Ordered next steps live in **`docs/ROADMAP.md`**. UX and parity goals: **`docs/post-mvp/gameplay-direction.md`**.
+Track ordered next steps in **issues** or **git history** if you keep a roadmap elsewhere. UX and parity goals are summarized in the sections above (product direction, non-goals).
 
 ## Current Non-Goals
 
@@ -108,7 +108,7 @@ Do not implement these without an explicit planning/design task:
 - resource bees;
 - large species trees;
 - Fabric gameplay parity;
-- replacing the entire gameplay loop with item-only bees (scoped item/container UX is allowed — see docs/post-mvp/gameplay-direction.md);
+- replacing the entire gameplay loop with item-only bees (scoped item/container UX is allowed — see CLAUDE.md hybrid model);
 - custom models for every species;
 - complex research systems;
 - large compatibility layers with other mods.
@@ -120,32 +120,27 @@ These are future topics and may be revisited after the post-MVP foundation is so
 Start here:
 
 ```txt
-docs/README.md
+Readme.md
+CLAUDE.md
+AGENTS.md
 ```
 
-Product direction and forward priorities:
-
-```txt
-docs/post-mvp/gameplay-direction.md
-docs/ROADMAP.md
-```
-
-Original MVP foundation documents live in:
+Technical specs (genetics, breeding, content data, module boundaries):
 
 ```txt
 docs/architecture/
 ```
 
-The MVP docs are the genetics and architecture source of truth; high-level UX and next steps are in `gameplay-direction.md` and `ROADMAP.md`.
+High-level UX and roadmap are not duplicated in a separate doc tree in this repo — use **this file**, **CLAUDE.md**, **AGENTS.md**, and **issues** (older planning may exist in **git history**).
 
 ## Recommended Reading
 
 For current planning:
 
 ```txt
-docs/post-mvp/gameplay-direction.md
-docs/ROADMAP.md
-docs/README.md
+Readme.md
+CLAUDE.md
+AGENTS.md
 ```
 
 For design context and reference:
