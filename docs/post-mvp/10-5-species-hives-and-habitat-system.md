@@ -158,9 +158,8 @@ entry" — no shared block needs to be touched.
 
 ### 4.3 Hive blocks extend vanilla `BeehiveBlock`
 
-The species hive blocks extend `net.minecraft.world.level.block.BeehiveBlock` and use the
-vanilla `BeehiveBlockEntity`. Bee in/out, honey level, smoker pacification, shears interaction —
-all vanilla. Curious Bees overrides only:
+The species hive blocks extend `net.minecraft.world.level.block.BeehiveBlock`. Bee in/out,
+honey level, smoker pacification, shears interaction — all vanilla. Curious Bees overrides only:
 
 ```text
 - entry: a bee may only enter if its species matches the hive species
@@ -168,6 +167,15 @@ all vanilla. Curious Bees overrides only:
 - exit:  bees released from the hive are stamped with the hive's species genome
         if they do not already have one (handles wild spawns into the hive).
 ```
+
+> **Implementation note (NeoForge 1.21.1):**
+> NeoForge 1.21.1 does not ship `AnimalEnterLeaveHiveEvent`. Entry enforcement is implemented
+> via a thin `SpeciesHiveBlockEntity extends BeehiveBlockEntity` that overrides `addOccupant`.
+> All storage/tick behavior remains vanilla — the subclass only adds the species check.
+> A single `BlockEntityType` (`curiousbees:species_hive`) covers all three hive blocks.
+> World-gen bees receive their species genome before `addOccupant` is called in
+> `SpeciesHiveFeature`; naturally-spawning bees receive genomes via `BeeSpawnEventHandler`
+> and are already stamped before bee AI can direct them to a hive.
 
 ### 4.4 Defer custom entity migration
 
