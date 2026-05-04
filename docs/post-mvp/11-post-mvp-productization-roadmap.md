@@ -9,8 +9,8 @@ Current roadmap document.
 This document defines the first major direction after the initial Curious Bees MVP.
 
 > **Foundation document:** before reading this roadmap in detail, read
-> `docs/post-mvp/10-5-species-hives-and-habitat-system.md`. It defines how species exist
-> in the world (habitat + hive blocks) and reserves the design space for the future
+> `docs/post-mvp/10-5-species-bee-nests-and-habitat-system.md`. It defines how species exist
+> in the world (habitat + species bee nest blocks) and reserves the design space for the future
 > custom bee entity migration. Several phases below depend on it.
 
 The original MVP documentation is preserved under:
@@ -382,19 +382,19 @@ Done when:
 A human or AI coding agent can clearly understand that the MVP is complete and that the next focus is productization, not immediate content explosion.
 ```
 
-## Phase 11.5 — Species Hives And Habitat System
+## Phase 11.5 — Species Bee Nests And Habitat System
 
 Purpose:
 
 ```txt
-Give world-spawnable species a natural home (species hive blocks) and define the
+Give world-spawnable species a natural home (species bee nest blocks) and define the
 extensible spec format for adding new species (data + visual + optional habitat).
 ```
 
 This phase is fully designed in:
 
 ```txt
-docs/post-mvp/10-5-species-hives-and-habitat-system.md
+docs/post-mvp/10-5-species-bee-nests-and-habitat-system.md
 ```
 
 Deliverables:
@@ -402,10 +402,10 @@ Deliverables:
 ```txt
 - SpeciesHabitatDefinition + BeeNestCompatibilityService in common (pure Java).
 - Optional habitat field on BeeSpeciesDefinition.
-- Three species hive blocks: Meadow, Forest, Arid (extends vanilla BeehiveBlock).
-- World gen entries for species hives in their respective biomes.
-- Hive entry/exit restricted to matching species.
-- Bees emerging from species hives carry the matching genome.
+- Three species bee nest blocks: Meadow, Forest, Arid (extends vanilla BeehiveBlock; multi-face textures).
+- World gen entries for species bee nests in their respective biomes.
+- Nest entry/exit restricted to matching species.
+- Bees emerging from species bee nests carry the matching genome.
 - New asset prompts under docs/art/prompts/bee_nests/.
 - Bee nest UV/layout reference at docs/art/templates/bee_nest/README.md.
 - Documented species spec format used by all future species.
@@ -415,7 +415,7 @@ Deliverables:
 Done when:
 
 ```txt
-A player can find species-specific hives in the world, bees emerging from them
+A player can find species-specific bee nests in the world, bees emerging from them
 carry the matching species, and a new species can be added by following the
 documented spec format.
 ```
@@ -440,7 +440,7 @@ docs/post-mvp/11-6-custom-bee-entity-architecture.md when authored.
 Constraints documented in:
 
 ```txt
-docs/post-mvp/10-5-species-hives-and-habitat-system.md (section 7.2)
+docs/post-mvp/10-5-species-bee-nests-and-habitat-system.md (section 7.2)
 ```
 
 Done when:
@@ -461,7 +461,7 @@ Make species visible and recognizable in-game.
 Depends on:
 
 ```txt
-Phase 11.5 — visual definitions for habitat-bearing species must align with hive textures.
+Phase 11.5 — visual definitions for habitat-bearing species must align with bee nest face textures.
 ```
 
 Deliverables:
@@ -800,7 +800,7 @@ Until then, resource bees remain out of scope.
 Already authored:
 
 ```txt
-docs/post-mvp/10-5-species-hives-and-habitat-system.md   (foundational)
+docs/post-mvp/10-5-species-bee-nests-and-habitat-system.md   (foundational)
 docs/post-mvp/12-visual-species-system.md
 docs/post-mvp/13-analyzer-ux-and-progression.md
 docs/post-mvp/14-genetic-apiary-gui-and-frames.md
@@ -817,7 +817,7 @@ docs/research/existing-bee-mods-review.md
 The most important next implementation work derives from:
 
 ```txt
-docs/post-mvp/10-5-species-hives-and-habitat-system.md
+docs/post-mvp/10-5-species-bee-nests-and-habitat-system.md
 ```
 
 Reason:
@@ -835,10 +835,10 @@ Recommended order after this roadmap:
 ```txt
 1.  Add SpeciesHabitatDefinition + BeeNestCompatibilityService in common.
 2.  Add optional habitat to BeeSpeciesDefinition and built-in species.
-3.  Implement three species hive blocks (Meadow, Forest, Arid) in NeoForge.
-4.  Implement world gen entries for species hives.
-5.  Restrict hive entry/exit to matching species; stamp genomes on emergence.
-6.  Create UV template + asset prompts for hive textures; integrate final hive textures.
+3.  Implement three species bee nest blocks (Meadow, Forest, Arid) in NeoForge.
+4.  Implement world gen entries for species bee nests.
+5.  Restrict nest entry/exit to matching species; stamp genomes on emergence.
+6.  Create bee nest layout reference + asset prompts under `docs/art/prompts/bee_nests/`; integrate final face textures.
 7.  Define visual species system (Phase 12).
 8.  Add visual metadata to species definitions.
 9.  Implement species texture resolution.

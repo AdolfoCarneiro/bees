@@ -3,9 +3,9 @@
 > Status: Post-MVP planning document.
 > This document defines how Curious Bees should represent bee species visually after the MVP validation phase.
 >
-> **Depends on `docs/post-mvp/10-5-species-hives-and-habitat-system.md`.** Visual definitions for
-> habitat-bearing species (Meadow, Forest, Arid) must align with the hive textures defined there.
-> The bee entity texture and the hive block texture are separate assets, generated from
+> **Depends on `docs/post-mvp/10-5-species-bee-nests-and-habitat-system.md`.** Visual definitions for
+> habitat-bearing species (Meadow, Forest, Arid) must align with the bee nest face textures defined there.
+> The bee entity texture and the bee nest block face textures are separate assets, generated from
 > separate UV templates.
 
 ## 1. Purpose

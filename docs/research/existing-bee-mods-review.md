@@ -89,7 +89,7 @@
 ```text
 - Automation-ready apiary design by default (no automation upgrade required).
 - Clean, informative apiary GUI layout (Phase 14).
-- Block hive per species for world discovery (Phase 11.5 — done).
+- Block bee nest per species for world discovery (Phase 11.5 — done).
 - Low friction UX: bees should feel usable without requiring complex setup.
 - Spawn egg per species is a future goal (Phase 11.6 deferred).
 ```
@@ -203,7 +203,7 @@
 ```text
 - Automation-ready apiary from the start (no automation upgrade required).
 - Clear apiary GUI showing bees, frames, outputs, and progress.
-- Species hive blocks per biome for natural discovery.
+- Species bee nest blocks per biome for natural discovery (Curious Bees).
 - Low entry friction: playing with bees should feel accessible.
 ```
 

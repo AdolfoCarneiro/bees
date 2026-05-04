@@ -78,23 +78,23 @@ Always read:
 For general post-MVP planning, read:
 
 ```txt
-docs/post-mvp/10-5-species-hives-and-habitat-system.md
+docs/post-mvp/10-5-species-bee-nests-and-habitat-system.md
 docs/post-mvp/11-post-mvp-productization-roadmap.md
 ```
 
 For visual/species work, read:
 
 ```txt
-docs/post-mvp/10-5-species-hives-and-habitat-system.md
+docs/post-mvp/10-5-species-bee-nests-and-habitat-system.md
 docs/post-mvp/12-visual-species-system.md
 docs/mvp/05-content-design-spec.md
 docs/art/asset-prompt-workflow.md
 ```
 
-For species hives, habitat, world gen, or adding new species, read:
+For species bee nests, habitat, world gen, or adding new species, read:
 
 ```txt
-docs/post-mvp/10-5-species-hives-and-habitat-system.md
+docs/post-mvp/10-5-species-bee-nests-and-habitat-system.md
 ```
 
 For analyzer work, read:

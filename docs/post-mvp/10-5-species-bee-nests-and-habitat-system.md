@@ -3,7 +3,7 @@
 > Status: Post-MVP foundation document.
 >
 > This document defines how Curious Bees species exist in the world — both as data
-> (habitat metadata) and as physical blocks (species hives). It also sets the architectural
+> (habitat metadata) and as physical blocks (species bee nests). It also sets the architectural
 > direction for migrating from vanilla-bees-with-attached-data toward custom bee entities,
 > while remaining backwards-compatible with vanilla bees.
 >
@@ -17,7 +17,7 @@ clean for the MVP, but two gaps appear when planning real productization:
 1. There is no way for a species to have a **natural home** in the world — no equivalent of the
    vanilla Bee Nest that distinguishes "Meadow Bee territory" from "Arid Bee territory."
 2. There is no formal extensibility model that says: a new species is described by
-   `bee X + hive X (optional) + biomes X, Y, Z + obtained via spawn or mutation`.
+   `bee X + bee_nest X (optional) + biomes X, Y, Z + obtained via spawn or mutation`.
 
 This document closes both gaps. It also acknowledges a related architectural decision —
 whether to migrate from vanilla bees to custom bee entities — and reserves the design space
@@ -50,10 +50,10 @@ for that decision without forcing it now.
 ### 2.3 Out of scope
 
 ```text
-- Cultivated and Hardy hives (mutation-only species — no natural hive).
-- Resource bee hives.
-- Lifecycle, age, or death mechanics tied to hives.
-- Climate or environment effects on hive behavior.
+- Cultivated and Hardy natural bee nests (mutation-only species — no world-placed nest).
+- Resource bee nests.
+- Lifecycle, age, or death mechanics tied to bee nests.
+- Climate or environment effects on nest behavior.
 - Fabric implementation (mirrors NeoForge structure later).
 - Full custom entity implementation (deferred to its own future phase).
 ```
@@ -65,24 +65,24 @@ for that decision without forcing it now.
 A species has a **habitat** when it spawns naturally in the world. Habitat groups three things:
 
 ```text
-- the hive block that represents this species' natural home;
-- the texture path of that hive block;
-- the list of vanilla biomes where the hive (and the species) appears.
+- the bee nest block that represents this species' natural home;
+- a representative texture path (typically the side face) for UI/preview;
+- the list of vanilla biomes where the nest (and the species) appears.
 ```
 
 Presence or absence of habitat defines how the species enters the game:
 
 ```text
-habitat present  -> species spawns in the wild via its hive
+habitat present  -> species spawns in the wild via its bee nest
 habitat absent   -> species is mutation-only, obtained via Genetic Apiary
 ```
 
-### 3.2 Species Hive vs Genetic Apiary
+### 3.2 Species Bee Nest vs Genetic Apiary
 
 These are intentionally different blocks with different roles:
 
 ```text
-Species Hive (e.g. Meadow Hive):
+Species Bee Nest (e.g. Meadow Bee Nest):
 - natural, world-generated block
 - vanilla beehive mechanics (entry/exit, honey, smoker)
 - one block per world-spawnable species
@@ -100,21 +100,21 @@ Genetic Apiary:
 Vanilla `minecraft:bee_nest` and `minecraft:beehive` continue to exist and function normally —
 they hold the implicit "wild" default species (see 3.4).
 
-### 3.3 Hive-Species Compatibility Rule
+### 3.3 Bee-Nest / Species Compatibility Rule
 
 ```text
-A bee may only enter or exit a hive of its own species.
+A bee may only enter or exit a species bee nest of its own species.
 ```
 
 Examples:
 
 ```text
-Meadow Bee  -> may use Meadow Hive only (not Forest Hive, not Arid Hive)
-Forest Bee  -> may use Forest Hive only
-Arid Bee    -> may use Arid Hive only
+Meadow Bee  -> may use Meadow Bee Nest only (not Forest Bee Nest, not Arid Bee Nest)
+Forest Bee  -> may use Forest Bee Nest only
+Arid Bee    -> may use Arid Bee Nest only
 Wild vanilla bee -> may use vanilla Bee Nest / Beehive only
-Cultivated Bee -> no natural hive; uses Genetic Apiary only
-Hardy Bee      -> no natural hive; uses Genetic Apiary only
+Cultivated Bee -> no natural bee nest; uses Genetic Apiary only
+Hardy Bee      -> no natural bee nest; uses Genetic Apiary only
 ```
 
 The Genetic Apiary is exempt from this rule — it accepts any species by design.
@@ -137,11 +137,11 @@ fabric   = future mirror of neoforge using Fabric APIs; reuses everything in com
 ```
 
 This is the same boundary already enforced by CLAUDE.md for the genetics core. Every piece of
-truth (which species exist, which biomes they live in, which hive block represents them) lives
+truth (which species exist, which biomes they live in, which bee nest block represents them) lives
 in `common` as plain Java with string IDs. Platform code only wires those strings to
 registries, blocks, and events.
 
-### 4.2 One hive block per species, not a generic "species hive" block
+### 4.2 One bee nest block per species, not a generic "species bee nest" block
 
 Each world-spawnable species gets its own dedicated block class:
 `MeadowBeeNestBlock`, `ForestBeeNestBlock`, `AridBeeNestBlock`. This is verbose but keeps:
@@ -149,23 +149,23 @@ Each world-spawnable species gets its own dedicated block class:
 ```text
 - world gen targeting trivial (one block, one biome list);
 - recipes and loot tables clean per-species;
-- texture binding direct (one block, one texture);
+- texture binding direct (one block, five face tiles + honey front per species);
 - no NBT-driven rendering complexity.
 ```
 
-Adding a new species hive in the future is "register one more block, add one more world gen
+Adding a new species bee nest in the future is "register one more block, add one more world gen
 entry" — no shared block needs to be touched.
 
-### 4.3 Hive blocks extend vanilla `BeehiveBlock`
+### 4.3 Bee nest blocks extend vanilla `BeehiveBlock`
 
-The species hive blocks extend `net.minecraft.world.level.block.BeehiveBlock`. Bee in/out,
+The species bee nest blocks extend `net.minecraft.world.level.block.BeehiveBlock`. Bee in/out,
 honey level, smoker pacification, shears interaction — all vanilla. Curious Bees overrides only:
 
 ```text
-- entry: a bee may only enter if its species matches the hive species
+- entry: a bee may only enter if its species matches the nest species
         (delegated to BeeNestCompatibilityService).
-- exit:  bees released from the hive are stamped with the hive's species genome
-        if they do not already have one (handles wild spawns into the hive).
+- exit:  bees released from the nest are stamped with the nest species genome
+        if they do not already have one (handles wild spawns into the nest).
 ```
 
 > **Implementation note (NeoForge 1.21.1):**
@@ -175,7 +175,7 @@ honey level, smoker pacification, shears interaction — all vanilla. Curious Be
 > A single `BlockEntityType` (`curiousbees:species_bee_nest`) covers all three bee nest blocks.
 > World-gen bees receive their species genome before `addOccupant` is called in
 > `SpeciesBeeNestFeature`; naturally-spawning bees receive genomes via `BeeSpawnEventHandler`
-> and are already stamped before bee AI can direct them to a hive.
+> and are already stamped before bee AI can direct them to a species nest.
 
 ### 4.4 Defer custom entity migration
 
@@ -259,7 +259,7 @@ for habitat-bearing species. It may be deprecated or absorbed into the habitat i
 `habitat` is optional. Validation rejects partially populated habitat objects (must have all
 three fields if present).
 
-## 6. Hive Block Behavior
+## 6. Bee Nest Block Behavior
 
 ### 6.1 Implementation outline
 
@@ -270,13 +270,13 @@ SpeciesBeeNestBlock (abstract) extends BeehiveBlock:
 - override bee-released-from-hive: stamp species genome via existing BeeGenomeStorage
 
 MeadowBeeNestBlock, ForestBeeNestBlock, AridBeeNestBlock:
-- thin subclasses, each tied to its species id and texture
+- thin subclasses, each tied to its species id (face textures live under `textures/block/`)
 - registered via existing ModBlocks.register(...)
 ```
 
 ### 6.2 World gen
 
-NeoForge-specific. Each species hive registers a feature placement in its `spawnBiomes`,
+NeoForge-specific. Each species bee nest registers a feature placement in its `spawnBiomes`,
 similar to how vanilla `bee_nest` is placed in plains/forest. Density and placement rules
 should match vanilla bee nest scarcity to avoid trivializing discovery.
 
@@ -288,19 +288,19 @@ Identical to vanilla `BeehiveBlock`:
 - right-click with empty bottle -> honey bottle (if FULL)
 - right-click with shears        -> honeycomb (if FULL)
 - smoker nearby                  -> bees do not become aggressive when harvested
-- silk-touch break               -> drops the hive with bees inside
-- regular break                  -> drops the hive empty, bees become aggressive
+- silk-touch break               -> drops the bee nest with bees inside
+- regular break                  -> drops the bee nest empty, bees become aggressive
 ```
 
-No new player interaction is added. The species hive is mechanically identical to a vanilla
-bee nest, only with restricted occupants and a different texture.
+No new player interaction is added. The species bee nest is mechanically identical to a vanilla
+bee nest, only with restricted occupants and species-specific face textures.
 
 ## 7. Future Direction: Custom Bee Entity Architecture
 
 ### 7.1 Why this section exists here
 
 The user-facing question "should each species be its own entity, like Productive Bees?" is
-related to the hive system but is a larger, separate decision. This section reserves the
+related to the bee nest / habitat system but is a larger, separate decision. This section reserves the
 design space and defines the constraints any future custom-entity ADR must satisfy.
 
 ### 7.2 Constraints for the future ADR
@@ -314,7 +314,7 @@ Any future migration to custom bee entities must satisfy:
 - Custom species entities may breed with vanilla bees; offspring genome follows existing rules.
 - The genetics core in common is not aware of entity classes — it works with genomes only.
 - Save-load compatibility: existing worlds with vanilla bees must continue to work.
-- The hive system designed in this document remains valid: each species hive accepts its
+- The bee nest system designed in this document remains valid: each species bee nest accepts its
   matching custom entity (and the wild vanilla bee continues to use vanilla bee nests).
 ```
 
@@ -373,17 +373,17 @@ Adding a new species — now or in the future — means producing exactly this s
 3. Bee entity texture prompt (under docs/art/prompts/species/).
 
 4. If habitat present:
-   a. Hive block subclass + registry entry.
+   a. Bee nest block subclass + registry entry.
    b. World gen feature targeting spawnBiomes.
-   c. Hive block texture asset.
+   c. Bee nest face texture assets (bottom, top, side, front, front_honey).
    d. Bee nest texture prompts (under docs/art/prompts/bee_nests/).
 
 5. If habitat absent:
    a. At least one mutation entry must produce this species
       (otherwise the species is unreachable).
 
-6. Localization keys (display name, hive block name when applicable).
-7. In-game smoke test: visible bee, visible hive (if applicable), reachable via
+6. Localization keys (display name, bee nest block name when applicable).
+7. In-game smoke test: visible bee, visible bee nest (if applicable), reachable via
    spawn or mutation.
 ```
 
@@ -396,7 +396,7 @@ validated. The existing asset prompt manifest (`docs/art/asset-manifest.md`, pla
 ### 9.3 Adding species in batches or one-by-one
 
 The format supports both workflows. A future species expansion phase may define a whole
-branch (multiple species + mutations + hives) at once, but the per-species checklist remains
+branch (multiple species + mutations + bee nests) at once, but the per-species checklist remains
 the same. Nothing in the format changes when adding species incrementally.
 
 ## 10. Roadmap Integration
@@ -406,14 +406,14 @@ and modifies its dependencies as follows:
 
 ```text
 Phase 12 (Visual Species System) — depends on this document.
-  Visual definitions for habitat-bearing species must align with hive textures.
+  Visual definitions for habitat-bearing species must align with bee nest face textures.
 
 Phase 14 (Genetic Apiary GUI) — coexists with this document.
-  The apiary remains the artificial alternative to species hives. No conflict.
+  The apiary remains the artificial alternative to species bee nests. No conflict.
 
 Phase 16 (Content And Asset Pipeline) — extends this document.
-  Documents the species spec format defined here. Adds hive prompts and UV template
-  to the asset pipeline.
+  Documents the species spec format defined here. Adds bee nest prompts and the bee nest layout
+  reference (`docs/art/templates/bee_nest/README.md`) to the asset pipeline.
 
 Phase 17 (First Expanded Species Branch) — depends on this document.
   Any new species follows the format and rules defined here.
@@ -429,7 +429,7 @@ The Productization Roadmap is already updated to:
 ```text
 - reference this document as foundational (Section 1 and Section 9 of the roadmap);
 - include Phase 11.5 (this document) and Phase 11.6 (custom entity architecture) in the phase list;
-- include hive block work before Phase 12 in the Recommended Implementation Order.
+- include bee nest block work before Phase 12 in the Recommended Implementation Order.
 ```
 
 ## 11. AI Agent Guidance
@@ -439,24 +439,24 @@ When working on tasks derived from this document, agents must:
 ```text
 - keep SpeciesHabitatDefinition and BeeNestCompatibilityService in common as pure Java;
 - not import Minecraft, NeoForge, or Fabric classes into the habitat data model;
-- not introduce a generic "species hive" block — one block per species is the chosen design;
-- not implement custom bee entities as part of this work (deferred to Phase 11.5);
-- not add Cultivated or Hardy hives — those species are mutation-only by design;
-- not commit final hive textures from text-only prompts — UV template is required;
+- not introduce a generic "species bee nest" block — one block per species is the chosen design;
+- not implement custom bee entities as part of this work (deferred to Phase 11.6);
+- not add Cultivated or Hardy world-placed bee nests — those species are mutation-only by design;
+- not commit final bee nest face textures from text-only prompts — layout reference in `docs/art/templates/bee_nest/` is required;
 - not assume the existing spawnContextNotes is authoritative — habitat.spawnBiomes is.
 ```
 
-When unsure whether to extend a hive block with new behavior, the default answer is "no" —
-hive blocks are intentionally near-vanilla.
+When unsure whether to extend a bee nest block with new behavior, the default answer is "no" —
+bee nest blocks are intentionally near-vanilla.
 
 ## 12. Success Criteria
 
 This phase is successful when:
 
 ```text
-- A player can find Meadow, Forest, and Arid Hives in their respective biomes.
-- Bees emerging from those hives carry the matching species genome.
-- A bee of one species cannot enter a hive of another species (or vanilla bee nest).
+- A player can find Meadow, Forest, and Arid Bee Nests in their respective biomes.
+- Bees emerging from those nests carry the matching species genome.
+- A bee of one species cannot enter a bee nest of another species (or vanilla bee nest).
 - Vanilla bee nests continue to function normally with wild bees.
 - The species spec format documented here is referenced by Phase 16.
 - The custom entity migration direction is preserved as a future ADR placeholder.
@@ -466,11 +466,11 @@ This phase is successful when:
 ## 13. Open Questions
 
 ```text
-- Should world gen frequency for species hives match vanilla bee nest scarcity exactly,
+- Should world gen frequency for species bee nests match vanilla bee nest scarcity exactly,
   or be slightly higher to support discovery? (decide during implementation)
 - Should the Genetic Apiary visually highlight which species can/cannot enter,
   or is the apiary's "accepts any species" rule purely backend? (Phase 14 concern)
-- Should spawn eggs for the three world-spawnable species be added now alongside hives,
+- Should spawn eggs for the three world-spawnable species be added now alongside bee nests,
   or deferred until custom entities arrive? (recommend: defer; vanilla bee spawn egg
   + biome spawn covers the immediate need)
 ```

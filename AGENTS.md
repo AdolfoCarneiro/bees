@@ -62,6 +62,12 @@ docs/mvp/05-content-design-spec.md
 docs/art/asset-prompt-workflow.md
 ```
 
+### Read for species bee nests, habitat, and world gen
+
+```text
+docs/post-mvp/10-5-species-bee-nests-and-habitat-system.md
+```
+
 ### Read for analyzer work
 
 ```text

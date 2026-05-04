@@ -169,7 +169,7 @@ The MVP docs remain important for architecture and genetics rules, but they are 
 For current planning:
 
 ```txt
-docs/post-mvp/10-5-species-hives-and-habitat-system.md  (foundational — read first)
+docs/post-mvp/10-5-species-bee-nests-and-habitat-system.md  (foundational — read first)
 docs/post-mvp/11-post-mvp-productization-roadmap.md
 docs/post-mvp/12-visual-species-system.md
 docs/post-mvp/13-analyzer-ux-and-progression.md

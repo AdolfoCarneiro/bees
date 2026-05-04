@@ -7,7 +7,7 @@
 > implementation must satisfy and the questions that must be answered before implementation
 > begins. No code changes are scoped here.
 >
-> The immediate hive system (species hives, habitat, world gen) is implemented in Phase 11.5
+> The immediate habitat system (species bee nests, habitat metadata, world gen) is implemented in Phase 11.5
 > and remains valid regardless of which entity strategy is adopted.
 
 ## 1. Why This Decision Exists
@@ -32,7 +32,7 @@ This ADR is written now to:
 - acknowledge that the migration is a natural future direction;
 - define what constraints any migration must satisfy;
 - prevent the migration from being attempted prematurely;
-- avoid having the Phase 11.5 hive system or genetics core depend on vanilla bees forever.
+- avoid having the Phase 11.5 habitat / bee nest system or genetics core depend on vanilla bees forever.
 ```
 
 ## 2. Current State (Phase 11.5 and earlier)
@@ -98,12 +98,12 @@ must address all of the following:
 - BeeGenomeStorage may be adapted but must remain thin.
 ```
 
-### 4.3 Hive system compatibility
+### 4.3 Bee nest / habitat compatibility
 
 ```text
 - SpeciesBeeNestBlock and SpeciesBeeNestBlockEntity must continue to work.
 - Entry policy (BeeNestCompatibilityService.canEnter) must remain valid.
-- Custom entity types must be recognized by hive AI as valid occupants.
+- Custom entity types must be recognized by bee nest / Beehive AI as valid occupants.
 - Vanilla bee nests must continue to be the home for vanilla minecraft:bee entities.
 ```
 
@@ -152,7 +152,7 @@ Q1: Should offspring entity type be determined at birth (entity type = species a
 Q2: What happens when a vanilla bee breeds with a custom Meadow Bee?
     Is the offspring a vanilla bee or a curiousbees:meadow_bee?
 
-Q3: Can vanilla bees and custom species bees share the same hives,
+Q3: Can vanilla bees and custom species bees share the same bee nests,
     or does vanilla bee AI need to be updated?
 
 Q4: Should save migration be automatic, manual, or optional?
@@ -205,15 +205,15 @@ Phase 11.6 status: DEFERRED — design only, no implementation target date.
 The detailed migration ADR will be authored at:
 docs/post-mvp/11-6-custom-bee-entity-migration-adr.md
 
-The hive system from Phase 11.5 is valid for both the current vanilla-bee approach
-and the future custom-entity approach. No changes to hive blocks are needed before
+The bee nest system from Phase 11.5 is valid for both the current vanilla-bee approach
+and the future custom-entity approach. No changes to species bee nest blocks are needed before
 this migration is designed.
 ```
 
 ## 9. Relationship To Other Phases
 
 ```text
-Phase 11.5 — Species Hives And Habitat System
+Phase 11.5 — Species Bee Nests And Habitat System
   Foundational. Valid for both vanilla-bee and custom-entity approaches.
   BeeNestCompatibilityService and SpeciesHabitatDefinition are stable.
 
