@@ -167,6 +167,54 @@ Example:
 
 `spawnContextNotes` is optional and currently informational.
 
+### Visual Metadata
+
+The optional `visual` field declares how the species should be rendered in-game.
+
+Simple string form (texture path only, uses the default bee model):
+
+```json
+"visual": "curiousbees:textures/entity/bee/silverleaf.png"
+```
+
+Object form (explicit texture and model):
+
+```json
+"visual": {
+  "texture": "my_pack:textures/entity/bee/silverleaf.png",
+  "model": "curiousbees:bee/default"
+}
+```
+
+If `visual` is omitted, the client falls back to the Curious Bees generic fallback bee texture.
+
+Texture path conventions:
+
+```text
+assets/<namespace>/textures/entity/bee/<species_name>.png
+```
+
+Example with visual:
+
+```json
+{
+  "id": "my_pack:species/silverleaf",
+  "displayName": "Silverleaf Bee",
+  "dominance": "RECESSIVE",
+  "defaultTraits": {
+    "LIFESPAN": "curious_bees:traits/lifespan/normal",
+    "PRODUCTIVITY": "curious_bees:traits/productivity/normal",
+    "FERTILITY": "curious_bees:traits/fertility/two",
+    "FLOWER_TYPE": "curious_bees:traits/flower_type/flowers"
+  },
+  "visual": "my_pack:textures/entity/bee/silverleaf.png"
+}
+```
+
+Bee entity textures must follow the vanilla bee UV layout (64×32 pixels).
+See `docs/art/templates/bee/default_bee_uv_template.png` for the UV template.
+Do not copy vanilla bee textures — create original artwork.
+
 ## Mutations
 
 Mutations define probabilistic species results for parent species pairs.

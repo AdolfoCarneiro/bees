@@ -19,11 +19,12 @@ public final class CuriousBeeBeeRenderer extends BeeRenderer {
 
     @Override
     public ResourceLocation getTextureLocation(Bee bee) {
-        ResourceLocation species = SpeciesTextureResolver.resolve(bee);
-        if (!species.equals(SpeciesTextureResolver.VANILLA_FALLBACK)) {
-            return species;
+        ResourceLocation resolved = SpeciesTextureResolver.resolve(bee);
+        if (!resolved.equals(SpeciesTextureResolver.VANILLA_FALLBACK)) {
+            // Species texture or mod fallback — use directly.
+            return resolved;
         }
-        // Delegate to vanilla so angry/nectar textures still work for unregistered bees.
+        // No mod genome: delegate to vanilla so angry/nectar variants still work.
         return super.getTextureLocation(bee);
     }
 }
