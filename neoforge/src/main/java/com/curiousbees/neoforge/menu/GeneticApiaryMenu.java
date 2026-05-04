@@ -70,6 +70,8 @@ public final class GeneticApiaryMenu extends AbstractContainerMenu {
                         return switch (index) {
                             case 0 -> blockEntity.getBlockState().getValue(BeehiveBlock.HONEY_LEVEL);
                             case 1 -> blockEntity.isEmpty() ? 0 : 1;
+                            case 2 -> blockEntity.homedBeeCount();
+                            case 3 -> blockEntity.analyzedBeeCount();
                             default -> 0;
                         };
                     }
@@ -81,7 +83,7 @@ public final class GeneticApiaryMenu extends AbstractContainerMenu {
 
                     @Override
                     public int getCount() {
-                        return 2;
+                        return 4;
                     }
                 };
         addDataSlots(syncData);
@@ -99,13 +101,10 @@ public final class GeneticApiaryMenu extends AbstractContainerMenu {
         return blockEntity;
     }
 
-    public int honeyLevel() {
-        return syncData.get(0);
-    }
-
-    public boolean hasOccupants() {
-        return syncData.get(1) != 0;
-    }
+    public int honeyLevel() { return syncData.get(0); }
+    public boolean hasOccupants() { return syncData.get(1) != 0; }
+    public int homedBeeCount() { return syncData.get(2); }
+    public int analyzedBeeCount() { return syncData.get(3); }
 
     @Override
     public boolean stillValid(Player player) {

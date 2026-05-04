@@ -11,6 +11,7 @@ import com.curiousbees.common.gameplay.spawn.WildBeeSpawnService;
 import com.curiousbees.common.genetics.model.Genome;
 import com.curiousbees.common.genetics.random.JavaGeneticRandom;
 import com.curiousbees.neoforge.content.NeoForgeContentRegistry;
+import com.curiousbees.neoforge.data.BeeAnalysisStorage;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import com.curiousbees.neoforge.menu.GeneticApiaryMenu;
@@ -36,6 +37,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
@@ -160,6 +163,56 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implement
 
     public FrameModifiers.CombinedFrameModifier currentFrameModifiers() {
         return combinedFrameModifier();
+    }
+
+    /**
+     * Returns the count of bees currently homed to this apiary that are in the world.
+     * Counts both bees inside the hive (occupants) and outside bees whose hive pos matches.
+     * Safe to call server-side only.
+     */
+    public int homedBeeCount() {
+        if (level == null || level.isClientSide()) return 0;
+        int inside = getOccupantCount();
+        int outside = (int) level.getEntitiesOfClass(
+                        Bee.class,
+                        new net.minecraft.world.phys.AABB(getBlockPos()).inflate(48),
+                        bee -> getBlockPos().equals(bee.getHivePos()))
+                .size();
+        return inside + outside;
+    }
+
+    /**
+     * Returns how many outside bees homed here have been analyzed.
+     * Bees inside the hive are counted as analyzed if they had the flag when they entered
+     * (attachment is serialized with their NBT), but here we only count live outside bees.
+     */
+    public int analyzedBeeCount() {
+        if (level == null || level.isClientSide()) return 0;
+        return (int) level.getEntitiesOfClass(
+                        Bee.class,
+                        new net.minecraft.world.phys.AABB(getBlockPos()).inflate(48),
+                        bee -> getBlockPos().equals(bee.getHivePos()) && BeeAnalysisStorage.isAnalyzed(bee))
+                .size();
+    }
+
+    /** Collects species display names for outside bees homed here (analyzed only, max 3). */
+    public List<String> analyzedBeeSpeciesLabels() {
+        if (level == null || level.isClientSide()) return List.of();
+        List<String> labels = new ArrayList<>();
+        for (Bee bee : level.getEntitiesOfClass(
+                Bee.class,
+                new net.minecraft.world.phys.AABB(getBlockPos()).inflate(48),
+                bee -> getBlockPos().equals(bee.getHivePos()) && BeeAnalysisStorage.isAnalyzed(bee))) {
+            if (labels.size() >= 3) break;
+            BeeGenomeStorage.getGenome(bee).ifPresent(genome -> {
+                String activeId = genome.getActiveAllele(
+                        com.curiousbees.common.genetics.model.ChromosomeType.SPECIES).id();
+                int slash = activeId.lastIndexOf('/');
+                String name = slash >= 0 ? activeId.substring(slash + 1) : activeId;
+                labels.add(Character.toUpperCase(name.charAt(0)) + name.substring(1));
+            });
+        }
+        return labels;
     }
 
     @Override
