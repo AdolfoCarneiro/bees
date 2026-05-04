@@ -457,13 +457,7 @@ Rules:
 
 ## 15. Release Architecture
 
-Release and distribution planning is documented in:
-
-```text
-docs/release/
-```
-
-Do not optimize release automation before the MVP works, but keep versioning, changelog, and packaging conventions documented.
+Release and distribution planning can live under `docs/release/` when you add it back; older release docs are in **git history**. Do not optimize release automation before the core loop is solid, but keep versioning and changelog habits documented somewhere.
 
 ## 16. Future Multiloader Strategy
 

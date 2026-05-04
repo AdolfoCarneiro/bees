@@ -273,7 +273,7 @@ Review questions:
 ## Related Documents
 
 - `docs/decisions/0006-fabric-after-neoforge-mvp.md`
-- `docs/implementation/10-fabric-support-implementation.md`
-- `docs/quality/10-fabric-support-test-plan.md`
-- `docs/implementation/03-neoforge-entity-integration.md`
-- `docs/implementation/04-vanilla-breeding-integration.md`
+- `docs/implementation/10-fabric-support-implementation.md` (removed — see git history)
+- `docs/quality/10-fabric-support-test-plan.md` (removed — see git history)
+- `docs/implementation/03-neoforge-entity-integration.md` (removed — see git history)
+- `docs/implementation/04-vanilla-breeding-integration.md` (removed — see git history)
