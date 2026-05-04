@@ -169,11 +169,19 @@ The MVP docs remain important for architecture and genetics rules, but they are 
 For current planning:
 
 ```txt
+docs/post-mvp/10-5-species-hives-and-habitat-system.md  (foundational — read first)
 docs/post-mvp/11-post-mvp-productization-roadmap.md
 docs/post-mvp/12-visual-species-system.md
 docs/post-mvp/13-analyzer-ux-and-progression.md
 docs/post-mvp/14-genetic-apiary-gui-and-frames.md
 docs/post-mvp/15-content-and-asset-pipeline.md
+docs/post-mvp/11-6-custom-bee-entity-architecture.md    (deferred ADR)
+```
+
+For design context and reference:
+
+```txt
+docs/research/existing-bee-mods-review.md
 ```
 
 For architecture and genetics foundation:
