@@ -13,8 +13,9 @@ Minecraft bee genetics mod (NeoForge 1.21.1): living bees, genomes, breeding, do
 ## Documentation order
 
 1. [Readme.md](Readme.md)  
-2. [docs/architecture/README.md](docs/architecture/README.md) then [02](docs/architecture/02-technical-architecture.md), [03](docs/architecture/03-genetics-system-spec.md), [04](docs/architecture/04-breeding-and-mutation-spec.md), [05](docs/architecture/05-content-design-spec.md) as the task requires  
-3. [docs/decisions/](docs/decisions/) when changing an ADR-covered area  
+2. [docs/ROADMAP.md](docs/ROADMAP.md) when scope touches priorities or phase order  
+3. [docs/architecture/README.md](docs/architecture/README.md) then [02](docs/architecture/02-technical-architecture.md), [03](docs/architecture/03-genetics-system-spec.md), [04](docs/architecture/04-breeding-and-mutation-spec.md), [05](docs/architecture/05-content-design-spec.md) as the task requires  
+4. [docs/decisions/](docs/decisions/) when changing an ADR-covered area  
 
 **Task hints:** species hive / nest targeting behavior → `neoforge/src/main/java/com/curiousbees/neoforge/event/BeeSpeciesHiveTargetHandler.java`; new species checklist → `.claude/plugins/local/skills/new-bee-species.md`.
 

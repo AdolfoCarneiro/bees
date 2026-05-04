@@ -97,7 +97,7 @@ Curious Bees is not:
 
 ## Priorities
 
-Track ordered next steps in **issues** or **git history** if you keep a roadmap elsewhere. UX and parity goals are summarized in the sections above (product direction, non-goals).
+Ordered roadmap: **`docs/ROADMAP.md`**. Day-to-day tasks can still live in **issues**; UX and parity goals are summarized above (product direction, non-goals).
 
 ## Current Non-Goals
 
@@ -131,7 +131,7 @@ Technical specs (genetics, breeding, content data, module boundaries):
 docs/architecture/
 ```
 
-High-level UX and roadmap are not duplicated in a separate doc tree in this repo — use **this file**, **CLAUDE.md**, **AGENTS.md**, and **issues** (older planning may exist in **git history**).
+Phased roadmap: **`docs/ROADMAP.md`**. Older one-off specs may exist only in **git history**; day-to-day work can still be tracked in **issues**.
 
 ## Recommended Reading
 
@@ -141,6 +141,7 @@ For current planning:
 Readme.md
 CLAUDE.md
 AGENTS.md
+docs/ROADMAP.md
 ```
 
 For design context and reference:

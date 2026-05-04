@@ -22,7 +22,8 @@ The **genetics core** (`common/genetics` or equivalent) must **not** import Mine
 | Order | Path |
 |-------|------|
 | 1 | [Readme.md](Readme.md) — overview and current focus |
-| 2 | [docs/architecture/README.md](docs/architecture/README.md) — index of 02–05 |
+| 2 | [docs/ROADMAP.md](docs/ROADMAP.md) — phased product plan |
+| 3 | [docs/architecture/README.md](docs/architecture/README.md) — index of 02–05 |
 | Genetics / breeding / content rules | [docs/architecture/02-technical-architecture.md](docs/architecture/02-technical-architecture.md), [03](docs/architecture/03-genetics-system-spec.md), [04](docs/architecture/04-breeding-and-mutation-spec.md), [05](docs/architecture/05-content-design-spec.md) |
 | ADRs | [docs/decisions/](docs/decisions/) when a decision is locked |
 
