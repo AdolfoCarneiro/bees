@@ -190,7 +190,8 @@ docs/mvp/02-technical-architecture.md
 docs/mvp/03-genetics-system-spec.md
 docs/mvp/04-breeding-and-mutation-spec.md
 docs/mvp/05-content-design-spec.md
-docs/mvp/06-ai-coding-guidelines.md
+CLAUDE.md
+AGENTS.md
 ```
 
 ## Core Architecture Rule
