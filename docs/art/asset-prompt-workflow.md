@@ -321,5 +321,3 @@ A dev placeholder must not be:
 
 - `docs/post-mvp/12-visual-species-system.md`
 - `docs/post-mvp/15-content-and-asset-pipeline.md`
-- `docs/implementation/12-visual-species-system-implementation.md`
-- `docs/implementation/15-content-and-asset-pipeline-implementation.md`

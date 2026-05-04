@@ -4,6 +4,17 @@ This folder contains the design, architecture, research, implementation, and rel
 
 Curious Bees has moved past its initial MVP validation phase. The original MVP documents are preserved as foundation and historical context, while current planning now lives under `docs/post-mvp/`.
 
+## Current Status (May 2026)
+
+Phases 12–14 and 16 (per `docs/post-mvp/11-post-mvp-productization-roadmap.md`) are implemented. The mod has:
+
+- species-specific textures on living bees
+- portable analyzer with analysis state
+- genetic apiary GUI
+- content and asset pipeline foundation
+
+Next: Phase 15 (frames with real effects), then Phase 17 (first expanded species branch). Phase 11.6 (custom bee entity ADR) remains design-only.
+
 ## Start Here
 
 For current work, read these first:
@@ -29,13 +40,10 @@ The original MVP documents live in `docs/mvp/`.
 
 These documents explain how the first playable foundation was designed and why the project was initially constrained to a small, testable scope.
 
-- `docs/mvp/01-product-vision-and-roadmap.md`
 - `docs/mvp/02-technical-architecture.md`
 - `docs/mvp/03-genetics-system-spec.md`
 - `docs/mvp/04-breeding-and-mutation-spec.md`
 - `docs/mvp/05-content-design-spec.md`
-- `docs/mvp/06-ai-coding-guidelines.md`
-- `docs/mvp/07-initial-backlog.md`
 
 Use these documents as architectural and conceptual foundation, especially for:
 
@@ -50,9 +58,7 @@ Do not treat the MVP roadmap as the current roadmap.
 
 ## Current Post-MVP Direction
 
-The current phase is productization.
-
-The project goal is now to keep the validated genetic core and build the missing product layer around it.
+The validated genetic core is in place; the product layer for visuals, analyzer, apiary GUI, and content pipeline (Phase 16) is implemented. The next roadmap focus is Phase 15 (frames) and then Phase 17 (species expansion).
 
 Current direction:
 
@@ -102,9 +108,7 @@ ADRs should be used when a decision affects long-term design, for example:
 
 ## Implementation Notes
 
-Implementation-specific notes live in `docs/implementation/`.
-
-Use this for narrow technical plans, migration notes, and implementation slices.
+`docs/implementation/` is reserved for narrow technical plans or migration notes when needed. Completed phase execution plans were removed; design intent remains in `docs/post-mvp/` and the codebase.
 
 ## Quality
 
@@ -154,14 +158,7 @@ For AI-assisted development, agents should usually read:
 4. The relevant MVP foundation documents
 5. Any related ADRs
 
-```text
-Post-MVP implementation plans:
-- implementation/11-post-mvp-productization-foundation-implementation.md
-- implementation/12-visual-species-system-implementation.md
-- implementation/13-analyzer-ux-implementation.md
-- implementation/14-genetic-apiary-gui-and-frames-implementation.md
-- implementation/15-content-and-asset-pipeline-implementation.md
-```
+For the first expanded species branch design input, see `docs/post-mvp/17-cultivated-branch-design-input.md`. For live nest targeting and nectar rendering behavior, see `docs/reference/bee-nest-targeting-behavior.md`.
 
 The `common/genetics` architectural rule remains unchanged:
 

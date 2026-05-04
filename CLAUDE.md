@@ -73,7 +73,6 @@ Always read:
 3. docs/mvp/02-technical-architecture.md
 4. docs/mvp/03-genetics-system-spec.md
 5. the relevant docs/post-mvp spec
-6. the matching docs/implementation implementation plan
 
 For general post-MVP planning, read:
 
@@ -126,27 +125,24 @@ For core genetics or breeding changes, read:
 docs/mvp/02-technical-architecture.md
 docs/mvp/03-genetics-system-spec.md
 docs/mvp/04-breeding-and-mutation-spec.md
-docs/mvp/06-ai-coding-guidelines.md
 ```
+
+For AI workflow, guardrails, and logging conventions while coding, follow this file (`CLAUDE.md`) and `AGENTS.md`.
 
 Task-specific additions:
 
 ```text
 Visual species work:
 - docs/post-mvp/12-visual-species-system.md
-- docs/implementation/12-visual-species-system-implementation.md
 
 Analyzer work:
 - docs/post-mvp/13-analyzer-ux-and-progression.md
-- docs/implementation/13-analyzer-ux-implementation.md
 
 Apiary/frames work:
 - docs/post-mvp/14-genetic-apiary-gui-and-frames.md
-- docs/implementation/14-genetic-apiary-gui-and-frames-implementation.md
 
 Content/assets work:
 - docs/post-mvp/15-content-and-asset-pipeline.md
-- docs/implementation/15-content-and-asset-pipeline-implementation.md
 ```
 
 Current guardrails:
@@ -179,18 +175,36 @@ living vanilla bees as the gameplay foundation
 Curious Bees' own visual identity and progression
 ```
 
+## Current Phase Status
+
+Roadmap numbering matches `docs/post-mvp/11-post-mvp-productization-roadmap.md`.
+
+Completed:
+
+- Phase 11 — post-MVP foundation and documentation
+- Phase 11.5 — species bee nests and habitat system
+- Phase 12 — visual species system (textures on living bees)
+- Phase 13 — analyzer UX and progression
+- Phase 14 — genetic apiary GUI
+- Phase 16 — content and asset pipeline (authoring foundation)
+
+Next and planned:
+
+- Phase 15 — frame behavior (real genetic/production effects from frames)
+- Phase 17 — first expanded species branch (see `docs/post-mvp/17-cultivated-branch-design-input.md`)
+- Phase 11.6 — custom bee entity architecture (design/ADR only; deferred)
+
+Do not start Phase 17 before Phase 15 is solid.
+
 ## Current Post-MVP Priorities
 
-The current phase is productization.
+Phases 12–14 and 16 are complete (see **Current Phase Status**).
 
-Focus on:
+Current focus:
 
-- visual identity per species;
-- analyzer UI instead of chat/debug-only output;
-- genetic apiary GUI;
-- real frame behavior;
-- apiary behavior that is automation-ready by design;
-- content and asset pipeline for future species expansion.
+- Phase 15: frames with meaningful genetic and production effects
+- Phase 17: first expanded species branch after frames are solid
+- Phase 11.6: ADR for custom bee entities (design only)
 
 Do not jump directly to large content expansion.
 
@@ -420,24 +434,25 @@ After any AI-generated implementation, check:
 - Did any server-side `AttachmentType` that affects client rendering or UI also get synced via a network packet?
 ```
 
-## Suggested Post-MVP Implementation Order
+## Suggested Next Steps
 
-Recommended order:
+Phase 15 — frame behavior:
 
-```txt
-1. Documentation reorganization and post-MVP roadmap
-2. Visual species metadata and fallback strategy
-3. Species-specific texture resolution for living bees
-4. Analyzer analysis-state model
-5. Portable analyzer UI
-6. Analyzer block design/implementation
-7. Genetic apiary GUI
-8. Frame behavior 2.0
-9. Apiary containment/simulation design if still desired
-10. Content and asset pipeline documentation/tooling
-11. First small expanded species branch
-12. Later: dedicated resource bee progression design
-```
+- Define frame effects (productivity, mutation, stability, fertility)
+- Implement frame modifier calculations
+- Connect frames to apiary production output
+
+Phase 17 — first expanded species branch:
+
+- Read `docs/post-mvp/17-cultivated-branch-design-input.md`
+- Design visual identity per new species before implementation
+- Create asset prompt docs before any texture work
+- Implement data, visuals, and habitat for each new species per species checklist
+
+Phase 11.6 — custom bee entity architecture (design only):
+
+- Author the ADR at `docs/post-mvp/11-6-custom-bee-entity-architecture.md`
+- Do not implement yet
 
 ## Final Rule
 

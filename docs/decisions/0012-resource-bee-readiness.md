@@ -179,7 +179,5 @@ Do not implement a full material tree in the first slice.
 
 - `docs/decisions/0007-no-resource-bees-in-mvp.md`
 - `docs/decisions/0011-expanded-content-naming-strategy.md`
-- `docs/implementation/09-expanded-content-roadmap.md`
-- `docs/implementation/09a-expanded-content-categories.md`
-- `docs/implementation/09b-first-post-mvp-mutation-branch.md`
+- `docs/post-mvp/17-cultivated-branch-design-input.md`
 - `docs/mvp/05-content-design-spec.md`

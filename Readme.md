@@ -29,8 +29,7 @@ The current focus is not to add a large amount of content yet. The focus is to t
 
 ```text
 Current product direction is documented in docs/post-mvp/.
-Implementation task breakdowns for AI-assisted coding live in docs/implementation/.
-The original MVP planning docs are preserved under docs/mvp/.
+MVP foundation specs (genetics, architecture, content rules) live under docs/mvp/.
 ```
 
 ## Target

@@ -355,7 +355,7 @@ For now:
 
 ## 7. Post-MVP Phase Breakdown
 
-## Phase 11 — Post-MVP Product Direction
+## Phase 11 [DONE] — Post-MVP Product Direction
 
 Purpose:
 
@@ -382,7 +382,7 @@ Done when:
 A human or AI coding agent can clearly understand that the MVP is complete and that the next focus is productization, not immediate content explosion.
 ```
 
-## Phase 11.5 — Species Bee Nests And Habitat System
+## Phase 11.5 [DONE] — Species Bee Nests And Habitat System
 
 Purpose:
 
@@ -420,7 +420,7 @@ carry the matching species, and a new species can be added by following the
 documented spec format.
 ```
 
-## Phase 11.6 — Custom Bee Entity Architecture (deferred)
+## Phase 11.6 [PLANNED] — Custom Bee Entity Architecture (deferred)
 
 Purpose:
 
@@ -450,7 +450,7 @@ A future implementer can read the ADR and execute the migration without
 revisiting open architectural questions.
 ```
 
-## Phase 12 — Visual Species System
+## Phase 12 [DONE] — Visual Species System
 
 Purpose:
 
@@ -501,7 +501,7 @@ Done when:
 A player can visually distinguish the initial species in-game without relying only on analyzer text or debug information.
 ```
 
-## Phase 13 — Analyzer UX And Progression
+## Phase 13 [DONE] — Analyzer UX And Progression
 
 Purpose:
 
@@ -549,7 +549,7 @@ Done when:
 The player can inspect and compare bees through proper UI instead of relying on chat output or debug commands.
 ```
 
-## Phase 14 — Genetic Apiary GUI
+## Phase 14 [DONE] — Genetic Apiary GUI
 
 Purpose:
 
@@ -590,7 +590,7 @@ Done when:
 The genetic apiary feels like a real usable mod block rather than a debug or placeholder system.
 ```
 
-## Phase 15 — Frames And Apiary Behavior
+## Phase 15 [NEXT] — Frames And Apiary Behavior
 
 Purpose:
 
@@ -660,7 +660,7 @@ Done when:
 Frames and apiary behavior modifiers have clear roles and do not overlap confusingly.
 ```
 
-## Phase 16 — Content And Asset Pipeline
+## Phase 16 [DONE] — Content And Asset Pipeline
 
 Purpose:
 
@@ -721,7 +721,7 @@ Done when:
 The project has a clear, documented way to add a new species with both gameplay data and visual identity.
 ```
 
-## Phase 17 — First Expanded Species Branch
+## Phase 17 [PLANNED] — First Expanded Species Branch
 
 Purpose:
 

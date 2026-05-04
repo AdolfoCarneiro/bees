@@ -31,18 +31,16 @@ The repository documentation is part of the architecture. AI agents should use i
 
 ```text
 docs/
-├── 01-product-vision-and-roadmap.md
-├── 02-technical-architecture.md
-├── 03-genetics-system-spec.md
-├── 04-breeding-and-mutation-spec.md
-├── 05-content-design-spec.md
-├── 06-ai-coding-guidelines.md
-├── 07-initial-backlog.md
-├── implementation/
+├── mvp/              (02–05 foundation specs)
+├── post-mvp/       (current product direction)
+├── reference/      (technical behavior notes)
 ├── decisions/
 ├── quality/
 ├── art/
-└── release/
+├── content/
+├── research/
+├── release/
+└── implementation/ (reserved; historical phase plans removed)
 ```
 
 ### 2.1 Core docs
@@ -51,11 +49,7 @@ Core docs describe product intent, architecture, genetics rules, breeding/mutati
 
 ### 2.2 Implementation docs
 
-`docs/implementation/` contains execution-level specs for each phase.
-
-Implementation docs are the primary source for coding tasks.
-
-If a backlog item is short, do not rely only on the backlog. Read the relevant implementation spec.
+`docs/implementation/` is reserved for narrow migration or execution notes when needed. Historical per-phase implementation plans were removed from the repo; use `docs/post-mvp/` for design intent and the codebase as the source of truth for shipped behavior. Git history retains old implementation specs if needed.
 
 ### 2.3 ADRs
 
@@ -355,7 +349,7 @@ ItemStack -> Genome component, if needed later
 BlockEntity -> Inventory + genome/product state, if needed later
 ```
 
-The exact API decision should be recorded in `docs/decisions/` and implemented according to `docs/implementation/03-neoforge-entity-integration.md`.
+The exact API decision should be recorded in `docs/decisions/` and reflected in the NeoForge integration layer in source (see repository `neoforge/` and related ADRs).
 
 ### Fabric
 

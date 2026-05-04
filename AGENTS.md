@@ -57,7 +57,6 @@ docs/mvp/03-genetics-system-spec.md
 
 ```text
 docs/post-mvp/12-visual-species-system.md
-docs/implementation/12-visual-species-system-implementation.md
 docs/mvp/05-content-design-spec.md
 docs/art/asset-prompt-workflow.md
 ```
@@ -72,7 +71,6 @@ docs/post-mvp/10-5-species-bee-nests-and-habitat-system.md
 
 ```text
 docs/post-mvp/13-analyzer-ux-and-progression.md
-docs/implementation/13-analyzer-ux-implementation.md
 docs/mvp/03-genetics-system-spec.md
 docs/mvp/05-content-design-spec.md
 ```
@@ -81,7 +79,6 @@ docs/mvp/05-content-design-spec.md
 
 ```text
 docs/post-mvp/14-genetic-apiary-gui-and-frames.md
-docs/implementation/14-genetic-apiary-gui-and-frames-implementation.md
 docs/mvp/02-technical-architecture.md
 docs/mvp/04-breeding-and-mutation-spec.md
 ```
@@ -90,7 +87,6 @@ docs/mvp/04-breeding-and-mutation-spec.md
 
 ```text
 docs/post-mvp/15-content-and-asset-pipeline.md
-docs/implementation/15-content-and-asset-pipeline-implementation.md
 docs/mvp/05-content-design-spec.md
 ```
 
@@ -100,8 +96,9 @@ docs/mvp/05-content-design-spec.md
 docs/mvp/02-technical-architecture.md
 docs/mvp/03-genetics-system-spec.md
 docs/mvp/04-breeding-and-mutation-spec.md
-docs/mvp/06-ai-coding-guidelines.md
 ```
+
+Agent workflow, guardrails, and logging conventions: `AGENTS.md` and `CLAUDE.md`.
 
 ### Read for architectural decisions
 
@@ -144,9 +141,8 @@ Use these sources in this order:
 1. AGENTS.md for agent behavior and guardrails.
 2. docs/post-mvp/ for current product direction.
 3. ADRs for architectural decisions.
-4. docs/implementation/*.md for execution details.
-5. docs/mvp/ for genetics/architecture foundation.
-6. docs/quality/ for validation.
+4. docs/mvp/ for genetics/architecture foundation.
+5. docs/quality/ for validation.
 ```
 
 ## Current Non-Goals
@@ -202,15 +198,15 @@ The current post-MVP productization order is:
 
 ```text
 11. Post-MVP foundation and documentation (complete)
-12. Visual species system
-13. Analyzer UX and progression
-14. Genetic apiary GUI
-15. Frames and apiary behavior
-16. Content and asset pipeline
-17. First expanded species branch (only after 12–16 are solid)
+12. Visual species system (complete)
+13. Analyzer UX and progression (complete)
+14. Genetic apiary GUI (complete)
+15. Frames and apiary behavior (next)
+16. Content and asset pipeline (complete)
+17. First expanded species branch (only after 15 is solid)
 ```
 
-Do not skip to content expansion before the product foundation is ready.
+Do not skip to species expansion before frame behavior is solid.
 
 ## Required Agent Workflow
 
@@ -219,17 +215,16 @@ For every task:
 ```text
 1. Read AGENTS.md.
 2. Read docs/post-mvp/ for the relevant phase.
-3. Read the matching docs/implementation/ spec.
-4. Read related domain specs from docs/mvp/ as needed.
-5. Restate the task scope.
-6. List files expected to be created or modified.
-7. List assumptions and risks.
-8. Implement the smallest complete version.
-9. Add or update tests when applicable.
-10. Run tests or explain why they cannot run.
-11. Commit the changes with a small, focused commit message.
-12. Summarize changes.
-13. List follow-up tasks if any.
+3. Read related domain specs from docs/mvp/ as needed.
+4. Restate the task scope.
+5. List files expected to be created or modified.
+6. List assumptions and risks.
+7. Implement the smallest complete version.
+8. Add or update tests when applicable.
+9. Run tests or explain why they cannot run.
+10. Commit the changes with a small, focused commit message.
+11. Summarize changes.
+12. List follow-up tasks if any.
 ```
 
 ## Commit Rule
@@ -266,7 +261,6 @@ Read AGENTS.md first.
 
 Then read:
 - docs/post-mvp/[relevant phase doc]
-- docs/implementation/[relevant implementation spec]
 - [relevant docs/mvp/ foundation specs if needed]
 - [relevant ADRs if any]
 - [relevant quality/test plan]
