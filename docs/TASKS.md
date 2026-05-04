@@ -1,6 +1,8 @@
 # Curious Bees — Tasks
 
-Operational breakdown of [`ROADMAP.md`](ROADMAP.md) into **epics** (E#) and **tasks** (E#-T##). Use this as the issue-tracker mirror — one row per task is a healthy issue, one epic is a healthy milestone.
+Operational breakdown of [`roadmap.md`](roadmap.md) into **epics** (E#) and **tasks** (E#-T##). Use this as the issue-tracker mirror — one row per task is a healthy issue, one epic is a healthy milestone.
+
+> Sibling docs: [`project-guide.md`](project-guide.md) · [`requirements.md`](requirements.md) · [`architecture.md`](architecture.md) · [`decisions.md`](decisions.md) · [`asset-generation-guidelines.md`](asset-generation-guidelines.md).
 
 ## Scope rule for this file
 
@@ -46,9 +48,9 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 |----|------|------|-----------|------------|
 | **E0-T01** | Verify `common/genetics` import boundary in CI | S | Test or static check fails the build if `common/genetics` references `net.minecraft.*` / NeoForge / Fabric. | ADR-0002 |
 | **E0-T02** | Snapshot test for `ProductionResolver` distributions | M | Statistical test runs N crosses and asserts known distributions within tolerance for current built-in species. | — |
-| **E0-T03** | Multiplayer smoke checklist | S | `docs/research/mp-smoke.md` (or issue template) lists steps: spawn → breed → analyze → hive insert → output read on dedicated server. | — |
+| **E0-T03** | Multiplayer smoke checklist | S | A checklist (issue template, PR template, or appended to [`architecture.md` §9.3](architecture.md)) lists steps: spawn → breed → analyze → hive insert → output read on dedicated server. | — |
 | **E0-T04** | Audit WARNING/FINE logging in services | S | Every recoverable bad-input path either WARNs or throws (no silent skip). PR removes any `// TODO log` left in services. | — |
-| **E0-T05** | Document Genetic Apiary persistence quirks | S | Comment block / short doc note explains the `getType()` / ticker overrides described in [`0009`](decisions/0009-genetic-apiary-design.md) §7C, so a future contributor does not “fix” it back. | ADR-0009 |
+| **E0-T05** | Document Genetic Apiary persistence quirks | S | Comment block / short doc note explains the `getType()` / ticker overrides described in [`decisions.md` → ADR-0009](decisions.md), so a future contributor does not “fix” it back. | ADR-0009 |
 | **E0-T06** | Tag known dev placeholders | S | All `// DEV PLACEHOLDER` strings include a stable token (e.g. `DEV-PLACEHOLDER`) so a grep can find them before release. | — |
 
 **Epic exit:** CI green, regressions caught early, no “mystery state” for new contributors.
@@ -63,16 +65,16 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E1-T01** | Define species → texture key mapping | M | A single resolver maps `species_id → ResourceLocation`; missing key returns documented fallback (vanilla bee or generic). No `switch` over species in renderers. | [`05`](architecture/05-content-design-spec.md) |
+| **E1-T01** | Define species → texture key mapping | M | A single resolver maps `species_id → ResourceLocation`; missing key returns documented fallback (vanilla bee or generic). No `switch` over species in renderers. | [`architecture.md` §7](architecture.md) |
 | **E1-T02** | Bee renderer override using mapping | M | `Bee` entity renderer picks species texture via E1-T01; default vanilla appearance preserved when genome missing. | E1-T01 |
-| **E1-T03** | Resource pack hygiene | S | Naming follows [`0011`](decisions/0011-expanded-content-naming-strategy.md); fallback texture clearly labeled placeholder. | E1-T01 |
+| **E1-T03** | Resource pack hygiene | S | Naming follows [`decisions.md` → ADR-0011](decisions.md); fallback texture clearly labeled placeholder. | E1-T01 |
 | **E1-T04** | Visual variant hooks (analyzed/unanalyzed) | S | Renderer can express **one** binary variant (e.g. tint on unanalyzed) without per-species `if`. Toggle is data-driven or constant. | E1-T01 |
 
 ### Subepic E1.B — Analyzer UX
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E1-T05** | Analyzer report data audit | S | Listed: every field that should appear after analysis vs before. Source = [`03`](architecture/03-genetics-system-spec.md). | — |
+| **E1-T05** | Analyzer report data audit | S | Listed: every field that should appear after analysis vs before. Source = [`architecture.md` §5](architecture.md). | — |
 | **E1-T06** | Analyzer screen rework | M | `BeeAnalyzerScreen` shows analyzed report in clear sections (active / inactive / hybrid hint / traits) using report payload only. No raw genome dump. | E1-T05, E0-T03 |
 | **E1-T07** | Tooltip gate | S | Item / entity tooltips never reveal post-analysis fields when bee is unanalyzed. Unit/integration test covers both states. | E1-T05 |
 | **E1-T08** | Right-click flow polish | S | Analyzer item interaction errors / cooldowns / message keys are localized; no hardcoded English in code paths. | E1-T05 |
@@ -97,7 +99,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E2-T01** | Habitat predicate model | M | Model class describes habitat as `(biome tags, height band, light, optional weight)` consumed by spawn logic. Minecraft-free if possible (or thin Forge bridge). | [`05`](architecture/05-content-design-spec.md) |
+| **E2-T01** | Habitat predicate model | M | Model class describes habitat as `(biome tags, height band, light, optional weight)` consumed by spawn logic. Minecraft-free if possible (or thin Forge bridge). | [`architecture.md` §7](architecture.md) |
 | **E2-T02** | Wire spawn handler to predicate | M | Existing fallback genome / spawn logic uses E2-T01 instead of inline conditions. Existing 5 species keep current behavior. | E2-T01 |
 | **E2-T03** | Habitat debug command | S | `/curiousbees habitat here` prints the predicate that would match the current biome. | E2-T01 |
 
@@ -105,7 +107,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E2-T04** | Generalize `SpeciesBeeNestBlock` | M | Nest block reads species id + texture set from data, not from a hardcoded enum/`switch`. | [`05`](architecture/05-content-design-spec.md), E1-T09 |
+| **E2-T04** | Generalize `SpeciesBeeNestBlock` | M | Nest block reads species id + texture set from data, not from a hardcoded enum/`switch`. | [`architecture.md` §7](architecture.md), E1-T09 |
 | **E2-T05** | Nest variant model | M | A nest can declare **visual variants** (logs, leaves, surface, hanging) without new Java classes per variant. | E2-T04 |
 | **E2-T06** | POI / hive targeting consolidation | M | `BeeSpeciesHiveTargetHandler` documents and centralizes the rule: which nests a bee considers “home”; behavior verified for all 5 species by integration test or manual checklist. | ADR-0009 |
 | **E2-T07** | Worldgen feature scaffolding | M | One reusable feature places a nest with attached vegetation; concrete feature configs live in **data**, not Java. | E2-T04 |
@@ -123,7 +125,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 
 ## Epic E3 — Hive UX & automation
 
-**Goal:** make the genetic apiary the clean automation interface; add **advanced hive** decisions and frames structure. Compatibility floor stays [`0009`](decisions/0009-genetic-apiary-design.md).
+**Goal:** make the genetic apiary the clean automation interface; add **advanced hive** decisions and frames structure. Compatibility floor stays [`decisions.md` → ADR-0009](decisions.md).
 
 ### Subepic E3.A — GUI overhaul
 
@@ -140,7 +142,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 |----|------|------|-----------|------------|
 | **E3-T05** | Frame item registration | M | At least 2 frame items registered (e.g. `productivity_frame`, `mutation_frame`); recipe stubs in data. | — |
 | **E3-T06** | Frame slot capability | M | Apiary block entity exposes frame slots distinct from output slots; insert via menu or hopper to a marked side. | E3-T01 |
-| **E3-T07** | Frame modifier wiring | M | `BuiltinFrameModifiers` (existing) is consumed by the apiary tick path; production resolver applies per-frame multipliers. | E3-T06, [`04`](architecture/04-breeding-and-mutation-spec.md) |
+| **E3-T07** | Frame modifier wiring | M | `BuiltinFrameModifiers` (existing) is consumed by the apiary tick path; production resolver applies per-frame multipliers. | E3-T06, [`architecture.md` §6](architecture.md) |
 | **E3-T08** | Frame durability | S | Frames consume durability per production tick or per output; broken frame disables its modifier and emits a warning state. | E3-T07 |
 
 ### Subepic E3.C — Automation contract
@@ -155,9 +157,9 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E3-T12** | Open ADR for hive footprint | M | New ADR `00XX-advanced-hive-footprint.md` with chosen approach (single block / multiblock / hybrid) and rationale. | Open decision |
+| **E3-T12** | Open ADR for hive footprint | M | New entry in [`decisions.md`](decisions.md) — chosen approach (single block / multiblock / hybrid) and rationale. | Open decision |
 | **E3-T13** | Implement chosen footprint (slice) | L | First playable advanced hive matches the ADR; tests cover form/place/break + bee entry. | E3-T12 |
-| **E3-T14** | Optional: bee transport item (gated) | M | Only if ADR “Bee transport” chooses to ship it; respects the hybrid model in `CLAUDE.md`. | Open ADR |
+| **E3-T14** | Optional: bee transport item (gated) | M | Only if ADR “Bee transport” chooses to ship it; respects the hybrid model in [`project-guide.md`](project-guide.md). | Open ADR |
 
 **Epic exit:** a player can run an automated hive line (frames in, combs out) with hoppers/pipes; advanced hive footprint decision is committed.
 
@@ -217,7 +219,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E6-T01** | Loader-agnostic audit of `common` | S | Report (issue or doc) lists any common-side leak that would block Fabric port. | [`DR-010`](decisions/DR-010-fabric-support-strategy.md) |
+| **E6-T01** | Loader-agnostic audit of `common` | S | Report (issue or doc) lists any common-side leak that would block Fabric port. | [`decisions.md` → DR-010](decisions.md) |
 | **E6-T02** | Recipe / data parity check | S | Recipe JSON paths and schemas readable by both loaders (no NeoForge-only fields where avoidable). | E4-T04 |
 | **E6-T03** | Compatibility test world | S | A saved world (or seed + checklist) used to spot regressions across versions. | — |
 
@@ -231,11 +233,11 @@ These tasks are not phase-specific; they unblock multiple epics.
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **EX-T01** | Data-driven cutover for species/products | L | Per [`0010`](decisions/0010-data-driven-content-strategy.md): species, traits, mutations, products loadable from JSON for the **already-shipping** content. | ADR-0010 |
+| **EX-T01** | Data-driven cutover for species/products | L | Per [`decisions.md` → ADR-0010](decisions.md): species, traits, mutations, products loadable from JSON for the **already-shipping** content. | ADR-0010 |
 | **EX-T02** | Datapack reload smoke test | S | `/reload` does not corrupt running bees or apiaries. Test or manual checklist. | EX-T01 |
 | **EX-T03** | Telemetry-friendly debug overlay | S | One toggleable HUD piece showing: species count loaded, mutation count, last apiary tick result. | E2-T09 |
 | **EX-T04** | Crash-resilience for missing assets | S | Missing texture / lang key produces a logged warning and visible placeholder, never a crash. | E1-T03 |
-| **EX-T05** | Test pyramid documentation | S | Short note in `docs/architecture/` (or here) describes: unit (`common`), integration (NeoForge), manual smoke. | — |
+| **EX-T05** | Test pyramid documentation | S | Short paragraph in [`architecture.md` §9](architecture.md) (or here) describes: unit (`common`), integration (NeoForge), manual smoke. | — |
 | **EX-T06** | Issue + PR templates | S | `.github/` (or equivalent) templates aligned with this file’s task IDs. | — |
 
 ---

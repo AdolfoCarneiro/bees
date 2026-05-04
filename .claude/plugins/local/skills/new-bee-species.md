@@ -39,5 +39,5 @@ If you keep an asset manifest or checklist, update it in the same place you trac
 ## Guardrails
 - Do NOT implement without a texture prompt doc ready (wherever you track it)
 - Do NOT add resource-output species without explicit phase approval
-- Read docs/architecture/05-content-design-spec.md for trait defaults reference
+- Read docs/architecture.md §7 for trait defaults reference
 - Read CLAUDE.md (Art section) for placeholder / final asset rules

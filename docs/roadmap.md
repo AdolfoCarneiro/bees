@@ -8,9 +8,9 @@ High-level plan for turning the validated **genetics core** into a **polished, a
 | **Contributors / AI agents** | Scope guardrails + links to specs; pair with `CLAUDE.md` workflow |
 | **Players / pack makers** | Expectation management only — not a changelog |
 
-**Technical contracts:** [`docs/architecture/README.md`](architecture/README.md) (specs 02–05).  
-**Product framing:** root `Readme.md`, `CLAUDE.md`, `AGENTS.md`.  
-**Hive v1 (floor):** [`docs/decisions/0009-genetic-apiary-design.md`](decisions/0009-genetic-apiary-design.md) — subclass of vanilla hive, production additive to honey, no capture item required for first use.
+**Technical contract:** [`architecture.md`](architecture.md). **Product contract:** [`requirements.md`](requirements.md). **Locked decisions:** [`decisions.md`](decisions.md). **Operational breakdown:** [`TASKS.md`](TASKS.md). **Project entry point:** [`project-guide.md`](project-guide.md).
+
+**Hive v1 (floor):** [`decisions.md` → ADR-0009](decisions.md) — subclass of vanilla hive, production additive to honey, no capture item required for first use.
 
 ---
 
@@ -41,7 +41,7 @@ Curious Bees is **not** trying to replace Productive Bees in packs. It is trying
 | **Core fantasy** | Often block + cage bee loop | **Living** `Bee` entities + genetics on entity |
 | **Progression** | Species discovery + recipes | **Breeding + analysis** + controlled production |
 | **Automation** | Very mature | **Must** reach hopper/pipe clarity; deep per-mod compat later |
-| **Content volume** | Huge roster | **Small branches**; quality over count ([`0012`](decisions/0012-resource-bee-readiness.md)) |
+| **Content volume** | Huge roster | **Small branches**; quality over count ([`decisions.md` → ADR-0012](decisions.md)) |
 | **Art / GUI** | Established house style | Learnable layout first, **own** art pass in Phase 5 |
 
 **Viability:** overlap is inevitable and healthy — same audience. Differentiation is **genetics depth + vanilla bee feel + your art/names**. Marketing line: “**Productive-grade logistics, Forestry-grade curiosity.**”
@@ -56,7 +56,7 @@ Curious Bees is **not** trying to replace Productive Bees in packs. It is trying
 | **Bee transport** | Optional **scoped** item/container for hive insertion vs **only** pathing | Before “advanced hive only” onboarding flows |
 | **PB parity depth** | Must-have automation features vs cosmetic slot parity | Before large GUI refactors |
 | **Fluid honey** | Tanks/pipes vs bottle-only discrete honey | Before centrifuge output schema is frozen |
-| **Data-driven cutover** | When JSON/datapack species ship for players ([`0010`](decisions/0010-data-driven-content-strategy.md)) vs dev-only | Before inviting pack authors to depend on paths |
+| **Data-driven cutover** | When JSON/datapack species ship for players ([`decisions.md` → ADR-0010](decisions.md)) vs dev-only | Before inviting pack authors to depend on paths |
 
 ---
 
@@ -92,7 +92,7 @@ flowchart LR
 - [ ] CI green on `common` + `neoforge` tests.
 - [ ] Any attachment or menu field that affects **client** UI is **synced** (document in code if non-obvious).
 - [ ] WARNING logs on recoverable bad data (no silent swallow).
-- [ ] New content follows centralized definitions until [`0010`](decisions/0010-data-driven-content-strategy.md) migration is executed.
+- [ ] New content follows centralized definitions until [`decisions.md` → ADR-0010](decisions.md) migration is executed.
 
 **Exit:** no open P0 regressions; a new contributor can run the mod and complete world breed → hive → comb without cheats.
 
@@ -107,10 +107,10 @@ flowchart LR
 | Track | Items |
 |-------|--------|
 | **Rendering** | Species → texture resolution for **living** bees; sane fallback when missing asset. |
-| **Analyzer** | Screen (or block+screen) that respects **unanalyzed vs analyzed** ([`03` genetics spec](architecture/03-genetics-system-spec.md) visibility rules). |
+| **Analyzer** | Screen (or block+screen) that respects **unanalyzed vs analyzed** ([`architecture.md` §5](architecture.md) visibility rules). |
 | **Tooltips** | Analyzed: species / hybrid hints / traits as designed; unanalyzed: vague or gated — no full chromosome dump. |
-| **Content hygiene** | Adding a species touches **data + lang + visual key**, not random `if` in handlers ([`05`](architecture/05-content-design-spec.md), naming [`0011`](decisions/0011-expanded-content-naming-strategy.md)). |
-| **Assets** | Prompts / requests tracked per maintainer workflow (`CLAUDE.md` Art); no undeclared “final” placeholders. |
+| **Content hygiene** | Adding a species touches **data + lang + visual key**, not random `if` in handlers ([`architecture.md` §7](architecture.md), naming [`decisions.md` → ADR-0011](decisions.md)). |
+| **Assets** | Per [`asset-generation-guidelines.md`](asset-generation-guidelines.md); no undeclared “final” placeholders. |
 
 **Risks**
 
@@ -129,7 +129,7 @@ flowchart LR
 
 | Track | Items |
 |-------|--------|
-| **Spawn** | Habitat metadata per species: biome tags, height bands, light — **simple** predicates only ([`05`](architecture/05-content-design-spec.md)). |
+| **Spawn** | Habitat metadata per species: biome tags, height bands, light — **simple** predicates only ([`architecture.md` §7](architecture.md)). |
 | **Nests** | Multiple wild nest blocks or variants; **vanilla-grade** interaction (anger, harvest, occupancy); align POI / hive targeting with code paths such as `BeeSpeciesHiveTargetHandler`. |
 | **Population** | Sane caps / chunk friendliness; no bee soup lag spikes. |
 | **Discovery** | Optional journal / patchouli **later** — not a gate for Phase 2 exit. |
@@ -177,7 +177,7 @@ flowchart LR
 |-------|--------|
 | **Machine** | Centrifuge (name TBD) + block entity + menu. |
 | **Recipes** | Comb → **wax** + **honey** (fluid or item) + **species by-products**; stub recipes for all shipping combs. |
-| **Data** | Prefer moving recipe JSON together with [`0010`](decisions/0010-data-driven-content-strategy.md) timing — avoid hardcoding 30 JSON in Java. |
+| **Data** | Prefer moving recipe JSON together with [`decisions.md` → ADR-0010](decisions.md) timing — avoid hardcoding 30 JSON in Java. |
 | **JEI/REI** | Phase 6 or late Phase 4 — only when recipes are stable enough not to churn. |
 
 **Risks**
@@ -198,7 +198,7 @@ flowchart LR
 - **Narrative / guide** (optional): Patchouli, in-game tips, or quest hooks — pick one, do it well.
 - **Roster growth** in **small branches** (mutation lines that tell a story), not bulk species drops.
 - **Balance pass** after telemetry from real play (rates, mutation pain, comb flow).
-- **Resource bees** only per [`0012`](decisions/0012-resource-bee-readiness.md) — dedicated design, not accidental ore bees.
+- **Resource bees** only per [`decisions.md` → ADR-0012](decisions.md) — dedicated design, not accidental ore bees.
 
 **Exit:** blind playtesters describe the mod in **one sentence** without saying “it’s a PB clone.”
 
@@ -206,9 +206,9 @@ flowchart LR
 
 ## Phase 6 — Fabric & compatibility (when scoped)
 
-- **Fabric:** gameplay port when explicitly scheduled ([`DR-010`](decisions/DR-010-fabric-support-strategy.md)); genetics core should already be loader-agnostic.
+- **Fabric:** gameplay port when explicitly scheduled ([`decisions.md` → DR-010](decisions.md)); genetics core should already be loader-agnostic.
 - **Cross-mod:** Create / AE2 / pipe mods — **explicit** issues per integration; no blanket “compat layer” spike.
-- **Distribution:** `docs/release/` or project publish docs when versions go public.
+- **Distribution:** add release docs when versions go public; do not pre-create empty folders.
 
 **Exit:** each scoped integration has a test world checklist and an owner.
 
@@ -220,8 +220,8 @@ flowchart LR
 
 1. **Issues:** one issue per task row in `TASKS.md`; title uses the task id (e.g. `E3-T05`).
 2. **Exit gates:** closing a phase = **all Exit bullets true**; if not, split scope rather than lowering the bar.
-3. **ADR hygiene:** open-decision table rows graduate to `docs/decisions/` with status **Accepted** before merge-heavy work lands.
-4. **Playtests:** short `docs/research/` or issue notes after each phase (what confused players).
+3. **ADR hygiene:** open-decision table rows graduate to a new entry in [`decisions.md`](decisions.md) with status **Accepted** before merge-heavy work lands.
+4. **Playtests:** short notes per phase (what confused players) — append to the relevant phase section here, or open an issue.
 5. **Review cadence:** re-read this file after major releases; trim stale bullets rather than append forever.
 
 ---
@@ -230,6 +230,6 @@ flowchart LR
 
 1. Pick the **lowest phase** whose **Exit** is false — that is the priority lane.  
 2. Resolve **open decisions** with ADRs before building the expensive side (multiblock, fluids, transport).  
-3. Keep **`common/genetics`** free of Minecraft imports in every PR ([`0002`](decisions/0002-pure-java-genetics-core.md)).
+3. Keep **`common/genetics`** free of Minecraft imports in every PR ([`decisions.md` → ADR-0002](decisions.md)).
 
 _Last updated: 2026-05-04._

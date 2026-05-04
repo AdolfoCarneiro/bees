@@ -28,8 +28,8 @@ The project is now entering a post-MVP productization phase.
 The current focus is not to add a large amount of content yet. The focus is to turn the validated MVP into a real playable mod with better UX, visuals, apiary interaction, analyzer interfaces, frames, and a sustainable content/asset pipeline.
 
 ```text
-Product direction: this file + CLAUDE.md + AGENTS.md
-Technical specs (genetics, architecture, content rules): docs/architecture/
+Product direction: this file + CLAUDE.md + AGENTS.md + docs/project-guide.md
+Technical specs (genetics, architecture, content rules): docs/architecture.md
 ```
 
 ## Target
@@ -97,7 +97,7 @@ Curious Bees is not:
 
 ## Priorities
 
-Ordered roadmap: **`docs/ROADMAP.md`**. Day-to-day tasks can still live in **issues**; UX and parity goals are summarized above (product direction, non-goals).
+Ordered roadmap: **`docs/roadmap.md`** (operational tasks: **`docs/TASKS.md`**). Day-to-day work can still live in **issues**; UX and parity goals are summarized above (product direction, non-goals).
 
 ## Current Non-Goals
 
@@ -117,7 +117,7 @@ These are future topics and may be revisited after the post-MVP foundation is so
 
 ## Documentation
 
-Start here:
+The repo uses **only seven** docs files (intentional). Start here:
 
 ```txt
 Readme.md
@@ -125,41 +125,19 @@ CLAUDE.md
 AGENTS.md
 ```
 
-Technical specs (genetics, breeding, content data, module boundaries):
+Then go to whichever doc answers your question:
 
 ```txt
-docs/architecture/
+docs/project-guide.md             — entry point + doc index
+docs/requirements.md              — what the mod must / must not do
+docs/architecture.md              — modules, genetics, breeding, content
+docs/roadmap.md                   — phased plan
+docs/TASKS.md                     — epics + concrete tasks
+docs/decisions.md                 — locked ADRs
+docs/asset-generation-guidelines.md — art rules
 ```
 
-Phased roadmap: **`docs/ROADMAP.md`**. Older one-off specs may exist only in **git history**; day-to-day work can still be tracked in **issues**.
-
-## Recommended Reading
-
-For current planning:
-
-```txt
-Readme.md
-CLAUDE.md
-AGENTS.md
-docs/ROADMAP.md
-```
-
-For design context and reference:
-
-```txt
-docs/research/existing-bee-mods-review.md
-```
-
-For architecture and genetics foundation:
-
-```txt
-docs/architecture/02-technical-architecture.md
-docs/architecture/03-genetics-system-spec.md
-docs/architecture/04-breeding-and-mutation-spec.md
-docs/architecture/05-content-design-spec.md
-CLAUDE.md
-AGENTS.md
-```
+Older per-file specs (architecture/02–05, individual ADRs, research notes) live in **git history**.
 
 ## Core Architecture Rule
 

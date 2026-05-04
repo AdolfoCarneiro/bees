@@ -4,19 +4,24 @@ Agent rules for this repo. **Also read [CLAUDE.md](CLAUDE.md).**
 
 ## Summary
 
-Minecraft bee genetics mod (NeoForge 1.21.1): living bees, genomes, breeding, dominance, mutations. Product framing: root **Readme.md** + **CLAUDE.md**; rules and models: **`docs/architecture/`** (02–05).
+Minecraft bee genetics mod (NeoForge 1.21.1): living bees, genomes, breeding, dominance, mutations. Product framing: root **Readme.md** + **CLAUDE.md** + **[docs/project-guide.md](docs/project-guide.md)**.
 
 ## Hard rule
 
-**`common/genetics` (and the genetics core)** must not depend on Minecraft, NeoForge, Fabric, registries, events, entities, NBT, components, attachments, mixins, item stacks, levels, or UI. Pure Java, unit-testable. Integration lives under `neoforge/` (and future `fabric/`).
+**`common/genetics` (and the genetics core)** must not depend on Minecraft, NeoForge, Fabric, registries, events, entities, NBT, components, attachments, mixins, item stacks, levels, or UI. Pure Java, unit-testable. Integration lives under `neoforge/` (and future `fabric/`). ([`docs/decisions.md` → ADR-0002](docs/decisions.md).)
 
 ## Documentation order
 
-1. [Readme.md](Readme.md)  
-2. [docs/ROADMAP.md](docs/ROADMAP.md) when scope touches priorities or phase order  
-3. [docs/TASKS.md](docs/TASKS.md) when picking up the next concrete unit of work  
-4. [docs/architecture/README.md](docs/architecture/README.md) then [02](docs/architecture/02-technical-architecture.md), [03](docs/architecture/03-genetics-system-spec.md), [04](docs/architecture/04-breeding-and-mutation-spec.md), [05](docs/architecture/05-content-design-spec.md) as the task requires  
-5. [docs/decisions/](docs/decisions/) when changing an ADR-covered area  
+The repo uses **only seven** docs files. Do not add new top-level markdown files under `docs/`.
+
+1. [Readme.md](Readme.md)
+2. [docs/project-guide.md](docs/project-guide.md) — entry point + doc index
+3. [docs/requirements.md](docs/requirements.md) — must do / must not do
+4. [docs/architecture.md](docs/architecture.md) — modules, genetics, breeding, content
+5. [docs/roadmap.md](docs/roadmap.md) — phased plan
+6. [docs/TASKS.md](docs/TASKS.md) — epics + tasks
+7. [docs/decisions.md](docs/decisions.md) — ADR log
+8. [docs/asset-generation-guidelines.md](docs/asset-generation-guidelines.md) — art rules
 
 **Task hints:** species hive / nest targeting behavior → `neoforge/src/main/java/com/curiousbees/neoforge/event/BeeSpeciesHiveTargetHandler.java`; new species checklist → `.claude/plugins/local/skills/new-bee-species.md`.
 
@@ -36,9 +41,10 @@ Frames with real effects; production tuning; analyzer/apiary UX; automation-frie
 
 ## Workflow
 
-1. Read AGENTS.md + CLAUDE.md.  
-2. Read relevant `docs/architecture/` specs and ADRs.  
-3. Restate scope; list files; smallest complete change; tests for core Java where relevant; **commit** one focused task per commit when practical.
+1. Read AGENTS.md + CLAUDE.md.
+2. Read the relevant section of `docs/architecture.md` and any `docs/requirements.md` rules that apply.
+3. Pick a task from `docs/TASKS.md`; consult `docs/roadmap.md` if phase order is unclear; consult `docs/decisions.md` for any locked choice your work touches.
+4. Restate scope; list files; smallest complete change; tests for core Java where relevant; **commit** one focused task per commit when practical.
 
 ## Commits
 
@@ -46,11 +52,11 @@ Prefix examples: `core:`, `content:`, `neoforge:`, `client:`, `test:`, `docs:`, 
 
 ## Prompt template (short)
 
-Read AGENTS + CLAUDE → relevant `docs/architecture/` → ADRs. No Minecraft inside `common/genetics`. New textures: follow maintainer process (see CLAUDE Art section); no silent placeholder finals.
+Read AGENTS + CLAUDE → relevant `docs/architecture.md` section → `docs/requirements.md` for guardrails → `docs/decisions.md` for locked choices. No Minecraft inside `common/genetics`. New textures: follow [`docs/asset-generation-guidelines.md`](docs/asset-generation-guidelines.md); no silent placeholder finals.
 
 ## Assets
 
-No silent placeholder-as-final. Dev fallback only if crash-proofing and clearly marked.
+No silent placeholder-as-final. Dev fallback only if crash-proofing and clearly marked. Full rules: [`docs/asset-generation-guidelines.md`](docs/asset-generation-guidelines.md).
 
 ## Style and validation
 
@@ -62,8 +68,8 @@ Prefer small classes, explicit validation, `Objects.requireNonNull` at boundarie
 
 ## Review checklist
 
-Aligned with **Readme.md** / guardrails here; genetics pure Java; no accidental resource-bee tree; analysis gating respected where applicable; no final placeholder art; automation not artificially paywalled; server/client sync story intact for UI-driving state.
+Aligned with **Readme.md** / `docs/requirements.md`; genetics pure Java; no accidental resource-bee tree; analysis gating respected where applicable; no final placeholder art; automation not artificially paywalled; server/client sync story intact for UI-driving state.
 
 ## Growth line
 
-Validated genetics core → polish and production loop (frames, products, processing, advanced hive UX) → species expansion → later resource progression only with its own design → Fabric when scoped.
+Validated genetics core → polish and production loop (frames, products, processing, advanced hive UX) → species expansion → later resource progression only with its own design → Fabric when scoped. Phases: [`docs/roadmap.md`](docs/roadmap.md).
