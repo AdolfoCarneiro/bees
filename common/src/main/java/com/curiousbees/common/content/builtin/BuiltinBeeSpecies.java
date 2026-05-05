@@ -27,6 +27,7 @@ public final class BuiltinBeeSpecies {
 
     // Visual definitions — texture paths + display name keys, both centralized here.
     // Renderer reads textureId(); tooltip/screen reads displayNameKey() via registry.
+    // DEV-PLACEHOLDER: all five entity textures are flat-colour stand-ins; final art ships in E5 (P5).
     public static final SpeciesVisualDefinition VISUAL_MEADOW     = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/meadow.png",     "species.curiousbees.meadow");
     public static final SpeciesVisualDefinition VISUAL_FOREST     = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/forest.png",     "species.curiousbees.forest");
     public static final SpeciesVisualDefinition VISUAL_ARID       = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/arid.png",       "species.curiousbees.arid");
