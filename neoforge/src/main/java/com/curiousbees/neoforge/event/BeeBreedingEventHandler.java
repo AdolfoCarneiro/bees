@@ -14,6 +14,8 @@ import com.curiousbees.neoforge.content.NeoForgeContentRegistry;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.animal.Bee;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -69,6 +71,8 @@ public final class BeeBreedingEventHandler {
         level.sendParticles(ParticleTypes.HAPPY_VILLAGER,
                 child.getX(), child.getY() + 0.5, child.getZ(),
                 8, 0.3, 0.3, 0.3, 0.0);
+        level.playSound(null, child.getX(), child.getY(), child.getZ(),
+                SoundEvents.PLAYER_LEVELUP, SoundSource.NEUTRAL, 0.4f, 1.3f);
     }
 
     private static void logOutcome(Bee child, Bee parentA, Bee parentB, BeeBreedingOutcome outcome) {
