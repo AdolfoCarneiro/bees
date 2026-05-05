@@ -15,21 +15,25 @@ import java.util.List;
 /**
  * Client-side overlay screen for the portable Bee Analyzer.
  * Opened via a network packet — no container/menu required.
- * Displays the BeeAnalysisReport with active/inactive alleles and purity.
+ * Displays the BeeAnalysisReport in labelled sections; no raw genome IDs shown.
+ * DEV-PLACEHOLDER background — replace with Curious Bees GUI art in E5.
  */
 public final class BeeAnalyzerScreen extends Screen {
 
-    // DEV PLACEHOLDER background — final asset tracked outside repo (see CLAUDE.md Art section)
-    private static final int BG_COLOR   = 0xE0_1A1006;
-    private static final int BORDER_COL = 0xFF_8B6914;
-    private static final int TEXT_COL   = 0xFF_FFD860;
-    private static final int DIM_COL    = 0xFF_A08040;
-    private static final int LABEL_COL  = 0xFF_C8A020;
+    private static final int BG_COLOR    = 0xE0_1A1006;
+    private static final int BORDER_COL  = 0xFF_8B6914;
+    private static final int TITLE_COL   = 0xFF_FFD860;
+    private static final int LABEL_COL   = 0xFF_C8A020;
+    private static final int VALUE_COL   = 0xFF_F0E0A0;
+    private static final int DIM_COL     = 0xFF_A08040;
     private static final int UNKNOWN_COL = 0xFF_808080;
+    private static final int HYBRID_COL  = 0xFF_90C0FF;
 
-    private static final int PANEL_W = 220;
-    private static final int PANEL_H = 148;
-    private static final int PAD     = 10;
+    private static final int PANEL_W  = 240;
+    private static final int PANEL_H  = 160;
+    private static final int PAD      = 10;
+    private static final int LINE_H   = 11;
+    private static final int LABEL_W  = 84;
 
     private final BeeAnalysisReport report;
     private final List<ReportLine> lines = new ArrayList<>();
@@ -48,32 +52,38 @@ public final class BeeAnalyzerScreen extends Screen {
     private void buildLines() {
         lines.clear();
         if (!report.isAnalyzed()) {
-            lines.add(new ReportLine("Genetics", "Unknown — Analyze Required", UNKNOWN_COL));
+            lines.add(new ReportLine(null, I18n.get("screen.curiousbees.bee_analyzer.unanalyzed"), UNKNOWN_COL));
             return;
         }
-        lines.add(speciesLine());
-        lines.add(traitLine("Lifespan",     report.lifespan()));
-        lines.add(traitLine("Productivity", report.productivity()));
-        lines.add(traitLine("Fertility",    report.fertility()));
-        lines.add(traitLine("Flower",       report.flowerType()));
+        lines.add(speciesLine(report.species()));
+        if (!report.isSpeciesPurebred()) {
+            lines.add(new ReportLine(null,
+                    "» " + I18n.get("screen.curiousbees.bee_analyzer.purity.hybrid"), HYBRID_COL));
+        }
+        lines.add(traitLine("screen.curiousbees.bee_analyzer.label.lifespan",     report.lifespan()));
+        lines.add(traitLine("screen.curiousbees.bee_analyzer.label.productivity", report.productivity()));
+        lines.add(traitLine("screen.curiousbees.bee_analyzer.label.fertility",    report.fertility()));
+        lines.add(traitLine("screen.curiousbees.bee_analyzer.label.flower_type",  report.flowerType()));
     }
 
-    private ReportLine speciesLine() {
-        GeneReport gene = report.species();
+    private ReportLine speciesLine(GeneReport gene) {
         String active   = resolveSpeciesName(gene.activeAlleleId());
         String inactive = resolveSpeciesName(gene.inactiveAlleleId());
         String dom      = gene.activeDominance() == Dominance.DOMINANT ? "(D)" : "(R)";
-        String purity   = gene.isPurebred() ? "Purebred" : "Hybrid";
-        return new ReportLine("Species", active + " " + dom + " / " + inactive + "  [" + purity + "]", TEXT_COL);
+        String purity   = gene.isPurebred()
+                ? I18n.get("screen.curiousbees.bee_analyzer.purity.purebred")
+                : I18n.get("screen.curiousbees.bee_analyzer.purity.hybrid");
+        String value = active + " " + dom + " / " + inactive + "  [" + purity + "]";
+        return new ReportLine("screen.curiousbees.bee_analyzer.label.species", value, VALUE_COL);
     }
 
-    private ReportLine traitLine(String label, GeneReport gene) {
+    private ReportLine traitLine(String labelKey, GeneReport gene) {
         String active   = traitDisplayName(gene.activeAlleleId());
         String inactive = traitDisplayName(gene.inactiveAlleleId());
-        return new ReportLine(label, "[A] " + active + "  [I] " + inactive, DIM_COL);
+        return new ReportLine(labelKey, "[A] " + active + "  [I] " + inactive, DIM_COL);
     }
 
-    /** Resolves species display name via registry → visual definition → lang key → I18n. */
+    /** Species name via registry → visual def → lang key → I18n. Falls back to suffix derivation. */
     private static String resolveSpeciesName(String alleleId) {
         return NeoForgeContentRegistry.current()
                 .findSpecies(alleleId)
@@ -83,7 +93,7 @@ public final class BeeAnalyzerScreen extends Screen {
                 .orElseGet(() -> traitDisplayName(alleleId));
     }
 
-    /** Fallback display name derived from the allele ID suffix (for traits and unknown species). */
+    /** Fallback: derive display name from allele ID suffix (used for traits). */
     private static String traitDisplayName(String alleleId) {
         int slash = alleleId.lastIndexOf('/');
         String raw = slash >= 0 ? alleleId.substring(slash + 1) : alleleId;
@@ -94,33 +104,32 @@ public final class BeeAnalyzerScreen extends Screen {
 
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
-        // super.render calls renderBackground once; drawing the panel before super would get blurred again.
         super.render(g, mouseX, mouseY, partialTick);
 
         int x = (width  - PANEL_W) / 2;
         int y = (height - PANEL_H) / 2;
 
-        // Background panel
         g.fill(x, y, x + PANEL_W, y + PANEL_H, BG_COLOR);
-        // Border
-        g.fill(x, y, x + PANEL_W, y + 1, BORDER_COL);
-        g.fill(x, y + PANEL_H - 1, x + PANEL_W, y + PANEL_H, BORDER_COL);
-        g.fill(x, y, x + 1, y + PANEL_H, BORDER_COL);
-        g.fill(x + PANEL_W - 1, y, x + PANEL_W, y + PANEL_H, BORDER_COL);
+        g.fill(x,            y,            x + PANEL_W, y + 1,          BORDER_COL);
+        g.fill(x,            y + PANEL_H - 1, x + PANEL_W, y + PANEL_H, BORDER_COL);
+        g.fill(x,            y,            x + 1,       y + PANEL_H,    BORDER_COL);
+        g.fill(x + PANEL_W - 1, y,         x + PANEL_W, y + PANEL_H,   BORDER_COL);
 
-        // Title
-        g.drawString(font, "=== Bee Genetics ===", x + PAD, y + PAD, LABEL_COL);
+        String panelTitle = "=== " + I18n.get("screen.curiousbees.bee_analyzer.panel_title") + " ===";
+        g.drawString(font, panelTitle, x + PAD, y + PAD, TITLE_COL);
 
-        // Lines
         int lineY = y + PAD + 14;
         for (ReportLine line : lines) {
-            g.drawString(font, line.label + ":", x + PAD, lineY, LABEL_COL, false);
-            g.drawString(font, line.value, x + PAD + 72, lineY, line.color, false);
-            lineY += 11;
+            if (line.labelKey() != null) {
+                g.drawString(font, I18n.get(line.labelKey()) + ":", x + PAD, lineY, LABEL_COL, false);
+                g.drawString(font, line.value(), x + PAD + LABEL_W, lineY, line.color(), false);
+            } else {
+                g.drawString(font, line.value(), x + PAD, lineY, line.color(), false);
+            }
+            lineY += LINE_H;
         }
 
-        // Dismiss hint
-        g.drawString(font, "[ESC] close", x + PAD, y + PANEL_H - PAD - font.lineHeight, DIM_COL, false);
+        g.drawString(font, "[ESC]", x + PAD, y + PANEL_H - PAD - font.lineHeight, DIM_COL, false);
     }
 
     @Override
@@ -128,5 +137,5 @@ public final class BeeAnalyzerScreen extends Screen {
         return false;
     }
 
-    private record ReportLine(String label, String value, int color) {}
+    private record ReportLine(String labelKey, String value, int color) {}
 }
