@@ -1,6 +1,7 @@
 package com.curiousbees.neoforge.network;
 
 import com.curiousbees.neoforge.client.screen.BeeAnalyzerScreen;
+import com.curiousbees.neoforge.data.BeeAnalysisAttachments;
 import com.curiousbees.neoforge.data.BeeGenomeAttachments;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
@@ -19,6 +20,17 @@ public final class ClientNetworkHandlers {
             Entity entity = level.getEntity(payload.entityId());
             if (entity instanceof Bee bee) {
                 bee.setData(BeeGenomeAttachments.BEE_GENOME, payload.genomeData());
+            }
+        });
+    }
+
+    public static void onSyncBeeAnalysis(SyncBeeAnalysisPayload payload, IPayloadContext ctx) {
+        ctx.enqueueWork(() -> {
+            var level = Minecraft.getInstance().level;
+            if (level == null) return;
+            Entity entity = level.getEntity(payload.entityId());
+            if (entity instanceof Bee bee) {
+                bee.setData(BeeAnalysisAttachments.ANALYZED, payload.analyzed());
             }
         });
     }

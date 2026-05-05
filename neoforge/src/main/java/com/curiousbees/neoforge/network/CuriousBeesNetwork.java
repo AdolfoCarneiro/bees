@@ -2,6 +2,7 @@ package com.curiousbees.neoforge.network;
 
 import com.curiousbees.common.gameplay.analysis.BeeAnalysisReport;
 import com.curiousbees.common.genetics.serial.GenomeData;
+import com.curiousbees.neoforge.data.BeeAnalysisStorage;
 import com.curiousbees.neoforge.data.BeeGenomeAttachments;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,6 +34,10 @@ public final class CuriousBeesNetwork {
                 ShowAnalyzerReportPayload.TYPE,
                 ShowAnalyzerReportPayload.STREAM_CODEC,
                 ClientNetworkHandlers::onShowAnalyzerReport);
+        registrar.playToClient(
+                SyncBeeAnalysisPayload.TYPE,
+                SyncBeeAnalysisPayload.STREAM_CODEC,
+                ClientNetworkHandlers::onSyncBeeAnalysis);
     }
 
     /** Sends the analyzer report to a specific player (after analysis). */
@@ -40,13 +45,15 @@ public final class CuriousBeesNetwork {
         PacketDistributor.sendToPlayer(player, new ShowAnalyzerReportPayload(report));
     }
 
-    /** Called when a player begins tracking any entity — syncs genome if the entity is a bee with one. */
+    /** Called when a player begins tracking any entity — syncs genome and analysis state if the entity is a mod bee. */
     public static void onStartTracking(PlayerEvent.StartTracking event) {
         if (!(event.getTarget() instanceof Bee bee)) return;
         if (!BeeGenomeStorage.hasGenome(bee)) return;
         if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
         GenomeData data = bee.getData(BeeGenomeAttachments.BEE_GENOME);
         PacketDistributor.sendToPlayer(serverPlayer, new SyncBeeGenomePayload(bee.getId(), data));
+        PacketDistributor.sendToPlayer(serverPlayer,
+                new SyncBeeAnalysisPayload(bee.getId(), BeeAnalysisStorage.isAnalyzed(bee)));
     }
 
     /** Syncs the current genome to all players already tracking this bee. */
@@ -54,5 +61,11 @@ public final class CuriousBeesNetwork {
         if (!BeeGenomeStorage.hasGenome(bee)) return;
         GenomeData data = bee.getData(BeeGenomeAttachments.BEE_GENOME);
         PacketDistributor.sendToPlayersTrackingEntity(bee, new SyncBeeGenomePayload(bee.getId(), data));
+    }
+
+    /** Syncs the analyzed state to all players already tracking this bee. */
+    public static void syncAnalyzedToTracking(Bee bee) {
+        PacketDistributor.sendToPlayersTrackingEntity(bee,
+                new SyncBeeAnalysisPayload(bee.getId(), BeeAnalysisStorage.isAnalyzed(bee)));
     }
 }

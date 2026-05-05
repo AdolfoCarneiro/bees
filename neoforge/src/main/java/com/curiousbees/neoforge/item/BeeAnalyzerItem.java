@@ -60,6 +60,7 @@ public final class BeeAnalyzerItem extends Item {
                 return InteractionResult.FAIL;
             }
             BeeAnalysisStorage.setAnalyzed(bee);
+            CuriousBeesNetwork.syncAnalyzedToTracking(bee);
         }
 
         BeeAnalysisReport report = ANALYSIS_SERVICE.analyze(genome.get());

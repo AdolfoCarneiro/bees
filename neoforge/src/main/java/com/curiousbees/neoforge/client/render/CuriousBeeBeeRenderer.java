@@ -17,6 +17,7 @@ public final class CuriousBeeBeeRenderer extends BeeRenderer {
     public CuriousBeeBeeRenderer(EntityRendererProvider.Context context) {
         super(context);
         addLayer(new CuriousBeePollenLayer(this));
+        addLayer(new UnanalyzedTintLayer(this));
     }
 
     @Override
