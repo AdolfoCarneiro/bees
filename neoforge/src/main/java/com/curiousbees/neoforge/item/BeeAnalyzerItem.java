@@ -5,7 +5,6 @@ import com.curiousbees.common.gameplay.analysis.BeeAnalysisService;
 import com.curiousbees.neoforge.data.BeeAnalysisStorage;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import com.curiousbees.neoforge.network.CuriousBeesNetwork;
-import com.curiousbees.neoforge.network.ShowAnalyzerReportPayload;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.TooltipFlag;
