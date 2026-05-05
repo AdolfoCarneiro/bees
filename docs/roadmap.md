@@ -50,13 +50,14 @@ Curious Bees is **not** trying to replace Productive Bees in packs. It is trying
 
 ## Open decisions (→ ADR when the slice starts)
 
-| Topic | Question | Suggested trigger |
-|--------|----------|-------------------|
-| **Advanced hive footprint** | Single expandable block vs **multiblock** (Forestry-style) vs **hybrid** (core + attached extension blocks) | Before coding Phase 3 “extensions” |
-| **Bee transport** | Optional **scoped** item/container for hive insertion vs **only** pathing | Before “advanced hive only” onboarding flows |
-| **PB parity depth** | Must-have automation features vs cosmetic slot parity | Before large GUI refactors |
-| **Fluid honey** | Tanks/pipes vs bottle-only discrete honey | Before centrifuge output schema is frozen |
-| **Data-driven cutover** | When JSON/datapack species ship for players ([`decisions.md` → ADR-0010](decisions.md)) vs dev-only | Before inviting pack authors to depend on paths |
+> **These 3 ADRs must be written and committed to `decisions.md` BEFORE any P3/P4 feature code begins.** Each ADR should be preceded by a 30-minute design spike (mock or sketch) to validate the approach. See design doc `~/.gstack/projects/AdolfoCarneiro-bees/Adolfo-main-design-20260504-213936.md`.
+
+| Topic | ADR | Question | Default / guidance | Trigger |
+|--------|-----|----------|--------------------|---------|
+| **Advanced hive footprint** | ADR-0013 | Single expandable block vs multiblock vs hybrid | **Default: single expandable block.** Multiblock is a one-way door (save-migration risk for players); requires strong evidence to override. | Before E3-T12 |
+| **Bee capture item** | ADR-0014 | Optional scoped item for hive insertion; partial reversal of ADR-0009's capture rejection | Scope to hive-insertion only; design release mechanic before accepting | Before E3-T13/T14 |
+| **Fluid honey** | ADR-0015 | Tanks/pipes vs bottle-only discrete honey | Start with discrete (bottle) if fluid registration blocks progress | Before E4-T01 |
+| **Data-driven cutover** | [ADR-0010](decisions.md) | ✅ **Done** — JSON pipeline implemented in `ContentJsonLoader` | n/a | n/a |
 
 ---
 
@@ -87,12 +88,24 @@ flowchart LR
 - `ProductionResolver` + built-in species/products.
 - `GeneticApiaryBlock` / `BlockEntity` / menu / screen (see codebase + `0009`).
 
+**What's already implemented (discovered 2026-05-04):**
+
+| Component | Status |
+|-----------|--------|
+| `SpeciesTextureResolver` + `CuriousBeeBeeRenderer` | ✅ Done — texture-per-species + 3-tier fallback |
+| `GeneticApiaryBlockEntity` frame inventory (3 slots) + output (6 slots) | ✅ Done |
+| `BuiltinFrameModifiers` wired into `addOccupant` production roll | ✅ Done |
+| Frame items (`BASIC_FRAME`, `MUTATION_FRAME`, `PRODUCTIVITY_FRAME`) | ✅ Done — need recipe stubs + durability |
+| `automationOutputView` IItemHandler + `ContainerData` sync | ✅ Done — sided IO bug (E0-T07) |
+| `ContentJsonLoader` pipeline (ADR-0010) | ✅ Done |
+
 **Hardening checklist (ongoing):**
 
 - [ ] CI green on `common` + `neoforge` tests.
-- [ ] Any attachment or menu field that affects **client** UI is **synced** (document in code if non-obvious).
+- [ ] **E0-T07:** Fix `ApiaryCapabilities` sided IO + `curiousbees:frames` item tag (active bug — hopper below can insert frames).
+- [ ] **E0-T08:** Cache entity scan in `GeneticApiaryBlockEntity` (performance — 20x/sec scan).
+- [ ] **E3-T08:** Frame durability — frames are currently immortal; implement before P3 ships.
 - [ ] WARNING logs on recoverable bad data (no silent swallow).
-- [ ] New content follows centralized definitions until [`decisions.md` → ADR-0010](decisions.md) migration is executed.
 
 **Exit:** no open P0 regressions; a new contributor can run the mod and complete world breed → hive → comb without cheats.
 
@@ -106,7 +119,7 @@ flowchart LR
 
 | Track | Items |
 |-------|--------|
-| **Rendering** | Species → texture resolution for **living** bees; sane fallback when missing asset. |
+| **Rendering** | Species → texture resolution for **living** bees — `SpeciesTextureResolver` + `CuriousBeeBeeRenderer` done; 5 DEV-PLACEHOLDER textures needed (E1-T12). |
 | **Analyzer** | Screen (or block+screen) that respects **unanalyzed vs analyzed** ([`architecture.md` §5](architecture.md) visibility rules). |
 | **Tooltips** | Analyzed: species / hybrid hints / traits as designed; unanalyzed: vague or gated — no full chromosome dump. |
 | **Content hygiene** | Adding a species touches **data + lang + visual key**, not random `if` in handlers ([`architecture.md` §7](architecture.md), naming [`decisions.md` → ADR-0011](decisions.md)). |
@@ -116,6 +129,8 @@ flowchart LR
 
 - Client-only desync → **test multiplayer** for analyzer + tooltip paths.
 - Texture explosion → enforce **manifest or checklist** per species before merge.
+
+**Additional P1 deliverable (from CEO review 2026-05-04):** Mutation feedback — subtle particle + sound in `BeeBreedingEventHandler` when mutation occurs; makes the genetics loop emotionally rewarding (E1-T13).
 
 **Exit:** new player can tell species apart in-world and after analysis **without** debug commands; analyzer is usable in survival.
 
@@ -155,7 +170,7 @@ flowchart LR
 | **Frames** | Real **items** with effects wired through production resolver / modifiers (extends `0009` out-of-scope list intentionally). |
 | **Representation** | “Bee inside” — start with **2D / entity preview / icon + status** if full 3D render is costly. |
 | **Automation** | Sided `IItemHandler` (or successor) contracts: which sides insert/extract; output extract-only; document redstone if any. |
-| **Advanced hive** | Either upgraded block or new tier — **decision table** in open decisions above. |
+| **Advanced hive** | Either upgraded block or new tier — **ADR-0013 required first; default is single expandable block** (multiblock = save-migration risk). |
 | **Optional energy** | Only if a future ADR adds it — default remains **no power** per `0009` unless design revises. |
 
 **Risks**

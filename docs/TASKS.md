@@ -52,6 +52,8 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 | **E0-T04** | Audit WARNING/FINE logging in services | S | Every recoverable bad-input path either WARNs or throws (no silent skip). PR removes any `// TODO log` left in services. | — |
 | **E0-T05** | Document Genetic Apiary persistence quirks | S | Comment block / short doc note explains the `getType()` / ticker overrides described in [`decisions.md` → ADR-0009](decisions.md), so a future contributor does not “fix” it back. | ADR-0009 |
 | **E0-T06** | Tag known dev placeholders | S | All `// DEV PLACEHOLDER` strings include a stable token (e.g. `DEV-PLACEHOLDER`) so a grep can find them before release. | — |
+| **E0-T07** | Fix `ApiaryCapabilities` sided IO + add `curiousbees:frames` item tag | S | `ApiaryCapabilities.register()` uses direction-aware views: `Direction.DOWN` → extract-only output view; other sides → frame-insert + output-extract view. `isFrameItem()` uses `stack.is(ModTags.Items.FRAMES)` tag backed by `data/curiousbees/tags/item/frames.json`. Tests cover: hopper below can't insert frames; hopper on side can insert frames; hopper below can extract outputs. | — |
+| **E0-T08** | Cache entity scan in `GeneticApiaryBlockEntity` | S | `homedBeeCount()` and `analyzedBeeCount()` read from cached fields refreshed every 20 ticks (or on `addOccupant`/`releaseAllOccupants`). `ContainerData.get()` reads cache, not live entity scan. Test: cache invalidates after bee enters hive. | — |
 
 **Epic exit:** CI green, regressions caught early, no “mystery state” for new contributors.
 
@@ -65,8 +67,8 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E1-T01** | Define species → texture key mapping | M | A single resolver maps `species_id → ResourceLocation`; missing key returns documented fallback (vanilla bee or generic). No `switch` over species in renderers. | [`architecture.md` §7](architecture.md) |
-| **E1-T02** | Bee renderer override using mapping | M | `Bee` entity renderer picks species texture via E1-T01; default vanilla appearance preserved when genome missing. | E1-T01 |
+| **E1-T01** | Define species → texture key mapping **(done)** | M | `SpeciesTextureResolver` fully implemented with 3-tier fallback (species texture → mod fallback → vanilla fallback). | [`architecture.md` §7](architecture.md) |
+| **E1-T02** | Bee renderer override using mapping **(done)** | M | `CuriousBeeBeeRenderer.getTextureLocation()` calls `SpeciesTextureResolver.resolve(bee)`; vanilla angry/nectar variants preserved when no genome. | E1-T01 |
 | **E1-T03** | Resource pack hygiene | S | Naming follows [`decisions.md` → ADR-0011](decisions.md); fallback texture clearly labeled placeholder. | E1-T01 |
 | **E1-T04** | Visual variant hooks (analyzed/unanalyzed) | S | Renderer can express **one** binary variant (e.g. tint on unanalyzed) without per-species `if`. Toggle is data-driven or constant. | E1-T01 |
 
@@ -86,6 +88,13 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 | **E1-T09** | Centralize species visual metadata | M | `BuiltinBeeSpecies` (or sibling) carries texture key + display name key; renderer + tooltip read from there only. | E1-T01 |
 | **E1-T10** | Localization audit | S | All current species/items/menus have `lang` keys; `en_us.json` complete; checker script (or test) fails on missing keys. | — |
 | **E1-T11** | New-species checklist parity | S | `.claude/plugins/local/skills/new-bee-species.md` matches the **actual** code paths a new species touches after E1-T09. | E1-T09 |
+
+### Subepic E1.D — Mutation feedback & species textures
+
+| ID | Task | Size | Done when | Depends on |
+|----|------|------|-----------|------------|
+| **E1-T12** | Species DEV-PLACEHOLDER textures (5 species) | S | `assets/curiousbees/textures/entity/bee/{species}.png` exists for all 5 MVP species; tagged `DEV-PLACEHOLDER`; `SpeciesTextureResolver` resolves to correct texture per species. Final art deferred to P5. | E1-T01 (done) |
+| **E1-T13** | Mutation feedback on breeding event | S | `BeeBreedingEventHandler` spawns particle + plays sound when `BeeBreedingOutcome.hasMutation()` is true; guarded by `!level.isClientSide()`; debug log records parent → result species. Optional: `advancements/first_mutation.json`. | — |
 
 **Epic exit:** new species would be a **data + lang + texture** drop; no engine change required.
 
@@ -140,17 +149,17 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E3-T05** | Frame item registration | M | At least 2 frame items registered (e.g. `productivity_frame`, `mutation_frame`); recipe stubs in data. | — |
-| **E3-T06** | Frame slot capability | M | Apiary block entity exposes frame slots distinct from output slots; insert via menu or hopper to a marked side. | E3-T01 |
-| **E3-T07** | Frame modifier wiring | M | `BuiltinFrameModifiers` (existing) is consumed by the apiary tick path; production resolver applies per-frame multipliers. | E3-T06, [`architecture.md` §6](architecture.md) |
-| **E3-T08** | Frame durability | S | Frames consume durability per production tick or per output; broken frame disables its modifier and emits a warning state. | E3-T07 |
+| **E3-T05** | Frame item registration **(done)** | M | `BASIC_FRAME`, `MUTATION_FRAME`, `PRODUCTIVITY_FRAME` registered in `ModItems`. Recipe stubs needed in data. | — |
+| **E3-T06** | Frame slot capability **(done)** | M | 3-slot frame inventory in `GeneticApiaryBlockEntity`; `isFrameItem()` validates via `curiousbees:frames` tag (E0-T07). | E3-T01 |
+| **E3-T07** | Frame modifier wiring **(done)** | M | `resolveFrameModifier()` → `BuiltinFrameModifiers.BY_ID` lookup → `ProductionResolver` applies multiplier per frame in `addOccupant`. | E3-T06 |
+| **E3-T08** | Frame durability **⚠️ priority — do before P3 ships** | S | Frames call `hurtAndBreak()` per production output; broken frame slot cleared + `LOGGER.debug` emitted. Frames need `.durability(N)` in `ModItems`. | E3-T07 |
 
 ### Subepic E3.C — Automation contract
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E3-T09** | Sided IO definition | S | Documented (in code + short README) which sides allow insert (frames) vs extract (outputs); top retained for vanilla bee entry. | E3-T06 |
-| **E3-T10** | Output `IItemHandler` extract-only | S | Hopper/pipe extract works; insert into output slot rejected. Test covers both directions. | E3-T06 |
+| **E3-T09** | Sided IO definition **(fix via E0-T07)** | S | `ApiaryCapabilities` already exposes `automationOutputView`; fix in E0-T07 adds direction-awareness. Document sided contract in code comments. | E0-T07 |
+| **E3-T10** | Output `IItemHandler` extract-only **(fix via E0-T07)** | S | Output slots reject insert in `automationOutputView`; fix in E0-T07 ensures frame slots also blocked from bottom-side hopper. Test covers both directions. | E0-T07 |
 | **E3-T11** | Optional redstone behavior | S | If kept, simple rule: redstone signal pauses production (not bee entry/exit). Otherwise explicitly skipped with note. | E3-T07 |
 
 ### Subepic E3.D — Advanced hive (gated by ADR)
