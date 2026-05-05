@@ -47,7 +47,6 @@ This makes the most complex logic fast and safe to test, and keeps a future Fabr
 curious-bees/
 ├── Readme.md
 ├── CLAUDE.md
-├── AGENTS.md
 ├── docs/
 │   ├── project-guide.md
 │   ├── architecture.md           (this file)

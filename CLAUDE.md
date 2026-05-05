@@ -57,7 +57,7 @@ Do **not** add new top-level markdown files under `docs/`. If something doesn't 
 
 ## Logging (services)
 
-Use `java.util.logging.Logger` in services: **WARNING** before skip/throw on bad input; **FINE** for trace; models throw without logging. See [AGENTS.md](AGENTS.md) for validation detail.
+Use `java.util.logging.Logger` in services: **WARNING** before skip/throw on bad input; **FINE** for trace; models throw without logging.
 
 ## Review quick-check
 
