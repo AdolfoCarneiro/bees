@@ -141,7 +141,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
 | **E3-T01** | Apiary menu data model | M | `GeneticApiaryMenu` exposes structured state: occupancy list, honey level, frame slots, output slots, error/state enum. No client-only secrets. | E0-T03 |
-| **E3-T02** | Apiary screen redesign | M | `GeneticApiaryScreen` shows: bees inside (count + species when analyzed), frame slots, output slots, honey, status text. Dev placeholder background still allowed. | E3-T01 |
+| **E3-T02** | Apiary screen redesign | M | `GeneticApiaryScreen` shows: bees inside (count + species when analyzed), frame slots, output slots, honey, status text. Dev placeholder background still allowed. **Layout (from design review):** PB-shaped — bee preview panel left, output slots center, frame column right. States: output-full warning text in bee panel; frame durability indicator below frame slots. | E3-T01 |
 | **E3-T03** | Bee “inside” visual | M | Cheap representation (icon + species name when analyzed) rendered per occupant; full 3D render explicitly deferred to a follow-up if needed. | E3-T02, E1-T09 |
 | **E3-T04** | Localized status messages | S | All apiary error/status strings are translation keys. | E3-T02 |
 
