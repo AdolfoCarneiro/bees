@@ -23,7 +23,7 @@ public final class SpeciesTextureResolver {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpeciesTextureResolver.class);
 
     /**
-     * Curious Bees generic fallback texture.
+     * Curious Bees generic fallback texture. DEV-PLACEHOLDER — replace with intentional "unknown species" art before release.
      * Used when a bee has a genome but its species texture is missing or invalid.
      * Falls back to vanilla texture only for bees with no Curious Bees genome.
      */
