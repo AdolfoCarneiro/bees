@@ -51,4 +51,24 @@ class BeeAnalysisReportRedactionTest {
         assertTrue(lines.size() > 2, "Full report should have multiple lines");
         assertFalse(lines.stream().anyMatch(l -> l.contains("Analysis Required")));
     }
+
+    /** Tooltip gate: unanalyzed report must never leak any real species name. */
+    @Test
+    void unknownReportNeverLeaksSpeciesNames() {
+        List<String> lines = BeeAnalysisFormatter.format(BeeAnalysisReport.unknown());
+        List<String> knownSpecies = List.of("Meadow", "Forest", "Arid", "Cultivated", "Hardy");
+        for (String species : knownSpecies) {
+            assertTrue(lines.stream().noneMatch(l -> l.contains(species)),
+                    "Unanalyzed report leaked species name: " + species);
+        }
+    }
+
+    /** Tooltip gate: analyzed report reveals species names. */
+    @Test
+    void analyzedReportRevealsMeadowSpecies() {
+        BeeAnalysisReport report = service.analyze(GenomeFixtures.pureMeadow());
+        List<String> lines = BeeAnalysisFormatter.format(report);
+        assertTrue(lines.stream().anyMatch(l -> l.contains("Meadow")),
+                "Analyzed meadow report should contain 'Meadow'");
+    }
 }
