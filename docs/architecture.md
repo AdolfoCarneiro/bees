@@ -500,6 +500,25 @@ MVP product set: `Honeycomb`, `Meadow Comb`, `Forest Comb`, `Arid Comb`, `Cultiv
 
 ### 7.5 Analyzer display
 
+#### Field visibility table (E1-T05 audit)
+
+| Field | Before analysis | After analysis |
+|-------|----------------|----------------|
+| Species active allele (display name) | hidden | shown |
+| Species inactive allele (display name) | hidden | shown |
+| Species purity (purebred / hybrid) | hidden | shown |
+| Lifespan active + inactive + dominance | hidden | shown |
+| Productivity active + inactive + dominance | hidden | shown |
+| Fertility active + inactive + dominance | hidden | shown |
+| Flower type active + inactive + dominance | hidden | shown |
+| Raw genome / internal allele IDs | never shown | never shown |
+
+**Rules:**
+- "Before analysis" = `BeeAnalysisReport.unknown()` — all `GeneReport` fields carry `UNKNOWN_ID`; UI must not reveal any gene data.
+- "After analysis" = `BeeAnalysisReport.analyzed(...)` — each `GeneReport` exposes `activeId`, `inactiveId`, `activeDominance`, `inactiveDominance`, `isPurebred`.
+- Display names for species and traits are resolved from the content registry; internal IDs are never shown directly.
+- The `isAnalyzed()` flag controls which report variant is sent to the client; the client receives the redacted or full report — it never receives both.
+
 After analysis, the report shows species + purity + each trait pair, with dominance indicators:
 
 ```text
