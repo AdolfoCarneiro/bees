@@ -3,8 +3,10 @@ package com.curiousbees.neoforge.client.screen;
 import com.curiousbees.common.gameplay.analysis.BeeAnalysisReport;
 import com.curiousbees.common.gameplay.analysis.GeneReport;
 import com.curiousbees.common.genetics.model.Dominance;
+import com.curiousbees.neoforge.content.NeoForgeContentRegistry;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
@@ -58,20 +60,31 @@ public final class BeeAnalyzerScreen extends Screen {
 
     private ReportLine speciesLine() {
         GeneReport gene = report.species();
-        String active   = displayName(gene.activeAlleleId());
-        String inactive = displayName(gene.inactiveAlleleId());
+        String active   = resolveSpeciesName(gene.activeAlleleId());
+        String inactive = resolveSpeciesName(gene.inactiveAlleleId());
         String dom      = gene.activeDominance() == Dominance.DOMINANT ? "(D)" : "(R)";
         String purity   = gene.isPurebred() ? "Purebred" : "Hybrid";
         return new ReportLine("Species", active + " " + dom + " / " + inactive + "  [" + purity + "]", TEXT_COL);
     }
 
     private ReportLine traitLine(String label, GeneReport gene) {
-        String active   = displayName(gene.activeAlleleId());
-        String inactive = displayName(gene.inactiveAlleleId());
+        String active   = traitDisplayName(gene.activeAlleleId());
+        String inactive = traitDisplayName(gene.inactiveAlleleId());
         return new ReportLine(label, "[A] " + active + "  [I] " + inactive, DIM_COL);
     }
 
-    private static String displayName(String alleleId) {
+    /** Resolves species display name via registry → visual definition → lang key → I18n. */
+    private static String resolveSpeciesName(String alleleId) {
+        return NeoForgeContentRegistry.current()
+                .findSpecies(alleleId)
+                .flatMap(s -> s.visualDefinition())
+                .flatMap(v -> v.displayNameKey())
+                .map(I18n::get)
+                .orElseGet(() -> traitDisplayName(alleleId));
+    }
+
+    /** Fallback display name derived from the allele ID suffix (for traits and unknown species). */
+    private static String traitDisplayName(String alleleId) {
         int slash = alleleId.lastIndexOf('/');
         String raw = slash >= 0 ? alleleId.substring(slash + 1) : alleleId;
         String spaced = raw.replace('_', ' ');

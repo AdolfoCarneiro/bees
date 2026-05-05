@@ -25,12 +25,13 @@ public final class BuiltinBeeSpecies {
     public static final Allele SPECIES_CULTIVATED = new Allele("curious_bees:species/cultivated", ChromosomeType.SPECIES, Dominance.DOMINANT);
     public static final Allele SPECIES_HARDY      = new Allele("curious_bees:species/hardy",      ChromosomeType.SPECIES, Dominance.RECESSIVE);
 
-    // Visual definitions — texture paths follow the convention: curiousbees:textures/entity/bee/<species>.png
-    public static final SpeciesVisualDefinition VISUAL_MEADOW     = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/meadow.png");
-    public static final SpeciesVisualDefinition VISUAL_FOREST     = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/forest.png");
-    public static final SpeciesVisualDefinition VISUAL_ARID       = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/arid.png");
-    public static final SpeciesVisualDefinition VISUAL_CULTIVATED = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/cultivated.png");
-    public static final SpeciesVisualDefinition VISUAL_HARDY      = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/hardy.png");
+    // Visual definitions — texture paths + display name keys, both centralized here.
+    // Renderer reads textureId(); tooltip/screen reads displayNameKey() via registry.
+    public static final SpeciesVisualDefinition VISUAL_MEADOW     = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/meadow.png",     "species.curiousbees.meadow");
+    public static final SpeciesVisualDefinition VISUAL_FOREST     = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/forest.png",     "species.curiousbees.forest");
+    public static final SpeciesVisualDefinition VISUAL_ARID       = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/arid.png",       "species.curiousbees.arid");
+    public static final SpeciesVisualDefinition VISUAL_CULTIVATED = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/cultivated.png", "species.curiousbees.cultivated");
+    public static final SpeciesVisualDefinition VISUAL_HARDY      = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/hardy.png",      "species.curiousbees.hardy");
 
     // Habitat definitions — world-spawnable species only
     public static final SpeciesHabitatDefinition HABITAT_MEADOW = new SpeciesHabitatDefinition(
