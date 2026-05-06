@@ -186,7 +186,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 | **E4-T02** | Centrifuge block + block entity **(done)** | M | New block placed, ticking, has menu; no recipes yet. | — |
 | **E4-T03** | Centrifuge menu + screen **(done)** | M | Slot layout: 1 input (comb), N outputs; progress bar synced. | E4-T02 |
 | **E4-T04** | Recipe type & serializer **(done)** | M | Custom recipe type for centrifuge (input item → outputs with weights). JSON-driven. | ADR-0015 |
-| **E4-T05** | Stub recipes for existing combs | S | Each currently-shipping `*_comb` has a recipe producing wax + honey + by-product placeholder. **No new species combs.** | E4-T04 |
+| **E4-T05** | Stub recipes for existing combs **(done)** | S | Each currently-shipping `*_comb` has a recipe producing wax + honey + by-product placeholder. **No new species combs.** | E4-T04 |
 
 ### Subepic E4.B — Honey output
 

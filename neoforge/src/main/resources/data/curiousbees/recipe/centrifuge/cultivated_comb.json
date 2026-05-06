@@ -1,0 +1,11 @@
+{
+  "type": "curiousbees:centrifuge",
+  "ingredient": { "item": "curiousbees:cultivated_comb" },
+  "input_count": 1,
+  "processing_time": 200,
+  "honey_portions": 1,
+  "outputs": [
+    { "result": { "id": "minecraft:honeycomb", "count": 1 } },
+    { "result": { "id": "minecraft:white_dye", "count": 1 }, "chance": 0.5 }
+  ]
+}
