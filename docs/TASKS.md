@@ -183,8 +183,8 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
 | **E4-T01** | Choose & ADR fluid honey question **(done)** | M | New ADR decides: **fluid honey** (tank) vs **bottle-only**. Covers cross-mod fluid registration. | ADR-0015 |
-| **E4-T02** | Centrifuge block + block entity | M | New block placed, ticking, has menu; no recipes yet. | — |
-| **E4-T03** | Centrifuge menu + screen | M | Slot layout: 1 input (comb), N outputs; progress bar synced. | E4-T02 |
+| **E4-T02** | Centrifuge block + block entity **(done)** | M | New block placed, ticking, has menu; no recipes yet. | — |
+| **E4-T03** | Centrifuge menu + screen **(done)** | M | Slot layout: 1 input (comb), N outputs; progress bar synced. | E4-T02 |
 | **E4-T04** | Recipe type & serializer | M | Custom recipe type for centrifuge (input item → outputs with weights). JSON-driven. | E4-T01 |
 | **E4-T05** | Stub recipes for existing combs | S | Each currently-shipping `*_comb` has a recipe producing wax + honey + by-product placeholder. **No new species combs.** | E4-T04 |
 
