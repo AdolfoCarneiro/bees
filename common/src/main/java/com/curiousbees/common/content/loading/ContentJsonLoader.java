@@ -27,7 +27,9 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 /**
- * Loads external JSON content into a runtime registry while preserving built-ins.
+ * Loads JSON content into a runtime registry, merging with built-ins.
+ * JSON definitions whose IDs match existing built-ins are silently skipped —
+ * built-ins always take precedence. Unknown IDs are added to the registry.
  */
 public final class ContentJsonLoader {
 
@@ -87,7 +89,7 @@ public final class ContentJsonLoader {
                 continue;
             }
             if (builtIns.findTraitAllele(data.id()).isPresent()) {
-                errors.add(source.path() + ": duplicate built-in trait allele id rejected: " + data.id());
+                LOGGER.fine("Skipping '" + data.id() + "' from " + source.path() + ": already present as built-in trait allele.");
                 continue;
             }
             if (loaded.containsKey(data.id())) {
@@ -119,7 +121,7 @@ public final class ContentJsonLoader {
                 continue;
             }
             if (builtIns.findSpecies(data.id()).isPresent()) {
-                errors.add(source.path() + ": duplicate built-in species id rejected: " + data.id());
+                LOGGER.fine("Skipping '" + data.id() + "' from " + source.path() + ": already present as built-in species.");
                 continue;
             }
             if (loaded.containsKey(data.id())) {
@@ -152,7 +154,7 @@ public final class ContentJsonLoader {
                 continue;
             }
             if (builtInMutationIds.contains(data.id())) {
-                errors.add(source.path() + ": duplicate built-in mutation id rejected: " + data.id());
+                LOGGER.fine("Skipping '" + data.id() + "' from " + source.path() + ": already present as built-in mutation.");
                 continue;
             }
             if (loaded.containsKey(data.id())) {
@@ -183,7 +185,7 @@ public final class ContentJsonLoader {
                 continue;
             }
             if (builtIns.findProduction(data.speciesId()).isPresent()) {
-                errors.add(source.path() + ": duplicate built-in production species id rejected: " + data.speciesId());
+                LOGGER.fine("Skipping '" + data.speciesId() + "' from " + source.path() + ": already present as built-in production definition.");
                 continue;
             }
             if (loaded.containsKey(data.speciesId())) {

@@ -108,6 +108,7 @@ class ContentJsonLoaderTest {
 
     @Test
     void loadedDefinitionsCannotOverrideBuiltIns() {
+        // A JSON with a built-in ID is silently skipped; the built-in definition is preserved.
         ContentLoadResult result = ContentJsonLoader.load(
                 List.of(),
                 List.of(species("data/test/curious_bees/species/meadow.json", """
@@ -126,8 +127,7 @@ class ContentJsonLoaderTest {
                 List.of(),
                 List.of());
 
-        assertTrue(result.hasErrors());
-        assertTrue(result.combinedErrorMessage().contains("duplicate built-in species id rejected"));
+        assertFalse(result.hasErrors(), "Duplicate built-in ID must be silently skipped, not an error");
         assertEquals("Meadow Bee", result.registry().getSpecies("curious_bees:species/meadow").displayName());
     }
 

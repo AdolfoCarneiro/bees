@@ -90,14 +90,15 @@ class ContentExampleFilesTest {
     }
 
     private static String readExample(String relativePath) {
-        Path path = Path.of("src/test/resources/content-examples/curious_bees", relativePath);
+        // Production data files (source of truth)
+        Path path = Path.of("../neoforge/src/main/resources/data/curiousbees/curious_bees", relativePath);
         if (!Files.exists(path)) {
-            path = Path.of("common/src/test/resources/content-examples/curious_bees", relativePath);
+            path = Path.of("neoforge/src/main/resources/data/curiousbees/curious_bees", relativePath);
         }
         try {
             return Files.readString(path);
         } catch (IOException e) {
-            throw new AssertionError("Failed to read example file: " + path, e);
+            throw new AssertionError("Failed to read content example file: " + path, e);
         }
     }
 
