@@ -49,6 +49,28 @@ public final class SpeciesTextureResolver {
      * @param bee the vanilla Bee entity
      * @return the texture ResourceLocation to use for rendering
      */
+    /**
+     * Resolves the species entity texture by species ID string.
+     * Falls back to {@link #MOD_FALLBACK} when the species or texture is unknown.
+     *
+     * @param speciesId the active species allele ID, e.g. {@code curious_bees:species/meadow}
+     */
+    public static ResourceLocation resolveById(String speciesId) {
+        ContentRegistry registry = NeoForgeContentRegistry.current();
+        return registry.findSpecies(speciesId)
+                .flatMap(BeeSpeciesDefinition::visualDefinition)
+                .map(v -> {
+                    try {
+                        return ResourceLocation.parse(v.textureId());
+                    } catch (Exception e) {
+                        LOGGER.debug("Invalid texture ID '{}' for species '{}' — using mod fallback.",
+                                v.textureId(), speciesId);
+                        return MOD_FALLBACK;
+                    }
+                })
+                .orElse(MOD_FALLBACK);
+    }
+
     public static ResourceLocation resolve(Bee bee) {
         Optional<Genome> genome = BeeGenomeStorage.getGenome(bee);
         if (genome.isEmpty()) {

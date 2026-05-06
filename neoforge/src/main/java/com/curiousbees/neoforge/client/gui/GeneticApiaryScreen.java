@@ -1,8 +1,12 @@
 package com.curiousbees.neoforge.client.gui;
 
+import com.curiousbees.common.content.species.BeeSpeciesDefinition;
+import com.curiousbees.common.content.visual.SpeciesVisualDefinition;
 import com.curiousbees.neoforge.block.ApiaryState;
 import com.curiousbees.neoforge.block.BeeOccupantData;
 import com.curiousbees.neoforge.block.GeneticApiaryBlockEntity;
+import com.curiousbees.neoforge.client.texture.SpeciesTextureResolver;
+import com.curiousbees.neoforge.content.NeoForgeContentRegistry;
 import com.curiousbees.neoforge.menu.GeneticApiaryMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -40,6 +44,10 @@ public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticAp
     private static final int FRAME_ORIGIN_Y = 17;
     private static final int DUR_BAR_W = 16;
     private static final int DUR_BAR_H = 3;
+
+    // DEV-PLACEHOLDER: UV origin (0,0) of 64×64 entity texture; E5 should refine to proper face UV.
+    private static final int OCCUPANT_ICON_SIZE = 8;
+    private static final int OCCUPANT_ROW_H     = 10;
 
     private static final int COL_LABEL      = 0x404040;
     private static final int COL_WARN       = 0x8B2020;
@@ -141,10 +149,22 @@ public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticAp
 
         for (BeeOccupantData bee : occupants) {
             if (py > BEE_PANEL_Y + BEE_PANEL_H - 12) break;
-            String label = formatSpeciesLabel(bee.speciesId());
+
+            // Icon: species texture when analyzed, fallback when not (avoids leaking species before analysis).
+            // DEV-PLACEHOLDER: blits UV (0,0)→(8,8) of 64×64 entity texture; E5 to refine to face UV.
+            ResourceLocation icon = bee.analyzed()
+                    ? SpeciesTextureResolver.resolveById(bee.speciesId())
+                    : SpeciesTextureResolver.MOD_FALLBACK;
+            g.blit(icon, px, py, 0, 0, OCCUPANT_ICON_SIZE, OCCUPANT_ICON_SIZE, 64, 64);
+
+            // Name only when analyzed — unanalyzed bees show "?" to avoid leaking species identity.
+            Component label = bee.analyzed()
+                    ? resolveDisplayName(bee.speciesId())
+                    : Component.literal("?");
             int color = bee.analyzed() ? COL_ANALYZED : COL_UNANALYZED;
-            g.drawString(font, label, px, py, color, false);
-            py += 9;
+            g.drawString(font, label, px + OCCUPANT_ICON_SIZE + 2, py, color, false);
+
+            py += OCCUPANT_ROW_H;
         }
 
         if (state == ApiaryState.OUTPUT_FULL) {
@@ -152,6 +172,15 @@ public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticAp
                     Component.translatable("gui.curiousbees.genetic_apiary.output_full"),
                     px, BEE_PANEL_Y + BEE_PANEL_H - 10, COL_WARN, false);
         }
+    }
+
+    private Component resolveDisplayName(String speciesId) {
+        return NeoForgeContentRegistry.current()
+                .findSpecies(speciesId)
+                .flatMap(BeeSpeciesDefinition::visualDefinition)
+                .flatMap(SpeciesVisualDefinition::displayNameKey)
+                .map(Component::translatable)
+                .orElseGet(() -> Component.literal(formatSpeciesLabel(speciesId)));
     }
 
     private void renderHoneyLabel(GuiGraphics g) {
