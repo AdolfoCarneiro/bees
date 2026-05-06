@@ -216,7 +216,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 | **E5-T02** | Item / block sprite pass **(done)** | M | All shipping comb/frame/machine items have non-placeholder sprites; manifest updated. | — |
 | **E5-T03** | Sound design pass **(done)** | S | Apiary tick / centrifuge / analyzer have distinct (or distinct-enough) sounds; non-grating volumes. | E4-T03 |
 | **E5-T04** | Onboarding text **(done)** | S | First-time hint (chat or item tooltip on first analyzer use) explains the breed → analyze → hive loop in one sentence. | E1-T08 |
-| **E5-T05** | Optional in-game guide stub | M | One pluggable guide (Patchouli or in-house) loads a hello page; **no full content** yet. | E5-T04 |
+| **E5-T05** | Optional in-game guide stub **(done)** | M | One pluggable guide (Patchouli or in-house) loads a hello page; **no full content** yet. | E5-T04 |
 
 **Epic exit:** screenshots no longer say “PB clone”; structure ready for Phase “species expansion” to add roster.
 

@@ -5,6 +5,7 @@ import com.curiousbees.common.content.builtin.BuiltinBeeSpecies;
 import com.curiousbees.neoforge.item.BeeAnalyzerItem;
 import com.curiousbees.neoforge.item.BeeJarItem;
 import com.curiousbees.neoforge.item.BeeTransporterItem;
+import com.curiousbees.neoforge.item.CuriousBeesGuideItem;
 import com.curiousbees.neoforge.item.CuriousBeeSpawnEggDispenseBehavior;
 import com.curiousbees.neoforge.item.CuriousBeeSpeciesSpawnEggItem;
 import net.minecraft.core.registries.Registries;
@@ -81,6 +82,11 @@ public final class ModItems {
     public static final DeferredHolder<Item, BeeTransporterItem> BEE_TRANSPORTER =
             ITEMS.register("bee_transporter",
                     () -> new BeeTransporterItem(new Item.Properties()));
+
+    // --- Guide ---
+    public static final DeferredHolder<Item, CuriousBeesGuideItem> CURIOUS_BEES_GUIDE =
+            ITEMS.register("curious_bees_guide",
+                    () -> new CuriousBeesGuideItem(new Item.Properties().stacksTo(1)));
 
     // --- Frame items ---
     public static final DeferredHolder<Item, Item> BASIC_FRAME =

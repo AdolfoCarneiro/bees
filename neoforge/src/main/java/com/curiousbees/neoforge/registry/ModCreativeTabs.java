@@ -21,6 +21,7 @@ public final class ModCreativeTabs {
                     .title(Component.translatable("itemGroup.curiousbees.curious_bees"))
                     .icon(() -> new ItemStack(ModItems.BEE_ANALYZER.get()))
                     .displayItems((parameters, output) -> {
+                        output.accept(ModItems.CURIOUS_BEES_GUIDE.get());
                         output.accept(ModItems.BEE_ANALYZER.get());
                         for (var egg : ModItems.BEE_SPAWN_EGGS) {
                             output.accept(egg.get());
