@@ -517,31 +517,33 @@ _Last updated: 2026-05-06._
 
 **Status:** Accepted · 2026-05-06
 
-**Context.** The centrifuge (E4) and the advanced hive (E3) both produce honey. The question is whether honey is modelled as a Minecraft fluid (registered `FluidType`, `IFluidHandler`, bucket/tank compat) or as a discrete item flow (bottles, no fluid registration).
+**Context.** The centrifuge (E4) processes combs into final products. The question is whether honey output from the centrifuge is modelled as a Minecraft fluid (registered `FluidType`, `IFluidHandler`) or as a discrete item flow (bottles, no fluid registration).
 
-**Decision: discrete bottle model — no fluid registration in this phase.**
+**Clarification on honey flow:** the advanced hive outputs **combs only** (as it already does per ADR-0009 production model). Honey as a player-usable product is produced exclusively by the **centrifuge** when it processes combs. The advanced hive does not have a honey output slot or counter.
 
-**Honey representation:** honey is tracked as an internal counter (0–5 "portions") on the advanced hive and on the centrifuge. It is **not** a registered fluid. No `FluidType`, no `IFluidHandler`, no fluid pipes.
+**Decision: discrete bottle model on the centrifuge — no fluid registration in this phase.**
 
-**Visual indicator:** the GUI shows a column of up to 5 honey bottle icons reflecting the current honey counter. This is purely visual — it does not correspond to physical item slots.
+**Centrifuge comb processing outputs:**
+- **Wax** — item output slot, automatable.
+- **Honey** — via bottle mechanic described below.
+- **Species by-products** — future scope; not designed here.
 
-**Bottling mechanic:**
+**Honey bottling mechanic (centrifuge only):**
+- The centrifuge tracks an internal **honey counter (0–5 portions)** — not a registered fluid.
 - A dedicated **empty-bottle input slot** accepts `minecraft:glass_bottle`.
-- Each tick (or on production): if honey counter > 0 and an empty bottle is present, one portion is converted to one `minecraft:honey_bottle` (or a custom honey bottle item) and placed in the **output slots** alongside other products.
-- The honey counter is a soft buffer — it does **not** block bee production when full. Honey that overflows the counter (counter already at 5, no empty bottle available) is simply lost, logged at FINE level. Production continues regardless.
+- On each processing cycle: if honey counter > 0 and an empty bottle is present, one portion → one `minecraft:honey_bottle` (or custom item) placed in the output slots alongside wax.
+- The GUI shows a visual indicator (column of up to 5 honey bottle icons) reflecting the current counter.
+- The honey counter is a **soft buffer** — it does **not** block centrifuge processing when full. Overflow (counter at 5, no empty bottle) is discarded and logged at FINE. Processing continues regardless.
 
 **Automation:**
-- Empty bottles may be inserted into the bottle input slot via hopper/pipe (insert side).
-- Filled honey bottles exit through the same output slots as other comb products (extract side per ADR-0013 sided IO contract).
-- The extension block (ADR-0013) proxies both sides, so pack makers can connect to either block face.
+- Empty bottles insert into the bottle input slot via hopper/pipe.
+- Filled honey bottles and wax exit via the same extract-only output slots.
 
-**GUI note:** the advanced hive GUI will carry: bee occupant area, honey indicator (0–5 icons), bottle input slot, product output slots, frame slots, and (future) upgrade slots. Layout design is deferred to E3-T02 (screen redesign) but must budget space for all these areas.
-
-**Future path:** a later ADR may add a fluid lane alongside the discrete lane (dual output), or replace it. The discrete model is chosen now because: no fluid registration conflicts with other mods; simpler implementation; sufficient for initial automation loop. The honey counter abstraction does not couple to items internally, making a future fluid swap isolated.
+**Future path:** a later ADR may register a honey fluid and add a fluid output port on the centrifuge alongside or replacing the bottle lane. The internal honey counter abstraction does not couple to items, making a future fluid swap isolated to the centrifuge block entity.
 
 **Consequences.**
-- Advanced hive block entity gains a `honeyCounter` field (int 0–5) separate from the vanilla `honey_level` blockstate.
-- `GeneticApiaryBlockEntity` vanilla honey fill path is preserved unchanged (ADR-0009 floor).
-- Bottle input slot is insert-only from automation; filled honey bottles exit via output slots.
-- Full counter does not pause production — this is intentional and must not be "fixed" without a new ADR.
+- `CentrifugeBlockEntity` gains a `honeyCounter` field (int 0–5); no fluid type registered.
+- Advanced hive block entity is **unchanged** — no honey counter, no bottle slot. Combs exit via output slots as before.
+- Bottle input slot is insert-only from automation; honey bottles + wax exit via output slots.
+- Full counter does not pause processing — intentional; must not be "fixed" without a new ADR.
 - E4-T01 satisfied. E4-T02 may proceed.
