@@ -19,6 +19,8 @@
   "item.curiousbees.mutation_frame":  "Mutation Frame",
   "item.curiousbees.productivity_frame": "Productivity Frame",
   "block.curiousbees.genetic_apiary": "Genetic Beehive",
+  "block.curiousbees.advanced_apiary": "Advanced Beehive",
+  "block.curiousbees.apiary_extension": "Beehive Extension",
   "gui.curiousbees.genetic_apiary.honey": "Honey: %s / %s",
   "gui.curiousbees.genetic_apiary.no_bees": "No bees homed here",
   "gui.curiousbees.genetic_apiary.bees": "Bees: %s",

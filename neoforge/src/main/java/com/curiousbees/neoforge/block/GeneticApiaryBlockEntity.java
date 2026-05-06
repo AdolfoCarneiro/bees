@@ -63,7 +63,7 @@ import java.util.Random;
  * <p>When a bee carrying nectar enters, Curious Bees also runs a production roll into the
  * output inventory using the bee's genome and installed frames. Breeding remains vanilla.
  */
-public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements MenuProvider {
+public class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements MenuProvider {
 
     public static final int OUTPUT_SLOTS = 6;
     public static final int FRAME_SLOTS = 3;

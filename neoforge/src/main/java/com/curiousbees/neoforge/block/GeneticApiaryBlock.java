@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
  * <p>getTicker() is overridden to use our registered BlockEntityType instead of
  * {@link BlockEntityType#BEEHIVE} — vanilla's createTickerHelper checks type equality.
  */
-public final class GeneticApiaryBlock extends BeehiveBlock {
+public class GeneticApiaryBlock extends BeehiveBlock {
 
     public GeneticApiaryBlock(Properties properties) {
         super(properties);

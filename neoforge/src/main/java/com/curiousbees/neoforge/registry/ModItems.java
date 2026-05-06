@@ -59,6 +59,14 @@ public final class ModItems {
     public static final DeferredHolder<Item, Item> HARDY_COMB =
             ITEMS.register("hardy_comb",     () -> new Item(new Item.Properties()));
 
+    public static final DeferredHolder<Item, BlockItem> ADVANCED_APIARY =
+            ITEMS.register("advanced_apiary",
+                    () -> new BlockItem(ModBlocks.ADVANCED_APIARY.get(), new Item.Properties()));
+
+    public static final DeferredHolder<Item, BlockItem> APIARY_EXTENSION =
+            ITEMS.register("apiary_extension",
+                    () -> new BlockItem(ModBlocks.APIARY_EXTENSION.get(), new Item.Properties()));
+
     // --- Frame items ---
     public static final DeferredHolder<Item, Item> BASIC_FRAME =
             ITEMS.register("basic_frame",

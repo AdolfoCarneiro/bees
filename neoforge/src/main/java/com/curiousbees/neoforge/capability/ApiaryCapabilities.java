@@ -1,5 +1,6 @@
 package com.curiousbees.neoforge.capability;
 
+import com.curiousbees.neoforge.block.ApiaryExtensionBlockEntity;
 import com.curiousbees.neoforge.block.GeneticApiaryBlockEntity;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import net.minecraft.core.Direction;
@@ -22,5 +23,17 @@ public final class ApiaryCapabilities {
                 (blockEntity, side) -> side == Direction.DOWN
                         ? blockEntity.outputExtractView()
                         : blockEntity.automationOutputView());
+
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.ADVANCED_APIARY.get(),
+                (blockEntity, side) -> side == Direction.DOWN
+                        ? blockEntity.outputExtractView()
+                        : blockEntity.automationOutputView());
+
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.APIARY_EXTENSION.get(),
+                (be, side) -> be.itemHandlerForSide(side));
     }
 }

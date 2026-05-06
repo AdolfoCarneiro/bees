@@ -1,6 +1,7 @@
 package com.curiousbees.neoforge.menu;
 
 import com.curiousbees.neoforge.block.ApiaryState;
+import com.curiousbees.neoforge.registry.ModBlocks;
 import com.curiousbees.neoforge.block.BeeOccupantData;
 import com.curiousbees.neoforge.block.GeneticApiaryBlockEntity;
 import com.curiousbees.neoforge.registry.ModBlocks;
@@ -117,7 +118,8 @@ public final class GeneticApiaryMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(levelAccess, player, ModBlocks.GENETIC_APIARY.get());
+        return stillValid(levelAccess, player, ModBlocks.GENETIC_APIARY.get())
+                || stillValid(levelAccess, player, ModBlocks.ADVANCED_APIARY.get());
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.curiousbees.neoforge.registry;
 
 import com.curiousbees.CuriousBeesMod;
+import com.curiousbees.neoforge.block.AdvancedApiaryBlockEntity;
+import com.curiousbees.neoforge.block.ApiaryExtensionBlockEntity;
 import com.curiousbees.neoforge.block.GeneticApiaryBlockEntity;
 import com.curiousbees.neoforge.block.beenest.SpeciesBeeNestBlockEntity;
 import net.minecraft.core.registries.Registries;
@@ -20,6 +22,18 @@ public final class ModBlockEntities {
             GENETIC_APIARY = BLOCK_ENTITY_TYPES.register("genetic_apiary",
                     () -> BlockEntityType.Builder
                             .of(GeneticApiaryBlockEntity::new, ModBlocks.GENETIC_APIARY.get())
+                            .build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AdvancedApiaryBlockEntity>>
+            ADVANCED_APIARY = BLOCK_ENTITY_TYPES.register("advanced_apiary",
+                    () -> BlockEntityType.Builder
+                            .of(AdvancedApiaryBlockEntity::new, ModBlocks.ADVANCED_APIARY.get())
+                            .build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ApiaryExtensionBlockEntity>>
+            APIARY_EXTENSION = BLOCK_ENTITY_TYPES.register("apiary_extension",
+                    () -> BlockEntityType.Builder
+                            .of(ApiaryExtensionBlockEntity::new, ModBlocks.APIARY_EXTENSION.get())
                             .build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SpeciesBeeNestBlockEntity>>

@@ -2,6 +2,8 @@ package com.curiousbees.neoforge.registry;
 
 import com.curiousbees.CuriousBeesMod;
 import com.curiousbees.common.content.builtin.BuiltinBeeSpecies;
+import com.curiousbees.neoforge.block.AdvancedApiaryBlock;
+import com.curiousbees.neoforge.block.ApiaryExtensionBlock;
 import com.curiousbees.neoforge.block.GeneticApiaryBlock;
 import com.curiousbees.neoforge.block.beenest.NestVariant;
 import com.curiousbees.neoforge.block.beenest.SpeciesBeeNestBlock;
@@ -26,6 +28,16 @@ public final class ModBlocks {
             BLOCKS.register(
                     "genetic_apiary",
                     () -> new GeneticApiaryBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BEEHIVE)));
+
+    public static final DeferredHolder<Block, AdvancedApiaryBlock> ADVANCED_APIARY =
+            BLOCKS.register(
+                    "advanced_apiary",
+                    () -> new AdvancedApiaryBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BEEHIVE)));
+
+    public static final DeferredHolder<Block, ApiaryExtensionBlock> APIARY_EXTENSION =
+            BLOCKS.register(
+                    "apiary_extension",
+                    () -> new ApiaryExtensionBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BEEHIVE)));
 
     // --- Species bee nest blocks ---
     // Each nest is a SpeciesBeeNestBlock parameterised by species ID and visual properties.
