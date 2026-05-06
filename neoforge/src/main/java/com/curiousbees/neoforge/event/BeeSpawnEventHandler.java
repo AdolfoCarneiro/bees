@@ -5,19 +5,23 @@ import com.curiousbees.common.gameplay.spawn.WildBeeSpawnService;
 import com.curiousbees.common.genetics.model.Genome;
 import com.curiousbees.common.genetics.random.JavaGeneticRandom;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.tags.BiomeTags;
-import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.entity.animal.Bee;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Assigns a wild genome to vanilla Bee entities that join the world without one.
- * Event handler is thin: biome detection is isolated here; genome logic delegates to common.
+ * Collects biome tags, Y, and light from the platform; delegates species selection
+ * to {@link WildBeeSpawnService#createWildGenomeForHabitat} via the HabitatPredicate system.
  */
 @EventBusSubscriber(modid = CuriousBeesMod.MOD_ID)
 public final class BeeSpawnEventHandler {
@@ -30,27 +34,29 @@ public final class BeeSpawnEventHandler {
         if (event.getLevel().isClientSide()) return;
         if (BeeGenomeStorage.hasGenome(bee)) return;
 
-        String category = resolveBiomeCategory(event.getLevel().getBiome(bee.blockPosition()));
-        Genome genome = WildBeeSpawnService.createWildGenome(
-                category,
+        BlockPos pos = bee.blockPosition();
+        List<String> biomeTags = collectBiomeTags(event.getLevel().getBiome(pos));
+        int y = pos.getY();
+        int light = Math.max(
+                event.getLevel().getBrightness(LightLayer.SKY, pos),
+                event.getLevel().getBrightness(LightLayer.BLOCK, pos));
+
+        Genome genome = WildBeeSpawnService.createWildGenomeForHabitat(
+                biomeTags, y, light,
                 new JavaGeneticRandom(new Random()));
         BeeGenomeStorage.setGenome(bee, genome);
 
-        CuriousBeesMod.LOGGER.debug("Assigned {} genome to bee {}",
-                category, bee.getUUID());
+        CuriousBeesMod.LOGGER.debug("Assigned genome to bee {} (biomeTags={} y={} light={})",
+                bee.getUUID(), biomeTags, y, light);
     }
 
     /**
-     * Maps NeoForge biome holder to a platform-neutral category string.
-     * Only runs server-side; uses vanilla biome tags for forward compatibility.
+     * Converts a NeoForge biome holder's tag keys to plain string IDs
+     * (e.g. {@code "minecraft:is_forest"}) for platform-neutral predicate evaluation.
      */
-    private static String resolveBiomeCategory(Holder<Biome> biomeHolder) {
-        if (biomeHolder.is(BiomeTags.IS_FOREST)) {
-            return WildBeeSpawnService.CATEGORY_FOREST;
-        }
-        if (biomeHolder.is(BiomeTags.IS_SAVANNA) || biomeHolder.is(BiomeTags.IS_BADLANDS)) {
-            return WildBeeSpawnService.CATEGORY_ARID;
-        }
-        return WildBeeSpawnService.CATEGORY_MEADOW;
+    private static List<String> collectBiomeTags(Holder<Biome> biomeHolder) {
+        return biomeHolder.tags()
+                .map(tagKey -> tagKey.location().toString())
+                .collect(Collectors.toList());
     }
 }
