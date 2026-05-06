@@ -125,7 +125,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E2-T08** | Bee population caps | S | Per-species or global cap configurable; default avoids bee soup. | — |
+| **E2-T08** | Bee population caps **(done)** | S | Per-species or global cap configurable; default avoids bee soup. | — |
 | **E2-T09** | Bee inspector overlay (creative) **(done)** | S | F3-style line / debug screen showing species + analyzed flag for the bee under crosshair, dev/creative only. | E1-T07 |
 
 **Epic exit:** dropping a new species into `data/` (later) reaches the world via existing handlers, nests, and feature configs — **no Java changes needed**.

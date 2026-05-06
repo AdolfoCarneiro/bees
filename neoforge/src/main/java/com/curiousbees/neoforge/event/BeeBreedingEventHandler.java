@@ -10,6 +10,7 @@ import com.curiousbees.common.genetics.model.Genome;
 import com.curiousbees.common.genetics.mutation.MutationService;
 import com.curiousbees.common.genetics.random.JavaGeneticRandom;
 import com.curiousbees.neoforge.bee.BeeParentResolver;
+import com.curiousbees.neoforge.config.CuriousBeesConfig;
 import com.curiousbees.neoforge.content.NeoForgeContentRegistry;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import net.minecraft.core.particles.ParticleTypes;
@@ -17,6 +18,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.BabyEntitySpawnEvent;
@@ -42,6 +44,19 @@ public final class BeeBreedingEventHandler {
         if (!(event.getParentA() instanceof Bee parentA)) return;
         if (!(event.getParentB() instanceof Bee parentB)) return;
         if (!(child.level() instanceof ServerLevel level)) return;
+
+        int cap = CuriousBeesConfig.BEE_POPULATION_CAP.get();
+        if (cap > 0) {
+            AABB searchBox = parentA.getBoundingBox().inflate(32);
+            long localCount = level.getEntitiesOfClass(Bee.class, searchBox,
+                    b -> BeeGenomeStorage.hasGenome(b)).size();
+            if (localCount >= cap) {
+                CuriousBeesMod.LOGGER.debug(
+                        "Population cap ({}) reached near {}; child {} stays vanilla.",
+                        cap, parentA.blockPosition(), child.getUUID());
+                return;
+            }
+        }
 
         Optional<Genome> genomeA = BeeParentResolver.resolve(parentA, level);
         Optional<Genome> genomeB = BeeParentResolver.resolve(parentB, level);

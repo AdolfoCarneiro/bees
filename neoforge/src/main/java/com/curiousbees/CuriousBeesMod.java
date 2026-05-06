@@ -3,6 +3,7 @@ package com.curiousbees;
 import com.curiousbees.neoforge.capability.ApiaryCapabilities;
 import com.curiousbees.neoforge.client.BeeInspectorOverlay;
 import com.curiousbees.neoforge.client.ClientEventHandler;
+import com.curiousbees.neoforge.config.CuriousBeesConfig;
 import com.curiousbees.neoforge.command.CuriousBeesCommands;
 import com.curiousbees.neoforge.content.ContentReloadListener;
 import com.curiousbees.neoforge.event.BeeSpeciesHiveTargetHandler;
@@ -32,6 +33,7 @@ public final class CuriousBeesMod {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public CuriousBeesMod(IEventBus modEventBus, ModContainer modContainer) {
+        modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.COMMON, CuriousBeesConfig.SPEC);
         BeeGenomeAttachments.register(modEventBus);
         BeeAnalysisAttachments.register(modEventBus);
         ModBlocks.register(modEventBus);
