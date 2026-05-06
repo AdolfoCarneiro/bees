@@ -192,14 +192,14 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E4-T06** | Discrete-honey path | S | Centrifuge can output `minecraft:honey_bottle` or a custom honey item until E4-T07 ships. | E4-T04 |
-| **E4-T07** | Fluid honey path (if ADR=fluid) | M | Custom fluid registered, bucket interaction works, sided fluid handler on centrifuge. | E4-T01 |
+| **E4-T06** | Discrete-honey path **(done)** | S | Centrifuge can output `minecraft:honey_bottle` or a custom honey item until E4-T07 ships. | E4-T04 |
+| **E4-T07** | Fluid honey path (if ADR=fluid) **(skipped)** | M | ADR-0015 decided bottle-only; no fluid registration needed. | ADR-0015 |
 
 ### Subepic E4.C — Recipe ergonomics
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E4-T08** | Recipe data tests | S | Test loads each shipped recipe JSON and asserts schema validity. | E4-T05 |
+| **E4-T08** | Recipe data tests **(done)** | S | Test loads each shipped recipe JSON and asserts schema validity. | E4-T05 |
 | **E4-T09** | Optional JEI/REI plugin scaffolding | M | Plugin stub registers centrifuge category; **no detail polish** yet. Defer if loader story is unstable. | E4-T05 |
 
 **Epic exit:** closed loop world → hive → comb → centrifuge → useful ingredients runs end-to-end with current species, no JEI required.
