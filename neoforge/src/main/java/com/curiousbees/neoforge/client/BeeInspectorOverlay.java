@@ -23,7 +23,7 @@ public final class BeeInspectorOverlay {
     private BeeInspectorOverlay() {}
 
     @SubscribeEvent
-    public static void onDebugInfo(CustomizeGuiOverlayEvent.DebugInfo event) {
+    public static void onDebugInfo(CustomizeGuiOverlayEvent.DebugText event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null || mc.player == null) return;
         if (!mc.player.isCreative() && !mc.player.isSpectator()) return;

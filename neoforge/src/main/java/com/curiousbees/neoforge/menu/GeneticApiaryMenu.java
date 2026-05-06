@@ -1,5 +1,7 @@
 package com.curiousbees.neoforge.menu;
 
+import com.curiousbees.neoforge.block.ApiaryState;
+import com.curiousbees.neoforge.block.BeeOccupantData;
 import com.curiousbees.neoforge.block.GeneticApiaryBlockEntity;
 import com.curiousbees.neoforge.registry.ModBlocks;
 import com.curiousbees.neoforge.registry.ModMenuTypes;
@@ -15,6 +17,7 @@ import net.minecraft.world.level.block.BeehiveBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
+import java.util.List;
 import java.util.Objects;
 
 public final class GeneticApiaryMenu extends AbstractContainerMenu {
@@ -72,6 +75,7 @@ public final class GeneticApiaryMenu extends AbstractContainerMenu {
                             case 1 -> blockEntity.isEmpty() ? 0 : 1;
                             case 2 -> blockEntity.homedBeeCount();
                             case 3 -> blockEntity.analyzedBeeCount();
+                            case 4 -> blockEntity.computeState().ordinal();
                             default -> 0;
                         };
                     }
@@ -83,7 +87,7 @@ public final class GeneticApiaryMenu extends AbstractContainerMenu {
 
                     @Override
                     public int getCount() {
-                        return 4;
+                        return 5;
                     }
                 };
         addDataSlots(syncData);
@@ -105,6 +109,12 @@ public final class GeneticApiaryMenu extends AbstractContainerMenu {
     public boolean hasOccupants() { return syncData.get(1) != 0; }
     public int homedBeeCount() { return syncData.get(2); }
     public int analyzedBeeCount() { return syncData.get(3); }
+    public ApiaryState getState() {
+        int ord = syncData.get(4);
+        ApiaryState[] vals = ApiaryState.values();
+        return ord >= 0 && ord < vals.length ? vals[ord] : ApiaryState.IDLE;
+    }
+    public List<BeeOccupantData> getOccupants() { return blockEntity.getOccupantsInHive(); }
 
     @Override
     public boolean stillValid(Player player) {

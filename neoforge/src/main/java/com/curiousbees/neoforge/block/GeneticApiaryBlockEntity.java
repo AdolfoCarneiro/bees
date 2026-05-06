@@ -23,7 +23,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.MenuProvider;
@@ -181,6 +184,7 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implement
     private int cacheTicksRemaining = 0;
     private int cachedHomedBeeCount = 0;
     private int cachedAnalyzedBeeCount = 0;
+    private final List<BeeOccupantData> cachedOccupantsInHive = new ArrayList<>();
 
     public GeneticApiaryBlockEntity(BlockPos pos, BlockState state) {
         super(pos, state);
@@ -207,6 +211,10 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implement
         cachedHomedBeeCount = getOccupantCount() + outside;
         cachedAnalyzedBeeCount = (int) level.getEntitiesOfClass(Bee.class, box,
                 bee -> getBlockPos().equals(bee.getHivePos()) && BeeAnalysisStorage.isAnalyzed(bee)).size();
+        int storedCount = getOccupantCount();
+        while (cachedOccupantsInHive.size() > storedCount) {
+            cachedOccupantsInHive.remove(cachedOccupantsInHive.size() - 1);
+        }
     }
 
     /**
@@ -277,6 +285,67 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implement
         return labels;
     }
 
+    public ApiaryState computeState() {
+        if (cachedHomedBeeCount == 0) return ApiaryState.IDLE;
+        if (!hasAnyOutputSpace()) return ApiaryState.OUTPUT_FULL;
+        return ApiaryState.PRODUCING;
+    }
+
+    public List<BeeOccupantData> getOccupantsInHive() {
+        return List.copyOf(cachedOccupantsInHive);
+    }
+
+    private void captureOccupantData(Bee bee) {
+        String speciesId = BeeGenomeStorage.getGenome(bee)
+                .map(g -> g.getActiveAllele(
+                        com.curiousbees.common.genetics.model.ChromosomeType.SPECIES).id())
+                .orElse("unknown");
+        boolean analyzed = BeeAnalysisStorage.isAnalyzed(bee);
+        cachedOccupantsInHive.add(new BeeOccupantData(speciesId, analyzed));
+        setChanged();
+    }
+
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag tag = super.getUpdateTag(registries);
+        writeOccupantsToTag(tag);
+        return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider registries) {
+        super.handleUpdateTag(tag, registries);
+        readOccupantsFromTag(tag);
+    }
+
+    private void writeOccupantsToTag(CompoundTag tag) {
+        ListTag list = new ListTag();
+        for (BeeOccupantData occupant : cachedOccupantsInHive) {
+            CompoundTag entry = new CompoundTag();
+            entry.putString("species", occupant.speciesId());
+            entry.putBoolean("analyzed", occupant.analyzed());
+            list.add(entry);
+        }
+        tag.put("OccupantsInHive", list);
+    }
+
+    private void readOccupantsFromTag(CompoundTag tag) {
+        cachedOccupantsInHive.clear();
+        if (!tag.contains("OccupantsInHive")) return;
+        ListTag list = tag.getList("OccupantsInHive", Tag.TAG_COMPOUND);
+        for (int i = 0; i < list.size(); i++) {
+            CompoundTag entry = list.getCompound(i);
+            cachedOccupantsInHive.add(new BeeOccupantData(
+                    entry.getString("species"),
+                    entry.getBoolean("analyzed")));
+        }
+    }
+
     @Override
     public Component getDisplayName() {
         return Component.translatable("block.curiousbees.genetic_apiary");
@@ -298,6 +367,7 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implement
         if (!(occupant instanceof Bee bee)) {
             return;
         }
+        captureOccupantData(bee);
         if (!hadNectar) {
             return;
         }
@@ -471,6 +541,7 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implement
         super.saveAdditional(tag, registries);
         tag.put("FrameInventory", frameInventory.serializeNBT(registries));
         tag.put("OutputInventory", outputInventory.serializeNBT(registries));
+        writeOccupantsToTag(tag);
     }
 
     @Override
@@ -482,5 +553,6 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implement
         if (tag.contains("OutputInventory")) {
             outputInventory.deserializeNBT(registries, tag.getCompound("OutputInventory"));
         }
+        readOccupantsFromTag(tag);
     }
 }
