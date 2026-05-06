@@ -243,7 +243,7 @@ These tasks are not phase-specific; they unblock multiple epics.
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
 | **EX-T01** | Data-driven cutover for species/products **(done)** | L | Per [`decisions.md` → ADR-0010](decisions.md): species, traits, mutations, products loadable from JSON for the **already-shipping** content. | ADR-0010 |
-| **EX-T02** | Datapack reload smoke test | S | `/reload` does not corrupt running bees or apiaries. Test or manual checklist. | EX-T01 |
+| **EX-T02** | Datapack reload smoke test **(done)** | S | `/reload` does not corrupt running bees or apiaries. Test or manual checklist. | EX-T01 |
 | **EX-T03** | Telemetry-friendly debug overlay | S | One toggleable HUD piece showing: species count loaded, mutation count, last apiary tick result. | E2-T09 |
 | **EX-T04** | Crash-resilience for missing assets | S | Missing texture / lang key produces a logged warning and visible placeholder, never a crash. | E1-T03 |
 | **EX-T05** | Test pyramid documentation | S | Short paragraph in [`architecture.md` §9](architecture.md) (or here) describes: unit (`common`), integration (NeoForge), manual smoke. | — |
