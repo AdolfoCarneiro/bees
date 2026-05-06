@@ -16,6 +16,7 @@ import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import com.curiousbees.neoforge.menu.GeneticApiaryMenu;
 import com.curiousbees.neoforge.registry.ModItems;
+import com.curiousbees.neoforge.registry.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -88,6 +89,10 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implement
             return false;
         }
     };
+    /**
+     * Side access (non-DOWN faces): frames insertable in slots 0–2, outputs extract-only in slots 3–8.
+     * Automation pipes on the side can insert frames; hoppers cannot extract from frame slots.
+     */
     private final IItemHandler automationOutputView = new IItemHandler() {
         @Override
         public int getSlots() {
@@ -135,6 +140,42 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implement
         }
     };
 
+    /**
+     * DOWN-face access: output slots only, extract-only. Hoppers below the apiary pull combs
+     * but cannot insert frames. Frame slots are invisible on this face.
+     */
+    private final IItemHandler outputExtractView = new IItemHandler() {
+        @Override
+        public int getSlots() {
+            return outputInventory.getSlots();
+        }
+
+        @Override
+        public ItemStack getStackInSlot(int slot) {
+            return outputInventory.getStackInSlot(slot);
+        }
+
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            return stack; // extract-only
+        }
+
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            return outputInventory.extractItem(slot, amount, simulate);
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return outputInventory.getSlotLimit(slot);
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return false; // extract-only
+        }
+    };
+
     public GeneticApiaryBlockEntity(BlockPos pos, BlockState state) {
         super(pos, state);
     }
@@ -159,6 +200,11 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implement
 
     public IItemHandler automationOutputView() {
         return automationOutputView;
+    }
+
+    /** Extract-only view of output slots only. Exposed on the DOWN face to hoppers below. */
+    public IItemHandler outputExtractView() {
+        return outputExtractView;
     }
 
     public FrameModifiers.CombinedFrameModifier currentFrameModifiers() {
@@ -353,9 +399,7 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implement
     }
 
     private boolean isFrameItem(ItemStack stack) {
-        return stack.is(ModItems.BASIC_FRAME.get())
-                || stack.is(ModItems.MUTATION_FRAME.get())
-                || stack.is(ModItems.PRODUCTIVITY_FRAME.get());
+        return stack.is(ModTags.Items.FRAMES);
     }
 
     private Optional<Item> resolveItem(String outputId) {
