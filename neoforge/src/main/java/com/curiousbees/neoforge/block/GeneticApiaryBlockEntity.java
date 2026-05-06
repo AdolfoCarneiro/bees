@@ -289,6 +289,7 @@ public class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements Menu
                         com.curiousbees.common.genetics.model.ChromosomeType.SPECIES).id();
                 int slash = activeId.lastIndexOf('/');
                 String name = slash >= 0 ? activeId.substring(slash + 1) : activeId;
+                if (name.isEmpty()) name = "unknown";
                 labels.add(Character.toUpperCase(name.charAt(0)) + name.substring(1));
             });
         }
@@ -520,7 +521,7 @@ public class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements Menu
     }
 
     private FrameModifiers.CombinedFrameModifier combinedFrameModifier() {
-        java.util.ArrayList<FrameModifier> modifiers = new java.util.ArrayList<>();
+        ArrayList<FrameModifier> modifiers = new ArrayList<>();
         for (int i = 0; i < frameInventory.getSlots(); i++) {
             ItemStack stack = frameInventory.getStackInSlot(i);
             if (stack.isEmpty()) {

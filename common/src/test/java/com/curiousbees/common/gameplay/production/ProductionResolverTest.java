@@ -92,15 +92,36 @@ class ProductionResolverTest {
     }
 
     @Test
-    void slowProductivityReducesEffectiveChance() {
-        // Baseline sanity check: pureMeadow has NORMAL productivity (1.0 multiplier).
-        var slowOutput = new ProductionOutput("curiousbees:meadow_comb", 0.8);
-        var def = new ProductionDefinition(MEADOW_ID, List.of(slowOutput));
+    void normalProductivityProducesAtExpectedThreshold() {
+        // NORMAL multiplier = 1.0; base chance = 0.8; roll = 0.7 → 0.7 < 0.8 → produces
+        var output = new ProductionOutput("curiousbees:meadow_comb", 0.8);
+        var def = new ProductionDefinition(MEADOW_ID, List.of(output));
         var defs = Map.of(MEADOW_ID, def);
 
-        var randomNormal = new DeterministicGeneticRandom().withDoubles(0.7);
-        ProductionResult normalResult = resolver.resolve(GenomeFixtures.pureMeadow(), defs, randomNormal);
-        assertTrue(normalResult.hasOutput(), "Normal productivity should produce at roll 0.7 with 0.8 base chance");
+        var random = new DeterministicGeneticRandom().withDoubles(0.7);
+        ProductionResult result = resolver.resolve(GenomeFixtures.pureMeadow(), defs, random);
+        assertTrue(result.hasOutput(), "Normal productivity should produce at roll 0.7 with 0.8 base chance");
+    }
+
+    @Test
+    void slowProductivityReducesEffectiveChance() {
+        // SLOW multiplier = 0.75; base chance = 0.8; effective = 0.6
+        // roll = 0.65 → 0.65 ≥ 0.6 → no output; roll = 0.55 → 0.55 < 0.6 → output
+        var output = new ProductionOutput("curiousbees:meadow_comb", 0.8);
+        var def = new ProductionDefinition(MEADOW_ID, List.of(output));
+        var defs = Map.of(MEADOW_ID, def);
+
+        // Build genome with SLOW productivity allele (homozygous)
+        var slowGenome = GenomeFixtures.withProductivity(AlleleFixtures.PRODUCTIVITY_SLOW);
+
+
+        var randomFail = new DeterministicGeneticRandom().withDoubles(0.65);
+        assertFalse(resolver.resolve(slowGenome, defs, randomFail).hasOutput(),
+                "Slow productivity (0.75x) should not produce at roll 0.65 with 0.8 base");
+
+        var randomPass = new DeterministicGeneticRandom().withDoubles(0.55);
+        assertTrue(resolver.resolve(slowGenome, defs, randomPass).hasOutput(),
+                "Slow productivity (0.75x) should produce at roll 0.55 with 0.8 base");
     }
 
     @Test

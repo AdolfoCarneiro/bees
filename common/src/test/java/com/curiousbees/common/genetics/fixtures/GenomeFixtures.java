@@ -50,6 +50,14 @@ public final class GenomeFixtures {
         return hybridSpecies(FOREST, ARID);
     }
 
+    /** Meadow purebred with a specific productivity allele (homozygous). */
+    public static Genome withProductivity(Allele productivity) {
+        return build(pair(MEADOW, MEADOW), pair(LIFESPAN_NORMAL, LIFESPAN_NORMAL),
+                pair(productivity, productivity),
+                pair(FERTILITY_TWO, FERTILITY_TWO),
+                pair(FLOWER_FLOWERS, FLOWER_FLOWERS));
+    }
+
     // --- helpers ---
 
     private static Genome pureSpecies(Allele species) {
