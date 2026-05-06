@@ -6,7 +6,10 @@ import com.curiousbees.neoforge.data.BeeAnalysisStorage;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import com.curiousbees.neoforge.network.CuriousBeesNetwork;
 import com.curiousbees.neoforge.registry.ModSounds;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.TooltipFlag;
@@ -62,6 +65,7 @@ public final class BeeAnalyzerItem extends Item {
             }
             BeeAnalysisStorage.setAnalyzed(bee);
             CuriousBeesNetwork.syncAnalyzedToTracking(bee);
+            maybeShowOnboardingHint(stack, player);
         }
 
         BeeAnalysisReport report = ANALYSIS_SERVICE.analyze(genome.get());
@@ -78,10 +82,25 @@ public final class BeeAnalyzerItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        tooltip.add(Component.translatable("item.curiousbees.bee_analyzer.tooltip.onboarding")
+                .withStyle(net.minecraft.ChatFormatting.GOLD));
         tooltip.add(Component.translatable("item.curiousbees.bee_analyzer.tooltip.use")
                 .withStyle(net.minecraft.ChatFormatting.GRAY));
         tooltip.add(Component.translatable("item.curiousbees.bee_analyzer.tooltip.cost")
                 .withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
+    }
+
+    /** Sends one-time onboarding hint the first time this analyzer stack is used to analyze a new bee. */
+    private static void maybeShowOnboardingHint(ItemStack stack, Player player) {
+        CustomData existing = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+        CompoundTag tag = existing.copyTag();
+        if (!tag.getBoolean("cb_onboarding_shown")) {
+            player.sendSystemMessage(
+                    Component.translatable("item.curiousbees.bee_analyzer.hint.first_analysis")
+                            .withStyle(net.minecraft.ChatFormatting.GOLD));
+            tag.putBoolean("cb_onboarding_shown", true);
+            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+        }
     }
 
     /** Removes 1 honeycomb from the player's inventory. Returns true if successful. */
