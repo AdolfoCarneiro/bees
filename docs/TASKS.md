@@ -230,7 +230,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 |----|------|------|-----------|------------|
 | **E6-T01** | Loader-agnostic audit of `common` **(done)** | S | Report (issue or doc) lists any common-side leak that would block Fabric port. | [`decisions.md` → DR-010](decisions.md) |
 | **E6-T02** | Recipe / data parity check **(done)** | S | Recipe JSON paths and schemas readable by both loaders (no NeoForge-only fields where avoidable). | E4-T04 |
-| **E6-T03** | Compatibility test world | S | A saved world (or seed + checklist) used to spot regressions across versions. | — |
+| **E6-T03** | Compatibility test world **(done)** | S | A saved world (or seed + checklist) used to spot regressions across versions. | — |
 
 **Epic exit:** when DR-010 is greenlit, the Fabric port has a documented gap list ≤ 1 page.
 
@@ -257,4 +257,4 @@ These tasks are not phase-specific; they unblock multiple epics.
 - Open ADR resolved → update the row that referenced it (link to ADR, drop “gated” notes).
 - New idea before species expansion → add a task in the right epic. **Do not** open a “new species” epic until E1–E5 exits are hit; that prevents content debt before structure is ready.
 
-_Last updated: 2026-05-06 (E5 + EX + E6-T01 + E6-T02 complete)._
+_Last updated: 2026-05-06 (E5 + EX + E6 complete)._

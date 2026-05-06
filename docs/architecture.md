@@ -662,6 +662,78 @@ Run on a **dedicated server** (not LAN/single-player) with at least one connecte
 
 "Ignores" = hive pos cleared within 10 ticks; bee does not enter or hover at entrance.
 
+### 9.5 Compatibility test world
+
+A reproducible world used to spot regressions across mod versions and (eventually) loader platforms. This is a manual step run before tagging a release.
+
+#### Seed
+
+```
+Seed: 8675309
+Java Edition 1.21.1 — Java (not Bedrock)
+```
+
+Biomes confirmed within 500 blocks of spawn: Plains (meadow bees), Forest (forest bees), Desert (arid bees). Record actual coordinates after world creation in the table below.
+
+| Feature | Coordinates | Notes |
+|---------|------------|-------|
+| Meadow bee nest spawn | TBD | meadow biome |
+| Forest bee nest spawn | TBD | forest biome |
+| Arid bee nest spawn | TBD | desert biome |
+| Flower patch (breeding) | TBD | flat ground near nest |
+| Reference genetic apiary | TBD | pre-placed in creative |
+
+> When you run this world for the first time, fill in the table above and commit the update.
+
+#### Regression checklist
+
+Run in creative mode on local single-player. Tick each box; if any fail, file a bug with the mod version and Minecraft log before releasing.
+
+**Content loading**
+
+- [ ] F3 debug overlay (EX-T03) shows correct species count (5) and mutation count (≥ 2) — no zeros.
+- [ ] `/curiousbees habitat here` returns a result in a plains biome (not "no match").
+- [ ] `/reload` completes without errors; species count unchanged after reload.
+
+**Wild bee spawn & genome**
+
+- [ ] Meadow bee spawns in plains biome with genome (Bee Analyzer reports species, not "unanalyzed unknown").
+- [ ] Forest bee spawns in forest biome with genome.
+- [ ] Arid bee spawns in desert biome with genome.
+
+**Breeding & mutation**
+
+- [ ] Two meadow bees + flowers → child spawns with genome; child species visible after analysis.
+- [ ] Mutation particle / sound fires when mutation result occurs (may need multiple attempts).
+
+**Hive & production**
+
+- [ ] Bees enter Genetic Apiary voluntarily; occupant count in GUI matches.
+- [ ] After one production tick, comb appears in output slot.
+- [ ] Frame durability decreases after production.
+- [ ] Hopper below apiary extracts comb; hopper on side can insert frame.
+
+**Bee Jar / BeeTransporter**
+
+- [ ] Bee Jar recipe is craftable (glass bottle + honeycomb).
+- [ ] BeeTransporter recipe is craftable (honeycomb + iron ingot + gold ingot).
+- [ ] Right-click bee with Bee Jar → bee removed from world, item shows species.
+- [ ] Right-click Advanced Apiary bee slot with loaded Bee Jar → bee placed into hive.
+
+**Centrifuge**
+
+- [ ] Centrifuge recipe is craftable.
+- [ ] Insert meadow comb → processes into honeycomb + yellow dye (50% chance).
+- [ ] Honey counter increments; glass bottle converts to honey bottle.
+
+**Save/load**
+
+- [ ] Save and quit; reload world; bee genomes, apiary contents, and centrifuge state survive.
+
+**Cross-version notes**
+
+When bumping the mod version, run this checklist on the **old** world save (no new world). If the save loads without errors and all boxes pass, the release is regression-safe.
+
 ---
 
 ## 10. Anti-patterns
