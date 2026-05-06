@@ -247,7 +247,7 @@ These tasks are not phase-specific; they unblock multiple epics.
 | **EX-T03** | Telemetry-friendly debug overlay **(done)** | S | One toggleable HUD piece showing: species count loaded, mutation count, last apiary tick result. | E2-T09 |
 | **EX-T04** | Crash-resilience for missing assets **(done)** | S | Missing texture / lang key produces a logged warning and visible placeholder, never a crash. | E1-T03 |
 | **EX-T05** | Test pyramid documentation **(done)** | S | Short paragraph in [`architecture.md` §9](architecture.md) (or here) describes: unit (`common`), integration (NeoForge), manual smoke. | — |
-| **EX-T06** | Issue + PR templates | S | `.github/` (or equivalent) templates aligned with this file’s task IDs. | — |
+| **EX-T06** | Issue + PR templates **(done)** | S | `.github/` (or equivalent) templates aligned with this file’s task IDs. | — |
 
 ---
 
@@ -257,4 +257,4 @@ These tasks are not phase-specific; they unblock multiple epics.
 - Open ADR resolved → update the row that referenced it (link to ADR, drop “gated” notes).
 - New idea before species expansion → add a task in the right epic. **Do not** open a “new species” epic until E1–E5 exits are hit; that prevents content debt before structure is ready.
 
-_Last updated: 2026-05-06 (E2 complete)._
+_Last updated: 2026-05-06 (E5 + EX complete)._
