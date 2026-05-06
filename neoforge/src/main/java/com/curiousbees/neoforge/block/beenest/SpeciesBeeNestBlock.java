@@ -13,15 +13,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Base class for species-specific bee nest blocks (vanilla bee nest shape).
+ * Species-specific bee nest block (vanilla bee nest shape).
  * Extends {@link BeehiveBlock} so bee AI treats nests as valid homes.
  * Entry policy is enforced by {@link SpeciesBeeNestBlockEntity}.
+ * Species identity is passed at construction time — no subclass needed per species.
  */
-public abstract class SpeciesBeeNestBlock extends BeehiveBlock {
+public class SpeciesBeeNestBlock extends BeehiveBlock {
 
     private final String speciesId;
 
-    protected SpeciesBeeNestBlock(String speciesId, BlockBehaviour.Properties properties) {
+    public SpeciesBeeNestBlock(String speciesId, BlockBehaviour.Properties properties) {
         super(properties);
         this.speciesId = speciesId;
     }

@@ -1,10 +1,9 @@
 package com.curiousbees.neoforge.registry;
 
 import com.curiousbees.CuriousBeesMod;
+import com.curiousbees.common.content.builtin.BuiltinBeeSpecies;
 import com.curiousbees.neoforge.block.GeneticApiaryBlock;
-import com.curiousbees.neoforge.block.beenest.AridBeeNestBlock;
-import com.curiousbees.neoforge.block.beenest.ForestBeeNestBlock;
-import com.curiousbees.neoforge.block.beenest.MeadowBeeNestBlock;
+import com.curiousbees.neoforge.block.beenest.SpeciesBeeNestBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -28,26 +27,31 @@ public final class ModBlocks {
                     () -> new GeneticApiaryBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BEEHIVE)));
 
     // --- Species bee nest blocks ---
+    // Each nest is a SpeciesBeeNestBlock parameterised by species ID and visual properties.
+    // No per-species subclass needed — species identity lives in data.
 
-    public static final DeferredHolder<Block, MeadowBeeNestBlock> MEADOW_BEE_NEST =
+    public static final DeferredHolder<Block, SpeciesBeeNestBlock> MEADOW_BEE_NEST =
             BLOCKS.register("meadow_bee_nest",
-                    () -> new MeadowBeeNestBlock(
+                    () -> new SpeciesBeeNestBlock(
+                            BuiltinBeeSpecies.SPECIES_MEADOW.id(),
                             BlockBehaviour.Properties.of()
                                     .mapColor(MapColor.COLOR_YELLOW)
                                     .sound(SoundType.WOOD)
                                     .strength(0.6F)));
 
-    public static final DeferredHolder<Block, ForestBeeNestBlock> FOREST_BEE_NEST =
+    public static final DeferredHolder<Block, SpeciesBeeNestBlock> FOREST_BEE_NEST =
             BLOCKS.register("forest_bee_nest",
-                    () -> new ForestBeeNestBlock(
+                    () -> new SpeciesBeeNestBlock(
+                            BuiltinBeeSpecies.SPECIES_FOREST.id(),
                             BlockBehaviour.Properties.of()
                                     .mapColor(MapColor.COLOR_GREEN)
                                     .sound(SoundType.WOOD)
                                     .strength(0.6F)));
 
-    public static final DeferredHolder<Block, AridBeeNestBlock> ARID_BEE_NEST =
+    public static final DeferredHolder<Block, SpeciesBeeNestBlock> ARID_BEE_NEST =
             BLOCKS.register("arid_bee_nest",
-                    () -> new AridBeeNestBlock(
+                    () -> new SpeciesBeeNestBlock(
+                            BuiltinBeeSpecies.SPECIES_ARID.id(),
                             BlockBehaviour.Properties.of()
                                     .mapColor(MapColor.COLOR_ORANGE)
                                     .sound(SoundType.WOOD)

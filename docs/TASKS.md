@@ -69,32 +69,32 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 |----|------|------|-----------|------------|
 | **E1-T01** | Define species → texture key mapping **(done)** | M | `SpeciesTextureResolver` fully implemented with 3-tier fallback (species texture → mod fallback → vanilla fallback). | [`architecture.md` §7](architecture.md) |
 | **E1-T02** | Bee renderer override using mapping **(done)** | M | `CuriousBeeBeeRenderer.getTextureLocation()` calls `SpeciesTextureResolver.resolve(bee)`; vanilla angry/nectar variants preserved when no genome. | E1-T01 |
-| **E1-T03** | Resource pack hygiene | S | Naming follows [`decisions.md` → ADR-0011](decisions.md); fallback texture clearly labeled placeholder. | E1-T01 |
-| **E1-T04** | Visual variant hooks (analyzed/unanalyzed) | S | Renderer can express **one** binary variant (e.g. tint on unanalyzed) without per-species `if`. Toggle is data-driven or constant. | E1-T01 |
+| **E1-T03** | Resource pack hygiene **(done)** | S | Naming follows [`decisions.md` → ADR-0011](decisions.md); fallback texture clearly labeled placeholder. | E1-T01 |
+| **E1-T04** | Visual variant hooks (analyzed/unanalyzed) **(done)** | S | Renderer can express **one** binary variant (e.g. tint on unanalyzed) without per-species `if`. Toggle is data-driven or constant. | E1-T01 |
 
 ### Subepic E1.B — Analyzer UX
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E1-T05** | Analyzer report data audit | S | Listed: every field that should appear after analysis vs before. Source = [`architecture.md` §5](architecture.md). | — |
-| **E1-T06** | Analyzer screen rework | M | `BeeAnalyzerScreen` shows analyzed report in clear sections (active / inactive / hybrid hint / traits) using report payload only. No raw genome dump. | E1-T05, E0-T03 |
-| **E1-T07** | Tooltip gate | S | Item / entity tooltips never reveal post-analysis fields when bee is unanalyzed. Unit/integration test covers both states. | E1-T05 |
-| **E1-T08** | Right-click flow polish | S | Analyzer item interaction errors / cooldowns / message keys are localized; no hardcoded English in code paths. | E1-T05 |
+| **E1-T05** | Analyzer report data audit **(done)** | S | Listed: every field that should appear after analysis vs before. Source = [`architecture.md` §5](architecture.md). | — |
+| **E1-T06** | Analyzer screen rework **(done)** | M | `BeeAnalyzerScreen` shows analyzed report in clear sections (active / inactive / hybrid hint / traits) using report payload only. No raw genome dump. | E1-T05, E0-T03 |
+| **E1-T07** | Tooltip gate **(done)** | S | Item / entity tooltips never reveal post-analysis fields when bee is unanalyzed. Unit/integration test covers both states. | E1-T05 |
+| **E1-T08** | Right-click flow polish **(done)** | S | Analyzer item interaction errors / cooldowns / message keys are localized; no hardcoded English in code paths. | E1-T05 |
 
 ### Subepic E1.C — Content hygiene (no new species)
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E1-T09** | Centralize species visual metadata | M | `BuiltinBeeSpecies` (or sibling) carries texture key + display name key; renderer + tooltip read from there only. | E1-T01 |
-| **E1-T10** | Localization audit | S | All current species/items/menus have `lang` keys; `en_us.json` complete; checker script (or test) fails on missing keys. | — |
-| **E1-T11** | New-species checklist parity | S | `.claude/plugins/local/skills/new-bee-species.md` matches the **actual** code paths a new species touches after E1-T09. | E1-T09 |
+| **E1-T09** | Centralize species visual metadata **(done)** | M | `BuiltinBeeSpecies` (or sibling) carries texture key + display name key; renderer + tooltip read from there only. | E1-T01 |
+| **E1-T10** | Localization audit **(done)** | S | All current species/items/menus have `lang` keys; `en_us.json` complete; checker script (or test) fails on missing keys. | — |
+| **E1-T11** | New-species checklist parity **(done)** | S | `.claude/plugins/local/skills/new-bee-species.md` matches the **actual** code paths a new species touches after E1-T09. | E1-T09 |
 
 ### Subepic E1.D — Mutation feedback & species textures
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E1-T12** | Species DEV-PLACEHOLDER textures (5 species) | S | `assets/curiousbees/textures/entity/bee/{species}.png` exists for all 5 MVP species; tagged `DEV-PLACEHOLDER`; `SpeciesTextureResolver` resolves to correct texture per species. Final art deferred to P5. | E1-T01 (done) |
-| **E1-T13** | Mutation feedback on breeding event | S | `BeeBreedingEventHandler` spawns particle + plays sound when `BeeBreedingOutcome.hasMutation()` is true; guarded by `!level.isClientSide()`; debug log records parent → result species. Optional: `advancements/first_mutation.json`. | — |
+| **E1-T12** | Species DEV-PLACEHOLDER textures (5 species) **(done)** | S | `assets/curiousbees/textures/entity/bee/{species}.png` exists for all 5 MVP species; tagged `DEV-PLACEHOLDER`; `SpeciesTextureResolver` resolves to correct texture per species. Final art deferred to P5. | E1-T01 (done) |
+| **E1-T13** | Mutation feedback on breeding event **(done)** | S | `BeeBreedingEventHandler` spawns particle + plays sound when `BeeBreedingOutcome.hasMutation()` is true; guarded by `!level.isClientSide()`; debug log records parent → result species. Optional: `advancements/first_mutation.json`. | — |
 
 **Epic exit:** new species would be a **data + lang + texture** drop; no engine change required.
 
@@ -108,9 +108,9 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E2-T01** | Habitat predicate model | M | Model class describes habitat as `(biome tags, height band, light, optional weight)` consumed by spawn logic. Minecraft-free if possible (or thin Forge bridge). | [`architecture.md` §7](architecture.md) |
-| **E2-T02** | Wire spawn handler to predicate | M | Existing fallback genome / spawn logic uses E2-T01 instead of inline conditions. Existing 5 species keep current behavior. | E2-T01 |
-| **E2-T03** | Habitat debug command | S | `/curiousbees habitat here` prints the predicate that would match the current biome. | E2-T01 |
+| **E2-T01** | Habitat predicate model **(done)** | M | Model class describes habitat as `(biome tags, height band, light, optional weight)` consumed by spawn logic. Minecraft-free if possible (or thin Forge bridge). | [`architecture.md` §7](architecture.md) |
+| **E2-T02** | Wire spawn handler to predicate **(done)** | M | Existing fallback genome / spawn logic uses E2-T01 instead of inline conditions. Existing 5 species keep current behavior. | E2-T01 |
+| **E2-T03** | Habitat debug command **(done)** | S | `/curiousbees habitat here` prints the predicate that would match the current biome. | E2-T01 |
 
 ### Subepic E2.B — Nest framework
 
@@ -257,4 +257,4 @@ These tasks are not phase-specific; they unblock multiple epics.
 - Open ADR resolved → update the row that referenced it (link to ADR, drop “gated” notes).
 - New idea before species expansion → add a task in the right epic. **Do not** open a “new species” epic until E1–E5 exits are hit; that prevents content debt before structure is ready.
 
-_Last updated: 2026-05-04._
+_Last updated: 2026-05-05._
