@@ -22,6 +22,7 @@ Single log of accepted/proposed decisions for Curious Bees. Each entry preserves
 | [ADR-0012](#adr-0012--resource-bee-readiness) | Resource bee readiness | Accepted |
 | [ADR-003](#adr-003--neoforge-bee-genome-storage) | NeoForge bee genome storage | Accepted |
 | [DR-010](#dr-010--fabric-support-strategy) | Fabric support strategy | Proposed |
+| [ADR-0013](#adr-0013--advanced-hive-footprint) | Advanced hive footprint | Accepted |
 
 ---
 
@@ -433,4 +434,37 @@ Rationale: keep parity with the NeoForge target on 1.21.1; loader/API are pinned
 - Fabric Events: https://docs.fabricmc.net/develop/events
 - Fabric 1.21 / 1.21.1 notes: https://fabricmc.net/2024/05/31/121.html
 
-_Last updated: 2026-05-04._
+_Last updated: 2026-05-06._
+
+---
+
+## ADR-0013 — Advanced hive footprint
+
+**Status:** Accepted · 2026-05-06
+
+**Context.** Phase 3 adds an advanced hive tier above the base `GeneticApiaryBlock`. The decision: how the block exists physically in the world and how automation connects to it.
+
+**Decision.**
+
+**Block shape:** Single block (`AdvancedApiaryBlock`). No multiblock pattern. Upgrades expressed as internal slots or items, not physical block arrangements. Reference shape: Productive Bees advanced hive.
+
+**Extension block:** One optional `ApiaryExtensionBlock` may be placed directly **above or below** the advanced hive — not on sides. Maximum one extension per hive. The extension block entity **delegates all `IItemHandler` capability queries to the paired advanced hive** — a hopper or pipe attached to the extension behaves identically to one attached to the advanced hive itself. The extension primarily expands the number of physical automation faces available to pack makers.
+
+**Coupling rules:**
+- Extension discovers its parent by checking the block directly above and below on placement.
+- Extension breaks gracefully (drops as item) if the paired advanced hive is removed.
+- The advanced hive does not require an extension to function; extension is purely additive.
+
+**Recipe intent:** The crafting recipe for `AdvancedApiaryBlock` includes shears, a glass bottle, and a fire-adjacent ingredient (campfire or blaze powder) as components — encoding the vanilla hive interaction toolset into the crafting cost. Exact quantities and surrounding ingredients are implementation detail; the design intent is that the recipe "feels like" upgrading a vanilla hive.
+
+**Rationale.**
+- Multiblock rejected: save-migration risk if shape changes; complicates bee AI POI recognition; one-way door for future changes.
+- Hybrid (extensions on all sides) rejected: pathfinding edge cases and partial-break logic outweigh the visual benefit.
+- Above/below-only rule for extension: simple, unambiguous, avoids corner-case coupling with other blocks on horizontal faces.
+- Transparent proxy on extension: pack makers must not need to know which block they are connecting to — the extension IS the hive for automation purposes.
+
+**Consequences.**
+- `AdvancedApiaryBlock` + `AdvancedApiaryBlockEntity` are new classes (inherit from `GeneticApiaryBlock` only if the subclass is clean; otherwise standalone).
+- `ApiaryExtensionBlock` + `ApiaryExtensionBlockEntity` must handle the paired hive being absent (null-safe capability query; return empty handler, never crash).
+- Recipe must include shears + bottle + campfire/blaze powder equivalent.
+- E3-T12 satisfied. E3-T13 may proceed.
