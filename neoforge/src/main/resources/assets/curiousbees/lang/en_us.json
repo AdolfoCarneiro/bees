@@ -27,6 +27,7 @@
   "gui.curiousbees.genetic_apiary.analyzed": "  Analyzed: %s",
   "gui.curiousbees.genetic_apiary.unanalyzed": "  Unanalyzed: %s",
   "gui.curiousbees.genetic_apiary.frames": "Frames: %s installed",
+  "gui.curiousbees.genetic_apiary.output_full": "Output full!",
   "block.curiousbees.meadow_bee_nest":     "Meadow Bee Nest",
   "block.curiousbees.forest_bee_nest":     "Forest Bee Nest",
   "block.curiousbees.forest_bee_log_nest": "Forest Bee Log Nest",

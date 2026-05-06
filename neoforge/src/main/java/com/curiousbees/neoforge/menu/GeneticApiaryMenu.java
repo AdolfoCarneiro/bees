@@ -37,17 +37,16 @@ public final class GeneticApiaryMenu extends AbstractContainerMenu {
         this.blockEntity = Objects.requireNonNull(blockEntity, "blockEntity");
         this.levelAccess = ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos());
 
-        // Frames — top row
-        for (int col = 0; col < FRAME_SLOTS; col++) {
-            addSlot(new SlotItemHandler(blockEntity.frameInventory(), col, 62 + col * 18, 17));
+        // Frames — vertical column (right side)
+        for (int row = 0; row < FRAME_SLOTS; row++) {
+            addSlot(new SlotItemHandler(blockEntity.frameInventory(), row, 122, 17 + row * 18));
         }
 
-        // Outputs — two rows under frames
-        int outputStartY = 53;
+        // Outputs — 3×2 grid (centre)
         for (int i = 0; i < OUTPUT_SLOTS; i++) {
             int col = i % 3;
             int row = i / 3;
-            addSlot(new SlotItemHandler(blockEntity.outputInventory(), i, 62 + col * 18, outputStartY + row * 18) {
+            addSlot(new SlotItemHandler(blockEntity.outputInventory(), i, 62 + col * 18, 17 + row * 18) {
                 @Override
                 public boolean mayPlace(ItemStack stack) {
                     return false;
