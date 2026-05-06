@@ -23,6 +23,7 @@ Single log of accepted/proposed decisions for Curious Bees. Each entry preserves
 | [ADR-003](#adr-003--neoforge-bee-genome-storage) | NeoForge bee genome storage | Accepted |
 | [DR-010](#dr-010--fabric-support-strategy) | Fabric support strategy | Proposed |
 | [ADR-0013](#adr-0013--advanced-hive-footprint) | Advanced hive footprint | Accepted |
+| [ADR-0014](#adr-0014--bee-capture-item) | Bee capture item | Accepted |
 
 ---
 
@@ -468,3 +469,43 @@ _Last updated: 2026-05-06._
 - `ApiaryExtensionBlock` + `ApiaryExtensionBlockEntity` must handle the paired hive being absent (null-safe capability query; return empty handler, never crash).
 - Recipe must include shears + bottle + campfire/blaze powder equivalent.
 - E3-T12 satisfied. E3-T13 may proceed.
+
+---
+
+## ADR-0014 — Bee capture item
+
+**Status:** Accepted · 2026-05-06
+
+**Context.** ADR-0009 rejected a capture-item mechanic for the base `GeneticApiaryBlock`; bees enter voluntarily via vanilla AI. Phase 3 introduces the advanced hive as the mod's primary production block (see ADR-0013), which replaces the base apiary as the main player-facing hive. Players need a way to place a specific bee into the advanced hive intentionally, independent of bee AI pathfinding decisions.
+
+**Decision.**
+
+**Ship capture item: yes.**
+
+**Interaction model:** right-click a bee in the world with the capture item → bee is removed from the world and stored in the item (one bee per item). Open the advanced hive GUI → click an empty bee slot → the stored bee is placed into that slot. The item is consumed or returned to inventory depending on variant.
+
+**Two variants:**
+
+| Variant | Recipe difficulty | On release |
+|---------|------------------|------------|
+| `BeeJar` (single-use) | Simple (glass bottle + honeycomb or equivalent) | Item breaks; bee spawns at target location |
+| `BeeTransporter` (reusable) | Harder (includes iron/gold + frames/comb equivalent) | Item returns to inventory; bee spawns at target location |
+
+**Release mechanic:** right-click on a block or in the air with a loaded capture item → the stored bee spawns at the click location. Both variants use this mechanic. Neither variant may hold a bee indefinitely without the player being able to retrieve it — the release path must always exist.
+
+**Item display:** the item tooltip and/or item model shows the captured bee's species (and analyzed state if the bee was analyzed). An unanalyzed bee shows "Unknown" species.
+
+**Scope (hard limits):**
+- Capture item inserts into the **advanced hive only**; the `GeneticApiaryBlock` (if it still exists as a legacy block) does not accept GUI-based bee insertion via this item.
+- Capture item is **not** general transport between wild nests; right-click on a nest block does nothing.
+- Capture item cannot hold more than **one bee** at a time.
+
+**Relationship to vanilla AI entry:** the advanced hive still accepts bees that wander in via vanilla AI — the capture item adds a *manual lane*, not a requirement. Players who do not craft the capture item are not blocked.
+
+**Note on GeneticApiary vs AdvancedApiary:** the advanced hive is the mod's primary hive block going forward. The base `GeneticApiaryBlock` is the compatibility floor (ADR-0009) but the player-facing production experience is the advanced hive. This ADR is scoped to the advanced hive.
+
+**Consequences.**
+- `BeeJarItem` and `BeeTransporterItem` are new items; both store bee genome data (via the same `GenomeData` codec as entity storage) so the captured bee's genetics survive in item form.
+- `AdvancedApiaryMenu` must support clicking a bee slot to consume a loaded capture item and add the bee as an occupant.
+- Release interaction must handle the case where no valid spawn position exists (log WARNING, return item, do not lose bee silently).
+- E3-T14 may proceed.
