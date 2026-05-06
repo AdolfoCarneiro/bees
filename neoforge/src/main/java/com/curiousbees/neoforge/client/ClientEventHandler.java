@@ -1,6 +1,7 @@
 package com.curiousbees.neoforge.client;
 
 import com.curiousbees.neoforge.client.gui.GeneticApiaryScreen;
+import com.curiousbees.neoforge.menu.GeneticApiaryMenu;
 import com.curiousbees.neoforge.client.render.CuriousBeeBeeRenderer;
 import com.curiousbees.neoforge.item.CuriousBeeSpeciesSpawnEggItem;
 import com.curiousbees.neoforge.registry.ModItems;
@@ -24,8 +25,14 @@ public final class ClientEventHandler {
         event.registerEntityRenderer(EntityType.BEE, CuriousBeeBeeRenderer::new);
     }
 
+    @SuppressWarnings("unchecked")
     public static void onRegisterMenuScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.GENETIC_APIARY.get(), GeneticApiaryScreen::new);
+        // AdvancedApiaryMenu extends GeneticApiaryMenu; GeneticApiaryScreen handles both.
+        event.register(
+                (net.minecraft.world.inventory.MenuType<GeneticApiaryMenu>)
+                (net.minecraft.world.inventory.MenuType<?>) ModMenuTypes.ADVANCED_APIARY.get(),
+                GeneticApiaryScreen::new);
     }
 
     public static void onRegisterItemColors(RegisterColorHandlersEvent.Item event) {

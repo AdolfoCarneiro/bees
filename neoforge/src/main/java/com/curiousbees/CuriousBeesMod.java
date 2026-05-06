@@ -14,6 +14,7 @@ import com.curiousbees.neoforge.registry.ModBlockEntities;
 import com.curiousbees.neoforge.registry.ModBlocks;
 import com.curiousbees.neoforge.registry.ModCreativeTabs;
 import com.curiousbees.neoforge.registry.ModFeatures;
+import com.curiousbees.neoforge.registry.ModDataComponents;
 import com.curiousbees.neoforge.registry.ModItems;
 import com.curiousbees.neoforge.registry.ModMenuTypes;
 import com.curiousbees.neoforge.registry.ModPoiTypes;
@@ -40,6 +41,7 @@ public final class CuriousBeesMod {
         ModBlockEntities.register(modEventBus);
         ModPoiTypes.register(modEventBus);
         ModItems.register(modEventBus);
+        ModDataComponents.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
         ModFeatures.register(modEventBus);

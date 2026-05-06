@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [" H ", "IGI"],
+  "key": {
+    "H": {"item": "minecraft:honeycomb"},
+    "I": {"item": "minecraft:iron_ingot"},
+    "G": {"item": "minecraft:gold_ingot"}
+  },
+  "result": {
+    "id": "curiousbees:bee_transporter",
+    "count": 1
+  }
+}

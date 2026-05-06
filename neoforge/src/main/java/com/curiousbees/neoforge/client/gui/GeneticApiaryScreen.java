@@ -7,6 +7,7 @@ import com.curiousbees.neoforge.block.BeeOccupantData;
 import com.curiousbees.neoforge.block.GeneticApiaryBlockEntity;
 import com.curiousbees.neoforge.client.texture.SpeciesTextureResolver;
 import com.curiousbees.neoforge.content.NeoForgeContentRegistry;
+import com.curiousbees.neoforge.menu.AdvancedApiaryMenu;
 import com.curiousbees.neoforge.menu.GeneticApiaryMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -80,6 +81,9 @@ public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticAp
         int y = (height - imageHeight) / 2;
         g.blit(BG_TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
         renderBeePanelBg(g, x, y);
+        if (menu instanceof AdvancedApiaryMenu) {
+            renderBeeInsertSlot(g, x, y);
+        }
         renderHoneyBar(g, x, y);
         renderFrameDurabilityBars(g, x, y);
     }
@@ -92,6 +96,14 @@ public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticAp
         g.fill(x,                   y + BEE_PANEL_H - 1, x + BEE_PANEL_W,     y + BEE_PANEL_H,   0x55_000000);
         g.fill(x,                   y,                   x + 1,               y + BEE_PANEL_H,   0x55_000000);
         g.fill(x + BEE_PANEL_W - 1, y,                   x + BEE_PANEL_W,     y + BEE_PANEL_H,   0x55_000000);
+    }
+
+    private void renderBeeInsertSlot(GuiGraphics g, int ox, int oy) {
+        int x = ox + AdvancedApiaryMenu.BEE_INSERT_SLOT_X - 1;
+        int y = oy + AdvancedApiaryMenu.BEE_INSERT_SLOT_Y - 1;
+        // Dashed border: outer bright, inner dark
+        g.fill(x,      y,      x + 18, y + 18, 0x66_FFFFFF);
+        g.fill(x + 1,  y + 1,  x + 17, y + 17, 0x55_000000);
     }
 
     private void renderHoneyBar(GuiGraphics g, int ox, int oy) {

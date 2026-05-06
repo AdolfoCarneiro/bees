@@ -26,6 +26,10 @@ public final class ModCreativeTabs {
                             output.accept(egg.get());
                         }
                         output.accept(ModItems.GENETIC_APIARY.get());
+                        output.accept(ModItems.ADVANCED_APIARY.get());
+                        output.accept(ModItems.APIARY_EXTENSION.get());
+                        output.accept(ModItems.BEE_JAR.get());
+                        output.accept(ModItems.BEE_TRANSPORTER.get());
                         output.accept(ModItems.MEADOW_BEE_NEST.get());
                         output.accept(ModItems.FOREST_BEE_NEST.get());
                         output.accept(ModItems.ARID_BEE_NEST.get());

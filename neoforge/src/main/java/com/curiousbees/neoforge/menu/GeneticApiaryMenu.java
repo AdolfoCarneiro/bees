@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.BeehiveBlock;
@@ -34,7 +35,11 @@ public final class GeneticApiaryMenu extends AbstractContainerMenu {
     private final ContainerData syncData;
 
     public GeneticApiaryMenu(int containerId, Inventory playerInventory, GeneticApiaryBlockEntity blockEntity) {
-        super(ModMenuTypes.GENETIC_APIARY.get(), containerId);
+        this(ModMenuTypes.GENETIC_APIARY.get(), containerId, playerInventory, blockEntity);
+    }
+
+    protected GeneticApiaryMenu(MenuType<?> menuType, int containerId, Inventory playerInventory, GeneticApiaryBlockEntity blockEntity) {
+        super(menuType, containerId);
         this.blockEntity = Objects.requireNonNull(blockEntity, "blockEntity");
         this.levelAccess = ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos());
 

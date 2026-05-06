@@ -168,7 +168,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 |----|------|------|-----------|------------|
 | **E3-T12** | Open ADR for hive footprint **(done)** | M | New entry in [`decisions.md`](decisions.md) — chosen approach (single block / multiblock / hybrid) and rationale. | Open decision |
 | **E3-T13** | Implement chosen footprint (slice) **(done)** | L | First playable advanced hive matches the ADR; tests cover form/place/break + bee entry. | E3-T12 |
-| **E3-T14** | Optional: bee transport item (gated) | M | Only if ADR “Bee transport” chooses to ship it; respects the hybrid model in [`project-guide.md`](project-guide.md). | Open ADR |
+| **E3-T14** | Optional: bee transport item (gated) **(done)** | M | BeeJar (single-use) + BeeTransporter (reusable); capture via right-click, insert via AdvancedApiaryMenu bee slot, release via right-click. | ADR-0014 |
 
 **Epic exit:** a player can run an automated hive line (frames in, combs out) with hoppers/pipes; advanced hive footprint decision is committed.
 

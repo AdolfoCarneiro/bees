@@ -1,6 +1,7 @@
 package com.curiousbees.neoforge.registry;
 
 import com.curiousbees.CuriousBeesMod;
+import com.curiousbees.neoforge.menu.AdvancedApiaryMenu;
 import com.curiousbees.neoforge.menu.GeneticApiaryMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
@@ -20,6 +21,11 @@ public final class ModMenuTypes {
             MENUS.register(
                     "genetic_apiary",
                     () -> IMenuTypeExtension.create(GeneticApiaryMenu::fromNetwork));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<AdvancedApiaryMenu>> ADVANCED_APIARY =
+            MENUS.register(
+                    "advanced_apiary",
+                    () -> IMenuTypeExtension.create(AdvancedApiaryMenu::fromNetwork));
 
     public static void register(IEventBus modEventBus) {
         MENUS.register(modEventBus);

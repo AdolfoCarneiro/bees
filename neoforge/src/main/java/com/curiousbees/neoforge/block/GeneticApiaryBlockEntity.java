@@ -10,6 +10,8 @@ import com.curiousbees.common.gameplay.production.ProductionResult;
 import com.curiousbees.common.gameplay.spawn.WildBeeSpawnService;
 import com.curiousbees.common.genetics.model.Genome;
 import com.curiousbees.common.genetics.random.JavaGeneticRandom;
+import com.curiousbees.common.genetics.serial.GenomeSerializer;
+import com.curiousbees.neoforge.data.CapturedBeeData;
 import com.curiousbees.neoforge.content.NeoForgeContentRegistry;
 import com.curiousbees.neoforge.data.BeeAnalysisStorage;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
@@ -30,7 +32,9 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -400,6 +404,29 @@ public class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements Menu
                     combinedFrameModifier.mutationMultiplier(),
                     combinedFrameModifier.productionMultiplier());
         }
+    }
+
+    /**
+     * Places a captured bee (from a BeeJar or BeeTransporter) into this hive directly,
+     * bypassing vanilla AI entry. Restores the bee's genome and analyzed state.
+     *
+     * @return true if the bee was added, false if the hive is full or the level is not server-side
+     */
+    public boolean addOccupantFromCapture(CapturedBeeData data, ServerLevel serverLevel) {
+        if (isFull()) return false;
+        if (level == null || level.isClientSide()) return false;
+
+        Bee bee = new Bee(EntityType.BEE, serverLevel);
+        bee.setPos(getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5);
+
+        GenomeSerializer.fromData(data.genome(), NeoForgeContentRegistry.current()::findAllele)
+                .ifPresent(genome -> BeeGenomeStorage.setGenome(bee, genome));
+        if (data.analyzed()) {
+            BeeAnalysisStorage.setAnalyzed(bee);
+        }
+
+        addOccupant(bee);
+        return true;
     }
 
     /**
