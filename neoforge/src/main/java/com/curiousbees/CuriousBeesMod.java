@@ -2,6 +2,7 @@ package com.curiousbees;
 
 import com.curiousbees.neoforge.capability.ApiaryCapabilities;
 import com.curiousbees.neoforge.client.BeeInspectorOverlay;
+import com.curiousbees.neoforge.client.ContentDebugOverlay;
 import com.curiousbees.neoforge.client.ClientEventHandler;
 import com.curiousbees.neoforge.config.CuriousBeesConfig;
 import com.curiousbees.neoforge.command.CuriousBeesCommands;
@@ -62,6 +63,7 @@ public final class CuriousBeesMod {
             modEventBus.addListener(ClientEventHandler::onRegisterMenuScreens);
             modEventBus.addListener(ClientEventHandler::onRegisterItemColors);
             NeoForge.EVENT_BUS.register(BeeInspectorOverlay.class);
+            NeoForge.EVENT_BUS.register(ContentDebugOverlay.class);
         }
         LOGGER.info("Curious Bees loaded");
     }
