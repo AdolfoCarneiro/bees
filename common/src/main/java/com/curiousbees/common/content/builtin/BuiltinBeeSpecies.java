@@ -1,5 +1,6 @@
 package com.curiousbees.common.content.builtin;
 
+import com.curiousbees.common.content.habitat.HabitatPredicate;
 import com.curiousbees.common.content.habitat.SpeciesHabitatDefinition;
 import com.curiousbees.common.content.species.BeeSpeciesDefinition;
 import com.curiousbees.common.content.visual.SpeciesVisualDefinition;
@@ -34,21 +35,29 @@ public final class BuiltinBeeSpecies {
     public static final SpeciesVisualDefinition VISUAL_CULTIVATED = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/cultivated.png", "species.curiousbees.cultivated");
     public static final SpeciesVisualDefinition VISUAL_HARDY      = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/hardy.png",      "species.curiousbees.hardy");
 
-    // Habitat definitions — world-spawnable species only
+    // Habitat definitions — world-spawnable species only.
+    // spawnBiomes: specific IDs used by worldgen feature placement (E2-T07).
+    // spawnPredicate: tag-based environmental model consumed by the entity spawn handler (E2-T02).
+    //   Meadow uses empty tags (wildcard) — it is the fallback species when no specific tag matches.
+    //   Forest matches any biome carrying the minecraft:is_forest tag.
+    //   Arid matches savannas and badlands (OR semantics).
     public static final SpeciesHabitatDefinition HABITAT_MEADOW = new SpeciesHabitatDefinition(
             "curiousbees:meadow_bee_nest",
             "curiousbees:textures/block/meadow_bee_nest_side.png",
-            List.of("minecraft:plains", "minecraft:flower_forest", "minecraft:meadow"));
+            List.of("minecraft:plains", "minecraft:flower_forest", "minecraft:meadow"),
+            HabitatPredicate.of(List.of()));
 
     public static final SpeciesHabitatDefinition HABITAT_FOREST = new SpeciesHabitatDefinition(
             "curiousbees:forest_bee_nest",
             "curiousbees:textures/block/forest_bee_nest_side.png",
-            List.of("minecraft:forest", "minecraft:birch_forest", "minecraft:dark_forest"));
+            List.of("minecraft:forest", "minecraft:birch_forest", "minecraft:dark_forest"),
+            HabitatPredicate.of(List.of("minecraft:is_forest")));
 
     public static final SpeciesHabitatDefinition HABITAT_ARID = new SpeciesHabitatDefinition(
             "curiousbees:arid_bee_nest",
             "curiousbees:textures/block/arid_bee_nest_side.png",
-            List.of("minecraft:desert", "minecraft:savanna", "minecraft:badlands"));
+            List.of("minecraft:desert", "minecraft:savanna", "minecraft:badlands"),
+            HabitatPredicate.of(List.of("minecraft:is_savanna", "minecraft:is_badlands")));
 
     // Species definitions
     public static final BeeSpeciesDefinition MEADOW = new BeeSpeciesDefinition(
