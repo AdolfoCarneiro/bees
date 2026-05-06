@@ -581,6 +581,27 @@ No `common/` changes required before starting the Fabric port. See [DR-010](#dr-
 
 ---
 
+## E6-T02 — Recipe / data parity check
+
+**Status:** Complete · 2026-05-06
+
+**Scope.** All recipe JSONs in `neoforge/src/main/resources/data/curiousbees/recipe/` and the `curiousbees:centrifuge` custom recipe type.
+
+**Bug fixed.** `bee_jar.json` and `bee_transporter.json` were in `recipes/` (plural). MC 1.21.1 loads from `recipe/` (singular) — both files were silently skipped. Moved to correct path.
+
+**Schema parity results:**
+
+| Recipe type | NeoForge-only fields | Fabric-compatible |
+|-------------|---------------------|-------------------|
+| `minecraft:crafting_shaped` (all crafting) | None | Yes — vanilla format |
+| `curiousbees:centrifuge` (custom) | None | Yes — schema uses vanilla `ingredient` + `ItemStack` codec fields only |
+
+**Centrifuge schema** (`ingredient`, `input_count`, `processing_time`, `honey_portions`, `outputs[]`): all fields use vanilla codec shapes. Fabric port reuses the same JSON; only the `RecipeSerializer`/`RecipeType` registration changes.
+
+**Biome modifiers** (`neoforge/biome_modifier/`): NeoForge-specific by design. Fabric equivalents go in `fabric/src/main/resources/data/` using the Fabric Biome Modification API — out of scope for E6-T02.
+
+---
+
 ## DR-016 — Apiary redstone behavior
 
 **Status:** Skipped · 2026-05-06
