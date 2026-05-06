@@ -4,6 +4,7 @@ import com.curiousbees.CuriousBeesMod;
 import com.curiousbees.common.content.builtin.BuiltinBeeSpecies;
 import com.curiousbees.neoforge.block.AdvancedApiaryBlock;
 import com.curiousbees.neoforge.block.ApiaryExtensionBlock;
+import com.curiousbees.neoforge.block.CentrifugeBlock;
 import com.curiousbees.neoforge.block.GeneticApiaryBlock;
 import com.curiousbees.neoforge.block.beenest.NestVariant;
 import com.curiousbees.neoforge.block.beenest.SpeciesBeeNestBlock;
@@ -38,6 +39,11 @@ public final class ModBlocks {
             BLOCKS.register(
                     "apiary_extension",
                     () -> new ApiaryExtensionBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BEEHIVE)));
+
+    public static final DeferredHolder<Block, CentrifugeBlock> CENTRIFUGE =
+            BLOCKS.register(
+                    "centrifuge",
+                    () -> new CentrifugeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.FURNACE)));
 
     // --- Species bee nest blocks ---
     // Each nest is a SpeciesBeeNestBlock parameterised by species ID and visual properties.

@@ -69,6 +69,10 @@ public final class ModItems {
             ITEMS.register("apiary_extension",
                     () -> new BlockItem(ModBlocks.APIARY_EXTENSION.get(), new Item.Properties()));
 
+    public static final DeferredHolder<Item, BlockItem> CENTRIFUGE =
+            ITEMS.register("centrifuge",
+                    () -> new BlockItem(ModBlocks.CENTRIFUGE.get(), new Item.Properties()));
+
     // --- Capture items ---
     public static final DeferredHolder<Item, BeeJarItem> BEE_JAR =
             ITEMS.register("bee_jar",

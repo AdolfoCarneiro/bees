@@ -1,6 +1,8 @@
 package com.curiousbees.neoforge.client;
 
+import com.curiousbees.neoforge.client.gui.CentrifugeScreen;
 import com.curiousbees.neoforge.client.gui.GeneticApiaryScreen;
+import com.curiousbees.neoforge.menu.CentrifugeMenu;
 import com.curiousbees.neoforge.menu.GeneticApiaryMenu;
 import com.curiousbees.neoforge.client.render.CuriousBeeBeeRenderer;
 import com.curiousbees.neoforge.item.CuriousBeeSpeciesSpawnEggItem;
@@ -33,6 +35,7 @@ public final class ClientEventHandler {
                 (net.minecraft.world.inventory.MenuType<GeneticApiaryMenu>)
                 (net.minecraft.world.inventory.MenuType<?>) ModMenuTypes.ADVANCED_APIARY.get(),
                 GeneticApiaryScreen::new);
+        event.register(ModMenuTypes.CENTRIFUGE.get(), CentrifugeScreen::new);
     }
 
     public static void onRegisterItemColors(RegisterColorHandlersEvent.Item event) {

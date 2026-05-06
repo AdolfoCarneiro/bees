@@ -3,6 +3,7 @@ package com.curiousbees.neoforge.registry;
 import com.curiousbees.CuriousBeesMod;
 import com.curiousbees.neoforge.block.AdvancedApiaryBlockEntity;
 import com.curiousbees.neoforge.block.ApiaryExtensionBlockEntity;
+import com.curiousbees.neoforge.block.CentrifugeBlockEntity;
 import com.curiousbees.neoforge.block.GeneticApiaryBlockEntity;
 import com.curiousbees.neoforge.block.beenest.SpeciesBeeNestBlockEntity;
 import net.minecraft.core.registries.Registries;
@@ -34,6 +35,12 @@ public final class ModBlockEntities {
             APIARY_EXTENSION = BLOCK_ENTITY_TYPES.register("apiary_extension",
                     () -> BlockEntityType.Builder
                             .of(ApiaryExtensionBlockEntity::new, ModBlocks.APIARY_EXTENSION.get())
+                            .build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CentrifugeBlockEntity>>
+            CENTRIFUGE = BLOCK_ENTITY_TYPES.register("centrifuge",
+                    () -> BlockEntityType.Builder
+                            .of(CentrifugeBlockEntity::new, ModBlocks.CENTRIFUGE.get())
                             .build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SpeciesBeeNestBlockEntity>>

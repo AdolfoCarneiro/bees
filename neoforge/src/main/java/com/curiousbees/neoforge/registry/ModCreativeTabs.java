@@ -38,6 +38,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.ARID_COMB.get());
                         output.accept(ModItems.CULTIVATED_COMB.get());
                         output.accept(ModItems.HARDY_COMB.get());
+                        output.accept(ModItems.CENTRIFUGE.get());
                         output.accept(ModItems.BASIC_FRAME.get());
                         output.accept(ModItems.MUTATION_FRAME.get());
                         output.accept(ModItems.PRODUCTIVITY_FRAME.get());

@@ -1,7 +1,6 @@
 package com.curiousbees.neoforge.menu;
 
 import com.curiousbees.neoforge.block.ApiaryState;
-import com.curiousbees.neoforge.registry.ModBlocks;
 import com.curiousbees.neoforge.block.BeeOccupantData;
 import com.curiousbees.neoforge.block.GeneticApiaryBlockEntity;
 import com.curiousbees.neoforge.registry.ModBlocks;
@@ -22,7 +21,7 @@ import net.neoforged.neoforge.items.SlotItemHandler;
 import java.util.List;
 import java.util.Objects;
 
-public final class GeneticApiaryMenu extends AbstractContainerMenu {
+public class GeneticApiaryMenu extends AbstractContainerMenu {
 
     private static final int FRAME_SLOTS = GeneticApiaryBlockEntity.FRAME_SLOTS;
     private static final int OUTPUT_SLOTS = GeneticApiaryBlockEntity.OUTPUT_SLOTS;
