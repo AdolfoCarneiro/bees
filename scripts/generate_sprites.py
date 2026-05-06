@@ -392,6 +392,28 @@ def make_log_nest_bottom():
     return cv
 
 
+# ── Guide Book ───────────────────────────────────────────────────────────────
+
+def make_curious_bees_guide():
+    cv = canvas()
+    # Book body — amber background
+    fill(cv, 1, 0, 15, 16, DBR)
+    fill(cv, 2, 1, 14, 15, AMB)
+    # Cover
+    fill(cv, 3, 1, 14, 15, LWO)
+    # Gold title band at top
+    fill(cv, 3, 1, 14, 3, GAM)
+    # Spine highlight
+    fill(cv, 2, 1, 3, 15, MBR)
+    # Text lines
+    for ly in (5, 7, 9, 11):
+        fill(cv, 4, ly, 12, ly + 1, DRK)
+    # Honey clasp
+    fill(cv, 11, 6, 13, 9, GAM)
+    fill(cv, 11, 7, 12, 8, HON)
+    return cv
+
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
@@ -402,6 +424,7 @@ if __name__ == "__main__":
     block_dir = base / "neoforge/src/main/resources/assets/curiousbees/textures/block"
 
     print("Generating item sprites…")
+    _write(item_dir / "curious_bees_guide.png", make_curious_bees_guide())
     _write(item_dir / "basic_frame.png",        make_frame())
     _write(item_dir / "mutation_frame.png",      make_frame(dot_color=DPU))
     _write(item_dir / "productivity_frame.png",  make_frame(dot_color=DGR))
