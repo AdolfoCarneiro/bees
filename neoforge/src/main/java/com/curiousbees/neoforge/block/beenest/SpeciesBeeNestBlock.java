@@ -21,10 +21,16 @@ import org.jetbrains.annotations.Nullable;
 public class SpeciesBeeNestBlock extends BeehiveBlock {
 
     private final String speciesId;
+    private final NestVariant variant;
 
     public SpeciesBeeNestBlock(String speciesId, BlockBehaviour.Properties properties) {
+        this(speciesId, NestVariant.STANDARD, properties);
+    }
+
+    public SpeciesBeeNestBlock(String speciesId, NestVariant variant, BlockBehaviour.Properties properties) {
         super(properties);
         this.speciesId = speciesId;
+        this.variant = variant;
     }
 
     @Override
@@ -42,5 +48,10 @@ public class SpeciesBeeNestBlock extends BeehiveBlock {
     /** The species ID that may occupy this nest, e.g. {@code curious_bees:species/meadow}. */
     public String speciesId() {
         return speciesId;
+    }
+
+    /** Visual form of this nest (STANDARD, LOG, SURFACE, or HANGING). */
+    public NestVariant variant() {
+        return variant;
     }
 }

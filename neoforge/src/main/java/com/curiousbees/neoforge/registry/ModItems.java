@@ -43,6 +43,10 @@ public final class ModItems {
             ITEMS.register("arid_bee_nest",
                     () -> new BlockItem(ModBlocks.ARID_BEE_NEST.get(), new Item.Properties()));
 
+    public static final DeferredHolder<Item, BlockItem> FOREST_BEE_LOG_NEST =
+            ITEMS.register("forest_bee_log_nest",
+                    () -> new BlockItem(ModBlocks.FOREST_BEE_LOG_NEST.get(), new Item.Properties()));
+
     // --- Comb items ---
     public static final DeferredHolder<Item, Item> MEADOW_COMB =
             ITEMS.register("meadow_comb",    () -> new Item(new Item.Properties()));

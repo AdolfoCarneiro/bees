@@ -3,6 +3,7 @@ package com.curiousbees.neoforge.registry;
 import com.curiousbees.CuriousBeesMod;
 import com.curiousbees.common.content.builtin.BuiltinBeeSpecies;
 import com.curiousbees.neoforge.block.GeneticApiaryBlock;
+import com.curiousbees.neoforge.block.beenest.NestVariant;
 import com.curiousbees.neoforge.block.beenest.SpeciesBeeNestBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
@@ -54,6 +55,18 @@ public final class ModBlocks {
                             BuiltinBeeSpecies.SPECIES_ARID.id(),
                             BlockBehaviour.Properties.of()
                                     .mapColor(MapColor.COLOR_ORANGE)
+                                    .sound(SoundType.WOOD)
+                                    .strength(0.6F)));
+
+    // LOG variant — forest bees that nest inside hollow tree trunks.
+    // No new Java class; variant is declared here, visual form lives in JSON.
+    public static final DeferredHolder<Block, SpeciesBeeNestBlock> FOREST_BEE_LOG_NEST =
+            BLOCKS.register("forest_bee_log_nest",
+                    () -> new SpeciesBeeNestBlock(
+                            BuiltinBeeSpecies.SPECIES_FOREST.id(),
+                            NestVariant.LOG,
+                            BlockBehaviour.Properties.of()
+                                    .mapColor(MapColor.COLOR_BROWN)
                                     .sound(SoundType.WOOD)
                                     .strength(0.6F)));
 

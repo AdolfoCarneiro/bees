@@ -116,8 +116,8 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E2-T04** | Generalize `SpeciesBeeNestBlock` | M | Nest block reads species id + texture set from data, not from a hardcoded enum/`switch`. | [`architecture.md` §7](architecture.md), E1-T09 |
-| **E2-T05** | Nest variant model | M | A nest can declare **visual variants** (logs, leaves, surface, hanging) without new Java classes per variant. | E2-T04 |
+| **E2-T04** | Generalize `SpeciesBeeNestBlock` **(done)** | M | Nest block reads species id + texture set from data, not from a hardcoded enum/`switch`. | [`architecture.md` §7](architecture.md), E1-T09 |
+| **E2-T05** | Nest variant model **(done)** | M | A nest can declare **visual variants** (logs, leaves, surface, hanging) without new Java classes per variant. | E2-T04 |
 | **E2-T06** | POI / hive targeting consolidation | M | `BeeSpeciesHiveTargetHandler` documents and centralizes the rule: which nests a bee considers “home”; behavior verified for all 5 species by integration test or manual checklist. | ADR-0009 |
 | **E2-T07** | Worldgen feature scaffolding | M | One reusable feature places a nest with attached vegetation; concrete feature configs live in **data**, not Java. | E2-T04 |
 
@@ -257,4 +257,4 @@ These tasks are not phase-specific; they unblock multiple epics.
 - Open ADR resolved → update the row that referenced it (link to ADR, drop “gated” notes).
 - New idea before species expansion → add a task in the right epic. **Do not** open a “new species” epic until E1–E5 exits are hit; that prevents content debt before structure is ready.
 
-_Last updated: 2026-05-05._
+_Last updated: 2026-05-06._
