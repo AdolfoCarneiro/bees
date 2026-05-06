@@ -16,6 +16,10 @@ public final class CuriousBeesCommands {
 
         dispatcher.register(
             Commands.literal("curiousbees")
+                .then(Commands.literal("habitat")
+                    .requires(src -> src.hasPermission(2))
+                    .then(Commands.literal("here")
+                        .executes(DebugHabitatCommand::execute)))
                 .then(Commands.literal("debug")
                     .requires(src -> src.hasPermission(2))
                     .then(Commands.literal("inspect_bee")
