@@ -19,16 +19,13 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 /**
- * GUI for the Genetic Apiary.
+ * GUI for the Genetic Apiary (and Advanced Apiary).
  * Layout: bee-panel left | 3×2 output centre | 3×1 frame column right.
- *
- * DEV-PLACEHOLDER: uses vanilla dispenser texture as background.
  */
 public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticApiaryMenu> {
 
-    // DEV-PLACEHOLDER — vanilla dispenser bg until final asset is ready
     private static final ResourceLocation BG_TEXTURE =
-            ResourceLocation.withDefaultNamespace("textures/gui/container/dispenser.png");
+            ResourceLocation.fromNamespaceAndPath("curiousbees", "textures/gui/genetic_apiary.png");
 
     // Layout constants (relative to GUI origin / leftPos,topPos)
     private static final int BEE_PANEL_X = 7;
@@ -46,7 +43,6 @@ public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticAp
     private static final int DUR_BAR_W = 16;
     private static final int DUR_BAR_H = 3;
 
-    // DEV-PLACEHOLDER: UV origin (0,0) of 64×64 entity texture; E5 should refine to proper face UV.
     private static final int OCCUPANT_ICON_SIZE = 8;
     private static final int OCCUPANT_ROW_H     = 10;
 
@@ -163,7 +159,7 @@ public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticAp
             if (py > BEE_PANEL_Y + BEE_PANEL_H - 12) break;
 
             // Icon: species texture when analyzed, fallback when not (avoids leaking species before analysis).
-            // DEV-PLACEHOLDER: blits UV (0,0)→(8,8) of 64×64 entity texture; E5 to refine to face UV.
+            // Blits UV (0,0)→(8,8) of 64×64 entity texture — uses bee face region as occupant icon.
             ResourceLocation icon = bee.analyzed()
                     ? SpeciesTextureResolver.resolveById(bee.speciesId())
                     : SpeciesTextureResolver.MOD_FALLBACK;

@@ -16,7 +16,7 @@ import java.util.List;
  * Client-side overlay screen for the portable Bee Analyzer.
  * Opened via a network packet — no container/menu required.
  * Displays the BeeAnalysisReport in labelled sections; no raw genome IDs shown.
- * DEV-PLACEHOLDER background — replace with Curious Bees GUI art in E5.
+ * Background drawn programmatically with honey-gold palette.
  */
 public final class BeeAnalyzerScreen extends Screen {
 

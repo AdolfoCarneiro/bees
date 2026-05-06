@@ -15,14 +15,11 @@ import net.minecraft.world.entity.player.Inventory;
  *  [Comb input] → progress arrow → [Output 2×2]
  *                                  [Bottle input] [Honey counter ●●●●●]
  * </pre>
- *
- * DEV-PLACEHOLDER: vanilla furnace background until final art in E5.
  */
 public final class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
 
-    // DEV-PLACEHOLDER — vanilla furnace bg until final asset (E5)
     private static final ResourceLocation BG_TEXTURE =
-            ResourceLocation.withDefaultNamespace("textures/gui/container/furnace.png");
+            ResourceLocation.fromNamespaceAndPath("curiousbees", "textures/gui/centrifuge.png");
 
     // Slot positions must match CentrifugeMenu
     private static final int COMB_SLOT_X   = 56;
