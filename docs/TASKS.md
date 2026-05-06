@@ -152,7 +152,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 | **E3-T05** | Frame item registration **(done)** | M | `BASIC_FRAME`, `MUTATION_FRAME`, `PRODUCTIVITY_FRAME` registered in `ModItems`. Recipe stubs needed in data. | — |
 | **E3-T06** | Frame slot capability **(done)** | M | 3-slot frame inventory in `GeneticApiaryBlockEntity`; `isFrameItem()` validates via `curiousbees:frames` tag (E0-T07). | E3-T01 |
 | **E3-T07** | Frame modifier wiring **(done)** | M | `resolveFrameModifier()` → `BuiltinFrameModifiers.BY_ID` lookup → `ProductionResolver` applies multiplier per frame in `addOccupant`. | E3-T06 |
-| **E3-T08** | Frame durability **⚠️ priority — do before P3 ships** | S | Frames call `hurtAndBreak()` per production output; broken frame slot cleared + `LOGGER.debug` emitted. Frames need `.durability(N)` in `ModItems`. | E3-T07 |
+| **E3-T08** | Frame durability **(done)** | S | Frames call `hurtAndBreak()` per production output; broken frame slot cleared + `LOGGER.debug` emitted. Frames need `.durability(N)` in `ModItems`. | E3-T07 |
 
 ### Subepic E3.C — Automation contract
 

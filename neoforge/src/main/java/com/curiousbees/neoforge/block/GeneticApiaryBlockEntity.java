@@ -385,7 +385,11 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implement
 
         FrameModifiers.CombinedFrameModifier combinedFrameModifier = combinedFrameModifier();
         ProductionResult result = rollProduction(genome.get(), combinedFrameModifier.productionMultiplier());
+        int outputCount = result.generatedOutputs().size();
         int inserted = insertProductionResult(result);
+        if (outputCount > 0) {
+            damageFrames(outputCount);
+        }
         if (inserted > 0) {
             CuriousBeesMod.LOGGER.debug(
                     "Apiary {} produced {} items from bee {} (species={}, frameMutationMultiplier={}, frameProductionMultiplier={}).",
@@ -454,6 +458,22 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implement
                     getBlockPos(), remaining.getCount(), output.outputId());
         }
         return inserted;
+    }
+
+    private void damageFrames(int amount) {
+        if (amount <= 0 || level == null || level.isClientSide()) return;
+        for (int i = 0; i < frameInventory.getSlots(); i++) {
+            ItemStack frame = frameInventory.getStackInSlot(i);
+            if (frame.isEmpty() || !frame.isDamageableItem()) continue;
+            int newDamage = frame.getDamageValue() + amount;
+            frame.setDamageValue(newDamage);
+            if (newDamage >= frame.getMaxDamage()) {
+                frameInventory.setStackInSlot(i, ItemStack.EMPTY);
+                CuriousBeesMod.LOGGER.debug(
+                        "Frame in slot {} broke in apiary at {}.", i, getBlockPos());
+            }
+        }
+        setChanged();
     }
 
     private boolean hasAnyOutputSpace() {

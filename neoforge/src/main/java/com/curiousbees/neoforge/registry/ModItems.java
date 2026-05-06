@@ -59,13 +59,16 @@ public final class ModItems {
     public static final DeferredHolder<Item, Item> HARDY_COMB =
             ITEMS.register("hardy_comb",     () -> new Item(new Item.Properties()));
 
-    // --- Frame items (Phase 7F) ---
+    // --- Frame items ---
     public static final DeferredHolder<Item, Item> BASIC_FRAME =
-            ITEMS.register("basic_frame", () -> new Item(new Item.Properties().stacksTo(1)));
+            ITEMS.register("basic_frame",
+                    () -> new Item(new Item.Properties().stacksTo(1).durability(64)));
     public static final DeferredHolder<Item, Item> MUTATION_FRAME =
-            ITEMS.register("mutation_frame", () -> new Item(new Item.Properties().stacksTo(1)));
+            ITEMS.register("mutation_frame",
+                    () -> new Item(new Item.Properties().stacksTo(1).durability(32)));
     public static final DeferredHolder<Item, Item> PRODUCTIVITY_FRAME =
-            ITEMS.register("productivity_frame", () -> new Item(new Item.Properties().stacksTo(1)));
+            ITEMS.register("productivity_frame",
+                    () -> new Item(new Item.Properties().stacksTo(1).durability(48)));
 
     // --- Species spawn eggs (vanilla Bee + fixed genome; not SpawnEggItem to avoid BY_ID conflicts) ---
     public static final DeferredHolder<Item, CuriousBeeSpeciesSpawnEggItem> MEADOW_BEE_SPAWN_EGG =
