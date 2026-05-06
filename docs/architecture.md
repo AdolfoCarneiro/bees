@@ -596,17 +596,36 @@ Avoid: BeeMagicManager · GeneticStuff · MutationThing · ForestryCompatSomethi
 
 ## 9. Testing strategy
 
+Three layers. Pure Java tests run on every build; in-game checks run before a release.
+
+```
+        ▲  manual smoke (§9.3–9.4) — dedicated server, real clients
+       ▲▲  in-game checks (§9.2)   — runClient / creative mode
+      ▲▲▲  unit tests (§9.1)       — ./gradlew :common:test, no Minecraft
+```
+
+**Rule:** anything that can be tested without booting Minecraft **must** live in `common` as a pure-Java test. NeoForge and manual layers fill the gaps that require a live registry or real server.
+
 ### 9.1 Unit (`common`)
 
-- dominance resolution;
-- Mendelian inheritance;
-- hybrid/purebred detection;
-- mutation probability;
-- active/inactive persistence;
-- invalid content definitions;
-- approximate distributions over many simulations.
+Run with `./gradlew :common:test`. All tests are pure Java — no Minecraft, NeoForge, or game registry. Key files:
+
+| Class | What it covers |
+|-------|---------------|
+| `MendelianInheritanceTest` | Dominance resolution, hybrid/purebred detection, active/inactive persistence |
+| `ProductionResolverTest` | Distribution correctness over many simulations (statistical bounds) |
+| `ContentJsonLoaderTest` | JSON loader: valid content extends registry; invalid content rejected with clear error; duplicate built-in IDs silently skipped |
+| `ContentExampleFilesTest` | Every shipped JSON (in `neoforge/.../curious_bees/`) validates against its DTO schema and mirrors the Java built-ins |
+| `DatapackReloadSmokeTest` | Two consecutive `ContentJsonLoader.load()` calls produce identical registries (EX-T02) |
+| `ContentValidatorTest` | Structural + referential validation rules |
+| `CentrifugeRecipeDataTest` | Every shipped centrifuge recipe JSON is schema-valid and covers all 5 combs |
+| `LangKeyCompletenessTest` | Every `Component.translatable(key)` call in Java has a corresponding entry in `en_us.json` |
+
+Adding a new test: place it under `common/src/test/java/` in the nearest existing package. It must not import `net.minecraft.*` or `net.neoforged.*`.
 
 ### 9.2 Integration (`neoforge`) / manual validation
+
+Verify in-game via `./gradlew :neoforge:runClient` (creative mode) after structural changes:
 
 - bee spawn receives genome;
 - bee genome persists after save/load (and active/inactive identity is preserved);

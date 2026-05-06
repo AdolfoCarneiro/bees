@@ -246,7 +246,7 @@ These tasks are not phase-specific; they unblock multiple epics.
 | **EX-T02** | Datapack reload smoke test **(done)** | S | `/reload` does not corrupt running bees or apiaries. Test or manual checklist. | EX-T01 |
 | **EX-T03** | Telemetry-friendly debug overlay **(done)** | S | One toggleable HUD piece showing: species count loaded, mutation count, last apiary tick result. | E2-T09 |
 | **EX-T04** | Crash-resilience for missing assets **(done)** | S | Missing texture / lang key produces a logged warning and visible placeholder, never a crash. | E1-T03 |
-| **EX-T05** | Test pyramid documentation | S | Short paragraph in [`architecture.md` §9](architecture.md) (or here) describes: unit (`common`), integration (NeoForge), manual smoke. | — |
+| **EX-T05** | Test pyramid documentation **(done)** | S | Short paragraph in [`architecture.md` §9](architecture.md) (or here) describes: unit (`common`), integration (NeoForge), manual smoke. | — |
 | **EX-T06** | Issue + PR templates | S | `.github/` (or equivalent) templates aligned with this file’s task IDs. | — |
 
 ---
