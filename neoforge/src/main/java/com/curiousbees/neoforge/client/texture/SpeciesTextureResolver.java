@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Resolves the texture ResourceLocation for a vanilla Bee entity based on its active species genome.
@@ -33,6 +35,9 @@ public final class SpeciesTextureResolver {
     /** Vanilla bee texture — final fallback for bees with no mod genome. */
     public static final ResourceLocation VANILLA_FALLBACK =
             ResourceLocation.fromNamespaceAndPath("minecraft", "textures/entity/bee/bee.png");
+
+    /** Tracks species IDs that have already produced a fallback warning, so we log once per ID not per render tick. */
+    private static final Set<String> WARNED_IDS = ConcurrentHashMap.newKeySet();
 
     private SpeciesTextureResolver() {}
 
@@ -82,14 +87,19 @@ public final class SpeciesTextureResolver {
         ContentRegistry registry = NeoForgeContentRegistry.current();
         Optional<BeeSpeciesDefinition> species = registry.findSpecies(activeSpeciesId);
         if (species.isEmpty()) {
-            LOGGER.debug("Unknown active species '{}' on bee {} — using mod fallback.",
-                    activeSpeciesId, bee.getUUID());
+            if (WARNED_IDS.add(activeSpeciesId)) {
+                LOGGER.warn("Unknown species '{}' — no registry entry. Using mod fallback. (Won't repeat per ID.)",
+                        activeSpeciesId);
+            }
             return MOD_FALLBACK;
         }
 
         Optional<SpeciesVisualDefinition> visual = species.get().visualDefinition();
         if (visual.isEmpty()) {
-            LOGGER.debug("No visual definition for species '{}' — using mod fallback.", activeSpeciesId);
+            if (WARNED_IDS.add(activeSpeciesId + "#visual")) {
+                LOGGER.warn("Species '{}' has no visual definition. Using mod fallback. (Won't repeat per ID.)",
+                        activeSpeciesId);
+            }
             return MOD_FALLBACK;
         }
 
