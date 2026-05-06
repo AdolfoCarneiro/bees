@@ -25,6 +25,7 @@ Single log of accepted/proposed decisions for Curious Bees. Each entry preserves
 | [ADR-0013](#adr-0013--advanced-hive-footprint) | Advanced hive footprint | Accepted |
 | [ADR-0014](#adr-0014--bee-capture-item) | Bee capture item | Accepted |
 | [ADR-0015](#adr-0015--fluid-honey) | Fluid honey | Accepted |
+| [DR-016](#dr-016--apiary-redstone-behavior) | Apiary redstone behavior | Skipped |
 
 ---
 
@@ -547,3 +548,19 @@ _Last updated: 2026-05-06._
 - Bottle input slot is insert-only from automation; honey bottles + wax exit via output slots.
 - Full counter does not pause processing — intentional; must not be "fixed" without a new ADR.
 - E4-T01 satisfied. E4-T02 may proceed.
+
+---
+
+## DR-016 — Apiary redstone behavior
+
+**Status:** Skipped · 2026-05-06
+
+**Context.** E3-T11 proposed an optional rule: redstone signal pauses apiary production (not bee entry/exit).
+
+**Decision:** Skipped for E3. Rationale:
+
+- Adds observable server-tick complexity (block update listeners, powered-state tracking) for a feature no current requirement depends on.
+- Automation players can already gate combs at the output with a comparator-driven hopper lock; a production-pause signal adds no new capability.
+- If a future use case demands redstone integration (e.g., queen-swap timing, automated frame cycling), open a new ADR then.
+
+**Consequences.** `GeneticApiaryBlockEntity` and `AdvancedApiaryBlockEntity` ignore redstone signal. No powered block state registered. E3-T11 closed as skipped.

@@ -160,7 +160,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 |----|------|------|-----------|------------|
 | **E3-T09** | Sided IO definition **(fix via E0-T07)** | S | `ApiaryCapabilities` already exposes `automationOutputView`; fix in E0-T07 adds direction-awareness. Document sided contract in code comments. | E0-T07 |
 | **E3-T10** | Output `IItemHandler` extract-only **(fix via E0-T07)** | S | Output slots reject insert in `automationOutputView`; fix in E0-T07 ensures frame slots also blocked from bottom-side hopper. Test covers both directions. | E0-T07 |
-| **E3-T11** | Optional redstone behavior | S | If kept, simple rule: redstone signal pauses production (not bee entry/exit). Otherwise explicitly skipped with note. | E3-T07 |
+| **E3-T11** | Optional redstone behavior **(skipped)** | S | Explicitly skipped — see decisions.md for rationale. | E3-T07 |
 
 ### Subepic E3.D — Advanced hive (gated by ADR)
 
