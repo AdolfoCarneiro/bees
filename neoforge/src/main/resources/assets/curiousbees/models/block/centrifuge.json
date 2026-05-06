@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_column",
   "textures": {
-    "all": "minecraft:block/furnace_side"
+    "end":  "curiousbees:block/centrifuge_top",
+    "side": "curiousbees:block/centrifuge_side"
   }
 }

@@ -213,7 +213,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
 | **E5-T01** | GUI background art pass **(done)** | M | All Curious Bees GUIs (apiary, analyzer, centrifuge) use Curious Bees backgrounds; dev-placeholder strings removed. | E3-T02, E4-T03 |
-| **E5-T02** | Item / block sprite pass | M | All shipping comb/frame/machine items have non-placeholder sprites; manifest updated. | — |
+| **E5-T02** | Item / block sprite pass **(done)** | M | All shipping comb/frame/machine items have non-placeholder sprites; manifest updated. | — |
 | **E5-T03** | Sound design pass | S | Apiary tick / centrifuge / analyzer have distinct (or distinct-enough) sounds; non-grating volumes. | E4-T03 |
 | **E5-T04** | Onboarding text | S | First-time hint (chat or item tooltip on first analyzer use) explains the breed → analyze → hive loop in one sentence. | E1-T08 |
 | **E5-T05** | Optional in-game guide stub | M | One pluggable guide (Patchouli or in-house) loads a hello page; **no full content** yet. | E5-T04 |

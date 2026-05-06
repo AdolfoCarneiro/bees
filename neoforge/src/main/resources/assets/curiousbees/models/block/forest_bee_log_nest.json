@@ -1,11 +1,10 @@
 {
-  "_comment": "DEV-PLACEHOLDER textures — shares forest_bee_nest textures until final log-nest art is made (CLAUDE.md Art)",
   "parent": "minecraft:block/orientable_with_bottom",
   "textures": {
-    "bottom": "curiousbees:block/forest_bee_nest_bottom",
-    "front": "curiousbees:block/forest_bee_nest_front",
-    "particle": "curiousbees:block/forest_bee_nest_side",
-    "side": "curiousbees:block/forest_bee_nest_side",
-    "top": "curiousbees:block/forest_bee_nest_top"
+    "bottom":   "curiousbees:block/forest_bee_log_nest_bottom",
+    "front":    "curiousbees:block/forest_bee_log_nest_front",
+    "particle": "curiousbees:block/forest_bee_log_nest_side",
+    "side":     "curiousbees:block/forest_bee_log_nest_side",
+    "top":      "curiousbees:block/forest_bee_log_nest_top"
   }
 }

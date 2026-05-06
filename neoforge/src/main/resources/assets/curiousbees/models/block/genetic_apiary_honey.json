@@ -1,10 +1,10 @@
 {
   "parent": "minecraft:block/orientable_with_bottom",
   "textures": {
-    "bottom": "minecraft:block/beehive_end",
-    "front": "minecraft:block/beehive_front_honey",
-    "particle": "minecraft:block/beehive_side",
-    "side": "minecraft:block/beehive_side",
-    "top": "minecraft:block/beehive_end"
+    "bottom":   "curiousbees:block/genetic_apiary_end",
+    "front":    "curiousbees:block/genetic_apiary_front",
+    "particle": "curiousbees:block/genetic_apiary_side",
+    "side":     "curiousbees:block/genetic_apiary_side",
+    "top":      "curiousbees:block/genetic_apiary_end"
   }
 }
