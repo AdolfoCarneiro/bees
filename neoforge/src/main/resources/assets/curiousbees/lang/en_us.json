@@ -60,5 +60,8 @@
   "item.curiousbees.bee_analyzer.tooltip.analyzed": "Analyzed",
   "item.curiousbees.bee_analyzer.tooltip.unanalyzed": "Not analyzed",
   "item.curiousbees.bee_analyzer.tooltip.use": "Right-click a living bee to analyze its genetics.",
-  "item.curiousbees.bee_analyzer.tooltip.cost": "First analysis costs 1 Honeycomb."
+  "item.curiousbees.bee_analyzer.tooltip.cost": "First analysis costs 1 Honeycomb.",
+  "subtitles.block.curiousbees.apiary.work": "Bees working",
+  "subtitles.block.curiousbees.centrifuge.work": "Centrifuge processes",
+  "subtitles.item.curiousbees.analyzer.use": "Analyzer scans"
 }

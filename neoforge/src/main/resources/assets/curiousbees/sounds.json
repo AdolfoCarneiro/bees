@@ -1,0 +1,20 @@
+{
+  "block.apiary.work": {
+    "sounds": [
+      { "name": "block.beehive.work", "type": "event" }
+    ],
+    "subtitle": "subtitles.block.curiousbees.apiary.work"
+  },
+  "block.centrifuge.work": {
+    "sounds": [
+      { "name": "block.grindstone.use", "type": "event" }
+    ],
+    "subtitle": "subtitles.block.curiousbees.centrifuge.work"
+  },
+  "item.analyzer.use": {
+    "sounds": [
+      { "name": "entity.bee.pollinate", "type": "event" }
+    ],
+    "subtitle": "subtitles.item.curiousbees.analyzer.use"
+  }
+}

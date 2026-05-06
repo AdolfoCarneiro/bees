@@ -18,7 +18,9 @@ import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import com.curiousbees.neoforge.menu.GeneticApiaryMenu;
 import com.curiousbees.neoforge.registry.ModItems;
+import com.curiousbees.neoforge.registry.ModSounds;
 import com.curiousbees.neoforge.registry.ModTags;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.Level;
@@ -204,6 +206,10 @@ public class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements Menu
         if (blockEntity.cacheTicksRemaining-- <= 0) {
             blockEntity.refreshBeeCountCache();
             blockEntity.cacheTicksRemaining = 20;
+        }
+        if (blockEntity.getOccupantCount() > 0 && level.getGameTime() % 40 == 0) {
+            level.playSound(null, pos, ModSounds.APIARY_WORK.get(),
+                    SoundSource.BLOCKS, 0.4f, 0.9f + level.getRandom().nextFloat() * 0.2f);
         }
     }
 

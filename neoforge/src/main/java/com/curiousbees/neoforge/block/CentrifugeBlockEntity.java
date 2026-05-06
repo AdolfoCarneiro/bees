@@ -5,6 +5,8 @@ import com.curiousbees.neoforge.menu.CentrifugeMenu;
 import com.curiousbees.neoforge.recipe.CentrifugeRecipe;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import com.curiousbees.neoforge.registry.ModRecipes;
+import com.curiousbees.neoforge.registry.ModSounds;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -180,6 +182,10 @@ public final class CentrifugeBlockEntity extends BlockEntity implements MenuProv
                         "Centrifuge at {}: honey counter full, discarding {} portion(s).",
                         getBlockPos(), overflow);
             }
+        }
+        if (level != null && !level.isClientSide()) {
+            level.playSound(null, getBlockPos(), ModSounds.CENTRIFUGE_WORK.get(),
+                    SoundSource.BLOCKS, 0.8f, 0.85f + level.getRandom().nextFloat() * 0.3f);
         }
         setChanged();
     }

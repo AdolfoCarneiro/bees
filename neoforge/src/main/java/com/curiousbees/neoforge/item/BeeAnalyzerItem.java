@@ -5,6 +5,8 @@ import com.curiousbees.common.gameplay.analysis.BeeAnalysisService;
 import com.curiousbees.neoforge.data.BeeAnalysisStorage;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import com.curiousbees.neoforge.network.CuriousBeesNetwork;
+import com.curiousbees.neoforge.registry.ModSounds;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.TooltipFlag;
@@ -67,6 +69,9 @@ public final class BeeAnalyzerItem extends Item {
         if (player instanceof ServerPlayer serverPlayer) {
             CuriousBeesNetwork.sendAnalyzerReport(serverPlayer, report);
         }
+
+        player.level().playSound(null, bee.getX(), bee.getY(), bee.getZ(),
+                ModSounds.ANALYZER_USE.get(), SoundSource.PLAYERS, 0.6f, 1.0f);
 
         return InteractionResult.SUCCESS;
     }
