@@ -118,7 +118,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 |----|------|------|-----------|------------|
 | **E2-T04** | Generalize `SpeciesBeeNestBlock` **(done)** | M | Nest block reads species id + texture set from data, not from a hardcoded enum/`switch`. | [`architecture.md` §7](architecture.md), E1-T09 |
 | **E2-T05** | Nest variant model **(done)** | M | A nest can declare **visual variants** (logs, leaves, surface, hanging) without new Java classes per variant. | E2-T04 |
-| **E2-T06** | POI / hive targeting consolidation | M | `BeeSpeciesHiveTargetHandler` documents and centralizes the rule: which nests a bee considers “home”; behavior verified for all 5 species by integration test or manual checklist. | ADR-0009 |
+| **E2-T06** | POI / hive targeting consolidation **(done)** | M | `BeeSpeciesHiveTargetHandler` documents and centralizes the rule: which nests a bee considers “home”; behavior verified for all 5 species by integration test or manual checklist. | ADR-0009 |
 | **E2-T07** | Worldgen feature scaffolding | M | One reusable feature places a nest with attached vegetation; concrete feature configs live in **data**, not Java. | E2-T04 |
 
 ### Subepic E2.C — Population / observability

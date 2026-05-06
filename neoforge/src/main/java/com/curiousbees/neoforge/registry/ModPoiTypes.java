@@ -44,6 +44,13 @@ public final class ModPoiTypes {
                             1,
                             1));
 
+    public static final DeferredHolder<PoiType, PoiType> FOREST_BEE_LOG_NEST =
+            POI_TYPES.register("forest_bee_log_nest",
+                    () -> new PoiType(
+                            Set.copyOf(ModBlocks.FOREST_BEE_LOG_NEST.get().getStateDefinition().getPossibleStates()),
+                            1,
+                            1));
+
     public static void register(IEventBus modEventBus) {
         POI_TYPES.register(modEventBus);
     }

@@ -629,6 +629,20 @@ Run on a **dedicated server** (not LAN/single-player) with at least one connecte
 - [ ] **Save/load** — stop and restart server; reconnect; bee genome, analyzed flag, and apiary contents survive reload.
 - [ ] **Client/server sync** — `ContainerData` fields (occupancy, honey) match what the server holds; no stale UI state after reconnect.
 
+### 9.4 Hive targeting (5-species checklist)
+
+`BeeSpeciesHiveTargetHandler` enforces: bee enters only the nest whose `speciesId` matches its own SPECIES allele. Verify in creative for each species:
+
+| Species | Own nest | Wrong-species nest | Genetic Apiary |
+|---------|----------|--------------------|---------------|
+| Meadow | enters `meadow_bee_nest` | ignores forest/arid/log nests | enters (any species) |
+| Forest | enters `forest_bee_nest` or `forest_bee_log_nest` | ignores meadow/arid nests | enters |
+| Arid | enters `arid_bee_nest` | ignores meadow/forest nests | enters |
+| Cultivated | no natural nest | — | enters |
+| Hardy | no natural nest | — | enters |
+
+"Ignores" = hive pos cleared within 10 ticks; bee does not enter or hover at entrance.
+
 ---
 
 ## 10. Anti-patterns
