@@ -46,9 +46,9 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E0-T01** | Verify `common/genetics` import boundary in CI | S | Test or static check fails the build if `common/genetics` references `net.minecraft.*` / NeoForge / Fabric. | ADR-0002 |
-| **E0-T02** | Snapshot test for `ProductionResolver` distributions | M | Statistical test runs N crosses and asserts known distributions within tolerance for current built-in species. | — |
-| **E0-T03** | Multiplayer smoke checklist | S | A checklist (issue template, PR template, or appended to [`architecture.md` §9.3](architecture.md)) lists steps: spawn → breed → analyze → hive insert → output read on dedicated server. | — |
+| **E0-T01** | Verify `common/genetics` import boundary in CI **(done)** | S | Test or static check fails the build if `common/genetics` references `net.minecraft.*` / NeoForge / Fabric. | ADR-0002 |
+| **E0-T02** | Snapshot test for `ProductionResolver` distributions **(done)** | M | Statistical test runs N crosses and asserts known distributions within tolerance for current built-in species. | — |
+| **E0-T03** | Multiplayer smoke checklist **(done)** | S | A checklist (issue template, PR template, or appended to [`architecture.md` §9.3](architecture.md)) lists steps: spawn → breed → analyze → hive insert → output read on dedicated server. | — |
 | **E0-T04** | Audit WARNING/FINE logging in services | S | Every recoverable bad-input path either WARNs or throws (no silent skip). PR removes any `// TODO log` left in services. | — |
 | **E0-T05** | Document Genetic Apiary persistence quirks | S | Comment block / short doc note explains the `getType()` / ticker overrides described in [`decisions.md` → ADR-0009](decisions.md), so a future contributor does not “fix” it back. | ADR-0009 |
 | **E0-T06** | Tag known dev placeholders | S | All `// DEV PLACEHOLDER` strings include a stable token (e.g. `DEV-PLACEHOLDER`) so a grep can find them before release. | — |

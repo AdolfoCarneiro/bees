@@ -617,7 +617,17 @@ Avoid: BeeMagicManager · GeneticStuff · MutationThing · ForestryCompatSomethi
 
 ### 9.3 Multiplayer smoke
 
-Dedicated server checklist: spawn → breed → analyze → hive insert → output extract. State that drives client UI must round-trip correctly.
+Run on a **dedicated server** (not LAN/single-player) with at least one connected client.
+
+#### Checklist
+
+- [ ] **Spawn** — wild bee spawns in its habitat biome; genome is attached (shift-click or analyzer confirms non-empty species).
+- [ ] **Breed** — place two bees near flowers; child spawns; child genome visible after analysis (species may differ from parents if mutation triggers).
+- [ ] **Analyze** — right-click bee with Bee Analyzer item; `BeeAnalysisReport` populated; tooltip on same client shows species/traits; *other* connected client does **not** see pre-analysis data on an unanalyzed bee.
+- [ ] **Hive insert** — place Genetic Apiary; insert two analyzed bees; GUI shows correct occupant count and species; hopper on side inserts frames; hopper below cannot insert frames.
+- [ ] **Output extract** — after one production tick, hopper below apiary extracts comb item; output slot shows correct item; frame durability decreases.
+- [ ] **Save/load** — stop and restart server; reconnect; bee genome, analyzed flag, and apiary contents survive reload.
+- [ ] **Client/server sync** — `ContainerData` fields (occupancy, honey) match what the server holds; no stale UI state after reconnect.
 
 ---
 
