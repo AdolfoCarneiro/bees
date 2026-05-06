@@ -1,5 +1,5 @@
 {
-  "_comment": "DEV PLACEHOLDER textures — final assets tracked outside repo (CLAUDE.md Art)",
+  "_comment": "DEV-PLACEHOLDER textures — final assets tracked outside repo (CLAUDE.md Art)",
   "parent": "minecraft:block/orientable_with_bottom",
   "textures": {
     "bottom": "curiousbees:block/forest_bee_nest_bottom",
