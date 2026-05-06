@@ -551,6 +551,36 @@ _Last updated: 2026-05-06._
 
 ---
 
+## E6-T01 — Common module Fabric-readiness audit
+
+**Status:** Complete · 2026-05-06
+
+**Methodology.** (a) Checked `common/build.gradle` for platform dependencies. (b) Grepped `common/src/main/java` for `net.minecraft.`, `net.neoforged.`, `net.fabricmc.`, `com.mojang.` imports. (c) Confirmed `ArchitectureBoundaryTest` enforces these checks at test time with readable failure messages.
+
+**Result: zero common-side leaks found.** The module is already Fabric-portable:
+
+| Check | Result |
+|-------|--------|
+| `common/build.gradle` deps | JUnit only — no MC/NeoForge |
+| Platform imports grep | 0 violations |
+| `ArchitectureBoundaryTest` | 4 forbidden prefixes enforced in CI |
+| `ContentDefinitionSource` | `String path / String json` — no `ResourceLocation` |
+| `BuiltinProductionDefinitions` | String IDs only — platform resolves to items |
+| `GenomeData` / `GenePairData` | String fields + shared Codec — reusable as-is |
+
+**Platform gaps for Fabric port (all in `fabric/`, none in `common/`):**
+
+1. `fabric/` module — Loom build setup, Fabric API dep
+2. `FabricDataAttachment<GenomeData>` adapter (mirrors `BeeGenomeStorage`)
+3. Wild bee init hook — Fabric entity-load/spawn equivalent
+4. Breeding hook — narrow mixin at vanilla bee breeding method
+5. Fabric resource reload API → existing common loading pipeline
+6. Analyzer item — Fabric item use-on-entity registration
+
+No `common/` changes required before starting the Fabric port. See [DR-010](#dr-010--fabric-support-strategy) for the full strategy.
+
+---
+
 ## DR-016 — Apiary redstone behavior
 
 **Status:** Skipped · 2026-05-06
