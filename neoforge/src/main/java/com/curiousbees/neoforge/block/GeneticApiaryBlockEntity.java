@@ -19,6 +19,8 @@ import com.curiousbees.neoforge.registry.ModItems;
 import com.curiousbees.neoforge.registry.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -176,8 +178,35 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implement
         }
     };
 
+    private int cacheTicksRemaining = 0;
+    private int cachedHomedBeeCount = 0;
+    private int cachedAnalyzedBeeCount = 0;
+
     public GeneticApiaryBlockEntity(BlockPos pos, BlockState state) {
         super(pos, state);
+    }
+
+    /**
+     * Custom server tick: delegates to vanilla hive logic then refreshes the bee-count cache
+     * every 20 ticks. Called by GeneticApiaryBlock.getTicker() instead of BeehiveBlockEntity::serverTick.
+     */
+    public static void serverTick(Level level, BlockPos pos, BlockState state,
+                                   GeneticApiaryBlockEntity blockEntity) {
+        BeehiveBlockEntity.serverTick(level, pos, state, blockEntity);
+        if (blockEntity.cacheTicksRemaining-- <= 0) {
+            blockEntity.refreshBeeCountCache();
+            blockEntity.cacheTicksRemaining = 20;
+        }
+    }
+
+    private void refreshBeeCountCache() {
+        if (level == null || level.isClientSide()) return;
+        AABB box = new AABB(getBlockPos()).inflate(48);
+        int outside = (int) level.getEntitiesOfClass(Bee.class, box,
+                bee -> getBlockPos().equals(bee.getHivePos())).size();
+        cachedHomedBeeCount = getOccupantCount() + outside;
+        cachedAnalyzedBeeCount = (int) level.getEntitiesOfClass(Bee.class, box,
+                bee -> getBlockPos().equals(bee.getHivePos()) && BeeAnalysisStorage.isAnalyzed(bee)).size();
     }
 
     /**
@@ -212,33 +241,20 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implement
     }
 
     /**
-     * Returns the count of bees currently homed to this apiary that are in the world.
-     * Counts both bees inside the hive (occupants) and outside bees whose hive pos matches.
-     * Safe to call server-side only.
+     * Returns the cached count of bees homed to this apiary (inside + outside).
+     * Refreshed every 20 ticks via serverTick and immediately on addOccupant.
      */
     public int homedBeeCount() {
-        if (level == null || level.isClientSide()) return 0;
-        int inside = getOccupantCount();
-        int outside = (int) level.getEntitiesOfClass(
-                        Bee.class,
-                        new net.minecraft.world.phys.AABB(getBlockPos()).inflate(48),
-                        bee -> getBlockPos().equals(bee.getHivePos()))
-                .size();
-        return inside + outside;
+        return cachedHomedBeeCount;
     }
 
     /**
-     * Returns how many outside bees homed here have been analyzed.
-     * Bees inside the hive are counted as analyzed if they had the flag when they entered
-     * (attachment is serialized with their NBT), but here we only count live outside bees.
+     * Returns the cached count of analyzed outside bees homed here.
+     * Bees inside the hive are not counted (entity scan only covers outside bees).
+     * Refreshed every 20 ticks via serverTick and immediately on addOccupant.
      */
     public int analyzedBeeCount() {
-        if (level == null || level.isClientSide()) return 0;
-        return (int) level.getEntitiesOfClass(
-                        Bee.class,
-                        new net.minecraft.world.phys.AABB(getBlockPos()).inflate(48),
-                        bee -> getBlockPos().equals(bee.getHivePos()) && BeeAnalysisStorage.isAnalyzed(bee))
-                .size();
+        return cachedAnalyzedBeeCount;
     }
 
     /** Collects species display names for outside bees homed here (analyzed only, max 3). */
@@ -275,6 +291,7 @@ public final class GeneticApiaryBlockEntity extends BeehiveBlockEntity implement
     public void addOccupant(Entity occupant) {
         boolean hadNectar = occupant instanceof Bee bee && bee.hasNectar();
         super.addOccupant(occupant);
+        cacheTicksRemaining = 0; // refresh cache on next tick after a bee enters
         if (level == null || level.isClientSide()) {
             return;
         }

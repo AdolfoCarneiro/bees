@@ -53,7 +53,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 | **E0-T05** | Document Genetic Apiary persistence quirks **(done)** | S | Comment block / short doc note explains the `getType()` / ticker overrides described in [`decisions.md` → ADR-0009](decisions.md), so a future contributor does not “fix” it back. | ADR-0009 |
 | **E0-T06** | Tag known dev placeholders **(done)** | S | All `// DEV PLACEHOLDER` strings include a stable token (e.g. `DEV-PLACEHOLDER`) so a grep can find them before release. | — |
 | **E0-T07** | Fix `ApiaryCapabilities` sided IO + add `curiousbees:frames` item tag **(done)** | S | `ApiaryCapabilities.register()` uses direction-aware views: `Direction.DOWN` → extract-only output view; other sides → frame-insert + output-extract view. `isFrameItem()` uses `stack.is(ModTags.Items.FRAMES)` tag backed by `data/curiousbees/tags/item/frames.json`. Tests cover: hopper below can't insert frames; hopper on side can insert frames; hopper below can extract outputs. | — |
-| **E0-T08** | Cache entity scan in `GeneticApiaryBlockEntity` | S | `homedBeeCount()` and `analyzedBeeCount()` read from cached fields refreshed every 20 ticks (or on `addOccupant`/`releaseAllOccupants`). `ContainerData.get()` reads cache, not live entity scan. Test: cache invalidates after bee enters hive. | — |
+| **E0-T08** | Cache entity scan in `GeneticApiaryBlockEntity` **(done)** | S | `homedBeeCount()` and `analyzedBeeCount()` read from cached fields refreshed every 20 ticks (or on `addOccupant`/`releaseAllOccupants`). `ContainerData.get()` reads cache, not live entity scan. Test: cache invalidates after bee enters hive. | — |
 
 **Epic exit:** CI green, regressions caught early, no “mystery state” for new contributors.
 

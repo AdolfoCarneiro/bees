@@ -53,7 +53,7 @@ public final class GeneticApiaryBlock extends BeehiveBlock {
             Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide ? null
                 : createTickerHelper(type, ModBlockEntities.GENETIC_APIARY.get(),
-                        BeehiveBlockEntity::serverTick);
+                        GeneticApiaryBlockEntity::serverTick);
     }
 
     @Override
