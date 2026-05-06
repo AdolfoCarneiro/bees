@@ -1,7 +1,10 @@
 package com.curiousbees.neoforge.block;
 
+import com.curiousbees.CuriousBeesMod;
 import com.curiousbees.neoforge.menu.CentrifugeMenu;
+import com.curiousbees.neoforge.recipe.CentrifugeRecipe;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
+import com.curiousbees.neoforge.registry.ModRecipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -11,27 +14,33 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
+import java.util.Optional;
+import java.util.Random;
+
 /**
  * Block entity for the Centrifuge (E4).
  *
- * <p>Processes combs into wax + honey (ADR-0015). Honey output is tracked as
- * a soft buffer (honeyCounter 0-5) and bottled when a glass bottle is present;
- * overflow is discarded at FINE log level — never blocks processing.
- *
- * <p>Recipe execution wired in E4-T04. This entity just maintains the inventory
- * and honey counter with correct persistence.
+ * <p>Processes combs into item outputs + honey (ADR-0015).
+ * Honey output is tracked as a soft buffer (honeyCounter 0-5) and bottled
+ * when a glass bottle is present; overflow is discarded at FINE — never
+ * blocks processing.
  */
 public final class CentrifugeBlockEntity extends BlockEntity implements MenuProvider {
 
     public static final int INPUT_SLOTS  = 1;
     public static final int BOTTLE_SLOTS = 1;
     public static final int OUTPUT_SLOTS = 4;
+
+    private final Random random = new Random();
 
     private final ItemStackHandler inputInventory = new ItemStackHandler(INPUT_SLOTS) {
         @Override protected void onContentsChanged(int slot) { setChanged(); }
@@ -68,12 +77,12 @@ public final class CentrifugeBlockEntity extends BlockEntity implements MenuProv
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
             if (slot == 0) return inputInventory.insertItem(0, stack, simulate);
             if (slot == 1) return bottleInventory.insertItem(0, stack, simulate);
-            return stack; // output slots reject insert
+            return stack;
         }
 
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate) {
-            if (slot < 2) return ItemStack.EMPTY; // input/bottle: no automation extract
+            if (slot < 2) return ItemStack.EMPTY;
             return outputInventory.extractItem(slot - 2, amount, simulate);
         }
 
@@ -95,7 +104,7 @@ public final class CentrifugeBlockEntity extends BlockEntity implements MenuProv
     /** Honey portions buffered (0-5). Full counter never pauses processing (ADR-0015). */
     private int honeyCounter = 0;
 
-    /** Processing progress ticks synced to client for the GUI progress bar (E4-T04). */
+    /** Progress synced to client for GUI progress bar. */
     private int processingProgress = 0;
     private int processingTotal    = 0;
 
@@ -103,12 +112,119 @@ public final class CentrifugeBlockEntity extends BlockEntity implements MenuProv
         super(ModBlockEntities.CENTRIFUGE.get(), pos, state);
     }
 
-    /**
-     * Server tick stub. Recipe processing logic added in E4-T04 once the recipe type exists.
-     */
+    // --- Server tick ---
+
     public static void serverTick(Level level, BlockPos pos, BlockState state,
                                    CentrifugeBlockEntity be) {
-        // Intentionally empty until E4-T04 wires in recipe execution.
+        be.tryBottle();
+        be.tickProcessing(level);
+    }
+
+    private void tickProcessing(Level level) {
+        ItemStack inputStack = inputInventory.getStackInSlot(0);
+        if (inputStack.isEmpty()) {
+            resetProgress();
+            return;
+        }
+
+        Optional<RecipeHolder<CentrifugeRecipe>> maybeHolder =
+                level.getRecipeManager().getRecipeFor(
+                        ModRecipes.CENTRIFUGE_TYPE.get(),
+                        new SingleRecipeInput(inputStack),
+                        level);
+
+        if (maybeHolder.isEmpty()) {
+            resetProgress();
+            return;
+        }
+
+        CentrifugeRecipe recipe = maybeHolder.get().value();
+
+        if (processingTotal != recipe.processingTime()) {
+            processingTotal    = recipe.processingTime();
+            processingProgress = 0;
+        }
+
+        // Pause if no room for any output (don't waste combs)
+        if (!hasAnyOutputSpace()) {
+            return;
+        }
+
+        processingProgress++;
+        setChanged();
+
+        if (processingProgress >= processingTotal) {
+            processBatch(recipe);
+            processingProgress = 0;
+        }
+    }
+
+    private void processBatch(CentrifugeRecipe recipe) {
+        // Consume input
+        inputInventory.extractItem(0, recipe.inputCount(), false);
+
+        // Roll item outputs
+        for (CentrifugeRecipe.WeightedOutput out : recipe.outputs()) {
+            if (out.chance() >= 1.0f || random.nextFloat() < out.chance()) {
+                insertIntoOutput(out.stack().copy());
+            }
+        }
+
+        // Honey counter (ADR-0015: overflow discarded at FINE, never blocks)
+        if (recipe.honeyPortions() > 0) {
+            int before = honeyCounter;
+            honeyCounter = Math.min(5, honeyCounter + recipe.honeyPortions());
+            int overflow = recipe.honeyPortions() - (honeyCounter - before);
+            if (overflow > 0) {
+                CuriousBeesMod.LOGGER.debug(
+                        "Centrifuge at {}: honey counter full, discarding {} portion(s).",
+                        getBlockPos(), overflow);
+            }
+        }
+        setChanged();
+    }
+
+    /**
+     * Tries to convert one honey counter portion to a honey bottle if a glass
+     * bottle is available and output space exists.
+     */
+    private void tryBottle() {
+        if (honeyCounter <= 0) return;
+
+        ItemStack bottle = bottleInventory.getStackInSlot(0);
+        if (bottle.isEmpty() || !bottle.is(Items.GLASS_BOTTLE)) return;
+
+        ItemStack honeyBottle = new ItemStack(Items.HONEY_BOTTLE);
+        ItemStack remaining = insertIntoOutput(honeyBottle);
+        if (!remaining.isEmpty()) return; // no output space
+
+        bottleInventory.extractItem(0, 1, false);
+        honeyCounter--;
+        setChanged();
+    }
+
+    private ItemStack insertIntoOutput(ItemStack stack) {
+        ItemStack remaining = stack.copy();
+        for (int i = 0; i < outputInventory.getSlots() && !remaining.isEmpty(); i++) {
+            remaining = outputInventory.insertItem(i, remaining, false);
+        }
+        return remaining;
+    }
+
+    private boolean hasAnyOutputSpace() {
+        for (int i = 0; i < outputInventory.getSlots(); i++) {
+            ItemStack s = outputInventory.getStackInSlot(i);
+            if (s.isEmpty() || s.getCount() < s.getMaxStackSize()) return true;
+        }
+        return false;
+    }
+
+    private void resetProgress() {
+        if (processingProgress != 0 || processingTotal != 0) {
+            processingProgress = 0;
+            processingTotal    = 0;
+            setChanged();
+        }
     }
 
     // --- Accessors ---
@@ -120,20 +236,6 @@ public final class CentrifugeBlockEntity extends BlockEntity implements MenuProv
     public int honeyCounter()                 { return honeyCounter; }
     public int processingProgress()           { return processingProgress; }
     public int processingTotal()              { return processingTotal; }
-
-    /** Called from E4-T04 processing logic to update honey counter and trigger bottling. */
-    public void addHoney(int portions) {
-        honeyCounter = Math.min(5, honeyCounter + portions);
-        setChanged();
-    }
-
-    /** Called from E4-T04 processing logic to consume one honey portion for bottling. */
-    public boolean consumeHoney() {
-        if (honeyCounter <= 0) return false;
-        honeyCounter--;
-        setChanged();
-        return true;
-    }
 
     // --- MenuProvider ---
 
@@ -155,9 +257,9 @@ public final class CentrifugeBlockEntity extends BlockEntity implements MenuProv
         tag.put("InputInventory",  inputInventory.serializeNBT(registries));
         tag.put("BottleInventory", bottleInventory.serializeNBT(registries));
         tag.put("OutputInventory", outputInventory.serializeNBT(registries));
-        tag.putInt("HoneyCounter",        honeyCounter);
-        tag.putInt("ProcessingProgress",  processingProgress);
-        tag.putInt("ProcessingTotal",     processingTotal);
+        tag.putInt("HoneyCounter",       honeyCounter);
+        tag.putInt("ProcessingProgress", processingProgress);
+        tag.putInt("ProcessingTotal",    processingTotal);
     }
 
     @Override

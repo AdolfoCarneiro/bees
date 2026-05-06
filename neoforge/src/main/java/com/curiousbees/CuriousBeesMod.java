@@ -18,6 +18,7 @@ import com.curiousbees.neoforge.registry.ModDataComponents;
 import com.curiousbees.neoforge.registry.ModItems;
 import com.curiousbees.neoforge.registry.ModMenuTypes;
 import com.curiousbees.neoforge.registry.ModPoiTypes;
+import com.curiousbees.neoforge.registry.ModRecipes;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -43,6 +44,7 @@ public final class CuriousBeesMod {
         ModItems.register(modEventBus);
         ModDataComponents.register(modEventBus);
         ModMenuTypes.register(modEventBus);
+        ModRecipes.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
         ModFeatures.register(modEventBus);
         modEventBus.addListener((FMLCommonSetupEvent event) ->
