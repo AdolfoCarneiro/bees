@@ -43,7 +43,10 @@ public final class ModBlocks {
     public static final DeferredHolder<Block, CentrifugeBlock> CENTRIFUGE =
             BLOCKS.register(
                     "centrifuge",
-                    () -> new CentrifugeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.FURNACE)));
+                    () -> new CentrifugeBlock(BlockBehaviour.Properties.of()
+                            .mapColor(net.minecraft.world.level.material.MapColor.STONE)
+                            .requiresCorrectToolForDrops()
+                            .strength(3.5f, 3.5f)));
 
     // --- Species bee nest blocks ---
     // Each nest is a SpeciesBeeNestBlock parameterised by species ID and visual properties.
