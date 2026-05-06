@@ -19,27 +19,26 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 
 import java.util.List;
 import java.util.Random;
 
 /**
- * Places a species-specific bee nest and populates it with 2–3 bees.
- * Wild bees receive genomes here so {@link com.curiousbees.neoforge.block.beenest.SpeciesBeeNestBlockEntity}
- * entry checks succeed.
+ * Places a species-specific bee nest, populates it with 2–3 bees, and optionally
+ * scatters attached vegetation blocks (flowers, ferns, dead bushes) within 2 blocks.
+ * All config — including which vegetation to attach — lives in JSON, not Java.
  */
-public final class SpeciesBeeNestFeature extends Feature<BlockStateConfiguration> {
+public final class SpeciesBeeNestFeature extends Feature<SpeciesBeeNestConfiguration> {
 
     private static final List<Direction> HORIZONTAL = List.of(
             Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
 
-    public SpeciesBeeNestFeature(Codec<BlockStateConfiguration> codec) {
+    public SpeciesBeeNestFeature(Codec<SpeciesBeeNestConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<BlockStateConfiguration> context) {
+    public boolean place(FeaturePlaceContext<SpeciesBeeNestConfiguration> context) {
         WorldGenLevel level = context.level();
         BlockPos origin = context.origin();
 
@@ -50,7 +49,7 @@ public final class SpeciesBeeNestFeature extends Feature<BlockStateConfiguration
 
         Direction facing = HORIZONTAL.get(context.random().nextInt(HORIZONTAL.size()));
 
-        BlockState nestState = context.config().state
+        BlockState nestState = context.config().nestState()
                 .setValue(BlockStateProperties.FACING, facing)
                 .setValue(BlockStateProperties.LEVEL_HONEY, 0);
 
@@ -70,7 +69,25 @@ public final class SpeciesBeeNestFeature extends Feature<BlockStateConfiguration
             }
         }
 
+        placeAttachedVegetation(level, origin, context);
         return true;
+    }
+
+    private static void placeAttachedVegetation(
+            WorldGenLevel level, BlockPos origin, FeaturePlaceContext<SpeciesBeeNestConfiguration> context) {
+        for (BlockState vegState : context.config().attachedBlocks()) {
+            for (int attempt = 0; attempt < 3; attempt++) {
+                int dx = context.random().nextInt(5) - 2;
+                int dz = context.random().nextInt(5) - 2;
+                BlockPos vegPos = origin.offset(dx, 0, dz);
+                BlockPos belowVeg = vegPos.below();
+                if (level.isStateAtPosition(vegPos, BlockState::isAir)
+                        && level.getBlockState(belowVeg).isSolidRender(level, belowVeg)) {
+                    level.setBlock(vegPos, vegState, 2);
+                    break;
+                }
+            }
+        }
     }
 
     private static void stampNestSpeciesGenome(Bee bee, String nestSpeciesId) {

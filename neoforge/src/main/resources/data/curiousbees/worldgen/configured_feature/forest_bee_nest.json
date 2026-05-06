@@ -1,12 +1,17 @@
 {
   "type": "curiousbees:species_bee_nest",
   "config": {
-    "state": {
+    "nest_state": {
       "Name": "curiousbees:forest_bee_nest",
       "Properties": {
         "facing": "south",
         "honey_level": "0"
       }
-    }
+    },
+    "attached_blocks": [
+      { "Name": "minecraft:fern" },
+      { "Name": "minecraft:short_grass" },
+      { "Name": "minecraft:short_grass" }
+    ]
   }
 }
