@@ -7,9 +7,32 @@ Operational breakdown of [`roadmap.md`](roadmap.md) into **epics** (E#) and **ta
 ## Scope rule for this file
 
 > **Adding new species / new mutations / new biome packs is intentionally OUT OF SCOPE for every task below.**
-> The work here is **structural** — make adding species **cheap and safe later**. Anything that says “species” refers to the **few existing** ones (`meadow`, `forest`, `arid`, `cultivated`, `hardy`) only.
+> The work here is **structural** — make adding species **cheap and safe later**. Anything that says “species” refers to the **few existing** ones (`common`, `meadow`, `forest`, `arid`, `cultivated`, `hardy`) only.
 
-When you eventually open the “species expansion” epic (post-Phase 5), the tasks will be of the form *“ship species X using the pipeline already built”* and will not require touching engine code.
+When you eventually open the “species expansion” epic (post-Phase 5), the tasks will be of the form *”ship species X using the pipeline already built”* and will not require touching engine code.
+
+---
+
+## Epic PR — Product Reset (Priority lane — run before any new content)
+
+**Goal:** align the running implementation with the productization reset spec. These tasks fix critical bugs, remove confusing concepts, and establish the correct player-facing experience.
+
+> **This epic blocks all other new work.** No new species, GUI polish, or Fabric prep until PR exit gates pass.
+
+| ID | Task | Size | Status | Done when | Depends on |
+|----|------|------|--------|-----------|------------|
+| **PR-T01** | Fix Bee Jar / Bee Transporter — atomic capture/release | M | `todo` | Capture serializes genome into item BEFORE removing bee from world. Release spawns bee BEFORE clearing item. If any step fails, state rolls back. No bee can disappear silently. Tooltip shows species + genetics on loaded item. | ADR-0014, ADR-0016 |
+| **PR-T02** | Rename Advanced Beehive + migrate lang/recipes/creative tab | M | `todo` | Block `curiousbees:advanced_beehive` exists. All player-facing strings say “Advanced Beehive”. `Apiary`/`Genetic Apiary` absent from lang keys and creative tab. Old block code kept as internal migration bridge. | ADR-0018 |
+| **PR-T03** | Add Common species + fix spawn assignment | M | `todo` | `curiousbees:common` species defined in builtins + JSON. Vanilla spawn egg → Common bee. Mod spawn eggs → correct species. Biome does not override any bee's species on spawn. Safe fallback = Common + WARNING. | ADR-0019 |
+| **PR-T04** | Wild nests generate with occupants (data-driven) | L | `todo` | Each nest type has a JSON definition with `biome_tags`, `occupant_count`, `occupant_species_pool`. Worldgen places nest + populates bees from pool. No hardcoded `if biome == desert → arid`. | ADR-0019 |
+| **PR-T05** | Habitat discovery mutation — Common + Common → 3% | M | `todo` | `MutationService` evaluates `HABITAT_DISCOVERY` after Common+Common inheritance. Result drawn from biome's habitat pool. Data-driven. Partial (~95%) and full (~5%) variants. | ADR-0019, PR-T03 |
+| **PR-T06** | Advanced Beehive GUI — 3 bee slots (no expansion) | L | `todo` | Screen shows 3 visual bee slots (not item slots), 3 frame slots, 9 output slots, 0 upgrade slots. Bee slots show genetic report (species, purity, traits) with no analysis gate. Bee slot insertion: only via loaded Bee Jar / Bee Transporter. | ADR-0016, ADR-0018, PR-T01, PR-T02 |
+| **PR-T07** | Beehive Expansion Box — 7 bee slots + 3 upgrade slots | L | `todo` | Box placed below Advanced Beehive. GUI switches to 7 bee slots + 3 upgrade slots dynamically. Removing box releases excess bees safely (never deletes). Upgrade slots accept `curiousbees:beehive_upgrades` tag (DEV-PLACEHOLDER effects OK). | ADR-0018, PR-T06 |
+| **PR-T08** | Centrifuge — 9 output slots + 3 upgrade slots | M | `todo` | Centrifuge has exactly: 1 comb input, 9 output slots, 1 bottle input, 1 honey bottle output slot, honey counter 0–5 visual, 3 upgrade slots. Existing honey counter logic preserved. | ADR-0015 |
+| **PR-T09** | Remove analysis gate from all UI paths | M | `todo` | `BeeGeneticReport` used directly by Advanced Beehive GUI, Bee Jar tooltip, Bee Transporter tooltip. `isAnalyzed()` flag does not hide data. Analyzer (if kept) is optional tool using same report. | ADR-0016, PR-T06 |
+| **PR-T10** | Remove Lifespan from UI, content, breeding | S | `todo` | Lifespan not shown in any player UI. Species JSON does not define lifespan. Production logic does not use lifespan. Old genomes with lifespan field load without crash (silently ignored). | ADR-0017 |
+
+**Epic exit:** all 15 acceptance criteria in the Product Reset Spec §15 + Addendum G pass. Bee Jar does not lose bees. Advanced Beehive is the only player-facing hive concept. Genetics visible without analysis gate.
 
 ---
 

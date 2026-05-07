@@ -26,6 +26,10 @@ Single log of accepted/proposed decisions for Curious Bees. Each entry preserves
 | [ADR-0014](#adr-0014--bee-capture-item) | Bee capture item | Accepted |
 | [ADR-0015](#adr-0015--fluid-honey) | Fluid honey | Accepted |
 | [DR-016](#dr-016--apiary-redstone-behavior) | Apiary redstone behavior | Skipped |
+| [ADR-0016](#adr-0016--remove-analysis-gating) | Remove analysis gating — expose genetics in controlled UIs | Accepted |
+| [ADR-0017](#adr-0017--remove-lifespan-as-mvp-chromosome) | Remove Lifespan as MVP chromosome | Accepted |
+| [ADR-0018](#adr-0018--advanced-beehive-rename--expansion-box-capacity) | Advanced Beehive rename + Expansion Box capacity | Accepted |
+| [ADR-0019](#adr-0019--species-assignment-rules--common-bee--habitat-discovery) | Species assignment rules: Common bee + habitat discovery | Accepted |
 
 ---
 
@@ -615,3 +619,142 @@ No `common/` changes required before starting the Fabric port. See [DR-010](#dr-
 - If a future use case demands redstone integration (e.g., queen-swap timing, automated frame cycling), open a new ADR then.
 
 **Consequences.** `GeneticApiaryBlockEntity` and `AdvancedApiaryBlockEntity` ignore redstone signal. No powered block state registered. E3-T11 closed as skipped.
+
+---
+
+## ADR-0016 — Remove analysis gating
+
+**Status:** Accepted · 2026-05-07
+
+**Context.** The original R-1.5 required bees to be "analyzed" before genetic data was visible. This made sense in a Forestry-style item-bee flow where the Analyzer is a mandatory machine in the automation chain. Curious Bees uses living vanilla bee entities — the Analyzer is never an automation step, only an optional inspection tool. Requiring analysis as a gate creates friction without rewarding it.
+
+**Decision.** Remove analysis gating from all player-facing UIs.
+
+- The **Advanced Beehive** shows genetic data for each occupant bee directly in its GUI.
+- **Bee Jar** and **Bee Transporter** show genetic data in item tooltips (basic in default, full with Shift).
+- The **Bee Analyzer**, if kept, is an optional inspector that produces the same `BeeGeneticReport` — it is not the only way to see genetics.
+- The `isAnalyzed()` flag may remain for legacy save compatibility but **must not block any UI display**.
+- Raw internal allele IDs (e.g. `curiousbees:species/meadow`) are **never** shown to players in any UI.
+
+**Supersedes:** R-1.5 "before analysis" wording.
+
+**Consequences.**
+- `BeeAnalysisReport.unknown()` / `analyzed()` split is no longer used to gate display.
+- `BeeGeneticReport` becomes a shared render service used by hive GUI, item tooltips, and analyzer.
+- If a bee has no valid genome, UI shows "Invalid or missing genome" + WARNING log.
+
+---
+
+## ADR-0017 — Remove Lifespan as MVP chromosome
+
+**Status:** Accepted · 2026-05-07
+
+**Context.** Lifespan was listed as an MVP chromosome (`SPECIES · LIFESPAN · PRODUCTIVITY · FERTILITY · FLOWER_TYPE`) inherited from Forestry design thinking. Vanilla bees have no queen death / lifespan lifecycle. Curious Bees uses living vanilla bee entities; enforcing a lifespan mechanic contradicts the core design of not implementing lifecycle/death/larvae by default (R-2.4).
+
+**Decision.** `LIFESPAN` is removed from MVP gameplay and UI.
+
+- `ChromosomeType.LIFESPAN` may remain in code as deprecated for save compatibility.
+- Lifespan must not appear in: Advanced Beehive UI, Bee Jar tooltip, Bee Transporter tooltip, Analyzer report, production logic, breeding, hive timing.
+- Old saves/genomes containing LIFESPAN must not crash — deserialize and ignore the field.
+- Species definitions must not declare lifespan traits.
+
+**Migration:** Phase 1 — disable display and production use. Phase 2 (future) — remove the enum value entirely after compatibility window.
+
+**Consequences.**
+- MVP chromosomes: `SPECIES · PRODUCTIVITY · FERTILITY · FLOWER_TYPE`.
+- `BuiltinBeeTraits` must not define Lifespan alleles for MVP content (or mark existing ones `@Deprecated`).
+- Species JSON definitions drop the `lifespan` field.
+
+---
+
+## ADR-0018 — Advanced Beehive rename + Expansion Box capacity
+
+**Status:** Accepted · 2026-05-07  
+**Partially supersedes:** ADR-0013 (extension block capacity semantics)
+
+**Context.** The mod accumulated confusing parallel concepts: `GeneticApiary`, `AdvancedApiary`, `ApiaryExtension`. Product review identified this as a UX failure. ADR-0013 defined the extension as primarily an automation proxy (not a real capacity expansion). This conflicts with the desired product experience.
+
+**Decision.**
+
+**Naming (hard rule):**
+- Primary production block: **Advanced Beehive** (`curiousbees:advanced_beehive`).
+- Expansion block: **Beehive Expansion Box** (`curiousbees:beehive_expansion_box`).
+- Terms `Apiary`, `Genetic Apiary`, `Advanced Apiary` are **not** to appear in player-facing text. Code may retain them during migration.
+
+**Capacity without Expansion Box:**
+- 3 bee slots (visual, not item slots)
+- 3 frame slots
+- 9 output slots
+- 0 upgrade slots
+
+**Capacity with Beehive Expansion Box:**
+- 7 bee slots (visual, not item slots)
+- 3 frame slots
+- 9 output slots
+- 3 upgrade slots
+
+**Expansion Box placement:** directly **below** the Advanced Beehive (one block). Not lateral. Maximum one expansion per hive.
+
+**Expansion Box behavior:**
+- Expands capacity AND provides additional automation faces (superseding ADR-0013's "proxy-only" model).
+- Opening the Expansion Box GUI opens the same Advanced Beehive GUI with expanded layout.
+- If the Advanced Beehive is removed, the Expansion Box stops functioning (does not crash).
+- If the Expansion Box is removed while >3 bees occupy the hive, excess bees are released into the world safely — **never deleted silently**.
+
+**Bee slot rules:**
+- Bee slots are not standard `IItemHandler` slots — never exposed to hoppers/pipes.
+- Bees enter via vanilla AI or via loaded Bee Jar / Bee Transporter clicked on an empty bee slot.
+- Bee slots show occupant species, purity, and trait summary (genetic report, no gate).
+
+**Upgrade slots:**
+- Accept items tagged `curiousbees:beehive_upgrades` only.
+- Upgrade effects may be placeholder (`DEV-PLACEHOLDER`) in the first implementation slice.
+
+**Consequences.**
+- `AdvancedBeehiveBlock` + `AdvancedBeehiveBlockEntity` + `AdvancedBeehiveMenu` + `AdvancedBeehiveScreen` are the canonical class names.
+- `BeehiveExpansionBoxBlock` + `BeehiveExpansionBoxBlockEntity` replace `ApiaryExtensionBlock`.
+- All lang keys, recipes, creative tab entries, and JEI (future) must use the new names.
+- Old `AdvancedApiaryBlock` code migrates; do not delete until migration is verified.
+
+---
+
+## ADR-0019 — Species assignment rules: Common bee + habitat discovery
+
+**Status:** Accepted · 2026-05-07
+
+**Context.** The existing spawn handler assigned a biome-derived species to any bee that spawned without a genome. This caused vanilla bees, spawn-egg bees, and legacy bees to acquire mod species unintentionally, breaking the vanilla bee experience and making the Common species concept unachievable.
+
+**Decision.**
+
+**Species origin hierarchy (in priority order):**
+1. Mod species spawn egg → use declared species.
+2. Vanilla spawn egg (`minecraft:bee_spawn_egg`) → assign **Common** species.
+3. Naturally spawned from a wild nest block → use `occupant_species_pool` from the nest definition (data-driven).
+4. Any other origin (other mods, legacy, deserialization failure) → assign **Common** species + log WARNING.
+
+**Biome MUST NOT override species from rule 1–3.**
+
+**Common species (`curiousbees:common`):**
+- Display: "Common Bee"
+- Represents a vanilla bee in the genetic system.
+- Default traits: Normal productivity, Two fertility, Flowers flower type.
+- Dominant across all trait alleles.
+
+**Wild nest generation (data-driven):**
+- Each nest type declares `biome_tags`, `generation_weight`, `occupant_count` (min/max), and `occupant_species_pool` (species + weight).
+- The worldgen system picks a nest type by biome match + weight, then populates 1–N bees from the pool.
+- No `if biome == desert → Arid` hardcoding anywhere.
+
+**Habitat discovery mutation:**
+- When two **Common** bees breed in a biome that has habitat species defined, there is a **3% base chance** of a habitat-discovery mutation.
+- The result species is drawn from the habitat species pool for that biome (data-driven).
+- Partial result (~95%): one allele changes, other stays Common.
+- Full result (~5%): both alleles change to the discovered species.
+- This is the intended discovery path — players breed vanilla bees in the world and may discover local species.
+
+**Consequences.**
+- `WildBeeSpawnService` must check spawn origin before assigning genome.
+- Biome-based genome assignment is removed from the generic spawn path.
+- Wild nest block entities must populate occupants on generation using the nest's species pool.
+- `MutationService` gains a `HABITAT_DISCOVERY` mutation type evaluated after Common+Common inheritance.
+- All five existing species (Meadow, Forest, Arid, Cultivated, Hardy) gain nest definitions and/or habitat pool entries.

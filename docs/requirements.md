@@ -12,7 +12,7 @@ What Curious Bees **must do**, **must not do**, and **must remain true** as it g
 - **R-1.2 (MUST)** Each bee carries a **genome** (chromosomes / alleles / dominance / active+inactive resolution).
 - **R-1.3 (MUST)** Breeding follows **vanilla** Minecraft flow (two bees, flowers, baby bee). The mod assigns the baby's genome **after** vanilla creates it.
 - **R-1.4 (MUST)** Inheritance is **Mendelian**; mutation is **probabilistic**, never `A + B → C` deterministic.
-- **R-1.5 (MUST)** Genetics may not be revealed in full to the player **before analysis**. Tooltips and chat must respect analyzed state.
+- **R-1.5 (MUST)** Genetic data **may** be shown directly in **Curious Bees controlled interfaces** — Advanced Beehive bee slots, captured bee item tooltips (Bee Jar / Bee Transporter), and optional inspector tools. Raw internal allele IDs must **never** appear in player-facing UI. The Analyzer, if kept, is an **optional** inspection tool, not a progression gate. (See [`decisions.md` → ADR-0016](decisions.md).)
 - **R-1.6 (SHOULD)** The mod targets **Productive-Bees-grade** UX clarity for the hive/automation layer while keeping the **Forestry-grade** depth of genetic curiosity.
 
 ## 2. Identity (what the mod is not)
@@ -28,12 +28,12 @@ What Curious Bees **must do**, **must not do**, and **must remain true** as it g
 
 These describe the validated foundation the mod **already** has and must not regress.
 
-- **R-3.1 (MUST)** Wild bees spawned in the world receive a biome-appropriate genome.
+- **R-3.1 (MUST)** Wild bees spawned via **vanilla spawn egg** (`minecraft:bee_spawn_egg`) receive a **Common** species genome. Bees spawned via **mod-specific spawn eggs** receive the egg's declared species. **Biome does not override a bee's species on generic spawn** — it only influences which wild nests can generate and habitat-discovery mutations. (See [`decisions.md` → ADR-0019](decisions.md).)
 - **R-3.2 (MUST)** Genome **persists** across save/load (entity attachment + codec; see [`decisions.md` → ADR-003 NeoForge bee genome storage](decisions.md)). Active/inactive resolution must **not** be re-rolled on load.
 - **R-3.3 (MUST)** Two bees breeding produce a baby with a genome derived from the parents (one allele per chromosome from each parent) plus possible mutation.
-- **R-3.4 (MUST)** Missing parent genome → safe fallback (assign biome-appropriate wild genome, log WARNING). Never crash.
-- **R-3.5 (MUST)** An **Analyzer** item turns a bee from "unanalyzed" to "analyzed" and produces a player-facing report.
-- **R-3.6 (MUST)** A **Genetic Apiary** block exists with vanilla-style housing parity (subclass of beehive, see [`decisions.md` → ADR-0009](decisions.md)). Bees enter/leave on their own; the apiary may add **mod production** on top of vanilla honey, not in place of it.
+- **R-3.4 (MUST)** Missing parent genome → safe fallback (assign **Common** species genome, log WARNING). Never crash. Do not assign a biome-based species as fallback.
+- **R-3.5 (SHOULD)** A **Bee Analyzer** item is an **optional** inspection tool that produces a detailed player-facing genetic report. It is **not** a progression gate — the Advanced Beehive and captured bee items show genetics without requiring analysis. (See [`decisions.md` → ADR-0016](decisions.md).)
+- **R-3.6 (MUST)** The **Advanced Beehive** (`curiousbees:advanced_beehive`) is the primary player-facing production block. Bees enter naturally via vanilla AI or via loaded Bee Jar / Bee Transporter. It supports 3 bee slots, 3 frame slots, and 9 output slots without a Beehive Expansion Box; with one it gains 7 bee slots and 3 upgrade slots. (See [`decisions.md` → ADR-0013](decisions.md) and ADR-0018.)
 - **R-3.7 (MUST)** A **production resolver** generates outputs from the active species (and optionally inactive species) modulated by traits.
 
 ## 4. Functional requirements (incoming, defined by the roadmap)
@@ -41,7 +41,7 @@ These describe the validated foundation the mod **already** has and must not reg
 These are required for upcoming phases. Detail and order live in [`roadmap.md`](roadmap.md) and [`TASKS.md`](TASKS.md).
 
 - **R-4.1 (SHOULD)** Players must be able to **distinguish species** in-world (visual variants) and after analysis (analyzer screen, tooltips).
-- **R-4.2 (SHOULD)** Wild **nest variety** (Forestry-flavored visual breadth) with **vanilla-grade interaction** (POI, anger, occupancy, harvest with shears/bottle).
+- **R-4.2 (SHOULD)** Wild **nest variety** with **vanilla-grade interaction** (POI, anger, occupancy, harvest with shears/bottle). Nests **must generate with bees inside** (1–3 occupants) defined by the nest's `occupant_species_pool` — biome does not override nest contents. Nest placement is data-driven. (See [`decisions.md` → ADR-0019](decisions.md).)
 - **R-4.3 (SHOULD)** A **frame** system: items in apiary slots that modulate production via the resolver.
 - **R-4.4 (SHOULD)** A **processing line** (centrifuge or equivalent) turning combs into honey + wax + species by-products. Same role as familiar mods, Curious Bees IDs and balance.
 - **R-4.5 (SHOULD)** Sided IO contracts on the apiary and processing blocks (extract-only outputs, designated frame insert side, vanilla bee entry preserved).
@@ -60,7 +60,7 @@ These are required for upcoming phases. Detail and order live in [`roadmap.md`](
 
 ## 6. Content scope guardrails
 
-- **R-6.1 (MUST)** MVP species set is fixed at: **Meadow, Forest, Arid, Cultivated, Hardy** (see [`architecture.md` → §Content / built-ins](architecture.md)).
+- **R-6.1 (MUST)** MVP species set is: **Common** (vanilla/base), **Meadow, Forest, Arid, Cultivated, Hardy** (see [`architecture.md` → §Content / built-ins](architecture.md)). The **Common** species represents a vanilla bee within the genetic system and is the result of vanilla spawn eggs and safe fallbacks. MVP chromosomes are `SPECIES · PRODUCTIVITY · FERTILITY · FLOWER_TYPE`; `LIFESPAN` is removed from gameplay (see [`decisions.md` → ADR-0017](decisions.md)).
 - **R-6.2 (MUST)** Adding new species after the MVP must follow [`decisions.md` → ADR-0010 (data-driven) and ADR-0011 (naming)](decisions.md).
 - **R-6.3 (MUST)** Resource-bee implementation is gated by **all** prerequisites in [`decisions.md` → ADR-0012](decisions.md).
 - **R-6.4 (MUST)** Adding a new species **MUST NOT** require touching engine code beyond what the structural epics in [`TASKS.md`](TASKS.md) (E1.C, E2.A/B) make data-driven.

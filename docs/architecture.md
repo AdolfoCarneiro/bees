@@ -158,9 +158,14 @@ Placeholder until DR-010 is greenlit. When implemented, must reuse `common/*` se
 1. Minecraft spawns a Bee entity.
 2. NeoForge spawn handler runs.
 3. If the bee already has a genome → skip.
-4. Otherwise, derive species candidates from biome/context.
-5. Create a default wild genome (mostly purebred).
-6. Store the genome on the bee entity (attachment).
+4. Check spawn origin:
+   a. Mod species spawn egg → use that species.
+   b. Vanilla bee spawn egg (minecraft:bee_spawn_egg) → assign Common species.
+   c. Naturally spawned from a wild nest → nest occupant_species_pool defines species.
+   d. Any other origin (other mods, legacy, unknown) → assign Common species + log WARNING.
+5. Biome MUST NOT override the species assignment from step 4.
+6. Create a default wild genome (mostly purebred) for the resolved species.
+7. Store the genome on the bee entity (attachment).
 ```
 
 ### 3.2 Bee breeding
@@ -188,17 +193,17 @@ Event handlers stay **thin**; the core never sees `Bee`.
 4. NeoForge renders it (chat, tooltip, screen).
 ```
 
-### 3.4 Production (Genetic Apiary)
+### 3.4 Production (Advanced Beehive)
 
 ```text
-1. A bee with nectar enters the apiary (vanilla addOccupant path).
-2. After super.addOccupant, the block entity reads the bee genome.
-3. ProductionResolver.resolve(species, traits, frame modifiers, random) → outputs.
-4. Outputs are pushed into the apiary output inventory (extract-only via IItemHandler).
-5. Vanilla honey fill still happens; mod production is additive.
+1. A bee enters the Advanced Beehive (vanilla AI path or via loaded Bee Jar/Transporter).
+2. Block entity tracks the bee as an occupant (not an item slot — displayed in GUI bee slots).
+3. On production tick: ProductionResolver.resolve(species, traits, frame modifiers, random) → outputs.
+4. Outputs are pushed into the 9 output slots (extract-only via IItemHandler).
+5. No honey level visible in GUI — honey is exclusively produced by the Centrifuge from combs.
 ```
 
-(See [`decisions.md` → ADR-0009](decisions.md) for the apiary contract.)
+(See [`decisions.md` → ADR-0009](decisions.md) for the base hive contract, ADR-0013 + ADR-0018 for Advanced Beehive.)
 
 ---
 
@@ -271,8 +276,10 @@ Use Fabric API **Data Attachments** with a `Codec` over the **same** `GenomeData
 MVP:
 
 ```text
-SPECIES · LIFESPAN · PRODUCTIVITY · FERTILITY · FLOWER_TYPE
+SPECIES · PRODUCTIVITY · FLOWER_TYPE
 ```
+
+`LIFESPAN` and `FERTILITY` are removed from MVP gameplay. Vanilla bees have no Forestry-style queen death cycle and no larvae-per-cycle mechanic — both traits depend on a queen/princess/drone system that does not exist here. Old genomes containing either field must not crash; ignore or skip on load. (See [`decisions.md` → ADR-0017](decisions.md).)
 
 Future (do not implement until explicitly scoped):
 
@@ -447,13 +454,16 @@ Possible cases: pre-existing world bees, bees from other mods, deserialization f
 
 ### 7.2 Initial species (MVP)
 
-| Species | Role | Spawn context | Default trait gist | Dominance |
-|---------|------|----------------|--------------------|-----------|
-| **Meadow** | Starter wild generalist | Plains / flower forest / fallback | Normal/Normal/Two/Flowers | Dominant |
-| **Forest** | Starter wild forest progression | Forest / birch / dark forest | Normal/Normal/Two/Leaves | Dominant |
-| **Arid** | Starter wild dry biomes | Desert / savanna / badlands | Normal/Slow→Normal/One→Two/Cactus | Recessive |
-| **Cultivated** | First mutation result (Meadow + Forest, ~12%) | n/a | Normal/Fast/Two/Flowers | Dominant |
-| **Hardy** | Environmental mutation (Forest + Arid, ~8%) | n/a | Long/Normal/Two/Flowers or Cactus | Recessive |
+| Species | Role | Spawn context | Default trait gist (Productivity/Fertility/FlowerType) | Dominance |
+|---------|------|----------------|-------------------------------------------------------|-----------|
+| **Common** | Base / vanilla-bee representation | Vanilla spawn egg, safe fallback | Normal/Two/Flowers | Dominant |
+| **Meadow** | Starter wild generalist | Wild nest in plains / flower forest | Normal/Two/Flowers | Dominant |
+| **Forest** | Starter wild forest | Wild nest in forest / birch / dark forest | Normal/Two/Leaves | Dominant |
+| **Arid** | Starter wild dry biomes | Wild nest in desert / savanna / badlands | Slow/One/Cactus | Recessive |
+| **Cultivated** | First mutation result (Meadow + Forest, ~12%) | Breeding only | Fast/Two/Flowers | Dominant |
+| **Hardy** | Environmental mutation (Forest + Arid, ~8%) | Breeding only | Normal/Two/Flowers | Recessive |
+
+**Common species note:** Common is the genetic identity of a vanilla bee. It is produced by `minecraft:bee_spawn_egg` and used as a safe fallback. Two Common bees breeding in a biome with a compatible habitat species pool have a **3% chance** of a habitat-discovery mutation producing that species (data-driven, not hardcoded by biome). (See [`decisions.md` → ADR-0019](decisions.md).)
 
 Mutation tree:
 
@@ -471,10 +481,11 @@ Arid ───┘
 
 | Trait | Values | MVP gameplay |
 |-------|--------|---------------|
-| **Lifespan** | Short / Normal / Long | Displayed; future: tech-apiary cycles. |
 | **Productivity** | Slow (0.75x) / Normal (1.00x) / Fast (1.25x) | Multiplies production rate/chance. |
-| **Fertility** | One / Two / Three | Displayed; future: extra larvae in tech apiaries. |
+| **Fertility** | One / Two / Three | Displayed; future: extra offspring in advanced setups. |
 | **Flower Type** | Flowers / Cactus / Leaves | Displayed; future: gates breeding/production environment. |
+
+`Lifespan` is **not** an MVP trait — vanilla bees have no queen death lifecycle. See [`decisions.md` → ADR-0017](decisions.md).
 
 Multipliers are **placeholders** until a balance pass.
 
@@ -500,40 +511,36 @@ MVP product set: `Honeycomb`, `Meadow Comb`, `Forest Comb`, `Arid Comb`, `Cultiv
 
 ### 7.5 Analyzer display
 
-#### Field visibility table (E1-T05 audit)
+#### Field visibility table (post-ADR-0016)
 
-| Field | Before analysis | After analysis |
-|-------|----------------|----------------|
-| Species active allele (display name) | hidden | shown |
-| Species inactive allele (display name) | hidden | shown |
-| Species purity (purebred / hybrid) | hidden | shown |
-| Lifespan active + inactive + dominance | hidden | shown |
-| Productivity active + inactive + dominance | hidden | shown |
-| Fertility active + inactive + dominance | hidden | shown |
-| Flower type active + inactive + dominance | hidden | shown |
-| Raw genome / internal allele IDs | never shown | never shown |
+Genetic data is **always visible** in Curious Bees controlled interfaces. The `isAnalyzed()` flag is **deprecated as a gate** — it must not hide data in the Advanced Beehive, Bee Jar, or Bee Transporter UIs.
+
+| Field | Advanced Beehive / Captured Item tooltip | Raw in-world / external mods |
+|-------|------------------------------------------|------------------------------|
+| Species active allele (display name) | **shown** | not applicable |
+| Species inactive allele (display name) | **shown** | not applicable |
+| Species purity (purebred / hybrid) | **shown** | not applicable |
+| Productivity active + inactive | **shown** | not applicable |
+| Fertility active + inactive | **shown** | not applicable |
+| Flower type active + inactive | **shown** | not applicable |
+| Raw genome / internal allele IDs | **never shown** | never shown |
 
 **Rules:**
-- "Before analysis" = `BeeAnalysisReport.unknown()` — all `GeneReport` fields carry `UNKNOWN_ID`; UI must not reveal any gene data.
-- "After analysis" = `BeeAnalysisReport.analyzed(...)` — each `GeneReport` exposes `activeId`, `inactiveId`, `activeDominance`, `inactiveDominance`, `isPurebred`.
-- Display names for species and traits are resolved from the content registry; internal IDs are never shown directly.
-- The `isAnalyzed()` flag controls which report variant is sent to the client; the client receives the redacted or full report — it never receives both.
+- Display names are resolved from the content registry; internal IDs are never shown to players.
+- If a bee has no valid genome (bug / save migration), show "Invalid or missing genome", log WARNING, do not crash.
+- The `isAnalyzed()` flag may still exist for legacy compatibility but **must not block UI display**.
+- The Bee Analyzer, if kept, renders the same `BeeGeneticReport` as other interfaces — it is not the only entry point.
 
-After analysis, the report shows species + purity + each trait pair, with dominance indicators:
+Genetic report format (shown in Advanced Beehive bee slot tooltip and captured item tooltip):
 
 ```text
-[D] Dominant   [R] Recessive
-[A] Active     [I] Inactive
-
-Species:
-  [A][D] Cultivated
-  [I][D] Forest
-Lifespan:
-  [A][D] Normal   [I][R] Long
-...
+Species:     Meadow / Forest   (Hybrid)
+Productivity: Fast / Normal
+Fertility:    Two / Three
+Flower Type:  Flowers / Leaves
 ```
 
-Before analysis: identity is gated; tooltips/chat must not leak post-analysis fields.
+Tooltip with Shift can expand to full active/inactive/dominance detail.
 
 ### 7.6 Data-driven content (post-ADR-0010)
 

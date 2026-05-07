@@ -8,24 +8,21 @@ The goal is not to port Forestry and not to fork Productive Bees. The goal is to
 
 ## Current Status
 
-The initial MVP foundation has been validated.
+The initial MVP foundation has been validated, but a **product review identified critical bugs and UX failures** that must be corrected before the mod is considered playable.
 
-The project already proved the core loop:
+The core loop is proven:
 
 ```txt
-living bee
--> genome
--> breeding
--> inheritance
--> mutation
--> analyzer
--> production
--> initial apiary/data-driven foundation
+living bee -> genome -> breeding -> inheritance -> mutation -> production
 ```
 
-The project is now entering a post-MVP productization phase.
+The project is now executing a **Product Reset** before adding any new content. The reset addresses:
 
-The current focus is not to add a large amount of content yet. The focus is to turn the validated MVP into a real playable mod with better UX, visuals, apiary interaction, analyzer interfaces, frames, and a sustainable content/asset pipeline.
+1. **Bee Jar / Bee Transporter** remove bees from the world but leave the item empty (P0 bug).
+2. **Confusing hive concepts** — the player-facing hive is now **Advanced Beehive** only; Apiary/Genetic Apiary retired from player view.
+3. **Species assigned by biome on any spawn** — now only wild nests define occupants; vanilla spawn egg → Common bee.
+4. **Analysis as a mandatory gate** — removed; genetics visible directly in Advanced Beehive and item tooltips.
+5. **Lifespan chromosome** — removed from MVP; vanilla bees have no Forestry-style queen death cycle.
 
 ```text
 Product direction: this file + CLAUDE.md + AGENTS.md + docs/project-guide.md

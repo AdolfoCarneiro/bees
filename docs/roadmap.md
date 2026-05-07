@@ -77,6 +77,30 @@ flowchart LR
 
 ---
 
+## Phase PR — Product Reset (current priority)
+
+**Goal:** align the running implementation with the productization reset spec. The roadmap was completed on paper, but the actual behavior does not match the intended product. This phase fixes critical bugs and corrects the player-facing concept before any new content lands.
+
+**Why this runs before Phase 0 hardening:** the P0 loop (breed → hive → comb) cannot be called "done" while Bee Jar loses bees and the hive concept is confused.
+
+**Deliverables**
+
+| Track | Items |
+|-------|-------|
+| **P0 bug fix** | Bee Jar + Bee Transporter: atomic capture/release; no bee can disappear silently (PR-T01). |
+| **Naming reset** | Advanced Beehive replaces Apiary/Genetic Apiary as player-facing concept; Beehive Expansion Box replaces Extension (PR-T02). |
+| **Common species** | Vanilla spawn egg → Common bee; biome does not override species; data-driven fallback (PR-T03). |
+| **Wild nests** | Nests generate with bees from their occupant pool; no hardcoded biome→species map (PR-T04). |
+| **Habitat discovery** | Common + Common breeding → 3% chance to discover biome habitat species, data-driven (PR-T05). |
+| **Advanced Beehive GUI** | 3 bee slots (visual), 3 frame slots, 9 outputs; genetic data visible without analysis gate (PR-T06, PR-T09). |
+| **Expansion Box** | Below-only placement, expands to 7 bee slots + 3 upgrade slots; safe release on remove (PR-T07). |
+| **Centrifuge slots** | 9 output slots + 3 upgrade slots; existing honey counter preserved (PR-T08). |
+| **Lifespan removal** | Lifespan removed from all UI, content, and breeding logic; old genomes tolerated (PR-T10). |
+
+**Exit:** all acceptance criteria in Product Reset Spec §15 + Addendum G pass. No bee is ever silently deleted. Genetics visible without analysis gate. Single player-facing hive concept.
+
+---
+
 ## Phase 0 — Shipped foundation (keep healthy)
 
 **Goal:** genetics, breeding, mutations, analyzer touchpoint, production resolver, combs, first **Genetic Apiary** path — all stay regression-safe.
