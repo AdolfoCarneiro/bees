@@ -16,13 +16,13 @@ Single log of accepted/proposed decisions for Curious Bees. Each entry preserves
 | [ADR-0006](#adr-0006--add-fabric-support-after-the-neoforge-mvp) | Add Fabric support after the NeoForge MVP | Accepted |
 | [ADR-0007](#adr-0007--keep-resource-bees-out-of-the-mvp) | Keep resource bees out of the MVP | Accepted |
 | [ADR-0008](#adr-0008--use-detailed-local-specs-for-ai-implementation-guidance) | Use detailed local specs for AI implementation guidance | Accepted |
-| [ADR-0009](#adr-0009--genetic-apiary-first-version-design) | Genetic Apiary first version design | Accepted |
+| [ADR-0009](#adr-0009--genetic-apiary-first-version-design) | Genetic Apiary first version design | Accepted — legacy floor |
 | [ADR-0010](#adr-0010--data-driven-content-strategy) | Data-driven content strategy | Accepted |
 | [ADR-0011](#adr-0011--expanded-content-naming-strategy) | Expanded content naming strategy | Accepted |
 | [ADR-0012](#adr-0012--resource-bee-readiness) | Resource bee readiness | Accepted |
 | [ADR-003](#adr-003--neoforge-bee-genome-storage) | NeoForge bee genome storage | Accepted |
 | [DR-010](#dr-010--fabric-support-strategy) | Fabric support strategy | Proposed |
-| [ADR-0013](#adr-0013--advanced-hive-footprint) | Advanced hive footprint | Accepted |
+| [ADR-0013](#adr-0013--advanced-hive-footprint) | Advanced hive footprint | Accepted (partial — naming/capacity superseded by ADR-0018) |
 | [ADR-0014](#adr-0014--bee-capture-item) | Bee capture item | Accepted |
 | [ADR-0015](#adr-0015--fluid-honey) | Fluid honey | Accepted |
 | [DR-016](#dr-016--apiary-redstone-behavior) | Apiary redstone behavior | Skipped |
@@ -30,6 +30,30 @@ Single log of accepted/proposed decisions for Curious Bees. Each entry preserves
 | [ADR-0017](#adr-0017--remove-lifespan-and-fertility-as-mvp-chromosomes) | Remove Lifespan and Fertility as MVP chromosomes | Accepted |
 | [ADR-0018](#adr-0018--advanced-beehive-rename--expansion-box-capacity) | Advanced Beehive rename + Expansion Box capacity | Accepted |
 | [ADR-0019](#adr-0019--species-assignment-rules--common-bee--habitat-discovery) | Species assignment rules: Common bee + habitat discovery | Accepted |
+
+---
+
+## Current decision map
+
+For Product Reset implementation, treat these as the **active product decisions** — they supersede conflicting guidance in earlier ADRs:
+
+| ADR | Topic | Key rule |
+|-----|-------|----------|
+| [ADR-0014](#adr-0014--bee-capture-item) | Bee capture item | Bee Jar (single-use) + Bee Transporter (reusable) for manual insertion into Advanced Beehive |
+| [ADR-0015](#adr-0015--fluid-honey) | Centrifuge honey model | Discrete bottles; dedicated honey bottle output slot separate from 9 result slots |
+| [ADR-0016](#adr-0016--remove-analysis-gating) | Analysis gating | Genetics always visible in controlled UIs; Analyzer is optional, not a gate |
+| [ADR-0017](#adr-0017--remove-lifespan-and-fertility-as-mvp-chromosomes) | MVP chromosomes | `SPECIES · PRODUCTIVITY · FLOWER_TYPE` only; Lifespan and Fertility removed |
+| [ADR-0018](#adr-0018--advanced-beehive-rename--expansion-box-capacity) | Player-facing hive | **Advanced Beehive** + optional **Beehive Expansion Box** (below-only); internal code may retain legacy names during migration |
+| [ADR-0019](#adr-0019--species-assignment-rules--common-bee--habitat-discovery) | Species assignment | Common = vanilla spawn egg / safe fallback; biome never overrides species |
+
+Legacy / compatibility decisions (historical — do not reopen without a new ADR):
+
+| ADR | Topic | Current role |
+|-----|-------|-------------|
+| [ADR-0009](#adr-0009--genetic-apiary-first-version-design) | Genetic Apiary design | Compatibility floor only; player-facing production superseded by ADR-0018 |
+| [ADR-0013](#adr-0013--advanced-hive-footprint) | Advanced hive footprint | No-multiblock rule preserved; naming and capacity semantics superseded by ADR-0018 |
+
+**Conflict rule:** when two ADRs conflict, the newer ADR wins unless a later ADR explicitly says otherwise.
 
 ---
 
@@ -134,7 +158,7 @@ GeneticRandom
 
 **Decision.** **No** iron / copper / gold / redstone / diamond / emerald / netherite / uranium bees in the MVP. Initial species are limited to **Meadow, Forest, Arid, Cultivated, Hardy**. Resource bees may be designed later — gated by [ADR-0012](#adr-0012--resource-bee-readiness).
 
-**Note (ADR-0019).** **Common** is the base vanilla species — assigned by `minecraft:bee_spawn_egg` and used as the safe fallback. It is included in the full MVP species set (six total) but is not a resource bee; it is excluded from this guardrail. See [ADR-0019](#adr-0019--species-assignment-rules--common-bee--habitat-discovery).
+**Note (ADR-0019).** ADR-0019 later adds **Common** as the vanilla/base species in the genetic system. This does not change the no-resource-bees decision. The initial non-resource Curious Bees species remain **Meadow, Forest, Arid, Cultivated, and Hardy**, with Common serving as the vanilla/base/fallback species (assigned by `minecraft:bee_spawn_egg`; not a resource bee). See [ADR-0019](#adr-0019--species-assignment-rules--common-bee--habitat-discovery).
 
 ---
 
@@ -152,7 +176,9 @@ GeneticRandom
 
 ## ADR-0009 — Genetic Apiary first version design
 
-**Status:** Accepted
+**Status:** Accepted — legacy compatibility floor. Player-facing production direction superseded by ADR-0018.
+
+**Legacy role.** The `GeneticApiaryBlock` / `GeneticApiaryBlockEntity` may remain as internal or migration code. It is **not** the current player-facing production block — that role belongs to the **Advanced Beehive** (see ADR-0018). Any reference to Genetic Apiary as the main player UX must be treated as legacy unless explicitly scoped for migration work.
 
 **Context.** First controlled beekeeping block. Genome storage, breeding, analyzer, production resolver, and 5 comb items already exist. An earlier "Caught Bee item" model was rejected because it requires a capture tool before the apiary is usable, diverging from the vanilla bee fantasy.
 
@@ -449,7 +475,19 @@ _Last updated: 2026-05-06._
 
 ## ADR-0013 — Advanced hive footprint
 
-**Status:** Accepted · 2026-05-06
+**Status:** Accepted (partially superseded by ADR-0018) · 2026-05-06
+
+**What this ADR still preserves:**
+- No multiblock pattern — the hive core is a single block.
+- No broad side-attached block complexity.
+- Extension is a single optional add-on block, not a multiblock structure.
+
+**What ADR-0018 supersedes:**
+- Naming: `AdvancedApiaryBlock` → `AdvancedBeehiveBlock`; `ApiaryExtensionBlock` → `BeehiveExpansionBox`.
+- Extension placement: above-or-below → **below-only** (Expansion Box placed directly below the Advanced Beehive).
+- Extension role: pure automation proxy → **capacity expansion** (7 bee slots + 3 upgrade slots when paired).
+
+**Current rules (from ADR-0018, not this ADR):** Advanced Beehive (`curiousbees:advanced_beehive`) + optional Beehive Expansion Box (`curiousbees:beehive_expansion_box`) placed directly below.
 
 **Context.** Phase 3 adds an advanced hive tier above the base `GeneticApiaryBlock`. The decision: how the block exists physically in the world and how automation connects to it.
 

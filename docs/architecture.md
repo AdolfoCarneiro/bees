@@ -574,7 +574,7 @@ The NeoForge platform layer subscribes to `AddReloadListenerEvent` and triggers 
 ### 7.8 Acceptance criteria (content design)
 
 ```text
-- Five MVP species defined.
+- Six MVP species defined (Common + five named species).
 - Two MVP mutations defined.
 - MVP trait values defined.
 - Wild spawn contexts defined.
@@ -646,7 +646,7 @@ Run on a **dedicated server** (not LAN/single-player) with at least one connecte
 - [ ] **Spawn** — wild bee spawns in its habitat biome; genome is attached (shift-click or analyzer confirms non-empty species).
 - [ ] **Breed** — place two bees near flowers; child spawns; child genome visible in Advanced Beehive or Bee Jar tooltip (species may differ from parents if mutation triggers).
 - [ ] **Analyze** — right-click bee with Bee Analyzer item; genetic report shown on client (same data as Advanced Beehive); Analyzer is an optional inspector, not required to see genetics.
-- [ ] **Hive insert** — place Genetic Apiary; insert two analyzed bees; GUI shows correct occupant count and species; hopper on side inserts frames; hopper below cannot insert frames.
+- [ ] **Hive insert** — place Advanced Beehive; insert two bees via Bee Jar; GUI shows correct occupant count and species; hopper on side inserts frames; hopper below cannot insert frames.
 - [ ] **Output extract** — after one production tick, hopper below apiary extracts comb item; output slot shows correct item; frame durability decreases.
 - [ ] **Save/load** — stop and restart server; reconnect; bee genome, analyzed flag, and apiary contents survive reload.
 - [ ] **Client/server sync** — `ContainerData` fields (occupancy, honey) match what the server holds; no stale UI state after reconnect.
@@ -655,7 +655,7 @@ Run on a **dedicated server** (not LAN/single-player) with at least one connecte
 
 `BeeSpeciesHiveTargetHandler` enforces: bee enters only the nest whose `speciesId` matches its own SPECIES allele. Verify in creative for each species:
 
-| Species | Own nest | Wrong-species nest | Genetic Apiary |
+| Species | Own nest | Wrong-species nest | Advanced Beehive |
 |---------|----------|--------------------|---------------|
 | Meadow | enters `meadow_bee_nest` | ignores forest/arid/log nests | enters (any species) |
 | Forest | enters `forest_bee_nest` or `forest_bee_log_nest` | ignores meadow/arid nests | enters |
@@ -684,7 +684,7 @@ Biomes confirmed within 500 blocks of spawn: Plains (meadow bees), Forest (fores
 | Forest bee nest spawn | TBD | forest biome |
 | Arid bee nest spawn | TBD | desert biome |
 | Flower patch (breeding) | TBD | flat ground near nest |
-| Reference genetic apiary | TBD | pre-placed in creative |
+| Reference Advanced Beehive | TBD | pre-placed in creative |
 
 > When you run this world for the first time, fill in the table above and commit the update.
 
@@ -694,7 +694,7 @@ Run in creative mode on local single-player. Tick each box; if any fail, file a 
 
 **Content loading**
 
-- [ ] F3 debug overlay (EX-T03) shows correct species count (5) and mutation count (≥ 2) — no zeros.
+- [ ] F3 debug overlay (EX-T03) shows correct species count (6) and mutation count (≥ 2) — no zeros.
 - [ ] `/curiousbees habitat here` returns a result in a plains biome (not "no match").
 - [ ] `/reload` completes without errors; species count unchanged after reload.
 
@@ -711,7 +711,7 @@ Run in creative mode on local single-player. Tick each box; if any fail, file a 
 
 **Hive & production**
 
-- [ ] Bees enter Genetic Apiary voluntarily; occupant count in GUI matches.
+- [ ] Bees enter Advanced Beehive voluntarily; occupant count in GUI matches.
 - [ ] After one production tick, comb appears in output slot.
 - [ ] Frame durability decreases after production.
 - [ ] Hopper below apiary extracts comb; hopper on side can insert frame.

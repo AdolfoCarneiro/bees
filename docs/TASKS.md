@@ -157,7 +157,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 
 ## Epic E3 — Hive UX & automation
 
-**Goal:** make the genetic apiary the clean automation interface; add **advanced hive** decisions and frames structure. Compatibility floor stays [`decisions.md` → ADR-0009](decisions.md).
+**Goal:** make the **Advanced Beehive** the primary automation interface with frames and slot structure; the Genetic Apiary remains the compatibility floor ([`decisions.md` → ADR-0009](decisions.md)).
 
 ### Subepic E3.A — GUI overhaul
 
@@ -189,7 +189,7 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E3-T12** | Open ADR for hive footprint **(done)** | M | New entry in [`decisions.md`](decisions.md) — chosen approach (single block / multiblock / hybrid) and rationale. | Open decision |
+| **E3-T12** | Open ADR for hive footprint **(done)** | M | New entry in [`decisions.md`](decisions.md) — chosen approach (single block / multiblock / hybrid) and rationale. | [ADR-0013](decisions.md) |
 | **E3-T13** | Implement chosen footprint (slice) **(done)** | L | First playable advanced hive matches the ADR; tests cover form/place/break + bee entry. | E3-T12 |
 | **E3-T14** | Optional: bee transport item (gated) **(done)** | M | BeeJar (single-use) + BeeTransporter (reusable); capture via right-click, insert via AdvancedApiaryMenu bee slot, release via right-click. | ADR-0014 |
 
