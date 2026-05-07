@@ -66,6 +66,4 @@ Use `java.util.logging.Logger` in services: **WARNING** before skip/throw on bad
 
 This repo deliberately uses **only these seven files** under `docs/`. Do not scatter new markdown across new folders. If something genuinely doesn't fit, add a section to the closest existing file or open a discussion.
 
-`docs/product-reset.md` is a temporary Phase PR validation reference (Portuguese-language design reasoning + acceptance checklist). It is not a permanent eighth doc; it will be retired after Epic PR exit gates pass.
-
 _Last updated: 2026-05-04._
