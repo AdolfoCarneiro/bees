@@ -40,13 +40,13 @@ These describe the validated foundation the mod **already** has and must not reg
 
 These are required for upcoming phases. Detail and order live in [`roadmap.md`](roadmap.md) and [`TASKS.md`](TASKS.md).
 
-- **R-4.1 (SHOULD)** Players must be able to **distinguish species** in-world (visual variants) and after analysis (analyzer screen, tooltips).
+- **R-4.1 (SHOULD)** Players must be able to **distinguish species** in-world (visual variants) and via genetic reports in controlled UIs (Advanced Beehive bee slots, Bee Jar/Bee Transporter tooltips). No analysis gate required.
 - **R-4.2 (SHOULD)** Wild **nest variety** with **vanilla-grade interaction** (POI, anger, occupancy, harvest with shears/bottle). Nests **must generate with bees inside** (1–3 occupants) defined by the nest's `occupant_species_pool` — biome does not override nest contents. Nest placement is data-driven. (See [`decisions.md` → ADR-0019](decisions.md).)
 - **R-4.3 (SHOULD)** A **frame** system: items in apiary slots that modulate production via the resolver.
 - **R-4.4 (SHOULD)** A **processing line** (centrifuge or equivalent) turning combs into honey + wax + species by-products. Same role as familiar mods, Curious Bees IDs and balance.
 - **R-4.5 (SHOULD)** Sided IO contracts on the apiary and processing blocks (extract-only outputs, designated frame insert side, vanilla bee entry preserved).
-- **R-4.6 (MAY)** An **advanced hive** (single block / multiblock / hybrid) — footprint is an open decision; trigger an ADR before coding.
-- **R-4.7 (MAY)** Optional **bee transport item** for moving bees into an advanced hive — open decision.
+- **R-4.6 (MUST)** The **Advanced Beehive** (`curiousbees:advanced_beehive`) and optional **Beehive Expansion Box** (`curiousbees:beehive_expansion_box`) are the player-facing hive tier. Footprint is a single block; capacity details resolved by [`decisions.md` → ADR-0018](decisions.md). Not an open decision.
+- **R-4.7 (MUST)** **Bee Jar** (single-use) and **Bee Transporter** (reusable) allow manual bee insertion into the Advanced Beehive. Capture/release is atomic (genome serialized before removal). Resolved by [`decisions.md` → ADR-0014](decisions.md). Not an open decision.
 
 ## 5. Non-functional requirements
 

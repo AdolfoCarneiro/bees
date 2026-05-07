@@ -57,7 +57,7 @@ Use `java.util.logging.Logger` in services: **WARNING** before skip/throw on bad
 ## Review quick-check
 
 - `common/genetics` stays Minecraft-free.
-- Analysis gating respected (do not leak full genome in UI/tooltips before analysis).
+- Genetic data visible in Curious Bees controlled UIs (Advanced Beehive, Bee Jar/Bee Transporter tooltips). Analyzer is optional — does not gate display. Raw internal allele IDs never shown in player-facing UI. (See [`decisions.md` → ADR-0016](decisions.md).)
 - No new placeholder-as-final art (see [`asset-generation-guidelines.md`](asset-generation-guidelines.md)).
 - No accidental resource-bee tree (see [`decisions.md` → ADR-0007 / 0012](decisions.md)).
 - Server state that drives client UI/sync: keep network story consistent.
@@ -65,5 +65,7 @@ Use `java.util.logging.Logger` in services: **WARNING** before skip/throw on bad
 ## Doc maintenance rule
 
 This repo deliberately uses **only these seven files** under `docs/`. Do not scatter new markdown across new folders. If something genuinely doesn't fit, add a section to the closest existing file or open a discussion.
+
+`docs/product-reset.md` is a temporary Phase PR validation reference (Portuguese-language design reasoning + acceptance checklist). It is not a permanent eighth doc; it will be retired after Epic PR exit gates pass.
 
 _Last updated: 2026-05-04._

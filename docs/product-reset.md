@@ -1457,7 +1457,6 @@ Core rules:
 - Living vanilla Bee entities remain the default gameplay representation.
 - Do not turn the whole mod into item-only bees.
 - Genetics remains Mendelian and probabilistic.
-- Do not reveal full genetics before analysis.
 - The player-facing hive concept must be Advanced Beehive, not Apiary/Genetic Apiary.
 - Productive Bees is a UX/layout reference only. Do not copy assets or code.
 

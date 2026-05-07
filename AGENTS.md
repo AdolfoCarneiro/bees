@@ -12,7 +12,7 @@ Minecraft bee genetics mod (NeoForge 1.21.1): living bees, genomes, breeding, do
 
 ## Documentation order
 
-The repo uses **only seven** docs files. Do not add new top-level markdown files under `docs/`.
+The repo uses **only seven** docs files. Do not add new top-level markdown files under `docs/`. (`docs/product-reset.md` is a Phase PR validation reference — temporary, retired after Epic PR passes.)
 
 1. [Readme.md](Readme.md)
 2. [docs/project-guide.md](docs/project-guide.md) — entry point + doc index
@@ -68,7 +68,7 @@ Prefer small classes, explicit validation, `Objects.requireNonNull` at boundarie
 
 ## Review checklist
 
-Aligned with **Readme.md** / `docs/requirements.md`; genetics pure Java; no accidental resource-bee tree; analysis gating respected where applicable; no final placeholder art; automation not artificially paywalled; server/client sync story intact for UI-driving state.
+Aligned with **Readme.md** / `docs/requirements.md`; genetics pure Java; no accidental resource-bee tree; genetic data visible in all Curious Bees controlled UIs (no analysis gate — Analyzer is optional); no final placeholder art; automation not artificially paywalled; server/client sync story intact for UI-driving state.
 
 ## Growth line
 

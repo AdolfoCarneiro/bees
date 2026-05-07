@@ -34,6 +34,8 @@ The repo intentionally uses **only seven** files under `docs/`:
 
 Do **not** add new top-level markdown files under `docs/`. If something doesn't fit, append a section to the closest existing file.
 
+**Exception:** `docs/product-reset.md` is a Phase PR validation reference (Portuguese-language design reasoning + acceptance checklist). It will be retired after Epic PR exit gates pass. Do not treat it as an eighth permanent doc.
+
 ## Hybrid bee model (entity + scoped item)
 
 - **Default:** bees are **living entities** in the world (breeding, nests, analyzer on bee).
@@ -62,7 +64,7 @@ Use `java.util.logging.Logger` in services: **WARNING** before skip/throw on bad
 ## Review quick-check
 
 - Genetics stays pure Java off the game API.
-- Analysis rules: do not leak full genetics in UI/tooltips until analyzed.
+- Genetic data is visible in Curious Bees controlled UIs (Advanced Beehive, Bee Jar/Bee Transporter tooltips). The Analyzer is optional and does not gate visibility. Raw internal allele IDs must never appear in player-facing UI.
 - No new undeclared placeholder-as-final art.
 - No resource-bee tree unless approved.
 - Server state that drives client UI/sync: keep network story consistent.

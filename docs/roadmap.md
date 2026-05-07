@@ -17,7 +17,7 @@ High-level plan for turning the validated **genetics core** into a **polished, a
 ## North star
 
 - **World:** diverse species in sensible habitats; **wild nests** with Forestry-like *variety* (many nest types / looks) but **vanilla-like interaction** (pathing, occupancy, harvest patterns players already understand).
-- **Base loop:** breeding and discovery stay **entity-first** in the open world; genetics remain readable **after analysis**, not chat-only.
+- **Base loop:** breeding and discovery stay **entity-first** in the open world; genetics remain readable via **genetic reports in controlled UIs**, not chat-only.
 - **Production:** **crafted hive / advanced hive** layer that feels as **clear, extensible, and automation-ready** as Productive Bees: slots, upgrades/extensions where needed, visible bee state, predictable outputs, hopper/pipe-friendly sides.
 - **Processing:** **combs** → machine line (e.g. **centrifuge**) separating **honey**, **by-products**, and **wax** — same *role* as familiar mods, Curious Bees IDs and balance.
 - **Identity:** own GUI art and layout can start “PB-shaped” for learnability, then diverge; **no** goal of pixel-perfect clone.
@@ -39,7 +39,7 @@ Curious Bees is **not** trying to replace Productive Bees in packs. It is trying
 | Dimension | Productive Bees (reference) | Curious Bees (target) |
 |-----------|----------------------------|------------------------|
 | **Core fantasy** | Often block + cage bee loop | **Living** `Bee` entities + genetics on entity |
-| **Progression** | Species discovery + recipes | **Breeding + analysis** + controlled production |
+| **Progression** | Species discovery + recipes | **Breeding + genetic inspection** + controlled production |
 | **Automation** | Very mature | **Must** reach hopper/pipe clarity; deep per-mod compat later |
 | **Content volume** | Huge roster | **Small branches**; quality over count ([`decisions.md` → ADR-0012](decisions.md)) |
 | **Art / GUI** | Established house style | Learnable layout first, **own** art pass in Phase 5 |
@@ -144,8 +144,8 @@ flowchart LR
 | Track | Items |
 |-------|--------|
 | **Rendering** | Species → texture resolution for **living** bees — `SpeciesTextureResolver` + `CuriousBeeBeeRenderer` done; 5 DEV-PLACEHOLDER textures needed (E1-T12). |
-| **Analyzer** | Screen (or block+screen) that respects **unanalyzed vs analyzed** ([`architecture.md` §5](architecture.md) visibility rules). |
-| **Tooltips** | Analyzed: species / hybrid hints / traits as designed; unanalyzed: vague or gated — no full chromosome dump. |
+| **Analyzer** | Optional screen (or block+screen) that renders a `BeeGeneticReport` — same data as the Advanced Beehive bee-slot tooltip; not a gate. |
+| **Tooltips** | Species / hybrid hints / traits always shown in Curious Bees controlled UIs; no analyzed/unanalyzed split; raw allele IDs never shown. |
 | **Content hygiene** | Adding a species touches **data + lang + visual key**, not random `if` in handlers ([`architecture.md` §7](architecture.md), naming [`decisions.md` → ADR-0011](decisions.md)). |
 | **Assets** | Per [`asset-generation-guidelines.md`](asset-generation-guidelines.md); no undeclared “final” placeholders. |
 
@@ -156,7 +156,7 @@ flowchart LR
 
 **Additional P1 deliverable (from CEO review 2026-05-04):** Mutation feedback — subtle particle + sound in `BeeBreedingEventHandler` when mutation occurs; makes the genetics loop emotionally rewarding (E1-T13).
 
-**Exit:** new player can tell species apart in-world and after analysis **without** debug commands; analyzer is usable in survival.
+**Exit:** new player can tell species apart in-world and via genetic reports in controlled UIs **without** debug commands; Analyzer item is functional as an optional inspector.
 
 ---
 

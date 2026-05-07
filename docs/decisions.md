@@ -175,7 +175,7 @@ GeneticRandom
 2. Run `ProductionResolver.resolve(...)` with frame modifiers.
 3. Add outputs to the apiary output inventory. Vanilla honey fill still happens.
 
-**No-genome fallback.** Edge cases (pre-existing world bees, other mods) → assign biome-appropriate fallback genome, log WARNING, continue. Never crash.
+**No-genome fallback.** Edge cases (pre-existing world bees, other mods) → assign **Common species genome**, log WARNING, continue. Never crash. Do not assign a biome-based species as fallback. (Superseded by ADR-0019 for the spawn handler; same rule applies inside the apiary.)
 
 **Inventory & GUI.**
 
@@ -499,7 +499,7 @@ _Last updated: 2026-05-06._
 
 **Release mechanic:** right-click on a block or in the air with a loaded capture item → the stored bee spawns at the click location. Both variants use this mechanic. Neither variant may hold a bee indefinitely without the player being able to retrieve it — the release path must always exist.
 
-**Item display:** the item tooltip and/or item model shows the captured bee's species (and analyzed state if the bee was analyzed). An unanalyzed bee shows "Unknown" species.
+**Item display:** the item tooltip shows the captured bee's species and genetic report directly — no analysis gate. Raw internal allele IDs are never shown. (See ADR-0016.)
 
 **Scope (hard limits):**
 - Capture item inserts into the **advanced hive only**; the `GeneticApiaryBlock` (if it still exists as a legacy block) does not accept GUI-based bee insertion via this item.
@@ -528,28 +528,34 @@ _Last updated: 2026-05-06._
 
 **Decision: discrete bottle model on the centrifuge — no fluid registration in this phase.**
 
-**Centrifuge comb processing outputs:**
-- **Wax** — item output slot, automatable.
-- **Honey** — via bottle mechanic described below.
-- **Species by-products** — future scope; not designed here.
+**Centrifuge slot layout (Product Reset alignment):**
+
+| Slot | Count | Direction | Contents |
+|------|-------|-----------|----------|
+| Comb input | 1 | insert-only | Combs from hive output |
+| Result output | 9 | extract-only | Wax, species by-products |
+| Bottle input | 1 | insert-only | `minecraft:glass_bottle` |
+| Honey bottle output | 1 | extract-only | `minecraft:honey_bottle` (dedicated, not mixed with result slots) |
+| Upgrade | 3 | insert-only | Items tagged `curiousbees:centrifuge_upgrades` |
 
 **Honey bottling mechanic (centrifuge only):**
 - The centrifuge tracks an internal **honey counter (0–5 portions)** — not a registered fluid.
-- A dedicated **empty-bottle input slot** accepts `minecraft:glass_bottle`.
-- On each processing cycle: if honey counter > 0 and an empty bottle is present, one portion → one `minecraft:honey_bottle` (or custom item) placed in the output slots alongside wax.
+- On each processing cycle: if honey counter > 0 and the bottle input has a `glass_bottle` and the honey bottle output slot can accept one item, consume one glass bottle and one honey portion, place `honey_bottle` in the dedicated output slot.
 - The GUI shows a visual indicator (column of up to 5 honey bottle icons) reflecting the current counter.
-- The honey counter is a **soft buffer** — it does **not** block centrifuge processing when full. Overflow (counter at 5, no empty bottle) is discarded and logged at FINE. Processing continues regardless.
+- The honey counter is a **soft buffer** — it does **not** block centrifuge processing when full. Overflow (counter at 5, no empty bottle available or output full) is discarded and logged at FINE. Processing continues regardless.
 
 **Automation:**
 - Empty bottles insert into the bottle input slot via hopper/pipe.
-- Filled honey bottles and wax exit via the same extract-only output slots.
+- Wax and species by-products exit via the 9 result output slots.
+- Honey bottles exit via the dedicated honey bottle output slot.
+- Both output-side slot groups may be extracted by hoppers/pipes from the bottom face.
 
 **Future path:** a later ADR may register a honey fluid and add a fluid output port on the centrifuge alongside or replacing the bottle lane. The internal honey counter abstraction does not couple to items, making a future fluid swap isolated to the centrifuge block entity.
 
 **Consequences.**
 - `CentrifugeBlockEntity` gains a `honeyCounter` field (int 0–5); no fluid type registered.
 - Advanced hive block entity is **unchanged** — no honey counter, no bottle slot. Combs exit via output slots as before.
-- Bottle input slot is insert-only from automation; honey bottles + wax exit via output slots.
+- Honey bottles occupy their own dedicated output slot, separate from the 9 result output slots for wax/by-products.
 - Full counter does not pause processing — intentional; must not be "fixed" without a new ADR.
 - E4-T01 satisfied. E4-T02 may proceed.
 

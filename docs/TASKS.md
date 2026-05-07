@@ -93,15 +93,15 @@ Each task ends with **Done when** and **Depends on**. If it depends on an open A
 | **E1-T01** | Define species → texture key mapping **(done)** | M | `SpeciesTextureResolver` fully implemented with 3-tier fallback (species texture → mod fallback → vanilla fallback). | [`architecture.md` §7](architecture.md) |
 | **E1-T02** | Bee renderer override using mapping **(done)** | M | `CuriousBeeBeeRenderer.getTextureLocation()` calls `SpeciesTextureResolver.resolve(bee)`; vanilla angry/nectar variants preserved when no genome. | E1-T01 |
 | **E1-T03** | Resource pack hygiene **(done)** | S | Naming follows [`decisions.md` → ADR-0011](decisions.md); fallback texture clearly labeled placeholder. | E1-T01 |
-| **E1-T04** | Visual variant hooks (analyzed/unanalyzed) **(done)** | S | Renderer can express **one** binary variant (e.g. tint on unanalyzed) without per-species `if`. Toggle is data-driven or constant. | E1-T01 |
+| **E1-T04** | Visual variant hooks **(done — superseded by ADR-0016)** | S | Renderer can express one binary visual variant (e.g. tint) without per-species `if`. The analyzed/unanalyzed tint is no longer the default — ADR-0016 removed the analysis gate. Toggle hook can remain for future creative use. | E1-T01 |
 
 ### Subepic E1.B — Analyzer UX
 
 | ID | Task | Size | Done when | Depends on |
 |----|------|------|-----------|------------|
-| **E1-T05** | Analyzer report data audit **(done)** | S | Listed: every field that should appear after analysis vs before. Source = [`architecture.md` §5](architecture.md). | — |
+| **E1-T05** | Analyzer report data audit **(done — updated by ADR-0016)** | S | `BeeGeneticReport` fields: Species (active/inactive/purity), Productivity, Flower Type. No Lifespan, no Fertility. Report shown in all controlled UIs without analysis gate. Source = [`architecture.md` §7.5](architecture.md). | — |
 | **E1-T06** | Analyzer screen rework **(done)** | M | `BeeAnalyzerScreen` shows analyzed report in clear sections (active / inactive / hybrid hint / traits) using report payload only. No raw genome dump. | E1-T05, E0-T03 |
-| **E1-T07** | Tooltip gate **(done)** | S | Item / entity tooltips never reveal post-analysis fields when bee is unanalyzed. Unit/integration test covers both states. | E1-T05 |
+| **E1-T07** | Tooltip gate **(done — superseded by ADR-0016)** | S | Analysis gate removed. Item tooltips (Bee Jar/Transporter) always show genetic report. `isAnalyzed()` flag must not hide data. Raw allele IDs never shown. PR-T09 covers the implementation. | E1-T05 |
 | **E1-T08** | Right-click flow polish **(done)** | S | Analyzer item interaction errors / cooldowns / message keys are localized; no hardcoded English in code paths. | E1-T05 |
 
 ### Subepic E1.C — Content hygiene (no new species)
