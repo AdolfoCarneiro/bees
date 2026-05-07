@@ -27,7 +27,7 @@ Single log of accepted/proposed decisions for Curious Bees. Each entry preserves
 | [ADR-0015](#adr-0015--fluid-honey) | Fluid honey | Accepted |
 | [DR-016](#dr-016--apiary-redstone-behavior) | Apiary redstone behavior | Skipped |
 | [ADR-0016](#adr-0016--remove-analysis-gating) | Remove analysis gating — expose genetics in controlled UIs | Accepted |
-| [ADR-0017](#adr-0017--remove-lifespan-as-mvp-chromosome) | Remove Lifespan as MVP chromosome | Accepted |
+| [ADR-0017](#adr-0017--remove-lifespan-and-fertility-as-mvp-chromosomes) | Remove Lifespan and Fertility as MVP chromosomes | Accepted |
 | [ADR-0018](#adr-0018--advanced-beehive-rename--expansion-box-capacity) | Advanced Beehive rename + Expansion Box capacity | Accepted |
 | [ADR-0019](#adr-0019--species-assignment-rules--common-bee--habitat-discovery) | Species assignment rules: Common bee + habitat discovery | Accepted |
 
@@ -645,25 +645,26 @@ No `common/` changes required before starting the Fabric port. See [DR-010](#dr-
 
 ---
 
-## ADR-0017 — Remove Lifespan as MVP chromosome
+## ADR-0017 — Remove Lifespan and Fertility as MVP chromosomes
 
 **Status:** Accepted · 2026-05-07
 
-**Context.** Lifespan was listed as an MVP chromosome (`SPECIES · LIFESPAN · PRODUCTIVITY · FERTILITY · FLOWER_TYPE`) inherited from Forestry design thinking. Vanilla bees have no queen death / lifespan lifecycle. Curious Bees uses living vanilla bee entities; enforcing a lifespan mechanic contradicts the core design of not implementing lifecycle/death/larvae by default (R-2.4).
+**Context.** Lifespan and Fertility were listed as MVP chromosomes (`SPECIES · LIFESPAN · PRODUCTIVITY · FERTILITY · FLOWER_TYPE`) inherited from Forestry design thinking. Vanilla bees have no queen death / lifespan lifecycle and no larvae-per-cycle mechanic — both traits depend on a queen/princess/drone system that does not exist in Curious Bees. Curious Bees uses living vanilla bee entities; enforcing either mechanic contradicts the core design of not implementing lifecycle/death/larvae by default (R-2.4).
 
-**Decision.** `LIFESPAN` is removed from MVP gameplay and UI.
+**Decision.** `LIFESPAN` and `FERTILITY` are removed from MVP gameplay and UI.
 
-- `ChromosomeType.LIFESPAN` may remain in code as deprecated for save compatibility.
+- `ChromosomeType.LIFESPAN` and `ChromosomeType.FERTILITY` may remain in code as deprecated for save compatibility.
 - Lifespan must not appear in: Advanced Beehive UI, Bee Jar tooltip, Bee Transporter tooltip, Analyzer report, production logic, breeding, hive timing.
-- Old saves/genomes containing LIFESPAN must not crash — deserialize and ignore the field.
-- Species definitions must not declare lifespan traits.
+- Fertility must not appear in: Advanced Beehive UI, Bee Jar tooltip, Bee Transporter tooltip, Analyzer report, production logic, breeding.
+- Old saves/genomes containing LIFESPAN or FERTILITY must not crash — deserialize and ignore the fields.
+- Species definitions must not declare lifespan or fertility traits.
 
-**Migration:** Phase 1 — disable display and production use. Phase 2 (future) — remove the enum value entirely after compatibility window.
+**Migration:** Phase 1 — disable display and production use. Phase 2 (future) — remove the enum values entirely after compatibility window.
 
 **Consequences.**
-- MVP chromosomes: `SPECIES · PRODUCTIVITY · FERTILITY · FLOWER_TYPE`.
-- `BuiltinBeeTraits` must not define Lifespan alleles for MVP content (or mark existing ones `@Deprecated`).
-- Species JSON definitions drop the `lifespan` field.
+- MVP chromosomes: `SPECIES · PRODUCTIVITY · FLOWER_TYPE`.
+- `BuiltinBeeTraits` must not define Lifespan or Fertility alleles for MVP content (or mark existing ones `@Deprecated`).
+- Species JSON definitions drop the `lifespan` and `fertility` fields.
 
 ---
 
@@ -737,7 +738,7 @@ No `common/` changes required before starting the Fabric port. See [DR-010](#dr-
 **Common species (`curiousbees:common`):**
 - Display: "Common Bee"
 - Represents a vanilla bee in the genetic system.
-- Default traits: Normal productivity, Two fertility, Flowers flower type.
+- Default traits: Normal productivity, Flowers flower type.
 - Dominant across all trait alleles.
 
 **Wild nest generation (data-driven):**

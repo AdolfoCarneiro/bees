@@ -60,7 +60,7 @@ These are required for upcoming phases. Detail and order live in [`roadmap.md`](
 
 ## 6. Content scope guardrails
 
-- **R-6.1 (MUST)** MVP species set is: **Common** (vanilla/base), **Meadow, Forest, Arid, Cultivated, Hardy** (see [`architecture.md` → §Content / built-ins](architecture.md)). The **Common** species represents a vanilla bee within the genetic system and is the result of vanilla spawn eggs and safe fallbacks. MVP chromosomes are `SPECIES · PRODUCTIVITY · FERTILITY · FLOWER_TYPE`; `LIFESPAN` is removed from gameplay (see [`decisions.md` → ADR-0017](decisions.md)).
+- **R-6.1 (MUST)** MVP species set is: **Common** (vanilla/base), **Meadow, Forest, Arid, Cultivated, Hardy** (see [`architecture.md` → §Content / built-ins](architecture.md)). The **Common** species represents a vanilla bee within the genetic system and is the result of vanilla spawn eggs and safe fallbacks. MVP chromosomes are `SPECIES · PRODUCTIVITY · FLOWER_TYPE`; `LIFESPAN` and `FERTILITY` are removed from gameplay (see [`decisions.md` → ADR-0017](decisions.md)).
 - **R-6.2 (MUST)** Adding new species after the MVP must follow [`decisions.md` → ADR-0010 (data-driven) and ADR-0011 (naming)](decisions.md).
 - **R-6.3 (MUST)** Resource-bee implementation is gated by **all** prerequisites in [`decisions.md` → ADR-0012](decisions.md).
 - **R-6.4 (MUST)** Adding a new species **MUST NOT** require touching engine code beyond what the structural epics in [`TASKS.md`](TASKS.md) (E1.C, E2.A/B) make data-driven.

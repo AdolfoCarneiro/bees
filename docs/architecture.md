@@ -323,7 +323,6 @@ Stable IDs, never display strings:
 ```text
 curious_bees:species/meadow
 curious_bees:productivity/fast
-curious_bees:fertility/three
 curious_bees:flower_type/flowers
 ```
 
@@ -454,14 +453,14 @@ Possible cases: pre-existing world bees, bees from other mods, deserialization f
 
 ### 7.2 Initial species (MVP)
 
-| Species | Role | Spawn context | Default trait gist (Productivity/Fertility/FlowerType) | Dominance |
-|---------|------|----------------|-------------------------------------------------------|-----------|
-| **Common** | Base / vanilla-bee representation | Vanilla spawn egg, safe fallback | Normal/Two/Flowers | Dominant |
-| **Meadow** | Starter wild generalist | Wild nest in plains / flower forest | Normal/Two/Flowers | Dominant |
-| **Forest** | Starter wild forest | Wild nest in forest / birch / dark forest | Normal/Two/Leaves | Dominant |
-| **Arid** | Starter wild dry biomes | Wild nest in desert / savanna / badlands | Slow/One/Cactus | Recessive |
-| **Cultivated** | First mutation result (Meadow + Forest, ~12%) | Breeding only | Fast/Two/Flowers | Dominant |
-| **Hardy** | Environmental mutation (Forest + Arid, ~8%) | Breeding only | Normal/Two/Flowers | Recessive |
+| Species | Role | Spawn context | Default trait gist (Productivity/FlowerType) | Dominance |
+|---------|------|----------------|---------------------------------------------|-----------|
+| **Common** | Base / vanilla-bee representation | Vanilla spawn egg, safe fallback | Normal/Flowers | Dominant |
+| **Meadow** | Starter wild generalist | Wild nest in plains / flower forest | Normal/Flowers | Dominant |
+| **Forest** | Starter wild forest | Wild nest in forest / birch / dark forest | Normal/Leaves | Dominant |
+| **Arid** | Starter wild dry biomes | Wild nest in desert / savanna / badlands | Slow/Cactus | Recessive |
+| **Cultivated** | First mutation result (Meadow + Forest, ~12%) | Breeding only | Fast/Flowers | Dominant |
+| **Hardy** | Environmental mutation (Forest + Arid, ~8%) | Breeding only | Normal/Flowers | Recessive |
 
 **Common species note:** Common is the genetic identity of a vanilla bee. It is produced by `minecraft:bee_spawn_egg` and used as a safe fallback. Two Common bees breeding in a biome with a compatible habitat species pool have a **3% chance** of a habitat-discovery mutation producing that species (data-driven, not hardcoded by biome). (See [`decisions.md` → ADR-0019](decisions.md).)
 
@@ -482,10 +481,9 @@ Arid ───┘
 | Trait | Values | MVP gameplay |
 |-------|--------|---------------|
 | **Productivity** | Slow (0.75x) / Normal (1.00x) / Fast (1.25x) | Multiplies production rate/chance. |
-| **Fertility** | One / Two / Three | Displayed; future: extra offspring in advanced setups. |
 | **Flower Type** | Flowers / Cactus / Leaves | Displayed; future: gates breeding/production environment. |
 
-`Lifespan` is **not** an MVP trait — vanilla bees have no queen death lifecycle. See [`decisions.md` → ADR-0017](decisions.md).
+`Lifespan` and `Fertility` are **not** MVP traits — vanilla bees have no queen death lifecycle or larvae-per-cycle mechanic. See [`decisions.md` → ADR-0017](decisions.md).
 
 Multipliers are **placeholders** until a balance pass.
 
@@ -521,7 +519,6 @@ Genetic data is **always visible** in Curious Bees controlled interfaces. The `i
 | Species inactive allele (display name) | **shown** | not applicable |
 | Species purity (purebred / hybrid) | **shown** | not applicable |
 | Productivity active + inactive | **shown** | not applicable |
-| Fertility active + inactive | **shown** | not applicable |
 | Flower type active + inactive | **shown** | not applicable |
 | Raw genome / internal allele IDs | **never shown** | never shown |
 
@@ -534,9 +531,8 @@ Genetic data is **always visible** in Curious Bees controlled interfaces. The `i
 Genetic report format (shown in Advanced Beehive bee slot tooltip and captured item tooltip):
 
 ```text
-Species:     Meadow / Forest   (Hybrid)
+Species:      Meadow / Forest   (Hybrid)
 Productivity: Fast / Normal
-Fertility:    Two / Three
 Flower Type:  Flowers / Leaves
 ```
 

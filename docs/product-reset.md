@@ -1675,11 +1675,10 @@ Mas sim uma leitura genética útil:
 Species: Meadow / Forest
 Purity: Hybrid
 Productivity: Fast / Normal
-Fertility: Two / Three
 Flower Type: Flowers / Leaves
 ```
 
-Sem `Lifespan`.
+Sem `Lifespan`. Sem `Fertility`.
 
 ---
 
@@ -1706,7 +1705,6 @@ Meadow Bee
 Species: Meadow / Forest
 Purity: Hybrid
 Productivity: Fast / Normal
-Fertility: Two / Three
 Flower Type: Flowers / Leaves
 ```
 
@@ -1723,10 +1721,6 @@ Purity: Hybrid
 Productivity
 Active: Fast
 Inactive: Normal
-
-Fertility
-Active: Two
-Inactive: Three
 
 Flower Type
 Active: Flowers
@@ -1805,7 +1799,6 @@ Bee Transporter
 Contains: Meadow Bee
 Species: Meadow / Forest
 Productivity: Fast / Normal
-Fertility: Two / Three
 Flower Type: Flowers / Leaves
 ```
 
@@ -1816,7 +1809,6 @@ Bee Jar
 Contains: Arid Bee
 Species: Arid / Vanilla
 Productivity: Slow / Normal
-Fertility: One / Two
 Flower Type: Cactus / Flowers
 ```
 
@@ -1851,10 +1843,6 @@ Inactive: Forest
 Productivity
 Active: Fast
 Inactive: Normal
-
-Fertility
-Active: Two
-Inactive: Three
 
 Flower Type
 Active: Flowers
@@ -1912,7 +1900,6 @@ MVP deve ficar com:
 ```
 SPECIES
 PRODUCTIVITY
-FERTILITY
 FLOWER_TYPE
 ```
 
@@ -1920,6 +1907,7 @@ Remover da UI e do conteúdo:
 
 ```
 LIFESPAN
+FERTILITY
 ```
 
 ---
@@ -2000,7 +1988,6 @@ Exemplo conceitual novo:
   "id":"curiousbees:meadow",
   "traits": {
     "productivity":"normal",
-    "fertility":"two",
     "flower_type":"flowers"
   }
 }
@@ -2017,7 +2004,6 @@ O genetic report deve conter:
 ```
 Species
 Productivity
-Fertility
 Flower Type
 Purity / Hybrid status
 ```
@@ -2026,6 +2012,7 @@ Não conter:
 
 ```
 Lifespan
+Fertility
 Analyzed / Unanalyzed gate
 ```
 
@@ -2037,7 +2024,6 @@ Analyzed / Unanalyzed gate
 BeeGeneticReport
 - speciesGene
 - productivityGene
-- fertilityGene
 - flowerTypeGene
 - isSpeciesPurebred
 - isOverallPurebred
@@ -2176,7 +2162,6 @@ Vanilla bees do not have Forestry-style queen lifespan/death lifecycle, so Lifes
 The active MVP chromosomes should be:
 - SPECIES
 - PRODUCTIVITY
-- FERTILITY
 - FLOWER_TYPE
 
 Lifespan must not appear in:
