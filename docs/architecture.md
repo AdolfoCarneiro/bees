@@ -445,7 +445,7 @@ Possible cases: pre-existing world bees, bees from other mods, deserialization f
 
 ### 7.1 Philosophy
 
-- **Start small** — MVP species set is fixed at the five below.
+- **Start small** — MVP species set is **Common plus five initial species** (six total; see table below).
 - **Avoid resource bees early** — gated by [`decisions.md` → ADR-0007 / 0012](decisions.md).
 - **Species have identity** — environment, trait tendencies, production identity, mutation role, progression position. Avoid species that differ only by output item.
 - **Production supports hybrids** — active species drives primary output, inactive species can contribute secondary output.
@@ -721,7 +721,7 @@ Run in creative mode on local single-player. Tick each box; if any fail, file a 
 - [ ] Bee Jar recipe is craftable (glass bottle + honeycomb).
 - [ ] BeeTransporter recipe is craftable (honeycomb + iron ingot + gold ingot).
 - [ ] Right-click bee with Bee Jar → bee removed from world, item shows species.
-- [ ] Right-click Advanced Apiary bee slot with loaded Bee Jar → bee placed into hive.
+- [ ] Right-click Advanced Beehive bee slot with loaded Bee Jar → bee placed into hive.
 
 **Centrifuge**
 

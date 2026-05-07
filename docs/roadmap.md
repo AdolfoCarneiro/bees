@@ -48,16 +48,16 @@ Curious Bees is **not** trying to replace Productive Bees in packs. It is trying
 
 ---
 
-## Open decisions (→ ADR when the slice starts)
+## Resolved decisions
 
-> **These 3 ADRs must be written and committed to `decisions.md` BEFORE any P3/P4 feature code begins.** Each ADR should be preceded by a 30-minute design spike (mock or sketch) to validate the approach. See design doc `~/.gstack/projects/AdolfoCarneiro-bees/Adolfo-main-design-20260504-213936.md`.
+These decisions were open when the roadmap was drafted and are now **Accepted** in [`decisions.md`](decisions.md). They are listed here for orientation; do not reopen them without a new ADR.
 
-| Topic | ADR | Question | Default / guidance | Trigger |
-|--------|-----|----------|--------------------|---------|
-| **Advanced hive footprint** | ADR-0013 | Single expandable block vs multiblock vs hybrid | **Default: single expandable block.** Multiblock is a one-way door (save-migration risk for players); requires strong evidence to override. | Before E3-T12 |
-| **Bee capture item** | ADR-0014 | Optional scoped item for hive insertion; partial reversal of ADR-0009's capture rejection | Scope to hive-insertion only; design release mechanic before accepting | Before E3-T13/T14 |
-| **Fluid honey** | ADR-0015 | Tanks/pipes vs bottle-only discrete honey | Start with discrete (bottle) if fluid registration blocks progress | Before E4-T01 |
-| **Data-driven cutover** | [ADR-0010](decisions.md) | ✅ **Done** — JSON pipeline implemented in `ContentJsonLoader` | n/a | n/a |
+| Topic | ADR | Resolution |
+|--------|-----|------------|
+| **Advanced hive footprint** | [ADR-0013](decisions.md) | Single expandable block (`AdvancedApiaryBlock`) + optional `ApiaryExtensionBlock` above/below. Multiblock rejected. |
+| **Bee capture item** | [ADR-0014](decisions.md) | Bee Jar (single-use) + Bee Transporter (reusable) for manual insertion into Advanced Beehive. |
+| **Fluid honey** | [ADR-0015](decisions.md) | Discrete bottle model on the centrifuge — no fluid registration. Dedicated honey bottle output slot separate from 9 result slots. |
+| **Data-driven cutover** | [ADR-0010](decisions.md) | ✅ Done — JSON pipeline implemented in `ContentJsonLoader`. |
 
 ---
 

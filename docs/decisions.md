@@ -134,6 +134,8 @@ GeneticRandom
 
 **Decision.** **No** iron / copper / gold / redstone / diamond / emerald / netherite / uranium bees in the MVP. Initial species are limited to **Meadow, Forest, Arid, Cultivated, Hardy**. Resource bees may be designed later — gated by [ADR-0012](#adr-0012--resource-bee-readiness).
 
+**Note (ADR-0019).** **Common** is the base vanilla species — assigned by `minecraft:bee_spawn_egg` and used as the safe fallback. It is included in the full MVP species set (six total) but is not a resource bee; it is excluded from this guardrail. See [ADR-0019](#adr-0019--species-assignment-rules--common-bee--habitat-discovery).
+
 ---
 
 ## ADR-0008 — Use detailed local specs for AI implementation guidance
