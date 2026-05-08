@@ -13,17 +13,16 @@ class GenomeTest {
 
     private static final Allele MEADOW   = new Allele("curious_bees:species/meadow",      ChromosomeType.SPECIES,      Dominance.DOMINANT);
     private static final Allele FOREST   = new Allele("curious_bees:species/forest",       ChromosomeType.SPECIES,      Dominance.DOMINANT);
-    private static final Allele LIFESPAN = new Allele("curious_bees:lifespan/normal",      ChromosomeType.LIFESPAN,     Dominance.DOMINANT);
     private static final Allele PROD     = new Allele("curious_bees:productivity/normal",  ChromosomeType.PRODUCTIVITY, Dominance.DOMINANT);
 
     private GenePair speciesPair;
-    private GenePair lifespanPair;
+    private GenePair productivityPair;
 
     @BeforeEach
     void setUp() {
         var det = new DeterministicGeneticRandom().withBooleans(true, true, true, true);
-        speciesPair  = new GenePair(MEADOW, MEADOW, det);
-        lifespanPair = new GenePair(LIFESPAN, LIFESPAN, det);
+        speciesPair      = new GenePair(MEADOW, MEADOW, det);
+        productivityPair = new GenePair(PROD, PROD, det);
     }
 
     private Map<ChromosomeType, GenePair> minimalMap() {
@@ -42,7 +41,7 @@ class GenomeTest {
     @Test
     void missingSpeciesFails() {
         EnumMap<ChromosomeType, GenePair> map = new EnumMap<>(ChromosomeType.class);
-        map.put(ChromosomeType.LIFESPAN, lifespanPair);
+        map.put(ChromosomeType.PRODUCTIVITY, productivityPair);
         assertThrows(IllegalArgumentException.class, () -> new Genome(map));
     }
 
@@ -50,18 +49,21 @@ class GenomeTest {
     void nullGenePairValueFails() {
         EnumMap<ChromosomeType, GenePair> map = new EnumMap<>(ChromosomeType.class);
         map.put(ChromosomeType.SPECIES, speciesPair);
-        map.put(ChromosomeType.LIFESPAN, null);
+        map.put(ChromosomeType.PRODUCTIVITY, null);
         assertThrows(NullPointerException.class, () -> new Genome(map));
     }
 
     @Test
     void mismatchedKeyAndGenePairTypeFails() {
         var det = new DeterministicGeneticRandom().withBooleans(true);
-        GenePair productivityPair = new GenePair(PROD, PROD, det);
+        GenePair flowerPair = new GenePair(
+                new Allele("curious_bees:flower_type/flowers", ChromosomeType.FLOWER_TYPE, Dominance.DOMINANT),
+                new Allele("curious_bees:flower_type/flowers", ChromosomeType.FLOWER_TYPE, Dominance.DOMINANT),
+                det);
         EnumMap<ChromosomeType, GenePair> map = new EnumMap<>(ChromosomeType.class);
         map.put(ChromosomeType.SPECIES, speciesPair);
-        // intentionally store a PRODUCTIVITY pair under LIFESPAN key
-        map.put(ChromosomeType.LIFESPAN, productivityPair);
+        // intentionally store a FLOWER_TYPE pair under PRODUCTIVITY key
+        map.put(ChromosomeType.PRODUCTIVITY, flowerPair);
         assertThrows(IllegalArgumentException.class, () -> new Genome(map));
     }
 
@@ -95,7 +97,7 @@ class GenomeTest {
     void getGenePairForMissingChromosomeFails() {
         Genome genome = new Genome(minimalMap());
         assertThrows(IllegalArgumentException.class,
-                () -> genome.getGenePair(ChromosomeType.LIFESPAN));
+                () -> genome.getGenePair(ChromosomeType.PRODUCTIVITY));
     }
 
     @Test
@@ -119,7 +121,7 @@ class GenomeTest {
     void hasChromosomeWorks() {
         Genome genome = new Genome(minimalMap());
         assertTrue(genome.hasChromosome(ChromosomeType.SPECIES));
-        assertFalse(genome.hasChromosome(ChromosomeType.LIFESPAN));
+        assertFalse(genome.hasChromosome(ChromosomeType.PRODUCTIVITY));
     }
 
     // --- immutability ---
@@ -129,15 +131,15 @@ class GenomeTest {
         EnumMap<ChromosomeType, GenePair> map = new EnumMap<>(ChromosomeType.class);
         map.put(ChromosomeType.SPECIES, speciesPair);
         Genome genome = new Genome(map);
-        map.put(ChromosomeType.LIFESPAN, lifespanPair);
-        assertFalse(genome.hasChromosome(ChromosomeType.LIFESPAN));
+        map.put(ChromosomeType.PRODUCTIVITY, productivityPair);
+        assertFalse(genome.hasChromosome(ChromosomeType.PRODUCTIVITY));
     }
 
     @Test
     void genePairsViewIsUnmodifiable() {
         Genome genome = new Genome(minimalMap());
         assertThrows(UnsupportedOperationException.class,
-                () -> genome.genePairs().put(ChromosomeType.LIFESPAN, lifespanPair));
+                () -> genome.genePairs().put(ChromosomeType.PRODUCTIVITY, productivityPair));
     }
 
     // --- withGenePair ---
@@ -145,15 +147,15 @@ class GenomeTest {
     @Test
     void withGenePairReturnsCopyWithChange() {
         Genome original = new Genome(minimalMap());
-        Genome updated = original.withGenePair(ChromosomeType.LIFESPAN, lifespanPair);
-        assertTrue(updated.hasChromosome(ChromosomeType.LIFESPAN));
-        assertSame(lifespanPair, updated.getGenePair(ChromosomeType.LIFESPAN));
+        Genome updated = original.withGenePair(ChromosomeType.PRODUCTIVITY, productivityPair);
+        assertTrue(updated.hasChromosome(ChromosomeType.PRODUCTIVITY));
+        assertSame(productivityPair, updated.getGenePair(ChromosomeType.PRODUCTIVITY));
     }
 
     @Test
     void withGenePairDoesNotMutateOriginal() {
         Genome original = new Genome(minimalMap());
-        original.withGenePair(ChromosomeType.LIFESPAN, lifespanPair);
-        assertFalse(original.hasChromosome(ChromosomeType.LIFESPAN));
+        original.withGenePair(ChromosomeType.PRODUCTIVITY, productivityPair);
+        assertFalse(original.hasChromosome(ChromosomeType.PRODUCTIVITY));
     }
 }

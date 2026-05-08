@@ -16,15 +16,9 @@ class ContentValidatorTest {
     // -------------------------------------------------------------------------
 
     private static final Set<String> KNOWN_TRAIT_IDS = Set.of(
-            "curious_bees:traits/lifespan/short",
-            "curious_bees:traits/lifespan/normal",
-            "curious_bees:traits/lifespan/long",
             "curious_bees:traits/productivity/slow",
             "curious_bees:traits/productivity/normal",
             "curious_bees:traits/productivity/fast",
-            "curious_bees:traits/fertility/one",
-            "curious_bees:traits/fertility/two",
-            "curious_bees:traits/fertility/three",
             "curious_bees:traits/flower_type/flowers",
             "curious_bees:traits/flower_type/cactus",
             "curious_bees:traits/flower_type/leaves");
@@ -44,9 +38,7 @@ class ContentValidatorTest {
         return new SpeciesDefinitionData(
                 "curious_bees:species/meadow", "Meadow Bee", "DOMINANT",
                 Map.of(
-                        "LIFESPAN",     new TraitAllelePairData("curious_bees:traits/lifespan/normal",     "curious_bees:traits/lifespan/normal"),
                         "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/normal", "curious_bees:traits/productivity/normal"),
-                        "FERTILITY",    new TraitAllelePairData("curious_bees:traits/fertility/two",        "curious_bees:traits/fertility/two"),
                         "FLOWER_TYPE",  new TraitAllelePairData("curious_bees:traits/flower_type/flowers", "curious_bees:traits/flower_type/flowers")
                 ));
     }
@@ -75,14 +67,14 @@ class ContentValidatorTest {
     @Test
     void traitAllele_valid_passes() {
         var result = ContentValidator.validateTraitAllele(
-                validTrait("curious_bees:traits/lifespan/normal", "LIFESPAN", "DOMINANT"));
+                validTrait("curious_bees:traits/productivity/normal", "PRODUCTIVITY", "DOMINANT"));
         assertTrue(result.isValid());
     }
 
     @Test
     void traitAllele_blankId_fails() {
         var result = ContentValidator.validateTraitAllele(
-                new TraitAlleleDefinitionData("", "LIFESPAN", "Normal", "DOMINANT"));
+                new TraitAlleleDefinitionData("", "PRODUCTIVITY", "Normal", "DOMINANT"));
         assertFalse(result.isValid());
         assertTrue(result.errors().stream().anyMatch(e -> e.contains("id must not be blank")));
     }
@@ -90,7 +82,7 @@ class ContentValidatorTest {
     @Test
     void traitAllele_blankDisplayName_fails() {
         var result = ContentValidator.validateTraitAllele(
-                new TraitAlleleDefinitionData("curious_bees:traits/lifespan/normal", "LIFESPAN", "", "DOMINANT"));
+                new TraitAlleleDefinitionData("curious_bees:traits/productivity/normal", "PRODUCTIVITY", "", "DOMINANT"));
         assertFalse(result.isValid());
         assertTrue(result.errors().stream().anyMatch(e -> e.contains("displayName must not be blank")));
     }
@@ -98,7 +90,7 @@ class ContentValidatorTest {
     @Test
     void traitAllele_invalidDominance_fails() {
         var result = ContentValidator.validateTraitAllele(
-                new TraitAlleleDefinitionData("id", "LIFESPAN", "Name", "SEMI_DOMINANT"));
+                new TraitAlleleDefinitionData("id", "PRODUCTIVITY", "Name", "SEMI_DOMINANT"));
         assertFalse(result.isValid());
         assertTrue(result.errors().stream().anyMatch(e -> e.contains("invalid dominance")));
     }
@@ -120,7 +112,7 @@ class ContentValidatorTest {
 
     @Test
     void traitAlleles_duplicateId_fails() {
-        var dto = validTrait("curious_bees:traits/lifespan/normal", "LIFESPAN", "DOMINANT");
+        var dto = validTrait("curious_bees:traits/productivity/normal", "PRODUCTIVITY", "DOMINANT");
         var result = ContentValidator.validateTraitAlleles(List.of(dto, dto));
         assertFalse(result.isValid());
         assertTrue(result.errors().stream().anyMatch(e -> e.contains("duplicate trait allele id")));
@@ -129,15 +121,9 @@ class ContentValidatorTest {
     @Test
     void traitAlleles_validMvpSet_passes() {
         var alleles = List.of(
-                validTrait("curious_bees:traits/lifespan/short",     "LIFESPAN",     "RECESSIVE"),
-                validTrait("curious_bees:traits/lifespan/normal",    "LIFESPAN",     "DOMINANT"),
-                validTrait("curious_bees:traits/lifespan/long",      "LIFESPAN",     "RECESSIVE"),
                 validTrait("curious_bees:traits/productivity/slow",  "PRODUCTIVITY", "RECESSIVE"),
                 validTrait("curious_bees:traits/productivity/normal","PRODUCTIVITY", "DOMINANT"),
                 validTrait("curious_bees:traits/productivity/fast",  "PRODUCTIVITY", "RECESSIVE"),
-                validTrait("curious_bees:traits/fertility/one",      "FERTILITY",    "RECESSIVE"),
-                validTrait("curious_bees:traits/fertility/two",      "FERTILITY",    "DOMINANT"),
-                validTrait("curious_bees:traits/fertility/three",    "FERTILITY",    "RECESSIVE"),
                 validTrait("curious_bees:traits/flower_type/flowers","FLOWER_TYPE",  "DOMINANT"),
                 validTrait("curious_bees:traits/flower_type/cactus", "FLOWER_TYPE",  "RECESSIVE"),
                 validTrait("curious_bees:traits/flower_type/leaves", "FLOWER_TYPE",  "RECESSIVE")
@@ -158,9 +144,7 @@ class ContentValidatorTest {
     @Test
     void species_blankId_fails() {
         var dto = new SpeciesDefinitionData("", "Meadow Bee", "DOMINANT", Map.of(
-                "LIFESPAN",     new TraitAllelePairData("curious_bees:traits/lifespan/normal",     "curious_bees:traits/lifespan/normal"),
                 "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/normal", "curious_bees:traits/productivity/normal"),
-                "FERTILITY",    new TraitAllelePairData("curious_bees:traits/fertility/two",        "curious_bees:traits/fertility/two"),
                 "FLOWER_TYPE",  new TraitAllelePairData("curious_bees:traits/flower_type/flowers", "curious_bees:traits/flower_type/flowers")
         ));
         var result = ContentValidator.validateSpeciesDefinition(dto, KNOWN_TRAIT_IDS);
@@ -173,9 +157,8 @@ class ContentValidatorTest {
         var dto = new SpeciesDefinitionData(
                 "curious_bees:species/meadow", "Meadow Bee", "DOMINANT",
                 Map.of(
-                        "LIFESPAN",     new TraitAllelePairData("curious_bees:traits/lifespan/normal", "curious_bees:traits/lifespan/normal"),
                         "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/normal", "curious_bees:traits/productivity/normal")
-                        // FERTILITY and FLOWER_TYPE missing
+                        // FLOWER_TYPE missing
                 ));
         var result = ContentValidator.validateSpeciesDefinition(dto, KNOWN_TRAIT_IDS);
         assertFalse(result.isValid());
@@ -187,9 +170,7 @@ class ContentValidatorTest {
         var dto = new SpeciesDefinitionData(
                 "curious_bees:species/meadow", "Meadow Bee", "DOMINANT",
                 Map.of(
-                        "LIFESPAN",     new TraitAllelePairData("curious_bees:traits/lifespan/NONEXISTENT", "curious_bees:traits/lifespan/normal"),
-                        "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/normal",  "curious_bees:traits/productivity/normal"),
-                        "FERTILITY",    new TraitAllelePairData("curious_bees:traits/fertility/two",         "curious_bees:traits/fertility/two"),
+                        "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/NONEXISTENT", "curious_bees:traits/productivity/normal"),
                         "FLOWER_TYPE",  new TraitAllelePairData("curious_bees:traits/flower_type/flowers",  "curious_bees:traits/flower_type/flowers")
                 ));
         var result = ContentValidator.validateSpeciesDefinition(dto, KNOWN_TRAIT_IDS);
@@ -210,9 +191,7 @@ class ContentValidatorTest {
         var dto = new SpeciesDefinitionData(
                 "curious_bees:species/meadow", "Meadow Bee", "CODOMINANT",
                 Map.of(
-                        "LIFESPAN",     new TraitAllelePairData("curious_bees:traits/lifespan/normal",     "curious_bees:traits/lifespan/normal"),
                         "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/normal", "curious_bees:traits/productivity/normal"),
-                        "FERTILITY",    new TraitAllelePairData("curious_bees:traits/fertility/two",        "curious_bees:traits/fertility/two"),
                         "FLOWER_TYPE",  new TraitAllelePairData("curious_bees:traits/flower_type/flowers", "curious_bees:traits/flower_type/flowers")
                 ));
         var result = ContentValidator.validateSpeciesDefinition(dto, KNOWN_TRAIT_IDS);
@@ -380,13 +359,13 @@ class ContentValidatorTest {
 
     @Test
     void validationResult_multipleErrors_allSurface() {
-        // A single call that produces 2 errors (missing trait slots)
+        // A single call that produces 2 errors (missing both required trait slots)
         var dto = new SpeciesDefinitionData(
                 "curious_bees:species/test", "Test Bee", "DOMINANT", Map.of());
         var result = ContentValidator.validateSpeciesDefinition(dto, KNOWN_TRAIT_IDS);
-        // All 4 required slots are missing — we should get 4 errors
+        // Both required slots are missing — we should get 2 errors
         assertFalse(result.isValid());
-        assertTrue(result.errors().size() >= 4,
-                "Expected at least 4 errors for 4 missing slots, got: " + result.errors().size());
+        assertTrue(result.errors().size() >= 2,
+                "Expected at least 2 errors for 2 missing slots, got: " + result.errors().size());
     }
 }

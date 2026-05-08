@@ -52,9 +52,7 @@ class BeeAnalysisFormatterTest {
     @Test
     void outputIncludesAllMvpTraits() {
         List<String> lines = formatPureMeadow();
-        assertTrue(lines.stream().anyMatch(l -> l.contains("Lifespan")));
         assertTrue(lines.stream().anyMatch(l -> l.contains("Productivity")));
-        assertTrue(lines.stream().anyMatch(l -> l.contains("Fertility")));
         assertTrue(lines.stream().anyMatch(l -> l.contains("Flower Type")));
     }
 

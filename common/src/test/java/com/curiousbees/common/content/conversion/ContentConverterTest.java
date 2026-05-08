@@ -29,15 +29,9 @@ class ContentConverterTest {
     @BeforeEach
     void setUp() {
         Map<String, Allele> traits = new HashMap<>();
-        traits.put("curious_bees:traits/lifespan/short",      new Allele("curious_bees:traits/lifespan/short",      ChromosomeType.LIFESPAN,     Dominance.RECESSIVE));
-        traits.put("curious_bees:traits/lifespan/normal",     new Allele("curious_bees:traits/lifespan/normal",     ChromosomeType.LIFESPAN,     Dominance.DOMINANT));
-        traits.put("curious_bees:traits/lifespan/long",       new Allele("curious_bees:traits/lifespan/long",       ChromosomeType.LIFESPAN,     Dominance.RECESSIVE));
         traits.put("curious_bees:traits/productivity/slow",   new Allele("curious_bees:traits/productivity/slow",   ChromosomeType.PRODUCTIVITY, Dominance.RECESSIVE));
         traits.put("curious_bees:traits/productivity/normal", new Allele("curious_bees:traits/productivity/normal", ChromosomeType.PRODUCTIVITY, Dominance.DOMINANT));
         traits.put("curious_bees:traits/productivity/fast",   new Allele("curious_bees:traits/productivity/fast",   ChromosomeType.PRODUCTIVITY, Dominance.RECESSIVE));
-        traits.put("curious_bees:traits/fertility/one",       new Allele("curious_bees:traits/fertility/one",       ChromosomeType.FERTILITY,    Dominance.RECESSIVE));
-        traits.put("curious_bees:traits/fertility/two",       new Allele("curious_bees:traits/fertility/two",       ChromosomeType.FERTILITY,    Dominance.DOMINANT));
-        traits.put("curious_bees:traits/fertility/three",     new Allele("curious_bees:traits/fertility/three",     ChromosomeType.FERTILITY,    Dominance.RECESSIVE));
         traits.put("curious_bees:traits/flower_type/flowers", new Allele("curious_bees:traits/flower_type/flowers", ChromosomeType.FLOWER_TYPE,  Dominance.DOMINANT));
         traits.put("curious_bees:traits/flower_type/cactus",  new Allele("curious_bees:traits/flower_type/cactus",  ChromosomeType.FLOWER_TYPE,  Dominance.RECESSIVE));
         traits.put("curious_bees:traits/flower_type/leaves",  new Allele("curious_bees:traits/flower_type/leaves",  ChromosomeType.FLOWER_TYPE,  Dominance.RECESSIVE));
@@ -57,13 +51,13 @@ class ContentConverterTest {
     // -------------------------------------------------------------------------
 
     @Test
-    void toTraitAllele_lifespanNormal_convertsCorrectly() {
+    void toTraitAllele_productivityNormal_convertsCorrectly() {
         var dto = new TraitAlleleDefinitionData(
-                "curious_bees:traits/lifespan/normal", "LIFESPAN", "Normal", "DOMINANT");
+                "curious_bees:traits/productivity/normal", "PRODUCTIVITY", "Normal", "DOMINANT");
         Allele allele = ContentConverter.toTraitAllele(dto);
 
-        assertEquals("curious_bees:traits/lifespan/normal", allele.id());
-        assertEquals(ChromosomeType.LIFESPAN, allele.chromosomeType());
+        assertEquals("curious_bees:traits/productivity/normal", allele.id());
+        assertEquals(ChromosomeType.PRODUCTIVITY, allele.chromosomeType());
         assertEquals(Dominance.DOMINANT, allele.dominance());
     }
 
@@ -94,19 +88,19 @@ class ContentConverterTest {
 
     @Test
     void toTraitAllele_unknownDominance_throws() {
-        var dto = new TraitAlleleDefinitionData("id", "LIFESPAN", "Name", "UNKNOWN");
+        var dto = new TraitAlleleDefinitionData("id", "PRODUCTIVITY", "Name", "UNKNOWN");
         assertThrows(ContentConversionException.class, () -> ContentConverter.toTraitAllele(dto));
     }
 
     @Test
     void toTraitAlleles_convertsList() {
         var dtos = List.of(
-                new TraitAlleleDefinitionData("curious_bees:traits/lifespan/short",  "LIFESPAN", "Short",  "RECESSIVE"),
-                new TraitAlleleDefinitionData("curious_bees:traits/lifespan/normal", "LIFESPAN", "Normal", "DOMINANT")
+                new TraitAlleleDefinitionData("curious_bees:traits/productivity/slow",   "PRODUCTIVITY", "Slow",   "RECESSIVE"),
+                new TraitAlleleDefinitionData("curious_bees:traits/productivity/normal", "PRODUCTIVITY", "Normal", "DOMINANT")
         );
         List<Allele> alleles = ContentConverter.toTraitAlleles(dtos);
         assertEquals(2, alleles.size());
-        assertEquals(ChromosomeType.LIFESPAN, alleles.get(0).chromosomeType());
+        assertEquals(ChromosomeType.PRODUCTIVITY, alleles.get(0).chromosomeType());
     }
 
     // -------------------------------------------------------------------------
@@ -130,9 +124,9 @@ class ContentConverterTest {
     void toSpeciesDefinition_meadow_traitAllelesResolveCorrectly() {
         BeeSpeciesDefinition def = ContentConverter.toSpeciesDefinition(meadowData(), knownTraitAlleles);
 
-        Allele[] lifespan = def.defaultTraitAlleles(ChromosomeType.LIFESPAN);
-        assertEquals("curious_bees:traits/lifespan/normal", lifespan[0].id());
-        assertEquals(ChromosomeType.LIFESPAN, lifespan[0].chromosomeType());
+        Allele[] productivity = def.defaultTraitAlleles(ChromosomeType.PRODUCTIVITY);
+        assertEquals("curious_bees:traits/productivity/normal", productivity[0].id());
+        assertEquals(ChromosomeType.PRODUCTIVITY, productivity[0].chromosomeType());
     }
 
     @Test
@@ -140,10 +134,8 @@ class ContentConverterTest {
         var dto = new SpeciesDefinitionData(
                 "curious_bees:species/arid", "Arid Bee", "RECESSIVE",
                 Map.of(
-                        "LIFESPAN",     new TraitAllelePairData("curious_bees:traits/lifespan/normal",     "curious_bees:traits/lifespan/normal"),
-                        "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/slow",   "curious_bees:traits/productivity/normal"),
-                        "FERTILITY",    new TraitAllelePairData("curious_bees:traits/fertility/one",        "curious_bees:traits/fertility/two"),
-                        "FLOWER_TYPE",  new TraitAllelePairData("curious_bees:traits/flower_type/cactus",  "curious_bees:traits/flower_type/cactus")
+                        "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/slow",  "curious_bees:traits/productivity/normal"),
+                        "FLOWER_TYPE",  new TraitAllelePairData("curious_bees:traits/flower_type/cactus", "curious_bees:traits/flower_type/cactus")
                 ));
         BeeSpeciesDefinition def = ContentConverter.toSpeciesDefinition(dto, knownTraitAlleles);
         assertEquals(Dominance.RECESSIVE, def.speciesAllele().dominance());
@@ -154,13 +146,31 @@ class ContentConverterTest {
         var dto = new SpeciesDefinitionData(
                 "curious_bees:species/meadow", "Meadow Bee", "DOMINANT",
                 Map.of(
-                        "LIFESPAN",     new TraitAllelePairData("curious_bees:traits/lifespan/NONEXISTENT", "curious_bees:traits/lifespan/normal"),
-                        "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/normal",  "curious_bees:traits/productivity/normal"),
-                        "FERTILITY",    new TraitAllelePairData("curious_bees:traits/fertility/two",         "curious_bees:traits/fertility/two"),
-                        "FLOWER_TYPE",  new TraitAllelePairData("curious_bees:traits/flower_type/flowers",  "curious_bees:traits/flower_type/flowers")
+                        "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/NONEXISTENT", "curious_bees:traits/productivity/normal"),
+                        "FLOWER_TYPE",  new TraitAllelePairData("curious_bees:traits/flower_type/flowers",      "curious_bees:traits/flower_type/flowers")
                 ));
         assertThrows(ContentConversionException.class,
                 () -> ContentConverter.toSpeciesDefinition(dto, knownTraitAlleles));
+    }
+
+    @Test
+    void toSpeciesDefinition_unknownChromosomeTypeInDefaultTraits_isSkipped() {
+        // Old JSON with LIFESPAN/FERTILITY should be silently skipped, not crash.
+        var dto = new SpeciesDefinitionData(
+                "curious_bees:species/meadow", "Meadow Bee", "DOMINANT",
+                Map.of(
+                        "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/normal", "curious_bees:traits/productivity/normal"),
+                        "FLOWER_TYPE",  new TraitAllelePairData("curious_bees:traits/flower_type/flowers", "curious_bees:traits/flower_type/flowers"),
+                        "LIFESPAN",     new TraitAllelePairData("curious_bees:traits/lifespan/normal",     "curious_bees:traits/lifespan/normal"),
+                        "FERTILITY",    new TraitAllelePairData("curious_bees:traits/fertility/two",        "curious_bees:traits/fertility/two")
+                ),
+                List.of("plains"));
+        // Must not throw — unknown slots are silently skipped
+        assertDoesNotThrow(() -> ContentConverter.toSpeciesDefinition(dto, knownTraitAlleles));
+        BeeSpeciesDefinition def = ContentConverter.toSpeciesDefinition(dto, knownTraitAlleles);
+        // Known slots still present
+        assertNotNull(def.defaultTraitAlleles(ChromosomeType.PRODUCTIVITY));
+        assertNotNull(def.defaultTraitAlleles(ChromosomeType.FLOWER_TYPE));
     }
 
     // -------------------------------------------------------------------------
@@ -272,9 +282,7 @@ class ContentConverterTest {
         return new SpeciesDefinitionData(
                 "curious_bees:species/meadow", "Meadow Bee", "DOMINANT",
                 Map.of(
-                        "LIFESPAN",     new TraitAllelePairData("curious_bees:traits/lifespan/normal",     "curious_bees:traits/lifespan/normal"),
                         "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/normal", "curious_bees:traits/productivity/normal"),
-                        "FERTILITY",    new TraitAllelePairData("curious_bees:traits/fertility/two",        "curious_bees:traits/fertility/two"),
                         "FLOWER_TYPE",  new TraitAllelePairData("curious_bees:traits/flower_type/flowers", "curious_bees:traits/flower_type/flowers")
                 ),
                 List.of("plains", "flower_forest"));

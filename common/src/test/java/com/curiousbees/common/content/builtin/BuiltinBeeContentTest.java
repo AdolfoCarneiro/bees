@@ -40,9 +40,9 @@ class BuiltinBeeContentTest {
 
     @Test
     void lookupExistingTraitSucceeds() {
-        var trait = BuiltinBeeContent.findTrait("curious_bees:traits/lifespan/normal");
+        var trait = BuiltinBeeContent.findTrait("curious_bees:traits/productivity/normal");
         assertTrue(trait.isPresent());
-        assertEquals(ChromosomeType.LIFESPAN, trait.get().chromosomeType());
+        assertEquals(ChromosomeType.PRODUCTIVITY, trait.get().chromosomeType());
     }
 
     @Test
@@ -52,7 +52,7 @@ class BuiltinBeeContentTest {
 
     @Test
     void allTraitsAreAccessible() {
-        assertEquals(12, BuiltinBeeContent.allTraits().size());
+        assertEquals(6, BuiltinBeeContent.allTraits().size());
     }
 
     @Test

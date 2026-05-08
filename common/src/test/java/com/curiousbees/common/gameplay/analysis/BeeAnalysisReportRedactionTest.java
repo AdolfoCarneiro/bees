@@ -27,8 +27,8 @@ class BeeAnalysisReportRedactionTest {
     void unknownReportAlleleIdsAreUnknownSentinel() {
         BeeAnalysisReport report = BeeAnalysisReport.unknown();
         assertEquals(BeeAnalysisReport.UNKNOWN_ID, report.species().activeAlleleId());
-        assertEquals(BeeAnalysisReport.UNKNOWN_ID, report.lifespan().activeAlleleId());
         assertEquals(BeeAnalysisReport.UNKNOWN_ID, report.productivity().activeAlleleId());
+        assertEquals(BeeAnalysisReport.UNKNOWN_ID, report.flowerType().activeAlleleId());
     }
 
     @Test

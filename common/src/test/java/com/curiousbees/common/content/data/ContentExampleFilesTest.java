@@ -22,15 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ContentExampleFilesTest {
 
     private static final List<String> TRAIT_FILES = List.of(
-            "traits/lifespan/short.json",
-            "traits/lifespan/normal.json",
-            "traits/lifespan/long.json",
             "traits/productivity/slow.json",
             "traits/productivity/normal.json",
             "traits/productivity/fast.json",
-            "traits/fertility/one.json",
-            "traits/fertility/two.json",
-            "traits/fertility/three.json",
             "traits/flower_type/flowers.json",
             "traits/flower_type/cactus.json",
             "traits/flower_type/leaves.json");

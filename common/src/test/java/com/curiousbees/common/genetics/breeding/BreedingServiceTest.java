@@ -46,7 +46,7 @@ class BreedingServiceTest {
 
     @Test
     void incompatibleChromosomeSetsFail() {
-        // pureMeadow has 5 chromosomes; build a genome with only SPECIES
+        // pureMeadow has 3 chromosomes; build a genome with only SPECIES
         Genome speciesOnly = new Genome(java.util.Map.of(
                 ChromosomeType.SPECIES,
                 new com.curiousbees.common.genetics.model.GenePair(
@@ -87,9 +87,7 @@ class BreedingServiceTest {
         Genome child = result.childGenome();
 
         assertTrue(child.hasChromosome(ChromosomeType.SPECIES));
-        assertTrue(child.hasChromosome(ChromosomeType.LIFESPAN));
         assertTrue(child.hasChromosome(ChromosomeType.PRODUCTIVITY));
-        assertTrue(child.hasChromosome(ChromosomeType.FERTILITY));
         assertTrue(child.hasChromosome(ChromosomeType.FLOWER_TYPE));
     }
 
@@ -111,7 +109,7 @@ class BreedingServiceTest {
         // parentA: Meadow/Meadow, parentB: Forest/Forest
         // For SPECIES only: fromA = true (first=Meadow), fromB = false (second=Forest)
         // GenePair(Meadow, Forest) - both DOMINANT -> random=true -> Meadow active
-        // We need 3 booleans per chromosome * 5 chromosomes = 15 booleans minimum
+        // We need 3 booleans per chromosome * 3 chromosomes = 9 booleans minimum
         // We'll just validate the SPECIES result using a controlled sequence
         Genome parentA = GenomeFixtures.pureMeadow();
         Genome parentB = GenomeFixtures.pureForest();

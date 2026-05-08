@@ -52,8 +52,8 @@ class AlleleTest {
 
     @Test
     void alleleExposesExpectedChromosomeType() {
-        Allele allele = new Allele("curious_bees:fertility/two", ChromosomeType.FERTILITY, Dominance.DOMINANT);
-        assertEquals(ChromosomeType.FERTILITY, allele.chromosomeType());
+        Allele allele = new Allele("curious_bees:productivity/normal", ChromosomeType.PRODUCTIVITY, Dominance.DOMINANT);
+        assertEquals(ChromosomeType.PRODUCTIVITY, allele.chromosomeType());
     }
 
     @Test

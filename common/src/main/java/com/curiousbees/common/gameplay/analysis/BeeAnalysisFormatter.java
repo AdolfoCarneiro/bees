@@ -38,9 +38,7 @@ public final class BeeAnalysisFormatter {
             return List.copyOf(lines);
         }
         lines.add(speciesLine(report.species()));
-        lines.add(traitLine("Lifespan",     report.lifespan()));
         lines.add(traitLine("Productivity", report.productivity()));
-        lines.add(traitLine("Fertility",    report.fertility()));
         lines.add(traitLine("Flower Type",  report.flowerType()));
 
         return List.copyOf(lines);

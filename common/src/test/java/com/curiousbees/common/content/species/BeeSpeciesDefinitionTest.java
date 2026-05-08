@@ -17,9 +17,7 @@ class BeeSpeciesDefinitionTest {
 
     private static Map<ChromosomeType, Allele[]> validTraits() {
         Map<ChromosomeType, Allele[]> m = new EnumMap<>(ChromosomeType.class);
-        m.put(ChromosomeType.LIFESPAN,     new Allele[]{BuiltinBeeTraits.LIFESPAN_NORMAL,     BuiltinBeeTraits.LIFESPAN_NORMAL});
         m.put(ChromosomeType.PRODUCTIVITY, new Allele[]{BuiltinBeeTraits.PRODUCTIVITY_NORMAL, BuiltinBeeTraits.PRODUCTIVITY_NORMAL});
-        m.put(ChromosomeType.FERTILITY,    new Allele[]{BuiltinBeeTraits.FERTILITY_TWO,       BuiltinBeeTraits.FERTILITY_TWO});
         m.put(ChromosomeType.FLOWER_TYPE,  new Allele[]{BuiltinBeeTraits.FLOWER_FLOWERS,      BuiltinBeeTraits.FLOWER_FLOWERS});
         return m;
     }
@@ -67,7 +65,7 @@ class BeeSpeciesDefinitionTest {
 
     @Test
     void nonSpeciesAlleleFails() {
-        Allele wrong = BuiltinBeeTraits.LIFESPAN_NORMAL;
+        Allele wrong = BuiltinBeeTraits.PRODUCTIVITY_NORMAL;
         assertThrows(IllegalArgumentException.class,
                 () -> new BeeSpeciesDefinition("id", "Test", wrong, validTraits(), List.of()));
     }
@@ -75,7 +73,7 @@ class BeeSpeciesDefinitionTest {
     @Test
     void missingTraitChromosomeFails() {
         Map<ChromosomeType, Allele[]> incomplete = validTraits();
-        incomplete.remove(ChromosomeType.FERTILITY);
+        incomplete.remove(ChromosomeType.FLOWER_TYPE);
         assertThrows(IllegalArgumentException.class,
                 () -> new BeeSpeciesDefinition("id", "Test", VALID_SPECIES, incomplete, List.of()));
     }
@@ -91,7 +89,7 @@ class BeeSpeciesDefinitionTest {
     @Test
     void wrongArraySizeFails() {
         Map<ChromosomeType, Allele[]> bad = validTraits();
-        bad.put(ChromosomeType.LIFESPAN, new Allele[]{BuiltinBeeTraits.LIFESPAN_NORMAL});
+        bad.put(ChromosomeType.PRODUCTIVITY, new Allele[]{BuiltinBeeTraits.PRODUCTIVITY_NORMAL});
         assertThrows(IllegalArgumentException.class,
                 () -> new BeeSpeciesDefinition("id", "Test", VALID_SPECIES, bad, List.of()));
     }
@@ -99,9 +97,9 @@ class BeeSpeciesDefinitionTest {
     @Test
     void mismatchedAlleleChrTypeFails() {
         Map<ChromosomeType, Allele[]> bad = validTraits();
-        // put a PRODUCTIVITY allele under LIFESPAN key
-        bad.put(ChromosomeType.LIFESPAN,
-                new Allele[]{BuiltinBeeTraits.PRODUCTIVITY_NORMAL, BuiltinBeeTraits.LIFESPAN_NORMAL});
+        // put a FLOWER_TYPE allele under PRODUCTIVITY key
+        bad.put(ChromosomeType.PRODUCTIVITY,
+                new Allele[]{BuiltinBeeTraits.FLOWER_FLOWERS, BuiltinBeeTraits.PRODUCTIVITY_NORMAL});
         assertThrows(IllegalArgumentException.class,
                 () -> new BeeSpeciesDefinition("id", "Test", VALID_SPECIES, bad, List.of()));
     }
@@ -111,10 +109,10 @@ class BeeSpeciesDefinitionTest {
         BeeSpeciesDefinition def = new BeeSpeciesDefinition(
                 "id", "Test", VALID_SPECIES, validTraits(), List.of());
         // returned array is a copy — mutating it does not affect the definition
-        Allele[] returned = def.defaultTraitAlleles(ChromosomeType.LIFESPAN);
-        returned[0] = BuiltinBeeTraits.LIFESPAN_SHORT;
-        assertNotEquals(BuiltinBeeTraits.LIFESPAN_SHORT,
-                def.defaultTraitAlleles(ChromosomeType.LIFESPAN)[0]);
+        Allele[] returned = def.defaultTraitAlleles(ChromosomeType.PRODUCTIVITY);
+        returned[0] = BuiltinBeeTraits.PRODUCTIVITY_SLOW;
+        assertNotEquals(BuiltinBeeTraits.PRODUCTIVITY_SLOW,
+                def.defaultTraitAlleles(ChromosomeType.PRODUCTIVITY)[0]);
     }
 
     @Test

@@ -39,9 +39,7 @@ public final class DefaultGenomeFactory {
 
         // Traits
         for (ChromosomeType type : new ChromosomeType[]{
-                ChromosomeType.LIFESPAN,
                 ChromosomeType.PRODUCTIVITY,
-                ChromosomeType.FERTILITY,
                 ChromosomeType.FLOWER_TYPE}) {
             Allele[] pair = definition.defaultTraitAlleles(type);
             pairs.put(type, new GenePair(pair[0], pair[1], random));

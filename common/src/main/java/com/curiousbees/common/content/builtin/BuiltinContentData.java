@@ -27,18 +27,10 @@ public final class BuiltinContentData {
     // -------------------------------------------------------------------------
 
     public static final List<TraitAlleleDefinitionData> TRAIT_ALLELES = List.of(
-            // Lifespan
-            new TraitAlleleDefinitionData("curious_bees:traits/lifespan/short",  "LIFESPAN", "Short",  "RECESSIVE"),
-            new TraitAlleleDefinitionData("curious_bees:traits/lifespan/normal", "LIFESPAN", "Normal", "DOMINANT"),
-            new TraitAlleleDefinitionData("curious_bees:traits/lifespan/long",   "LIFESPAN", "Long",   "RECESSIVE"),
             // Productivity
             new TraitAlleleDefinitionData("curious_bees:traits/productivity/slow",   "PRODUCTIVITY", "Slow",   "RECESSIVE"),
             new TraitAlleleDefinitionData("curious_bees:traits/productivity/normal", "PRODUCTIVITY", "Normal", "DOMINANT"),
             new TraitAlleleDefinitionData("curious_bees:traits/productivity/fast",   "PRODUCTIVITY", "Fast",   "RECESSIVE"),
-            // Fertility
-            new TraitAlleleDefinitionData("curious_bees:traits/fertility/one",   "FERTILITY", "One",   "RECESSIVE"),
-            new TraitAlleleDefinitionData("curious_bees:traits/fertility/two",   "FERTILITY", "Two",   "DOMINANT"),
-            new TraitAlleleDefinitionData("curious_bees:traits/fertility/three", "FERTILITY", "Three", "RECESSIVE"),
             // Flower type
             new TraitAlleleDefinitionData("curious_bees:traits/flower_type/flowers", "FLOWER_TYPE", "Flowers", "DOMINANT"),
             new TraitAlleleDefinitionData("curious_bees:traits/flower_type/cactus",  "FLOWER_TYPE", "Cactus",  "RECESSIVE"),
@@ -53,9 +45,7 @@ public final class BuiltinContentData {
             new SpeciesDefinitionData(
                     "curious_bees:species/meadow", "Meadow Bee", "DOMINANT",
                     Map.of(
-                            "LIFESPAN",     new TraitAllelePairData("curious_bees:traits/lifespan/normal",     "curious_bees:traits/lifespan/normal"),
                             "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/normal", "curious_bees:traits/productivity/normal"),
-                            "FERTILITY",    new TraitAllelePairData("curious_bees:traits/fertility/two",        "curious_bees:traits/fertility/two"),
                             "FLOWER_TYPE",  new TraitAllelePairData("curious_bees:traits/flower_type/flowers", "curious_bees:traits/flower_type/flowers")
                     ),
                     List.of("plains", "flower_forest", "meadow")),
@@ -63,9 +53,7 @@ public final class BuiltinContentData {
             new SpeciesDefinitionData(
                     "curious_bees:species/forest", "Forest Bee", "DOMINANT",
                     Map.of(
-                            "LIFESPAN",     new TraitAllelePairData("curious_bees:traits/lifespan/normal",     "curious_bees:traits/lifespan/normal"),
                             "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/normal", "curious_bees:traits/productivity/normal"),
-                            "FERTILITY",    new TraitAllelePairData("curious_bees:traits/fertility/two",        "curious_bees:traits/fertility/two"),
                             "FLOWER_TYPE",  new TraitAllelePairData("curious_bees:traits/flower_type/leaves",  "curious_bees:traits/flower_type/leaves")
                     ),
                     List.of("forest", "birch_forest", "dark_forest")),
@@ -73,9 +61,7 @@ public final class BuiltinContentData {
             new SpeciesDefinitionData(
                     "curious_bees:species/arid", "Arid Bee", "RECESSIVE",
                     Map.of(
-                            "LIFESPAN",     new TraitAllelePairData("curious_bees:traits/lifespan/normal",    "curious_bees:traits/lifespan/normal"),
                             "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/slow",  "curious_bees:traits/productivity/normal"),
-                            "FERTILITY",    new TraitAllelePairData("curious_bees:traits/fertility/one",       "curious_bees:traits/fertility/two"),
                             "FLOWER_TYPE",  new TraitAllelePairData("curious_bees:traits/flower_type/cactus", "curious_bees:traits/flower_type/cactus")
                     ),
                     List.of("desert", "savanna", "badlands")),
@@ -83,18 +69,14 @@ public final class BuiltinContentData {
             new SpeciesDefinitionData(
                     "curious_bees:species/cultivated", "Cultivated Bee", "DOMINANT",
                     Map.of(
-                            "LIFESPAN",     new TraitAllelePairData("curious_bees:traits/lifespan/normal",     "curious_bees:traits/lifespan/normal"),
                             "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/fast",   "curious_bees:traits/productivity/normal"),
-                            "FERTILITY",    new TraitAllelePairData("curious_bees:traits/fertility/two",        "curious_bees:traits/fertility/two"),
                             "FLOWER_TYPE",  new TraitAllelePairData("curious_bees:traits/flower_type/flowers", "curious_bees:traits/flower_type/flowers")
                     )),
 
             new SpeciesDefinitionData(
                     "curious_bees:species/hardy", "Hardy Bee", "RECESSIVE",
                     Map.of(
-                            "LIFESPAN",     new TraitAllelePairData("curious_bees:traits/lifespan/long",       "curious_bees:traits/lifespan/normal"),
                             "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/normal", "curious_bees:traits/productivity/normal"),
-                            "FERTILITY",    new TraitAllelePairData("curious_bees:traits/fertility/two",        "curious_bees:traits/fertility/two"),
                             "FLOWER_TYPE",  new TraitAllelePairData("curious_bees:traits/flower_type/flowers", "curious_bees:traits/flower_type/cactus")
                     ))
     );

@@ -62,17 +62,17 @@ class BuiltinContentDataTest {
 
     @Test
     void builtinTraitAlleles_hasExpectedCount() {
-        assertEquals(12, BuiltinContentData.TRAIT_ALLELES.size());
+        assertEquals(6, BuiltinContentData.TRAIT_ALLELES.size());
     }
 
     @Test
     void builtinTraitAlleles_convertToCorrectRuntimeAlleles() {
-        assertEquals(12, runtimeTraitAlleles.size());
+        assertEquals(6, runtimeTraitAlleles.size());
 
-        Allele lifespanNormal = runtimeTraitAlleles.get("curious_bees:traits/lifespan/normal");
-        assertNotNull(lifespanNormal);
-        assertEquals(ChromosomeType.LIFESPAN, lifespanNormal.chromosomeType());
-        assertEquals(Dominance.DOMINANT, lifespanNormal.dominance());
+        Allele productivityNormal = runtimeTraitAlleles.get("curious_bees:traits/productivity/normal");
+        assertNotNull(productivityNormal);
+        assertEquals(ChromosomeType.PRODUCTIVITY, productivityNormal.chromosomeType());
+        assertEquals(Dominance.DOMINANT, productivityNormal.dominance());
 
         Allele productivityFast = runtimeTraitAlleles.get("curious_bees:traits/productivity/fast");
         assertNotNull(productivityFast);
@@ -118,9 +118,9 @@ class BuiltinContentDataTest {
         assertEquals(Dominance.DOMINANT, def.speciesAllele().dominance());
 
         // Mirrors BuiltinBeeSpecies.MEADOW
-        Allele[] lifespan = def.defaultTraitAlleles(ChromosomeType.LIFESPAN);
-        assertEquals(BuiltinBeeTraits.LIFESPAN_NORMAL, lifespan[0]);
-        assertEquals(BuiltinBeeTraits.LIFESPAN_NORMAL, lifespan[1]);
+        Allele[] productivity = def.defaultTraitAlleles(ChromosomeType.PRODUCTIVITY);
+        assertEquals(BuiltinBeeTraits.PRODUCTIVITY_NORMAL, productivity[0]);
+        assertEquals(BuiltinBeeTraits.PRODUCTIVITY_NORMAL, productivity[1]);
     }
 
     @Test

@@ -16,7 +16,7 @@ class ContentJsonLoaderTest {
 
         assertFalse(result.hasErrors());
         assertEquals(5, result.registry().allSpecies().size());
-        assertEquals(12, result.registry().allTraitAlleles().size());
+        assertEquals(6, result.registry().allTraitAlleles().size());
         assertTrue(result.registry().findSpecies("curious_bees:species/meadow").isPresent());
     }
 
@@ -73,7 +73,7 @@ class ContentJsonLoaderTest {
 
         assertFalse(result.hasErrors(), result::combinedErrorMessage);
         assertEquals(6, result.registry().allSpecies().size());
-        assertEquals(13, result.registry().allTraitAlleles().size());
+        assertEquals(7, result.registry().allTraitAlleles().size());
         assertTrue(result.registry().findSpecies("test:species/test").isPresent());
         assertTrue(result.registry().findMutation("test:mutations/test_from_meadow_forest").isPresent());
         assertTrue(result.registry().findProduction("test:species/test").isPresent());

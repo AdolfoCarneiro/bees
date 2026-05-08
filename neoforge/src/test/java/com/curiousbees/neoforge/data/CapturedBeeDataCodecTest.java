@@ -41,21 +41,11 @@ class CapturedBeeDataCodecTest {
                 "curious_bees:species/meadow",
                 "curious_bees:species/meadow",
                 "curious_bees:species/meadow"));
-        chromosomes.put("LIFESPAN", new GenePairData(
-                "curious_bees:traits/lifespan/normal",
-                "curious_bees:traits/lifespan/normal",
-                "curious_bees:traits/lifespan/normal",
-                "curious_bees:traits/lifespan/normal"));
         chromosomes.put("PRODUCTIVITY", new GenePairData(
                 "curious_bees:traits/productivity/normal",
                 "curious_bees:traits/productivity/normal",
                 "curious_bees:traits/productivity/normal",
                 "curious_bees:traits/productivity/normal"));
-        chromosomes.put("FERTILITY", new GenePairData(
-                "curious_bees:traits/fertility/two",
-                "curious_bees:traits/fertility/two",
-                "curious_bees:traits/fertility/two",
-                "curious_bees:traits/fertility/two"));
         chromosomes.put("FLOWER_TYPE", new GenePairData(
                 "curious_bees:traits/flower_type/flowers",
                 "curious_bees:traits/flower_type/flowers",

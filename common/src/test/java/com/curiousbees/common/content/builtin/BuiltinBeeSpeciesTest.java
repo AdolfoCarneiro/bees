@@ -48,14 +48,10 @@ class BuiltinBeeSpeciesTest {
     }
 
     @Test
-    void allSpeciesHaveAllMvpTraitChromosomes() {
+    void allSpeciesHaveMvpTraitChromosomes() {
         for (var def : ALL) {
-            assertDoesNotThrow(() -> def.defaultTraitAlleles(ChromosomeType.LIFESPAN),
-                    def.id() + " missing LIFESPAN");
             assertDoesNotThrow(() -> def.defaultTraitAlleles(ChromosomeType.PRODUCTIVITY),
                     def.id() + " missing PRODUCTIVITY");
-            assertDoesNotThrow(() -> def.defaultTraitAlleles(ChromosomeType.FERTILITY),
-                    def.id() + " missing FERTILITY");
             assertDoesNotThrow(() -> def.defaultTraitAlleles(ChromosomeType.FLOWER_TYPE),
                     def.id() + " missing FLOWER_TYPE");
         }
@@ -67,18 +63,10 @@ class BuiltinBeeSpeciesTest {
         var prod = ARID.defaultTraitAlleles(ChromosomeType.PRODUCTIVITY);
         assertEquals(BuiltinBeeTraits.PRODUCTIVITY_SLOW.id(),   prod[0].id());
         assertEquals(BuiltinBeeTraits.PRODUCTIVITY_NORMAL.id(), prod[1].id());
-        // Fertility: One / Two (hybrid)
-        var fert = ARID.defaultTraitAlleles(ChromosomeType.FERTILITY);
-        assertEquals(BuiltinBeeTraits.FERTILITY_ONE.id(), fert[0].id());
-        assertEquals(BuiltinBeeTraits.FERTILITY_TWO.id(), fert[1].id());
     }
 
     @Test
     void hardyDefaultTraitsMatchSpec() {
-        // Lifespan: Long / Normal (hybrid)
-        var life = HARDY.defaultTraitAlleles(ChromosomeType.LIFESPAN);
-        assertEquals(BuiltinBeeTraits.LIFESPAN_LONG.id(),   life[0].id());
-        assertEquals(BuiltinBeeTraits.LIFESPAN_NORMAL.id(), life[1].id());
         // FlowerType: Flowers / Cactus (hybrid)
         var flower = HARDY.defaultTraitAlleles(ChromosomeType.FLOWER_TYPE);
         assertEquals(BuiltinBeeTraits.FLOWER_FLOWERS.id(), flower[0].id());

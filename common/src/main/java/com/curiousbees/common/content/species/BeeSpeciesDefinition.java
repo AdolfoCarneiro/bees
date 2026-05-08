@@ -22,9 +22,7 @@ import java.util.Set;
 public final class BeeSpeciesDefinition {
 
     private static final Set<ChromosomeType> REQUIRED_TRAIT_TYPES = EnumSet.of(
-            ChromosomeType.LIFESPAN,
             ChromosomeType.PRODUCTIVITY,
-            ChromosomeType.FERTILITY,
             ChromosomeType.FLOWER_TYPE);
 
     private final String id;
@@ -39,7 +37,7 @@ public final class BeeSpeciesDefinition {
      * Full constructor including optional visual and habitat metadata.
      *
      * @param defaultTraitAlleles map from trait ChromosomeType to a two-element array [first, second].
-     *                            Must contain LIFESPAN, PRODUCTIVITY, FERTILITY, and FLOWER_TYPE.
+     *                            Must contain PRODUCTIVITY and FLOWER_TYPE.
      *                            Must NOT contain SPECIES — species is set via speciesAllele.
      * @param visualDefinition    optional visual metadata; null if not yet defined.
      * @param habitatDefinition   optional habitat metadata; null for mutation-only species.

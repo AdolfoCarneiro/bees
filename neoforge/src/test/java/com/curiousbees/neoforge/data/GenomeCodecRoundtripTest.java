@@ -60,28 +60,14 @@ class GenomeCodecRoundtripTest {
                 "curious_bees:species/forest");
     }
 
-    private static GenePairData lifespanPair() {
-        return new GenePairData(
-                "curious_bees:traits/lifespan/normal",
-                "curious_bees:traits/lifespan/short",
-                "curious_bees:traits/lifespan/normal",
-                "curious_bees:traits/lifespan/short");
-    }
-
     private static GenomeData fullGenome() {
         Map<String, GenePairData> chromosomes = new LinkedHashMap<>();
         chromosomes.put("SPECIES",      meadowPair());
-        chromosomes.put("LIFESPAN",     lifespanPair());
         chromosomes.put("PRODUCTIVITY", new GenePairData(
                 "curious_bees:traits/productivity/normal",
                 "curious_bees:traits/productivity/normal",
                 "curious_bees:traits/productivity/normal",
                 "curious_bees:traits/productivity/normal"));
-        chromosomes.put("FERTILITY", new GenePairData(
-                "curious_bees:traits/fertility/two",
-                "curious_bees:traits/fertility/two",
-                "curious_bees:traits/fertility/two",
-                "curious_bees:traits/fertility/two"));
         chromosomes.put("FLOWER_TYPE", new GenePairData(
                 "curious_bees:traits/flower_type/flowers",
                 "curious_bees:traits/flower_type/flowers",

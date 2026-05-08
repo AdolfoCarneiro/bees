@@ -29,14 +29,8 @@ public final class GenomeReport {
         lines.add(pairLine("Species",      genome.species()));
         lines.add(purityLine(genome.species()));
 
-        if (genome.hasChromosome(ChromosomeType.LIFESPAN)) {
-            lines.add(pairLine("Lifespan",     genome.getGenePair(ChromosomeType.LIFESPAN)));
-        }
         if (genome.hasChromosome(ChromosomeType.PRODUCTIVITY)) {
             lines.add(pairLine("Productivity", genome.getGenePair(ChromosomeType.PRODUCTIVITY)));
-        }
-        if (genome.hasChromosome(ChromosomeType.FERTILITY)) {
-            lines.add(pairLine("Fertility",    genome.getGenePair(ChromosomeType.FERTILITY)));
         }
         if (genome.hasChromosome(ChromosomeType.FLOWER_TYPE)) {
             lines.add(pairLine("Flower Type",  genome.getGenePair(ChromosomeType.FLOWER_TYPE)));

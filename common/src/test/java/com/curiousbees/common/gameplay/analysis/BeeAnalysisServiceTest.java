@@ -41,9 +41,7 @@ class BeeAnalysisServiceTest {
     void allMvpChromosomesArePresentInReport() {
         BeeAnalysisReport report = service.analyze(GenomeFixtures.pureMeadow());
         assertEquals(ChromosomeType.SPECIES,      report.species().chromosomeType());
-        assertEquals(ChromosomeType.LIFESPAN,     report.lifespan().chromosomeType());
         assertEquals(ChromosomeType.PRODUCTIVITY, report.productivity().chromosomeType());
-        assertEquals(ChromosomeType.FERTILITY,    report.fertility().chromosomeType());
         assertEquals(ChromosomeType.FLOWER_TYPE,  report.flowerType().chromosomeType());
     }
 

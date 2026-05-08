@@ -60,9 +60,7 @@ public final class BeeAnalyzerScreen extends Screen {
             lines.add(new ReportLine(null,
                     "» " + I18n.get("screen.curiousbees.bee_analyzer.purity.hybrid"), HYBRID_COL));
         }
-        lines.add(traitLine("screen.curiousbees.bee_analyzer.label.lifespan",     report.lifespan()));
         lines.add(traitLine("screen.curiousbees.bee_analyzer.label.productivity", report.productivity()));
-        lines.add(traitLine("screen.curiousbees.bee_analyzer.label.fertility",    report.fertility()));
         lines.add(traitLine("screen.curiousbees.bee_analyzer.label.flower_type",  report.flowerType()));
     }
 

@@ -29,10 +29,10 @@ public final class ContentValidator {
     private static final Set<String> VALID_DOMINANCE = Set.of("DOMINANT", "RECESSIVE");
 
     private static final Set<String> VALID_TRAIT_CHROMOSOME_TYPES =
-            Set.of("LIFESPAN", "PRODUCTIVITY", "FERTILITY", "FLOWER_TYPE");
+            Set.of("PRODUCTIVITY", "FLOWER_TYPE");
 
     private static final Set<String> REQUIRED_TRAIT_SLOTS =
-            Set.of("LIFESPAN", "PRODUCTIVITY", "FERTILITY", "FLOWER_TYPE");
+            Set.of("PRODUCTIVITY", "FLOWER_TYPE");
 
     private ContentValidator() {}
 

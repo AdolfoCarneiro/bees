@@ -28,7 +28,7 @@ class ContentRegistryTest {
         ContentRegistry registry = ContentRegistry.builtIn();
 
         assertEquals(5, registry.allSpecies().size());
-        assertEquals(12, registry.allTraitAlleles().size());
+        assertEquals(6, registry.allTraitAlleles().size());
         assertEquals(2, registry.allMutations().size());
         assertEquals(5, registry.allProductionDefinitions().size());
         assertTrue(registry.findSpecies(BuiltinBeeSpecies.MEADOW.id()).isPresent());
@@ -122,12 +122,8 @@ class ContentRegistryTest {
                 Dominance.RECESSIVE);
 
         Map<ChromosomeType, Allele[]> traits = new EnumMap<>(ChromosomeType.class);
-        traits.put(ChromosomeType.LIFESPAN,
-                new Allele[]{BuiltinBeeTraits.LIFESPAN_NORMAL, BuiltinBeeTraits.LIFESPAN_NORMAL});
         traits.put(ChromosomeType.PRODUCTIVITY,
                 new Allele[]{BuiltinBeeTraits.PRODUCTIVITY_NORMAL, BuiltinBeeTraits.PRODUCTIVITY_NORMAL});
-        traits.put(ChromosomeType.FERTILITY,
-                new Allele[]{BuiltinBeeTraits.FERTILITY_TWO, BuiltinBeeTraits.FERTILITY_TWO});
         traits.put(ChromosomeType.FLOWER_TYPE,
                 new Allele[]{BuiltinBeeTraits.FLOWER_FLOWERS, BuiltinBeeTraits.FLOWER_FLOWERS});
 

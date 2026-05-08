@@ -13,24 +13,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class BuiltinBeeTraitsTest {
 
     @Test
-    void allLifespanAllelesExist() {
-        assertNotNull(LIFESPAN_SHORT);
-        assertNotNull(LIFESPAN_NORMAL);
-        assertNotNull(LIFESPAN_LONG);
-    }
-
-    @Test
     void allProductivityAllelesExist() {
         assertNotNull(PRODUCTIVITY_SLOW);
         assertNotNull(PRODUCTIVITY_NORMAL);
         assertNotNull(PRODUCTIVITY_FAST);
-    }
-
-    @Test
-    void allFertilityAllelesExist() {
-        assertNotNull(FERTILITY_ONE);
-        assertNotNull(FERTILITY_TWO);
-        assertNotNull(FERTILITY_THREE);
     }
 
     @Test
@@ -49,24 +35,10 @@ class BuiltinBeeTraitsTest {
     }
 
     @Test
-    void lifespanAllelesHaveCorrectChromosomeType() {
-        assertEquals(ChromosomeType.LIFESPAN, LIFESPAN_SHORT.chromosomeType());
-        assertEquals(ChromosomeType.LIFESPAN, LIFESPAN_NORMAL.chromosomeType());
-        assertEquals(ChromosomeType.LIFESPAN, LIFESPAN_LONG.chromosomeType());
-    }
-
-    @Test
     void productivityAllelesHaveCorrectChromosomeType() {
         assertEquals(ChromosomeType.PRODUCTIVITY, PRODUCTIVITY_SLOW.chromosomeType());
         assertEquals(ChromosomeType.PRODUCTIVITY, PRODUCTIVITY_NORMAL.chromosomeType());
         assertEquals(ChromosomeType.PRODUCTIVITY, PRODUCTIVITY_FAST.chromosomeType());
-    }
-
-    @Test
-    void fertilityAllelesHaveCorrectChromosomeType() {
-        assertEquals(ChromosomeType.FERTILITY, FERTILITY_ONE.chromosomeType());
-        assertEquals(ChromosomeType.FERTILITY, FERTILITY_TWO.chromosomeType());
-        assertEquals(ChromosomeType.FERTILITY, FERTILITY_THREE.chromosomeType());
     }
 
     @Test
@@ -78,17 +50,9 @@ class BuiltinBeeTraitsTest {
 
     @Test
     void dominanceMatchesSpec() {
-        assertEquals(Dominance.RECESSIVE, LIFESPAN_SHORT.dominance());
-        assertEquals(Dominance.DOMINANT,  LIFESPAN_NORMAL.dominance());
-        assertEquals(Dominance.RECESSIVE, LIFESPAN_LONG.dominance());
-
         assertEquals(Dominance.RECESSIVE, PRODUCTIVITY_SLOW.dominance());
         assertEquals(Dominance.DOMINANT,  PRODUCTIVITY_NORMAL.dominance());
         assertEquals(Dominance.RECESSIVE, PRODUCTIVITY_FAST.dominance());
-
-        assertEquals(Dominance.RECESSIVE, FERTILITY_ONE.dominance());
-        assertEquals(Dominance.DOMINANT,  FERTILITY_TWO.dominance());
-        assertEquals(Dominance.RECESSIVE, FERTILITY_THREE.dominance());
 
         assertEquals(Dominance.DOMINANT,  FLOWER_FLOWERS.dominance());
         assertEquals(Dominance.RECESSIVE, FLOWER_CACTUS.dominance());
@@ -96,7 +60,7 @@ class BuiltinBeeTraitsTest {
     }
 
     @Test
-    void allListHasTwelveEntries() {
-        assertEquals(12, ALL.size());
+    void allListHasSixEntries() {
+        assertEquals(6, ALL.size());
     }
 }

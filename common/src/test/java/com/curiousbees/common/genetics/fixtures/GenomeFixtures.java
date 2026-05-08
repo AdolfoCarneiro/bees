@@ -52,18 +52,16 @@ public final class GenomeFixtures {
 
     /** Meadow purebred with a specific productivity allele (homozygous). */
     public static Genome withProductivity(Allele productivity) {
-        return build(pair(MEADOW, MEADOW), pair(LIFESPAN_NORMAL, LIFESPAN_NORMAL),
+        return build(pair(MEADOW, MEADOW),
                 pair(productivity, productivity),
-                pair(FERTILITY_TWO, FERTILITY_TWO),
                 pair(FLOWER_FLOWERS, FLOWER_FLOWERS));
     }
 
     // --- helpers ---
 
     private static Genome pureSpecies(Allele species) {
-        return build(pair(species, species), pair(LIFESPAN_NORMAL, LIFESPAN_NORMAL),
+        return build(pair(species, species),
                 pair(PRODUCTIVITY_NORMAL, PRODUCTIVITY_NORMAL),
-                pair(FERTILITY_TWO, FERTILITY_TWO),
                 pair(FLOWER_FLOWERS, FLOWER_FLOWERS));
     }
 
@@ -75,9 +73,8 @@ public final class GenomeFixtures {
         // DeterministicGeneticRandom(true) -> first allele wins -> activeSpecies is active
         GenePair speciesPair = new GenePair(activeSpecies, inactiveSpecies,
                 new DeterministicGeneticRandom().withBooleans(true));
-        return build(speciesPair, pair(LIFESPAN_NORMAL, LIFESPAN_NORMAL),
+        return build(speciesPair,
                 pair(PRODUCTIVITY_NORMAL, PRODUCTIVITY_NORMAL),
-                pair(FERTILITY_TWO, FERTILITY_TWO),
                 pair(FLOWER_FLOWERS, FLOWER_FLOWERS));
     }
 
@@ -86,14 +83,10 @@ public final class GenomeFixtures {
         return new GenePair(a, b, new DeterministicGeneticRandom().withBooleans(true));
     }
 
-    private static Genome build(GenePair species, GenePair lifespan,
-                                GenePair productivity, GenePair fertility,
-                                GenePair flowerType) {
+    private static Genome build(GenePair species, GenePair productivity, GenePair flowerType) {
         Map<ChromosomeType, GenePair> map = new EnumMap<>(ChromosomeType.class);
         map.put(ChromosomeType.SPECIES,      species);
-        map.put(ChromosomeType.LIFESPAN,     lifespan);
         map.put(ChromosomeType.PRODUCTIVITY, productivity);
-        map.put(ChromosomeType.FERTILITY,    fertility);
         map.put(ChromosomeType.FLOWER_TYPE,  flowerType);
         return new Genome(map);
     }

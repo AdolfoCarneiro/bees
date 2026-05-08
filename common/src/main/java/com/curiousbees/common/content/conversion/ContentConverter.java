@@ -89,7 +89,14 @@ public final class ContentConverter {
 
         Map<ChromosomeType, Allele[]> traitAlleles = new EnumMap<>(ChromosomeType.class);
         for (Map.Entry<String, TraitAllelePairData> entry : dto.defaultTraits().entrySet()) {
-            ChromosomeType type = parseChromosomeType(entry.getKey(), dto.id());
+            ChromosomeType type;
+            try {
+                type = ChromosomeType.valueOf(entry.getKey());
+            } catch (IllegalArgumentException e) {
+                LOGGER.warning("Unknown chromosomeType '" + entry.getKey()
+                        + "' in species '" + dto.id() + "' defaultTraits — skipping slot.");
+                continue;
+            }
             TraitAllelePairData pair = entry.getValue();
 
             Allele first = resolveTraitAllele(pair.first(), knownTraitAlleles, dto.id());

@@ -79,8 +79,8 @@ class GenePairTest {
 
     @Test
     void recessivePlusRecessiveUsesRandom() {
-        Allele recessiveA = new Allele("curious_bees:lifespan/short", ChromosomeType.LIFESPAN, Dominance.RECESSIVE);
-        Allele recessiveB = new Allele("curious_bees:lifespan/long",  ChromosomeType.LIFESPAN, Dominance.RECESSIVE);
+        Allele recessiveA = new Allele("curious_bees:productivity/slow", ChromosomeType.PRODUCTIVITY, Dominance.RECESSIVE);
+        Allele recessiveB = new Allele("curious_bees:productivity/fast", ChromosomeType.PRODUCTIVITY, Dominance.RECESSIVE);
 
         GenePair pairA = new GenePair(recessiveA, recessiveB, det(true));
         assertEquals(recessiveA, pairA.active());

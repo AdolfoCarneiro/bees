@@ -65,9 +65,7 @@ public final class BuiltinBeeSpecies {
             "Meadow Bee",
             SPECIES_MEADOW,
             traits(
-                    pair(LIFESPAN_NORMAL,      LIFESPAN_NORMAL),
                     pair(PRODUCTIVITY_NORMAL,  PRODUCTIVITY_NORMAL),
-                    pair(FERTILITY_TWO,        FERTILITY_TWO),
                     pair(FLOWER_FLOWERS,       FLOWER_FLOWERS)),
             List.of("plains", "flower_forest", "meadow"),
             VISUAL_MEADOW,
@@ -78,9 +76,7 @@ public final class BuiltinBeeSpecies {
             "Forest Bee",
             SPECIES_FOREST,
             traits(
-                    pair(LIFESPAN_NORMAL,      LIFESPAN_NORMAL),
                     pair(PRODUCTIVITY_NORMAL,  PRODUCTIVITY_NORMAL),
-                    pair(FERTILITY_TWO,        FERTILITY_TWO),
                     pair(FLOWER_LEAVES,        FLOWER_LEAVES)),
             List.of("forest", "birch_forest", "dark_forest"),
             VISUAL_FOREST,
@@ -91,9 +87,7 @@ public final class BuiltinBeeSpecies {
             "Arid Bee",
             SPECIES_ARID,
             traits(
-                    pair(LIFESPAN_NORMAL,      LIFESPAN_NORMAL),
                     pair(PRODUCTIVITY_SLOW,    PRODUCTIVITY_NORMAL),
-                    pair(FERTILITY_ONE,        FERTILITY_TWO),
                     pair(FLOWER_CACTUS,        FLOWER_CACTUS)),
             List.of("desert", "savanna", "badlands"),
             VISUAL_ARID,
@@ -104,9 +98,7 @@ public final class BuiltinBeeSpecies {
             "Cultivated Bee",
             SPECIES_CULTIVATED,
             traits(
-                    pair(LIFESPAN_NORMAL,      LIFESPAN_NORMAL),
                     pair(PRODUCTIVITY_FAST,    PRODUCTIVITY_NORMAL),
-                    pair(FERTILITY_TWO,        FERTILITY_TWO),
                     pair(FLOWER_FLOWERS,       FLOWER_FLOWERS)),
             List.of(),
             VISUAL_CULTIVATED);
@@ -116,9 +108,7 @@ public final class BuiltinBeeSpecies {
             "Hardy Bee",
             SPECIES_HARDY,
             traits(
-                    pair(LIFESPAN_LONG,        LIFESPAN_NORMAL),
                     pair(PRODUCTIVITY_NORMAL,  PRODUCTIVITY_NORMAL),
-                    pair(FERTILITY_TWO,        FERTILITY_TWO),
                     pair(FLOWER_FLOWERS,       FLOWER_CACTUS)),
             List.of(),
             VISUAL_HARDY);
@@ -128,12 +118,9 @@ public final class BuiltinBeeSpecies {
 
     // --- helpers ---
 
-    private static Map<ChromosomeType, Allele[]> traits(Allele[] lifespan, Allele[] productivity,
-                                                         Allele[] fertility, Allele[] flowerType) {
+    private static Map<ChromosomeType, Allele[]> traits(Allele[] productivity, Allele[] flowerType) {
         Map<ChromosomeType, Allele[]> map = new EnumMap<>(ChromosomeType.class);
-        map.put(ChromosomeType.LIFESPAN,     lifespan);
         map.put(ChromosomeType.PRODUCTIVITY, productivity);
-        map.put(ChromosomeType.FERTILITY,    fertility);
         map.put(ChromosomeType.FLOWER_TYPE,  flowerType);
         return map;
     }
