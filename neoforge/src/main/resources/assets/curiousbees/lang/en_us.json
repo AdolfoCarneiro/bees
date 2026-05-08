@@ -20,7 +20,7 @@
   "item.curiousbees.productivity_frame": "Productivity Frame",
   "block.curiousbees.genetic_apiary": "Genetic Beehive",
   "block.curiousbees.advanced_apiary": "Advanced Beehive",
-  "block.curiousbees.apiary_extension": "Beehive Extension",
+  "block.curiousbees.apiary_extension": "Beehive Expansion Box",
   "block.curiousbees.centrifuge": "Centrifuge",
   "gui.curiousbees.centrifuge.honey": "Honey: %s / 5",
   "gui.curiousbees.centrifuge.processing": "Processing...",

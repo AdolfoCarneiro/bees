@@ -26,7 +26,6 @@ public final class ModCreativeTabs {
                         for (var egg : ModItems.BEE_SPAWN_EGGS) {
                             output.accept(egg.get());
                         }
-                        output.accept(ModItems.GENETIC_APIARY.get());
                         output.accept(ModItems.ADVANCED_APIARY.get());
                         output.accept(ModItems.APIARY_EXTENSION.get());
                         output.accept(ModItems.BEE_JAR.get());
