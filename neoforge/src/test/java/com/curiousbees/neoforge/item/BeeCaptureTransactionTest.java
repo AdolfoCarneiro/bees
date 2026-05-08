@@ -11,14 +11,17 @@ import org.junit.jupiter.api.Test;
  * and uses net.minecraft.world.entity.animal.Bee, ItemStack, Player, Level, etc.
  * All of these require a game bootstrap to instantiate. Tests live in neoforge/src/test.
  *
- * IMPLEMENTATION NOTE:
- * The capture transaction has no pure-Java service layer to extract. The logic is:
+ * IMPLEMENTATION NOTE (PR-T01, ADR-0014):
+ * The capture transaction is atomic. The logic is:
  *   1. Guard: item already loaded → PASS (no state change)
  *   2. Guard: bee has no genome → PASS (only genomic bees are capturable)
  *   3. Build CapturedBeeData from genome + analysis flag
- *   4. Set component on stack
- *   5. bee.discard() — only after component is set
- * Steps 4 and 5 are the atomic section. If step 4 throws, step 5 must not run.
+ *   4. Set component on stack — wrapped in try/catch; on failure return FAIL
+ *   5. bee.discard() — ONLY called after step 4 succeeds; bee is never lost on serialization error
+ *
+ * TOOLTIP CONTRACT (PR-T01, ADR-0016):
+ * appendHoverText always deserializes the genome and shows species + productivity + flower_type.
+ * There is NO analysis gate on tooltip. analyzed flag is ignored for display purposes.
  *
  * @see com.curiousbees.neoforge.item.CapturedBeeItem#interactLivingEntity
  */

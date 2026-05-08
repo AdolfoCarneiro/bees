@@ -10,14 +10,20 @@ import org.junit.jupiter.api.Test;
  * Release logic uses net.minecraft.world.level.Level#addFreshEntity, ItemStack,
  * Player, ServerLevel, Vec3, and the Bee entity type — all requiring game bootstrap.
  *
- * CONTRACT (from CapturedBeeItem#use):
+ * CONTRACT (PR-T01, ADR-0014 — from CapturedBeeItem#use):
  *   1. Guard: item is empty (no CAPTURED_BEE component) → pass unchanged
  *   2. Guard: client-side call → return success (no server action)
  *   3. Spawn bee at player position
  *   4. Restore genome + analysis flag on the new bee
  *   5. Call level.addFreshEntity(bee)
- *      — on failure: return FAIL, item unchanged
+ *      — on failure: return FAIL, item unchanged (bee discarded internally by MC, but item NOT cleared)
  *      — on success: call releaseItem(stack) (BeeJar shrinks, BeeTransporter clears component)
+ * Atomicity: item component is NOT cleared until addFreshEntity succeeds.
+ * Bee is constructed before addFreshEntity; if addFreshEntity fails no item mutation occurs.
+ *
+ * TOOLTIP CONTRACT (PR-T01, ADR-0016):
+ * appendHoverText always shows species + productivity + flower_type regardless of analyzed flag.
+ * No analysis gate — tooltip is always populated from the serialized genome.
  *
  * BeeJar contract:  after success → stack.count decremented by 1; if count == 0 → EMPTY
  * BeeTransporter:   after success → CAPTURED_BEE component removed, item kept

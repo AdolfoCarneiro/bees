@@ -48,7 +48,12 @@ public abstract class CapturedBeeItem extends Item {
         CapturedBeeData data = new CapturedBeeData(
                 GenomeSerializer.toData(genomeOpt.get()),
                 BeeAnalysisStorage.isAnalyzed(bee));
-        stack.set(ModDataComponents.CAPTURED_BEE.get(), data);
+        try {
+            stack.set(ModDataComponents.CAPTURED_BEE.get(), data);
+        } catch (Exception e) {
+            CuriousBeesMod.LOGGER.warn("CapturedBeeItem: failed to serialize bee data — bee not discarded. {}", e.getMessage());
+            return InteractionResult.FAIL;
+        }
         bee.discard();
         return InteractionResult.SUCCESS;
     }
@@ -97,26 +102,49 @@ public abstract class CapturedBeeItem extends Item {
                     .withStyle(ChatFormatting.GRAY));
             return;
         }
-        if (data.analyzed()) {
-            String label = GenomeSerializer
-                    .fromData(data.genome(), NeoForgeContentRegistry.current()::findAllele)
-                    .map(g -> {
-                        String sid = g.getActiveAllele(ChromosomeType.SPECIES).id();
-                        return NeoForgeContentRegistry.current().findSpecies(sid)
-                                .flatMap(BeeSpeciesDefinition::visualDefinition)
-                                .flatMap(SpeciesVisualDefinition::displayNameKey)
-                                .map(key -> Component.translatable(key).getString())
-                                .orElse(sid);
-                    }).orElse("?");
-            tooltip.add(Component.translatable("item.curiousbees.captured_bee.species", label)
-                    .withStyle(ChatFormatting.YELLOW));
-            tooltip.add(Component.translatable("item.curiousbees.captured_bee.analyzed")
-                    .withStyle(ChatFormatting.GREEN));
-        } else {
-            tooltip.add(Component.translatable("item.curiousbees.captured_bee.species_unknown")
-                    .withStyle(ChatFormatting.YELLOW));
-            tooltip.add(Component.translatable("item.curiousbees.captured_bee.unanalyzed")
-                    .withStyle(ChatFormatting.GRAY));
+
+        var genomeOpt = GenomeSerializer
+                .fromData(data.genome(), NeoForgeContentRegistry.current()::findAllele);
+
+        if (genomeOpt.isEmpty()) {
+            tooltip.add(Component.translatable("item.curiousbees.captured_bee.genome_corrupt")
+                    .withStyle(ChatFormatting.RED));
+            return;
         }
+
+        var genome = genomeOpt.get();
+
+        // Species
+        String speciesId = genome.getActiveAllele(ChromosomeType.SPECIES).id();
+        String speciesLabel = NeoForgeContentRegistry.current().findSpecies(speciesId)
+                .flatMap(BeeSpeciesDefinition::visualDefinition)
+                .flatMap(SpeciesVisualDefinition::displayNameKey)
+                .map(key -> Component.translatable(key).getString())
+                .orElse(speciesId);
+        tooltip.add(Component.translatable("item.curiousbees.captured_bee.species", speciesLabel)
+                .withStyle(ChatFormatting.YELLOW));
+
+        // Productivity
+        String productivityId = genome.getActiveAllele(ChromosomeType.PRODUCTIVITY).id();
+        String productivityLabel = formatAlleleId(productivityId);
+        tooltip.add(Component.translatable("item.curiousbees.captured_bee.productivity", productivityLabel)
+                .withStyle(ChatFormatting.GRAY));
+
+        // Flower type
+        String flowerTypeId = genome.getActiveAllele(ChromosomeType.FLOWER_TYPE).id();
+        String flowerTypeLabel = formatAlleleId(flowerTypeId);
+        tooltip.add(Component.translatable("item.curiousbees.captured_bee.flower_type", flowerTypeLabel)
+                .withStyle(ChatFormatting.GRAY));
+    }
+
+    /**
+     * Converts an allele ID like "curious_bees:productivity/normal" to "Normal"
+     * by taking the last path segment and capitalizing the first letter.
+     */
+    private static String formatAlleleId(String alleleId) {
+        if (alleleId == null || alleleId.isEmpty()) return "?";
+        String path = alleleId.contains("/") ? alleleId.substring(alleleId.lastIndexOf('/') + 1) : alleleId;
+        if (path.isEmpty()) return alleleId;
+        return Character.toUpperCase(path.charAt(0)) + path.substring(1).replace('_', ' ');
     }
 }
