@@ -67,8 +67,8 @@ public final class WildBeeSpawnService {
         List<BeeSpeciesDefinition> candidates = specific.isEmpty() ? wildcards : specific;
         if (candidates.isEmpty()) {
             LOGGER.warning("No habitat predicate matched biomeTags=" + biomeTags
-                    + " y=" + y + " light=" + light + " — falling back to Meadow species.");
-            return BuiltinBeeSpecies.MEADOW;
+                    + " y=" + y + " light=" + light + " — falling back to Common species.");
+            return BuiltinBeeSpecies.COMMON;
         }
         return weightedPick(candidates);
     }

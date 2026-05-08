@@ -40,6 +40,7 @@ class WildBeeSpawnServiceTest {
 
     @Test
     void noSpecificTagsFallsBackToMeadow() {
+        // "minecraft:is_overworld" alone hits the meadow wildcard (empty required-tags predicate)
         BeeSpeciesDefinition result = WildBeeSpawnService.speciesForHabitat(
                 List.of("minecraft:is_overworld"),
                 SURFACE_Y, SURFACE_LIGHT);
@@ -47,11 +48,13 @@ class WildBeeSpawnServiceTest {
     }
 
     @Test
-    void emptyTagListFallsBackToMeadow() {
+    void fallbackToCommonWhenNoBiomeMatches() {
+        // Empty tag list + light=3 → no predicate (including meadow wildcard) matches → hard fallback to COMMON
         BeeSpeciesDefinition result = WildBeeSpawnService.speciesForHabitat(
                 List.of(),
-                SURFACE_Y, SURFACE_LIGHT);
-        assertEquals(BuiltinBeeSpecies.MEADOW.id(), result.id());
+                SURFACE_Y, 3);
+        assertEquals(BuiltinBeeSpecies.COMMON.id(), result.id(),
+                "Hard fallback (no predicate matched) must return Common species per ADR-0019");
     }
 
     @Test
@@ -64,15 +67,15 @@ class WildBeeSpawnServiceTest {
     }
 
     @Test
-    void darkLightExcludesAllPredicates_fallsBackToMeadow() {
+    void darkLightExcludesAllPredicates_fallsBackToCommon() {
         // light = 3 is below DEFAULT_MIN_LIGHT (9) → no predicate matches Y+light → hard fallback
-        // Actually meadow predicate (wildcard) also has minLight=9, so no match → MEADOW hard fallback
+        // meadow predicate (wildcard) also has minLight=9, so no match → COMMON hard fallback
         BeeSpeciesDefinition result = WildBeeSpawnService.speciesForHabitat(
                 List.of("minecraft:is_forest"),
                 SURFACE_Y, 3);
         // forest predicate fails light check → no specific match
-        // meadow wildcard also fails light check → hard fallback to MEADOW
-        assertEquals(BuiltinBeeSpecies.MEADOW.id(), result.id());
+        // meadow wildcard also fails light check → hard fallback to COMMON (ADR-0019)
+        assertEquals(BuiltinBeeSpecies.COMMON.id(), result.id());
     }
 
     @RepeatedTest(20)

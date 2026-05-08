@@ -13,13 +13,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class BuiltinBeeSpeciesTest {
 
     @Test
-    void allFiveMvpSpeciesExist() {
+    void allSixSpeciesExist() {
         assertNotNull(MEADOW);
         assertNotNull(FOREST);
         assertNotNull(ARID);
         assertNotNull(CULTIVATED);
         assertNotNull(HARDY);
-        assertEquals(5, ALL.size());
+        assertNotNull(COMMON);
+        assertEquals(6, ALL.size());
     }
 
     @Test
@@ -37,6 +38,7 @@ class BuiltinBeeSpeciesTest {
         assertEquals(Dominance.RECESSIVE, ARID.speciesAllele().dominance());
         assertEquals(Dominance.DOMINANT,  CULTIVATED.speciesAllele().dominance());
         assertEquals(Dominance.RECESSIVE, HARDY.speciesAllele().dominance());
+        assertEquals(Dominance.DOMINANT,  COMMON.speciesAllele().dominance());
     }
 
     @Test
@@ -83,6 +85,19 @@ class BuiltinBeeSpeciesTest {
     }
 
     @Test
+    void commonSpeciesHasNoHabitat() {
+        // COMMON is the universal fallback — it must not have a habitat predicate
+        // so the spawn service skips it during biome-based candidate selection.
+        assertTrue(COMMON.habitat().isEmpty(),
+                "COMMON species must have no habitat (it is a fallback, not a biome-matched species)");
+    }
+
+    @Test
+    void commonSpeciesIdIsCorrect() {
+        assertEquals("curious_bees:species/common", COMMON.id());
+    }
+
+    @Test
     void allMvpSpeciesHaveVisualDefinition() {
         for (var def : ALL) {
             assertTrue(def.visualDefinition().isPresent(),
@@ -97,6 +112,7 @@ class BuiltinBeeSpeciesTest {
         assertEquals("curiousbees:textures/entity/bee/arid.png",       ARID.visualDefinition().get().textureId());
         assertEquals("curiousbees:textures/entity/bee/cultivated.png", CULTIVATED.visualDefinition().get().textureId());
         assertEquals("curiousbees:textures/entity/bee/hardy.png",      HARDY.visualDefinition().get().textureId());
+        assertEquals("curiousbees:textures/entity/bee/common.png",     COMMON.visualDefinition().get().textureId());
     }
 
     @Test

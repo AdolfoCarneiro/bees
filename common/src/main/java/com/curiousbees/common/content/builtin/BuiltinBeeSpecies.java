@@ -14,7 +14,7 @@ import java.util.Map;
 
 import static com.curiousbees.common.content.builtin.BuiltinBeeTraits.*;
 
-/** Centralized built-in species definitions for the five MVP bee species. */
+/** Centralized built-in species definitions for the six bee species (five MVP + Common fallback). */
 public final class BuiltinBeeSpecies {
 
     private BuiltinBeeSpecies() {}
@@ -25,6 +25,7 @@ public final class BuiltinBeeSpecies {
     public static final Allele SPECIES_ARID       = new Allele("curious_bees:species/arid",       ChromosomeType.SPECIES, Dominance.RECESSIVE);
     public static final Allele SPECIES_CULTIVATED = new Allele("curious_bees:species/cultivated", ChromosomeType.SPECIES, Dominance.DOMINANT);
     public static final Allele SPECIES_HARDY      = new Allele("curious_bees:species/hardy",      ChromosomeType.SPECIES, Dominance.RECESSIVE);
+    public static final Allele SPECIES_COMMON     = new Allele("curious_bees:species/common",     ChromosomeType.SPECIES, Dominance.DOMINANT);
 
     // Visual definitions — texture paths + display name keys, both centralized here.
     // Renderer reads textureId(); tooltip/screen reads displayNameKey() via registry.
@@ -34,6 +35,8 @@ public final class BuiltinBeeSpecies {
     public static final SpeciesVisualDefinition VISUAL_ARID       = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/arid.png",       "species.curiousbees.arid");
     public static final SpeciesVisualDefinition VISUAL_CULTIVATED = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/cultivated.png", "species.curiousbees.cultivated");
     public static final SpeciesVisualDefinition VISUAL_HARDY      = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/hardy.png",      "species.curiousbees.hardy");
+    // DEV-PLACEHOLDER texture — reuse meadow sprite until Common bee art is finalized.
+    public static final SpeciesVisualDefinition VISUAL_COMMON     = SpeciesVisualDefinition.ofTexture("curiousbees:textures/entity/bee/common.png",     "species.curiousbees.common");
 
     // Habitat definitions — world-spawnable species only.
     // spawnBiomes: specific IDs used by worldgen feature placement (E2-T07).
@@ -113,8 +116,22 @@ public final class BuiltinBeeSpecies {
             List.of(),
             VISUAL_HARDY);
 
-    /** All MVP species in definition order. */
-    public static final List<BeeSpeciesDefinition> ALL = List.of(MEADOW, FOREST, ARID, CULTIVATED, HARDY);
+    // COMMON has no habitat — it is the universal fallback species assigned when no
+    // habitat predicate matches (ADR-0019). It is included in ALL so the content
+    // registry registers its allele, but the spawn service skips species without
+    // habitat predicates when building biome-based candidates.
+    public static final BeeSpeciesDefinition COMMON = new BeeSpeciesDefinition(
+            "curious_bees:species/common",
+            "Common Bee",
+            SPECIES_COMMON,
+            traits(
+                    pair(PRODUCTIVITY_NORMAL,  PRODUCTIVITY_NORMAL),
+                    pair(FLOWER_FLOWERS,       FLOWER_FLOWERS)),
+            List.of(),   // no spawn context notes — universal fallback
+            VISUAL_COMMON);
+
+    /** All species in definition order (includes COMMON for registry; COMMON has no habitat so it is not picked by biome matching). */
+    public static final List<BeeSpeciesDefinition> ALL = List.of(MEADOW, FOREST, ARID, CULTIVATED, HARDY, COMMON);
 
     // --- helpers ---
 

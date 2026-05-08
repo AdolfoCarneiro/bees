@@ -1,0 +1,13 @@
+{
+  "id": "curious_bees:species/common",
+  "displayName": "Common Bee",
+  "dominance": "DOMINANT",
+  "defaultTraits": {
+    "PRODUCTIVITY": "curious_bees:traits/productivity/normal",
+    "FLOWER_TYPE": "curious_bees:traits/flower_type/flowers"
+  },
+  "spawnContextNotes": [],
+  "visual": {
+    "texture": "curiousbees:textures/entity/bee/common.png"
+  }
+}
