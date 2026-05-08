@@ -60,11 +60,20 @@ public final class SpeciesBeeNestFeature extends Feature<SpeciesBeeNestConfigura
         BlockEntity be = level.getBlockEntity(origin);
         if (be instanceof BeehiveBlockEntity beehive) {
             ServerLevel serverLevel = level.getLevel();
-            String nestSpeciesId = speciesBlock.speciesId();
-            int beeCount = 2 + context.random().nextInt(2);
+            int minCount = context.config().occupantCountMin();
+            int maxCount = context.config().occupantCountMax();
+            int range = maxCount - minCount;
+            int beeCount = minCount + (range > 0 ? context.random().nextInt(range + 1) : 0);
+
+            List<String> pool = context.config().occupantSpeciesPool();
+            String fallbackSpeciesId = speciesBlock.speciesId();
+
             for (int i = 0; i < beeCount; i++) {
                 Bee bee = new Bee(EntityType.BEE, serverLevel);
-                stampNestSpeciesGenome(bee, nestSpeciesId);
+                String speciesId = pool.isEmpty()
+                        ? fallbackSpeciesId
+                        : pool.get(context.random().nextInt(pool.size()));
+                stampNestSpeciesGenome(bee, speciesId);
                 beehive.addOccupant(bee);
             }
         }

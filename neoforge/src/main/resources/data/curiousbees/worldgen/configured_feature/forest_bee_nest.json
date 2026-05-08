@@ -12,6 +12,9 @@
       { "Name": "minecraft:fern" },
       { "Name": "minecraft:short_grass" },
       { "Name": "minecraft:short_grass" }
-    ]
+    ],
+    "occupant_count_min": 2,
+    "occupant_count_max": 3,
+    "occupant_species_pool": ["curious_bees:species/forest"]
   }
 }

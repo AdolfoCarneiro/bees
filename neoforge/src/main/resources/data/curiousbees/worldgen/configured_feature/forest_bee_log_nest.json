@@ -7,6 +7,9 @@
         "facing": "south",
         "honey_level": "0"
       }
-    }
+    },
+    "occupant_count_min": 2,
+    "occupant_count_max": 3,
+    "occupant_species_pool": ["curious_bees:species/forest"]
   }
 }

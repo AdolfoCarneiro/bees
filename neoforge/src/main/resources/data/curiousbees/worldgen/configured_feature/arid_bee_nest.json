@@ -11,6 +11,9 @@
     "attached_blocks": [
       { "Name": "minecraft:dead_bush" },
       { "Name": "minecraft:dead_bush" }
-    ]
+    ],
+    "occupant_count_min": 2,
+    "occupant_count_max": 3,
+    "occupant_species_pool": ["curious_bees:species/arid"]
   }
 }
