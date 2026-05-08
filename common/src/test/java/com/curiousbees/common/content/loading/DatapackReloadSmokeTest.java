@@ -21,7 +21,8 @@ class DatapackReloadSmokeTest {
 
     private static final String DATA_ROOT = "neoforge/src/main/resources/data/curiousbees/curious_bees";
 
-    // Expected counts: six MVP species (five named + Common fallback per ADR-0019) + trait alleles
+    // Species: 5 named MVP + Common fallback (ADR-0019) = 6
+    // Traits: PRODUCTIVITY (slow/normal/fast) + FLOWER_TYPE (flowers/cactus/leaves) = 6 (ADR-0017 removed Lifespan/Fertility)
     private static final int EXPECTED_SPECIES    = 6;
     private static final int EXPECTED_TRAITS     = 6;
     private static final int EXPECTED_MUTATIONS  = 2;
