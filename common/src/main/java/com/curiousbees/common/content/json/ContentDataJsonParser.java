@@ -1,6 +1,7 @@
 package com.curiousbees.common.content.json;
 
 import com.curiousbees.common.content.data.MutationDefinitionData;
+import com.curiousbees.common.content.habitat.HabitatDiscoveryConfig;
 import com.curiousbees.common.content.data.MutationResultModesData;
 import com.curiousbees.common.content.data.ProductionDefinitionData;
 import com.curiousbees.common.content.data.ProductionOutputData;
@@ -92,6 +93,20 @@ public final class ContentDataJsonParser {
                 requireEitherString(root, "species", "speciesId", "production"),
                 requireOutputs(root, "primaryOutputs", "production"),
                 optionalOutputs(root, "secondaryOutputs", "production"));
+    }
+
+    public static HabitatDiscoveryConfig parseHabitatDiscovery(String json) {
+        Map<String, Object> root = parseObjectRoot(json, "habitat_discovery");
+        double baseChance = requireDouble(root, "baseChance", "habitat_discovery");
+        double partialChance = 0.95;
+        double fullChance = 0.05;
+        Object modesRaw = root.get("resultModes");
+        if (modesRaw instanceof Map<?, ?> rawMap) {
+            Map<String, Object> modes = castObject(rawMap, "habitat_discovery.resultModes");
+            partialChance = requireDouble(modes, "partialChance", "habitat_discovery.resultModes");
+            fullChance = requireDouble(modes, "fullChance", "habitat_discovery.resultModes");
+        }
+        return new HabitatDiscoveryConfig(baseChance, partialChance, fullChance);
     }
 
     public static ProductionDefinitionData parseValidatedProduction(String json, Set<String> knownSpeciesIds) {

@@ -5,9 +5,16 @@ import com.curiousbees.common.gameplay.breeding.BeeBreedingOrchestrator;
 import com.curiousbees.common.gameplay.breeding.BeeBreedingOutcome;
 import com.curiousbees.common.gameplay.breeding.BeeBreedingRequest;
 import com.curiousbees.common.genetics.breeding.BreedingService;
+import com.curiousbees.common.content.habitat.HabitatDiscoveryConfig;
+import com.curiousbees.common.content.species.BeeSpeciesDefinition;
+import com.curiousbees.common.genetics.model.Allele;
 import com.curiousbees.common.genetics.model.ChromosomeType;
+import com.curiousbees.common.genetics.model.GenePair;
 import com.curiousbees.common.genetics.model.Genome;
+import com.curiousbees.common.genetics.mutation.MutationDefinition;
+import com.curiousbees.common.genetics.mutation.MutationResultMode;
 import com.curiousbees.common.genetics.mutation.MutationService;
+import com.curiousbees.common.genetics.random.GeneticRandom;
 import com.curiousbees.common.genetics.random.JavaGeneticRandom;
 import com.curiousbees.neoforge.bee.BeeParentResolver;
 import com.curiousbees.neoforge.config.CuriousBeesConfig;
@@ -23,8 +30,10 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.BabyEntitySpawnEvent;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Intercepts vanilla baby bee creation and assigns an inherited genome to the offspring.
@@ -74,6 +83,11 @@ public final class BeeBreedingEventHandler {
                 new JavaGeneticRandom(new Random()));
 
         BeeBreedingOutcome outcome = ORCHESTRATOR.breed(request);
+
+        if (!outcome.mutationOccurred()) {
+            outcome = tryHabitatDiscovery(outcome, genomeA.get(), genomeB.get(), parentA, level, request.random());
+        }
+
         BeeGenomeStorage.setGenome(child, outcome.childGenome());
 
         if (outcome.mutationOccurred()) {
@@ -88,6 +102,73 @@ public final class BeeBreedingEventHandler {
                 8, 0.3, 0.3, 0.3, 0.0);
         level.playSound(null, child.getX(), child.getY(), child.getZ(),
                 SoundEvents.PLAYER_LEVELUP, SoundSource.NEUTRAL, 0.4f, 1.3f);
+    }
+
+    private static final String COMMON_SPECIES_ID = "curious_bees:species/common";
+    private static final String MUTATION_ID_HABITAT_DISCOVERY = "curious_bees:mutations/habitat_discovery";
+
+    private static BeeBreedingOutcome tryHabitatDiscovery(
+            BeeBreedingOutcome current,
+            Genome genomeA, Genome genomeB,
+            Bee parentA, ServerLevel level,
+            GeneticRandom random) {
+
+        String activeA = genomeA.getActiveAllele(ChromosomeType.SPECIES).id();
+        String activeB = genomeB.getActiveAllele(ChromosomeType.SPECIES).id();
+        if (!COMMON_SPECIES_ID.equals(activeA) || !COMMON_SPECIES_ID.equals(activeB)) {
+            return current;
+        }
+
+        HabitatDiscoveryConfig config = NeoForgeContentRegistry.habitatDiscoveryConfig();
+        if (random.nextDouble() >= config.baseChance()) {
+            return current;
+        }
+
+        // Resolve biome tags at parent's position
+        var biomeHolder = level.getBiome(parentA.blockPosition());
+        List<String> biomeTags = biomeHolder.tags()
+                .map(tag -> tag.location().toString())
+                .collect(Collectors.toList());
+
+        // Find matching habitat species (exclude Common itself)
+        List<BeeSpeciesDefinition> candidates =
+                NeoForgeContentRegistry.current().allSpecies().stream()
+                        .filter(s -> s.habitat().isPresent())
+                        .filter(s -> s.habitat().get().spawnPredicate().isPresent())
+                        .filter(s -> !COMMON_SPECIES_ID.equals(s.id()))
+                        .filter(s -> s.habitat().get().spawnPredicate().get().matchesBiomeTags(biomeTags))
+                        .collect(Collectors.toList());
+
+        if (candidates.isEmpty()) {
+            CuriousBeesMod.LOGGER.debug("Habitat discovery: no candidates in biome tags {}; skipping.", biomeTags);
+            return current;
+        }
+
+        BeeSpeciesDefinition resultSpecies = candidates.get(new Random().nextInt(candidates.size()));
+
+        Allele resultAllele = resultSpecies.speciesAllele();
+        boolean partial = random.nextDouble() < config.partialChance();
+
+        GenePair newSpecies;
+        if (partial) {
+            newSpecies = new GenePair(
+                    resultAllele, current.childGenome().species().inactive(), random);
+        } else {
+            newSpecies = new GenePair(resultAllele, resultAllele, random);
+        }
+        Genome mutatedGenome = current.childGenome().withGenePair(ChromosomeType.SPECIES, newSpecies);
+
+        // Synthetic MutationDefinition for outcome logging/particles
+        MutationDefinition syntheticDef = new MutationDefinition(
+                MUTATION_ID_HABITAT_DISCOVERY,
+                COMMON_SPECIES_ID, COMMON_SPECIES_ID,
+                resultAllele,
+                config.baseChance(),
+                partial ? MutationResultMode.PARTIAL : MutationResultMode.FULL);
+
+        CuriousBeesMod.LOGGER.info("Habitat discovery: Common+Common → {} ({}) in biome tags {}",
+                resultSpecies.id(), partial ? "partial" : "full", biomeTags);
+        return BeeBreedingOutcome.mutated(mutatedGenome, syntheticDef);
     }
 
     private static void logOutcome(Bee child, Bee parentA, Bee parentB, BeeBreedingOutcome outcome) {

@@ -1,6 +1,8 @@
 package com.curiousbees.neoforge.content;
 
 import com.curiousbees.CuriousBeesMod;
+import com.curiousbees.common.content.habitat.HabitatDiscoveryConfig;
+import com.curiousbees.common.content.json.ContentDataJsonParser;
 import com.curiousbees.common.content.loading.ContentDefinitionSource;
 import com.curiousbees.common.content.loading.ContentJsonLoader;
 import com.curiousbees.common.content.loading.ContentLoadResult;
@@ -24,6 +26,7 @@ public final class ContentReloadListener extends SimplePreparableReloadListener<
     private static final String SPECIES_PATH = "curious_bees/species";
     private static final String MUTATIONS_PATH = "curious_bees/mutations";
     private static final String PRODUCTION_PATH = "curious_bees/production";
+    private static final String HABITAT_DISCOVERY_PATH = "curious_bees/habitat_discovery";
 
     private static final ContentReloadListener INSTANCE = new ContentReloadListener();
 
@@ -46,6 +49,23 @@ public final class ContentReloadListener extends SimplePreparableReloadListener<
     @Override
     protected void apply(ContentLoadResult result, ResourceManager resourceManager, ProfilerFiller profiler) {
         NeoForgeContentRegistry.apply(result);
+
+        // Load habitat discovery config
+        Map<ResourceLocation, Resource> hdResources = resourceManager.listResources(
+                HABITAT_DISCOVERY_PATH,
+                loc -> loc.getPath().endsWith(".json"));
+        for (Map.Entry<ResourceLocation, Resource> entry : hdResources.entrySet()) {
+            try (InputStream stream = entry.getValue().open()) {
+                String json = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+                HabitatDiscoveryConfig config = ContentDataJsonParser.parseHabitatDiscovery(json);
+                NeoForgeContentRegistry.applyHabitatDiscoveryConfig(config);
+                CuriousBeesMod.LOGGER.info("Curious Bees: loaded habitat discovery config from {}.", entry.getKey());
+                break; // use first found
+            } catch (Exception e) {
+                CuriousBeesMod.LOGGER.warn("Failed to load habitat discovery config from {}.", entry.getKey(), e);
+            }
+        }
+
         if (result.hasErrors()) {
             CuriousBeesMod.LOGGER.warn(
                     "Curious Bees content reload finished with errors. Built-ins remain available:\n{}",
