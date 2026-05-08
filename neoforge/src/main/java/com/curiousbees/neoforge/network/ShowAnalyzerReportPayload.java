@@ -43,13 +43,11 @@ public record ShowAnalyzerReportPayload(BeeAnalysisReport report) implements Cus
             StreamCodec.composite(
                     ByteBufCodecs.BOOL,  BeeAnalysisReport::isAnalyzed,
                     GENE_REPORT_CODEC,   BeeAnalysisReport::species,
-                    GENE_REPORT_CODEC,   BeeAnalysisReport::lifespan,
                     GENE_REPORT_CODEC,   BeeAnalysisReport::productivity,
-                    GENE_REPORT_CODEC,   BeeAnalysisReport::fertility,
                     GENE_REPORT_CODEC,   BeeAnalysisReport::flowerType,
-                    (analyzed, species, lifespan, productivity, fertility, flowerType) ->
+                    (analyzed, species, productivity, flowerType) ->
                             analyzed
-                                    ? BeeAnalysisReport.analyzed(species, lifespan, productivity, fertility, flowerType)
+                                    ? BeeAnalysisReport.analyzed(species, productivity, flowerType)
                                     : BeeAnalysisReport.unknown());
 
     public static final StreamCodec<ByteBuf, ShowAnalyzerReportPayload> STREAM_CODEC =

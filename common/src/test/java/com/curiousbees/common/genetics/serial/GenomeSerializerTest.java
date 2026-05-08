@@ -30,9 +30,7 @@ class GenomeSerializerTest {
     void toDataPreservesAllChromosomes() {
         GenomeData data = GenomeSerializer.toData(meadowGenome());
         assertTrue(data.chromosomes().containsKey("SPECIES"));
-        assertTrue(data.chromosomes().containsKey("LIFESPAN"));
         assertTrue(data.chromosomes().containsKey("PRODUCTIVITY"));
-        assertTrue(data.chromosomes().containsKey("FERTILITY"));
         assertTrue(data.chromosomes().containsKey("FLOWER_TYPE"));
     }
 
@@ -147,5 +145,41 @@ class GenomeSerializerTest {
         // genome still has SPECIES so it should succeed (unknown key is skipped)
         Optional<Genome> result = GenomeSerializer.fromData(withExtra, BuiltinBeeContent::findAllele);
         assertTrue(result.isPresent(), "Unknown chromosome type should be skipped, not fail");
+    }
+
+    /**
+     * Backward-compat (ADR-0017): old genomes that contain LIFESPAN or FERTILITY
+     * chromosome entries must deserialize without throwing — those chromosomes are
+     * silently skipped and the rest of the genome is restored correctly.
+     */
+    @Test
+    void legacyLifespanAndFertilityChromosomesAreSkippedSilently() {
+        Genome original = meadowGenome();
+        GenomeData data = GenomeSerializer.toData(original);
+
+        // Inject legacy LIFESPAN and FERTILITY entries as if loaded from old save data
+        java.util.Map<String, GenePairData> chromosomes = new java.util.LinkedHashMap<>(data.chromosomes());
+        chromosomes.put("LIFESPAN",
+                new GenePairData(
+                        "curious_bees:traits/lifespan/normal",
+                        "curious_bees:traits/lifespan/normal",
+                        "curious_bees:traits/lifespan/normal",
+                        "curious_bees:traits/lifespan/normal"));
+        chromosomes.put("FERTILITY",
+                new GenePairData(
+                        "curious_bees:traits/fertility/two",
+                        "curious_bees:traits/fertility/two",
+                        "curious_bees:traits/fertility/two",
+                        "curious_bees:traits/fertility/two"));
+        GenomeData legacyData = new GenomeData(chromosomes);
+
+        // Must NOT throw — unknown chromosome types are skipped with a WARNING log entry
+        Optional<Genome> result = GenomeSerializer.fromData(legacyData, BuiltinBeeContent::findAllele);
+        assertTrue(result.isPresent(),
+                "Genome with legacy LIFESPAN/FERTILITY chromosomes must still deserialize successfully");
+        // SPECIES must still be intact
+        assertEquals(original.getActiveAllele(ChromosomeType.SPECIES).id(),
+                result.get().getActiveAllele(ChromosomeType.SPECIES).id(),
+                "SPECIES chromosome must be restored correctly despite legacy entries");
     }
 }

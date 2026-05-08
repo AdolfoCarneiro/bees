@@ -86,9 +86,7 @@ class CapturedBeeTooltipTest {
         List<String> rawIds = List.of(
                 AlleleFixtures.MEADOW.id(),
                 AlleleFixtures.FOREST.id(),
-                AlleleFixtures.LIFESPAN_NORMAL.id(),
                 AlleleFixtures.PRODUCTIVITY_NORMAL.id(),
-                AlleleFixtures.FERTILITY_TWO.id(),
                 AlleleFixtures.FLOWER_FLOWERS.id()
         );
         for (String line : lines) {

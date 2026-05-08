@@ -23,7 +23,7 @@ public final class SpeciesDefinitionData {
     private final String dominance;
 
     /**
-     * Default trait allele pairs keyed by chromosomeType name (e.g. "LIFESPAN").
+     * Default trait allele pairs keyed by chromosomeType name (e.g. "PRODUCTIVITY").
      * Each entry contains the [first, second] allele IDs for that chromosome slot.
      */
     private final Map<String, TraitAllelePairData> defaultTraits;
