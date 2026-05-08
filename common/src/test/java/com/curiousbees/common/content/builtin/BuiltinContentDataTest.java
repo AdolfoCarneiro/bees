@@ -103,7 +103,7 @@ class BuiltinContentDataTest {
 
     @Test
     void builtinSpecies_hasExpectedCount() {
-        assertEquals(5, BuiltinContentData.SPECIES.size());
+        assertEquals(6, BuiltinContentData.SPECIES.size());
     }
 
     @Test

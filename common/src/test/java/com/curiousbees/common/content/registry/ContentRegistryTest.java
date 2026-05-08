@@ -27,7 +27,7 @@ class ContentRegistryTest {
     void builtInRegistryContainsMvpContent() {
         ContentRegistry registry = ContentRegistry.builtIn();
 
-        assertEquals(5, registry.allSpecies().size());
+        assertEquals(6, registry.allSpecies().size());
         assertEquals(6, registry.allTraitAlleles().size());
         assertEquals(2, registry.allMutations().size());
         assertEquals(5, registry.allProductionDefinitions().size());
@@ -57,7 +57,7 @@ class ContentRegistryTest {
                 List.of(loadedMutation),
                 List.of(loadedProduction));
 
-        assertEquals(6, merged.allSpecies().size());
+        assertEquals(7, merged.allSpecies().size());
         assertTrue(merged.findSpecies(loadedSpecies.id()).isPresent());
         assertTrue(merged.findMutation(loadedMutation.id()).isPresent());
         assertEquals("curiousbees:test_comb",

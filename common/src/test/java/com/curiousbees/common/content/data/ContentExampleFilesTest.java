@@ -34,7 +34,8 @@ class ContentExampleFilesTest {
             "species/forest.json",
             "species/arid.json",
             "species/cultivated.json",
-            "species/hardy.json");
+            "species/hardy.json",
+            "species/common.json");
 
     private static final List<String> MUTATION_FILES = List.of(
             "mutations/cultivated_from_meadow_forest.json",
@@ -72,7 +73,7 @@ class ContentExampleFilesTest {
 
         Map<String, Allele> traitAlleles = ContentConverter.toTraitAlleles(traits).stream()
                 .collect(Collectors.toMap(Allele::id, Function.identity()));
-        assertEquals(5, species.stream()
+        assertEquals(6, species.stream()
                 .map(data -> ContentConverter.toSpeciesDefinition(data, traitAlleles))
                 .count());
     }

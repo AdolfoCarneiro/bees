@@ -78,6 +78,13 @@ public final class BuiltinContentData {
                     Map.of(
                             "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/normal", "curious_bees:traits/productivity/normal"),
                             "FLOWER_TYPE",  new TraitAllelePairData("curious_bees:traits/flower_type/flowers", "curious_bees:traits/flower_type/cactus")
+                    )),
+
+            new SpeciesDefinitionData(
+                    "curious_bees:species/common", "Common Bee", "DOMINANT",
+                    Map.of(
+                            "PRODUCTIVITY", new TraitAllelePairData("curious_bees:traits/productivity/normal", "curious_bees:traits/productivity/normal"),
+                            "FLOWER_TYPE",  new TraitAllelePairData("curious_bees:traits/flower_type/flowers", "curious_bees:traits/flower_type/flowers")
                     ))
     );
 

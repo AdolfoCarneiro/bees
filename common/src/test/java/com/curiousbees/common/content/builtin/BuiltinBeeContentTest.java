@@ -35,7 +35,7 @@ class BuiltinBeeContentTest {
 
     @Test
     void allSpeciesAreAccessible() {
-        assertEquals(5, BuiltinBeeContent.allSpecies().size());
+        assertEquals(6, BuiltinBeeContent.allSpecies().size());
     }
 
     @Test

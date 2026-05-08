@@ -21,7 +21,7 @@ public final class BeeAnalysisFormatter {
      * Example (analyzed):
      *   === Bee Genetics ===
      *   Species:      [A] Cultivated (D) / [I] Forest (D)  — Hybrid
-     *   Lifespan:     [A] Normal / [I] Long
+     *   Productivity: [A] Normal / [I] Fast
      *   ...
      *
      * Example (unanalyzed):

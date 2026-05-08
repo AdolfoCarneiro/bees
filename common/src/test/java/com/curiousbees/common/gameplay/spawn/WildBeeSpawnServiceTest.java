@@ -59,11 +59,12 @@ class WildBeeSpawnServiceTest {
 
     @Test
     void undergroundYExcludesAllSpecificPredicates() {
-        // Y = -30 is below DEFAULT_MIN_Y (60) for all predicates → wildcard (meadow) wins
+        // Y = -30 is below DEFAULT_MIN_Y (60) for all predicates including meadow → hard fallback to COMMON (ADR-0019)
         BeeSpeciesDefinition result = WildBeeSpawnService.speciesForHabitat(
                 List.of("minecraft:is_forest"),
                 -30, SURFACE_LIGHT);
-        assertEquals(BuiltinBeeSpecies.MEADOW.id(), result.id());
+        assertEquals(BuiltinBeeSpecies.COMMON.id(), result.id(),
+                "No predicate matches underground Y → hard fallback must be Common per ADR-0019");
     }
 
     @Test

@@ -9,7 +9,8 @@ import java.util.Map;
 import static com.curiousbees.common.content.builtin.BuiltinBeeSpecies.*;
 
 /**
- * Centralized built-in production definitions for the five MVP species.
+ * Centralized built-in production definitions for the five named MVP species.
+ * Common species has no production definition (universal fallback, no dedicated comb).
  * Uses stable output IDs; the platform layer resolves them to actual items.
  */
 public final class BuiltinProductionDefinitions {

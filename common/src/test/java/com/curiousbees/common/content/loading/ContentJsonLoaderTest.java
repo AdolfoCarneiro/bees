@@ -15,7 +15,7 @@ class ContentJsonLoaderTest {
         ContentLoadResult result = ContentJsonLoader.load(List.of(), List.of(), List.of(), List.of());
 
         assertFalse(result.hasErrors());
-        assertEquals(5, result.registry().allSpecies().size());
+        assertEquals(6, result.registry().allSpecies().size());
         assertEquals(6, result.registry().allTraitAlleles().size());
         assertTrue(result.registry().findSpecies("curious_bees:species/meadow").isPresent());
     }
@@ -72,7 +72,7 @@ class ContentJsonLoaderTest {
                         """)));
 
         assertFalse(result.hasErrors(), result::combinedErrorMessage);
-        assertEquals(6, result.registry().allSpecies().size());
+        assertEquals(7, result.registry().allSpecies().size());
         assertEquals(7, result.registry().allTraitAlleles().size());
         assertTrue(result.registry().findSpecies("test:species/test").isPresent());
         assertTrue(result.registry().findMutation("test:mutations/test_from_meadow_forest").isPresent());
@@ -102,7 +102,7 @@ class ContentJsonLoaderTest {
         assertTrue(result.hasErrors());
         assertTrue(result.combinedErrorMessage().contains("bad.json"));
         assertTrue(result.combinedErrorMessage().contains("unknown trait allele"));
-        assertEquals(5, result.registry().allSpecies().size());
+        assertEquals(6, result.registry().allSpecies().size());
         assertFalse(result.registry().findSpecies("test:species/bad").isPresent());
     }
 

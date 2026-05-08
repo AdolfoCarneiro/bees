@@ -21,9 +21,9 @@ class DatapackReloadSmokeTest {
 
     private static final String DATA_ROOT = "neoforge/src/main/resources/data/curiousbees/curious_bees";
 
-    // Expected counts match the five MVP species + their trait alleles
-    private static final int EXPECTED_SPECIES    = 5;
-    private static final int EXPECTED_TRAITS     = 12;
+    // Expected counts: six MVP species (five named + Common fallback per ADR-0019) + trait alleles
+    private static final int EXPECTED_SPECIES    = 6;
+    private static final int EXPECTED_TRAITS     = 6;
     private static final int EXPECTED_MUTATIONS  = 2;
     private static final int EXPECTED_PRODUCTION = 5;
 
@@ -67,7 +67,8 @@ class DatapackReloadSmokeTest {
             "curious_bees:species/forest",
             "curious_bees:species/arid",
             "curious_bees:species/cultivated",
-            "curious_bees:species/hardy"
+            "curious_bees:species/hardy",
+            "curious_bees:species/common"
         );
         for (String id : expected) {
             assertTrue(result.registry().findSpecies(id).isPresent(),
