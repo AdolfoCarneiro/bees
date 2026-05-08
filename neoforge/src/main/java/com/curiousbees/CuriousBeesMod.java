@@ -21,6 +21,7 @@ import com.curiousbees.neoforge.registry.ModMenuTypes;
 import com.curiousbees.neoforge.registry.ModPoiTypes;
 import com.curiousbees.neoforge.registry.ModRecipes;
 import com.curiousbees.neoforge.registry.ModSounds;
+import com.curiousbees.neoforge.gametest.CuriousBeesGameTests;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -29,6 +30,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterGameTestsEvent;
 import org.slf4j.Logger;
 
 @Mod(CuriousBeesMod.MOD_ID)
@@ -54,6 +56,8 @@ public final class CuriousBeesMod {
                 event.enqueueWork(ModItems::registerBeeSpawnEggDispenserBehaviors));
         modEventBus.addListener(ApiaryCapabilities::register);
         modEventBus.addListener(CuriousBeesNetwork::onRegisterPayloads);
+        modEventBus.addListener((RegisterGameTestsEvent event) ->
+                event.register(CuriousBeesGameTests.class));
         NeoForge.EVENT_BUS.addListener(ContentReloadListener::addReloadListener);
         NeoForge.EVENT_BUS.addListener(CuriousBeesCommands::register);
         NeoForge.EVENT_BUS.addListener(CuriousBeesNetwork::onStartTracking);

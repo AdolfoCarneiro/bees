@@ -28,6 +28,10 @@ neoForge {
             server()
             programArgument '--nogui'
         }
+        gameTestServer {
+            type = net.neoforged.neoforge.moddev.GameTestServer
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
     }
 
     mods {
