@@ -20,16 +20,20 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HopperBlock;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -192,6 +196,54 @@ public final class CuriousBeesGameTests {
 
         // Bee present.
         helper.assertEntityPresent(EntityType.BEE, CENTER, 3.0);
+
+        helper.succeed();
+    }
+
+    // -------------------------------------------------------------------------
+    // Tooltip — species always shown regardless of analyzed flag (ADR-0016)
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a BeeJar loaded with a meadow genome and analyzed=false.
+     * Call appendHoverText and assert:
+     * <ol>
+     *   <li>The tooltip contains species information (not "species_unknown").</li>
+     *   <li>No "analyzed"/"unanalyzed" line is present (analysis gate removed).</li>
+     * </ol>
+     */
+    @GameTest(template = TEMPLATE)
+    public static void beeJarTooltipShowsSpeciesWithoutAnalysis(GameTestHelper helper) {
+        Genome genome = makeMeadowGenome(helper);
+        if (genome == null) {
+            helper.fail("Could not build meadow genome — ContentRegistry not ready?");
+            return;
+        }
+
+        // Build a BeeJar with analyzed=false (this was the old gate condition).
+        ItemStack jar = makeBeeJar(genome, false);
+
+        List<Component> tooltip = new ArrayList<>();
+        jar.getItem().appendHoverText(jar, Item.TooltipContext.EMPTY, tooltip, TooltipFlag.Default.NORMAL);
+
+        // Assert: tooltip is non-empty.
+        helper.assertTrue(!tooltip.isEmpty(), "Tooltip is empty for a loaded BeeJar.");
+
+        // Assert: tooltip contains "meadow" somewhere (species line, not "species_unknown").
+        boolean hasSpecies = tooltip.stream()
+                .map(Component::getString)
+                .anyMatch(s -> s.toLowerCase().contains("meadow"));
+        helper.assertTrue(hasSpecies,
+                "Tooltip does not contain species name. Lines: " + tooltip.stream()
+                        .map(Component::getString).toList());
+
+        // Assert: tooltip does NOT contain "Unknown" (old unanalyzed fallback).
+        boolean hasUnknown = tooltip.stream()
+                .map(Component::getString)
+                .anyMatch(s -> s.contains("Unknown"));
+        helper.assertTrue(!hasUnknown,
+                "Tooltip still shows 'Unknown' species — analysis gate not removed. Lines: " + tooltip.stream()
+                        .map(Component::getString).toList());
 
         helper.succeed();
     }
@@ -395,8 +447,8 @@ public final class CuriousBeesGameTests {
 
         helper.runAtTickTime(helper.getTick() + 210, () -> {
             boolean hasHoneyBottle = false;
-            for (int i = 0; i < centrifuge.outputInventory().getSlots(); i++) {
-                if (centrifuge.outputInventory().getStackInSlot(i).is(Items.HONEY_BOTTLE)) {
+            for (int i = 0; i < centrifuge.honeyBottleOutputInventory().getSlots(); i++) {
+                if (centrifuge.honeyBottleOutputInventory().getStackInSlot(i).is(Items.HONEY_BOTTLE)) {
                     hasHoneyBottle = true;
                     break;
                 }
@@ -405,6 +457,49 @@ public final class CuriousBeesGameTests {
                     "Centrifuge did not produce honey bottle even with full honey counter.");
             helper.succeed();
         });
+    }
+
+    // -------------------------------------------------------------------------
+    // Centrifuge slot layout contract
+    // -------------------------------------------------------------------------
+
+    /**
+     * Verifies slot count constants and inventory access contract for the
+     * expanded Centrifuge (ADR-0015 PR-T08). Contract test — no timed processing.
+     */
+    @GameTest(template = TEMPLATE)
+    public static void centrifugeSlotLayout(GameTestHelper helper) {
+        // Assert constants
+        helper.assertTrue(CentrifugeBlockEntity.OUTPUT_SLOTS == 9,
+                "Expected OUTPUT_SLOTS=9, got " + CentrifugeBlockEntity.OUTPUT_SLOTS);
+        helper.assertTrue(CentrifugeBlockEntity.HONEY_BOTTLE_OUTPUT_SLOTS == 1,
+                "Expected HONEY_BOTTLE_OUTPUT_SLOTS=1, got " + CentrifugeBlockEntity.HONEY_BOTTLE_OUTPUT_SLOTS);
+        helper.assertTrue(CentrifugeBlockEntity.UPGRADE_SLOTS == 3,
+                "Expected UPGRADE_SLOTS=3, got " + CentrifugeBlockEntity.UPGRADE_SLOTS);
+
+        helper.setBlock(CENTER, ModBlocks.CENTRIFUGE.get().defaultBlockState());
+        CentrifugeBlockEntity centrifuge = (CentrifugeBlockEntity) helper.getBlockEntity(CENTER);
+        helper.assertTrue(centrifuge != null, "CentrifugeBlockEntity is null.");
+
+        // upgradeInventory slot 0 must reject a non-upgrade item (dirt)
+        ItemStack dirt = new ItemStack(Items.DIRT);
+        boolean upgradeRejectsDirt = !centrifuge.upgradeInventory().isItemValid(0, dirt);
+        helper.assertTrue(upgradeRejectsDirt,
+                "upgradeInventory should reject non-upgrade items (dirt was accepted).");
+
+        // outputInventory slot 0 must reject any item (extract-only)
+        ItemStack honeycomb = new ItemStack(Items.HONEYCOMB);
+        boolean outputRejectsInsert = !centrifuge.outputInventory().isItemValid(0, honeycomb);
+        helper.assertTrue(outputRejectsInsert,
+                "outputInventory slot 0 should be extract-only (accepted item).");
+
+        // honeyBottleOutputInventory slot 0 must also reject any item (extract-only)
+        ItemStack honeyBottle = new ItemStack(Items.HONEY_BOTTLE);
+        boolean honeyOutputRejectsInsert = !centrifuge.honeyBottleOutputInventory().isItemValid(0, honeyBottle);
+        helper.assertTrue(honeyOutputRejectsInsert,
+                "honeyBottleOutputInventory slot 0 should be extract-only (accepted item).");
+
+        helper.succeed();
     }
 
     // -------------------------------------------------------------------------

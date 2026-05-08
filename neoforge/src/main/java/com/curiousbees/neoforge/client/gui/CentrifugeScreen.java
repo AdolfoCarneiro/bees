@@ -12,8 +12,9 @@ import net.minecraft.world.entity.player.Inventory;
  *
  * <p>Layout (176×166):
  * <pre>
- *  [Comb input] → progress arrow → [Output 2×2]
- *                                  [Bottle input] [Honey counter ●●●●●]
+ *  [Comb in] [Bottle in]  → progress arrow →  [3x3 output grid]  [Honey bottle out]
+ *                                                                  [Upgrade x3]
+ *                                                                  [Honey counter]
  * </pre>
  */
 public final class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
@@ -22,20 +23,20 @@ public final class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMe
             ResourceLocation.fromNamespaceAndPath("curiousbees", "textures/gui/centrifuge.png");
 
     // Slot positions must match CentrifugeMenu
-    private static final int COMB_SLOT_X   = 56;
+    private static final int COMB_SLOT_X   = 30;
     private static final int COMB_SLOT_Y   = 35;
-    private static final int BOTTLE_SLOT_X = 107;
-    private static final int BOTTLE_SLOT_Y = 17;
+    private static final int BOTTLE_SLOT_X = 30;
+    private static final int BOTTLE_SLOT_Y = 60;
 
-    // Progress arrow (between comb and outputs)
-    private static final int ARROW_X = 79;
+    // Progress arrow (between inputs and 3x3 output grid)
+    private static final int ARROW_X = 55;
     private static final int ARROW_Y = 34;
-    private static final int ARROW_W = 24;
+    private static final int ARROW_W = 20;
     private static final int ARROW_H = 17;
 
-    // Honey counter: 5 small cells stacked vertically below bottle slot
-    private static final int HONEY_COL_X    = 110;
-    private static final int HONEY_COL_Y    = 39;
+    // Honey counter: 5 small cells stacked vertically, near honey bottle output
+    private static final int HONEY_COL_X    = 153;
+    private static final int HONEY_COL_Y    = 60;
     private static final int HONEY_CELL_W   = 8;
     private static final int HONEY_CELL_H   = 8;
     private static final int HONEY_CELL_GAP = 2;
@@ -127,7 +128,7 @@ public final class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMe
         int color = (total > 0 && progress > 0) ? COL_PROGRESS : COL_IDLE;
         g.drawString(font, status, COMB_SLOT_X, COMB_SLOT_Y + 20, color, false);
 
-        // Honey counter label
+        // Honey counter label — shown below the honey counter column
         g.drawString(font,
                 Component.translatable("gui.curiousbees.centrifuge.honey", menu.honeyCounter()),
                 HONEY_COL_X - 30, HONEY_COL_Y + HONEY_MAX * (HONEY_CELL_H + HONEY_CELL_GAP) + 2,

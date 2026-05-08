@@ -21,11 +21,13 @@ import java.util.Objects;
  *
  * <p>Slot layout:
  * <ul>
- *   <li>0 — comb input (insert-only via GUI)
- *   <li>1 — bottle input (insert-only via GUI)
- *   <li>2-5 — output slots (extract-only)
- *   <li>6-32 — player inventory
- *   <li>33-41 — hotbar
+ *   <li>0  — comb input (insert-only via GUI)
+ *   <li>1  — bottle input (insert-only via GUI)
+ *   <li>2-10 — item output slots (9, extract-only, 3x3 grid)
+ *   <li>11 — honey bottle output slot (extract-only)
+ *   <li>12-14 — upgrade slots (3)
+ *   <li>15-41 — player inventory (27)
+ *   <li>42-50 — hotbar (9)
  * </ul>
  * synced data: processingProgress (0), processingTotal (1), honeyCounter (2).
  */
@@ -34,7 +36,9 @@ public final class CentrifugeMenu extends AbstractContainerMenu {
     static final int MACHINE_SLOT_COUNT =
             CentrifugeBlockEntity.INPUT_SLOTS
             + CentrifugeBlockEntity.BOTTLE_SLOTS
-            + CentrifugeBlockEntity.OUTPUT_SLOTS;
+            + CentrifugeBlockEntity.OUTPUT_SLOTS
+            + CentrifugeBlockEntity.HONEY_BOTTLE_OUTPUT_SLOTS
+            + CentrifugeBlockEntity.UPGRADE_SLOTS; // 15
 
     private final CentrifugeBlockEntity blockEntity;
     private final ContainerLevelAccess levelAccess;
@@ -45,29 +49,41 @@ public final class CentrifugeMenu extends AbstractContainerMenu {
         this.blockEntity = Objects.requireNonNull(blockEntity, "blockEntity");
         this.levelAccess = ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos());
 
-        // Comb input (left)
-        addSlot(new SlotItemHandler(blockEntity.inputInventory(), 0, 56, 35));
+        // Slot 0: Comb input (left side)
+        addSlot(new SlotItemHandler(blockEntity.inputInventory(), 0, 30, 35));
 
-        // Bottle input (above outputs)
-        addSlot(new SlotItemHandler(blockEntity.bottleInventory(), 0, 107, 17));
+        // Slot 1: Bottle input (below comb input)
+        addSlot(new SlotItemHandler(blockEntity.bottleInventory(), 0, 30, 60));
 
-        // Output slots — 2×2 grid (right)
+        // Slots 2-10: 3x3 item output grid (center-right area)
         for (int i = 0; i < CentrifugeBlockEntity.OUTPUT_SLOTS; i++) {
-            int col = i % 2;
-            int row = i / 2;
-            addSlot(new SlotItemHandler(blockEntity.outputInventory(), i, 116 + col * 18, 35 + row * 18) {
+            int col = i % 3;
+            int row = i / 3;
+            addSlot(new SlotItemHandler(blockEntity.outputInventory(), i, 80 + col * 18, 17 + row * 18) {
                 @Override
                 public boolean mayPlace(ItemStack stack) { return false; }
             });
         }
 
-        // Player inventory
+        // Slot 11: Honey bottle output (right side, near bottle input)
+        addSlot(new SlotItemHandler(blockEntity.honeyBottleOutputInventory(), 0, 150, 35) {
+            @Override
+            public boolean mayPlace(ItemStack stack) { return false; }
+        });
+
+        // Slots 12-14: Upgrade slots (right column)
+        for (int i = 0; i < CentrifugeBlockEntity.UPGRADE_SLOTS; i++) {
+            addSlot(new SlotItemHandler(blockEntity.upgradeInventory(), i, 155, 60 + i * 18));
+        }
+
+        // Player inventory (slots 15-41)
         int playerInvY = 84;
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, playerInvY + row * 18));
             }
         }
+        // Hotbar (slots 42-50)
         for (int col = 0; col < 9; col++) {
             addSlot(new Slot(playerInventory, col, 8 + col * 18, 142));
         }
@@ -125,9 +141,12 @@ public final class CentrifugeMenu extends AbstractContainerMenu {
                 return ItemStack.EMPTY;
             }
         } else {
-            // From player → try comb input first, then bottle slot
+            // From player → try comb input (0) then bottle slot (1) then upgrade slots (12-14)
             if (!moveItemStackTo(stackInSlot, 0, 2, false)) {
-                return ItemStack.EMPTY;
+                // Try upgrade slots
+                if (!moveItemStackTo(stackInSlot, 12, 15, false)) {
+                    return ItemStack.EMPTY;
+                }
             }
         }
 

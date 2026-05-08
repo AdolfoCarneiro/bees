@@ -6,6 +6,7 @@ import com.curiousbees.neoforge.recipe.CentrifugeRecipe;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import com.curiousbees.neoforge.registry.ModRecipes;
 import com.curiousbees.neoforge.registry.ModSounds;
+import com.curiousbees.neoforge.registry.ModTags;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -35,12 +36,23 @@ import java.util.Random;
  * Honey output is tracked as a soft buffer (honeyCounter 0-5) and bottled
  * when a glass bottle is present; overflow is discarded at FINE — never
  * blocks processing.
+ *
+ * <p>Slot layout (automation view):
+ * <ul>
+ *   <li>0 — comb input (insert-allowed)
+ *   <li>1 — bottle input (insert-allowed)
+ *   <li>2-10 — item output slots (9, extract-only)
+ *   <li>11 — honey bottle output slot (extract-only)
+ * </ul>
+ * Upgrade slots are NOT exposed to automation.
  */
 public final class CentrifugeBlockEntity extends BlockEntity implements MenuProvider {
 
-    public static final int INPUT_SLOTS  = 1;
-    public static final int BOTTLE_SLOTS = 1;
-    public static final int OUTPUT_SLOTS = 4;
+    public static final int INPUT_SLOTS             = 1;
+    public static final int BOTTLE_SLOTS            = 1;
+    public static final int OUTPUT_SLOTS            = 9;
+    public static final int HONEY_BOTTLE_OUTPUT_SLOTS = 1;
+    public static final int UPGRADE_SLOTS           = 3;
 
     private final Random random = new Random();
 
@@ -61,38 +73,67 @@ public final class CentrifugeBlockEntity extends BlockEntity implements MenuProv
         }
     };
 
+    private final ItemStackHandler honeyBottleOutputInventory = new ItemStackHandler(HONEY_BOTTLE_OUTPUT_SLOTS) {
+        @Override protected void onContentsChanged(int slot) { setChanged(); }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return false; // extract-only
+        }
+    };
+
+    private final ItemStackHandler upgradeInventory = new ItemStackHandler(UPGRADE_SLOTS) {
+        @Override protected void onContentsChanged(int slot) { setChanged(); }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return stack.is(ModTags.Items.CENTRIFUGE_UPGRADES);
+        }
+    };
+
     /**
-     * Automation view: input (insert) | bottle (insert) | outputs (extract-only).
-     * Slot indices: 0 = comb input, 1 = bottle input, 2-5 = outputs.
+     * Automation view: input (insert) | bottle (insert) | outputs (extract-only) | honey bottle output (extract-only).
+     * Upgrade slots are NOT exposed.
+     * Slot indices: 0=comb, 1=bottle, 2-10=item outputs (9), 11=honey bottle output.
      */
     private final IItemHandler automationView = new IItemHandler() {
-        @Override public int getSlots() { return INPUT_SLOTS + BOTTLE_SLOTS + OUTPUT_SLOTS; }
+        private static final int AUTOMATION_SLOTS =
+                INPUT_SLOTS + BOTTLE_SLOTS + OUTPUT_SLOTS + HONEY_BOTTLE_OUTPUT_SLOTS; // 12
+
+        @Override public int getSlots() { return AUTOMATION_SLOTS; }
 
         @Override
         public ItemStack getStackInSlot(int slot) {
             if (slot == 0) return inputInventory.getStackInSlot(0);
             if (slot == 1) return bottleInventory.getStackInSlot(0);
-            return outputInventory.getStackInSlot(slot - 2);
+            if (slot >= 2 && slot <= 10) return outputInventory.getStackInSlot(slot - 2);
+            if (slot == 11) return honeyBottleOutputInventory.getStackInSlot(0);
+            return ItemStack.EMPTY;
         }
 
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
             if (slot == 0) return inputInventory.insertItem(0, stack, simulate);
             if (slot == 1) return bottleInventory.insertItem(0, stack, simulate);
+            // slots 2-11 are extract-only
             return stack;
         }
 
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate) {
-            if (slot < 2) return ItemStack.EMPTY;
-            return outputInventory.extractItem(slot - 2, amount, simulate);
+            if (slot < 2) return ItemStack.EMPTY; // input slots: no extract
+            if (slot >= 2 && slot <= 10) return outputInventory.extractItem(slot - 2, amount, simulate);
+            if (slot == 11) return honeyBottleOutputInventory.extractItem(0, amount, simulate);
+            return ItemStack.EMPTY;
         }
 
         @Override
         public int getSlotLimit(int slot) {
             if (slot == 0) return inputInventory.getSlotLimit(0);
             if (slot == 1) return bottleInventory.getSlotLimit(0);
-            return outputInventory.getSlotLimit(slot - 2);
+            if (slot >= 2 && slot <= 10) return outputInventory.getSlotLimit(slot - 2);
+            if (slot == 11) return honeyBottleOutputInventory.getSlotLimit(0);
+            return 0;
         }
 
         @Override
@@ -192,7 +233,7 @@ public final class CentrifugeBlockEntity extends BlockEntity implements MenuProv
 
     /**
      * Tries to convert one honey counter portion to a honey bottle if a glass
-     * bottle is available and output space exists.
+     * bottle is available and honey bottle output space exists.
      */
     private void tryBottle() {
         if (honeyCounter <= 0) return;
@@ -201,12 +242,20 @@ public final class CentrifugeBlockEntity extends BlockEntity implements MenuProv
         if (bottle.isEmpty() || !bottle.is(Items.GLASS_BOTTLE)) return;
 
         ItemStack honeyBottle = new ItemStack(Items.HONEY_BOTTLE);
-        ItemStack remaining = insertIntoOutput(honeyBottle);
+        ItemStack remaining = insertIntoHoneyBottleOutput(honeyBottle);
         if (!remaining.isEmpty()) return; // no output space
 
         bottleInventory.extractItem(0, 1, false);
         honeyCounter--;
         setChanged();
+    }
+
+    private ItemStack insertIntoHoneyBottleOutput(ItemStack stack) {
+        ItemStack remaining = stack.copy();
+        for (int i = 0; i < honeyBottleOutputInventory.getSlots() && !remaining.isEmpty(); i++) {
+            remaining = honeyBottleOutputInventory.insertItem(i, remaining, false);
+        }
+        return remaining;
     }
 
     private ItemStack insertIntoOutput(ItemStack stack) {
@@ -235,13 +284,15 @@ public final class CentrifugeBlockEntity extends BlockEntity implements MenuProv
 
     // --- Accessors ---
 
-    public ItemStackHandler inputInventory()  { return inputInventory; }
-    public ItemStackHandler bottleInventory() { return bottleInventory; }
-    public ItemStackHandler outputInventory() { return outputInventory; }
-    public IItemHandler     automationView()  { return automationView; }
-    public int honeyCounter()                 { return honeyCounter; }
-    public int processingProgress()           { return processingProgress; }
-    public int processingTotal()              { return processingTotal; }
+    public ItemStackHandler inputInventory()             { return inputInventory; }
+    public ItemStackHandler bottleInventory()            { return bottleInventory; }
+    public ItemStackHandler outputInventory()            { return outputInventory; }
+    public ItemStackHandler honeyBottleOutputInventory() { return honeyBottleOutputInventory; }
+    public ItemStackHandler upgradeInventory()           { return upgradeInventory; }
+    public IItemHandler     automationView()             { return automationView; }
+    public int honeyCounter()                            { return honeyCounter; }
+    public int processingProgress()                      { return processingProgress; }
+    public int processingTotal()                         { return processingTotal; }
 
     // --- MenuProvider ---
 
@@ -260,9 +311,11 @@ public final class CentrifugeBlockEntity extends BlockEntity implements MenuProv
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
-        tag.put("InputInventory",  inputInventory.serializeNBT(registries));
-        tag.put("BottleInventory", bottleInventory.serializeNBT(registries));
-        tag.put("OutputInventory", outputInventory.serializeNBT(registries));
+        tag.put("InputInventory",            inputInventory.serializeNBT(registries));
+        tag.put("BottleInventory",           bottleInventory.serializeNBT(registries));
+        tag.put("OutputInventory",           outputInventory.serializeNBT(registries));
+        tag.put("HoneyBottleOutputInventory", honeyBottleOutputInventory.serializeNBT(registries));
+        tag.put("UpgradeInventory",          upgradeInventory.serializeNBT(registries));
         tag.putInt("HoneyCounter",       honeyCounter);
         tag.putInt("ProcessingProgress", processingProgress);
         tag.putInt("ProcessingTotal",    processingTotal);
@@ -277,6 +330,10 @@ public final class CentrifugeBlockEntity extends BlockEntity implements MenuProv
             bottleInventory.deserializeNBT(registries, tag.getCompound("BottleInventory"));
         if (tag.contains("OutputInventory"))
             outputInventory.deserializeNBT(registries, tag.getCompound("OutputInventory"));
+        if (tag.contains("HoneyBottleOutputInventory"))
+            honeyBottleOutputInventory.deserializeNBT(registries, tag.getCompound("HoneyBottleOutputInventory"));
+        if (tag.contains("UpgradeInventory"))
+            upgradeInventory.deserializeNBT(registries, tag.getCompound("UpgradeInventory"));
         honeyCounter       = tag.getInt("HoneyCounter");
         processingProgress = tag.getInt("ProcessingProgress");
         processingTotal    = tag.getInt("ProcessingTotal");
