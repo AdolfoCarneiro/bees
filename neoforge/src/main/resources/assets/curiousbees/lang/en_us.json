@@ -44,6 +44,7 @@
   "gui.curiousbees.genetic_apiary.analyzed": "Analyzed",
   "gui.curiousbees.genetic_apiary.unanalyzed": "Not analyzed",
   "gui.curiousbees.genetic_apiary.frames": "Frames",
+  "gui.curiousbees.genetic_apiary.bee_slot_empty": "Empty",
   "block.curiousbees.meadow_bee_nest":     "Meadow Bee Nest",
   "block.curiousbees.forest_bee_nest":     "Forest Bee Nest",
   "block.curiousbees.forest_bee_log_nest": "Forest Bee Log Nest",
