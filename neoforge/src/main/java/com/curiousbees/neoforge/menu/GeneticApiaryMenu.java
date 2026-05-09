@@ -37,7 +37,13 @@ public class GeneticApiaryMenu extends AbstractContainerMenu {
         this(ModMenuTypes.GENETIC_APIARY.get(), containerId, playerInventory, blockEntity);
     }
 
-    protected GeneticApiaryMenu(MenuType<?> menuType, int containerId, Inventory playerInventory, GeneticApiaryBlockEntity blockEntity) {
+    protected GeneticApiaryMenu(MenuType<?> menuType, int containerId, Inventory playerInventory,
+                                 GeneticApiaryBlockEntity blockEntity) {
+        this(menuType, containerId, playerInventory, blockEntity, 84);
+    }
+
+    protected GeneticApiaryMenu(MenuType<?> menuType, int containerId, Inventory playerInventory,
+                                 GeneticApiaryBlockEntity blockEntity, int playerInvY) {
         super(menuType, containerId);
         this.blockEntity = Objects.requireNonNull(blockEntity, "blockEntity");
         this.levelAccess = ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos());
@@ -47,7 +53,7 @@ public class GeneticApiaryMenu extends AbstractContainerMenu {
             addSlot(new SlotItemHandler(blockEntity.frameInventory(), row, 122, 17 + row * 18));
         }
 
-        // Outputs — 3×2 grid (centre)
+        // Outputs — 3×3 grid (centre)
         for (int i = 0; i < OUTPUT_SLOTS; i++) {
             int col = i % 3;
             int row = i / 3;
@@ -59,41 +65,36 @@ public class GeneticApiaryMenu extends AbstractContainerMenu {
             });
         }
 
-        // Player inventory + hotbar (matches dispenser layout)
-        int playerInvY = 84;
+        // Player inventory
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, playerInvY + row * 18));
             }
         }
+        // Hotbar
         for (int col = 0; col < 9; col++) {
-            addSlot(new Slot(playerInventory, col, 8 + col * 18, 142));
+            addSlot(new Slot(playerInventory, col, 8 + col * 18, playerInvY + 58));
         }
 
-        this.syncData =
-                new ContainerData() {
-                    @Override
-                    public int get(int index) {
-                        return switch (index) {
-                            case 0 -> blockEntity.getBlockState().getValue(BeehiveBlock.HONEY_LEVEL);
-                            case 1 -> blockEntity.isEmpty() ? 0 : 1;
-                            case 2 -> blockEntity.homedBeeCount();
-                            case 3 -> blockEntity.analyzedBeeCount();
-                            case 4 -> blockEntity.computeState().ordinal();
-                            default -> 0;
-                        };
-                    }
-
-                    @Override
-                    public void set(int index, int value) {
-                        // Read-only display mirrors block entity / state
-                    }
-
-                    @Override
-                    public int getCount() {
-                        return 5;
-                    }
+        this.syncData = new ContainerData() {
+            @Override
+            public int get(int index) {
+                return switch (index) {
+                    case 0 -> blockEntity.getBlockState().getValue(BeehiveBlock.HONEY_LEVEL);
+                    case 1 -> blockEntity.isEmpty() ? 0 : 1;
+                    case 2 -> blockEntity.homedBeeCount();
+                    case 3 -> blockEntity.analyzedBeeCount();
+                    case 4 -> blockEntity.computeState().ordinal();
+                    default -> 0;
                 };
+            }
+
+            @Override
+            public void set(int index, int value) {}
+
+            @Override
+            public int getCount() { return 5; }
+        };
         addDataSlots(syncData);
     }
 

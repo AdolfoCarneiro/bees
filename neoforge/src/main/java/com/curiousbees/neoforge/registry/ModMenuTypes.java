@@ -3,6 +3,7 @@ package com.curiousbees.neoforge.registry;
 import com.curiousbees.CuriousBeesMod;
 import com.curiousbees.neoforge.menu.AdvancedApiaryMenu;
 import com.curiousbees.neoforge.menu.CentrifugeMenu;
+import com.curiousbees.neoforge.menu.ExpandedApiaryMenu;
 import com.curiousbees.neoforge.menu.GeneticApiaryMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
@@ -27,6 +28,11 @@ public final class ModMenuTypes {
             MENUS.register(
                     "advanced_apiary",
                     () -> IMenuTypeExtension.create(AdvancedApiaryMenu::fromNetwork));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<ExpandedApiaryMenu>> EXPANDED_APIARY =
+            MENUS.register(
+                    "expanded_apiary",
+                    () -> IMenuTypeExtension.create(ExpandedApiaryMenu::fromNetwork));
 
     public static final DeferredHolder<MenuType<?>, MenuType<CentrifugeMenu>> CENTRIFUGE =
             MENUS.register(
