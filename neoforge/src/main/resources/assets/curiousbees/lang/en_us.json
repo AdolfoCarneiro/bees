@@ -34,6 +34,7 @@
   "item.curiousbees.captured_bee.flower_type": "Flowers: %s",
   "item.curiousbees.captured_bee.genome_corrupt": "Genome data corrupted",
   "gui.curiousbees.advanced_apiary.insert_bee": "Insert bee:",
+  "gui.curiousbees.expanded_apiary.upgrades": "Upgrades",
   "gui.curiousbees.genetic_apiary.honey": "Honey: %s / %s",
   "gui.curiousbees.genetic_apiary.no_bees": "No bees homed here",
   "gui.curiousbees.genetic_apiary.bees": "Bees: %s",
