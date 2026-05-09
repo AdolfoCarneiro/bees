@@ -2,6 +2,8 @@ package com.curiousbees.neoforge.block;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -35,5 +37,20 @@ public final class ApiaryExtensionBlock extends BaseEntityBlock {
     @Override
     public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
+    }
+
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos,
+                            BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock()) && !level.isClientSide()) {
+            for (Direction dir : new Direction[]{Direction.UP, Direction.DOWN}) {
+                BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
+                if (neighbor instanceof GeneticApiaryBlockEntity hive) {
+                    hive.releaseExcessOccupants(3);
+                    break;
+                }
+            }
+        }
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 }
