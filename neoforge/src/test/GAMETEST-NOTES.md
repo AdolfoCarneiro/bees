@@ -19,14 +19,10 @@ These live in `neoforge/src/test/java/com/curiousbees/neoforge/data/`:
 
 ---
 
-## Tests that require GameTest (stubs already exist — NOT yet implemented)
+## Tests that require GameTest (NOT yet implemented)
 
-Skeleton `@Disabled` stubs exist in `neoforge/src/test/java/com/curiousbees/neoforge/`:
-- `item/BeeCaptureTransactionTest.java` — capture transaction contract
-- `item/BeeReleaseTransactionTest.java` — release / spawn contract (BeeJar + BeeTransporter)
-- `data/StoredBeeDataCodecTest.java` — superseded by `CapturedBeeDataCodecTest` (now fully implemented)
-
-The stubs below expand on the "why blocked" reasoning and provide GameTest patterns.
+The following contracts need `@GameTestHolder` tests but no stubs exist.
+GameTest patterns are documented below.
 
 ### 1. `BeeJarItemReleaseTest` / `BeeTransporterItemReleaseTest`
 
