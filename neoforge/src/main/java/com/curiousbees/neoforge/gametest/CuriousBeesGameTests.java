@@ -87,11 +87,12 @@ public final class CuriousBeesGameTests {
         // Simulate capture: interactLivingEntity requires a Player. Use a fake server player.
         // NeoForge GameTest provides helper.makeMockPlayer() in some versions.
         // If unavailable, call the capture logic directly via the item method.
-        Player player = helper.makeMockPlayer();
+        Player player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
         jar.getItem().interactLivingEntity(jar, player, bee, InteractionHand.MAIN_HAND);
 
         // Assert: bee discarded.
-        helper.assertEntityNotPresent(EntityType.BEE, CENTER, 2.0);
+        Vec3 c = Vec3.atCenterOf(CENTER);
+        helper.assertEntityNotPresent(EntityType.BEE, c.subtract(2, 2, 2), c.add(2, 2, 2));
 
         // Assert: jar now has CAPTURED_BEE component.
         if (!jar.has(ModDataComponents.CAPTURED_BEE.get())) {
@@ -128,7 +129,7 @@ public final class CuriousBeesGameTests {
         }
 
         ItemStack jar = makeBeeJar(genome, false);
-        Player player = helper.makeMockPlayer();
+        Player player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
         player.setPos(helper.absoluteVec(new Vec3(1.5, 1.0, 1.5)));
 
         var result = jar.getItem().use(helper.getLevel(), player,
@@ -176,7 +177,7 @@ public final class CuriousBeesGameTests {
         }
 
         ItemStack transporter = makeBeeTransporter(genome, false);
-        Player player = helper.makeMockPlayer();
+        Player player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
         player.setPos(helper.absoluteVec(new Vec3(1.5, 1.0, 1.5)));
 
         var result = transporter.getItem().use(helper.getLevel(), player,
@@ -513,7 +514,7 @@ public final class CuriousBeesGameTests {
      */
     private static Genome makeMeadowGenome(GameTestHelper helper) {
         try {
-            com.curiousbees.neoforge.content.NeoForgeContentRegistry registry =
+            com.curiousbees.common.content.registry.ContentRegistry registry =
                     com.curiousbees.neoforge.content.NeoForgeContentRegistry.current();
             // Build a trivial meadow genome using the serializer round-trip path.
             // AlleleFixtures IDs must match what the content registry loaded.
