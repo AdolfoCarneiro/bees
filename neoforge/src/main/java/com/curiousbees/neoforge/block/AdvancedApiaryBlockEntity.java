@@ -1,6 +1,7 @@
 package com.curiousbees.neoforge.block;
 
 import com.curiousbees.neoforge.menu.AdvancedApiaryMenu;
+import com.curiousbees.neoforge.menu.ExpandedApiaryMenu;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
@@ -29,6 +30,9 @@ public final class AdvancedApiaryBlockEntity extends GeneticApiaryBlockEntity {
 
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
+        if (hasExpansionBox()) {
+            return new ExpandedApiaryMenu(containerId, playerInventory, this);
+        }
         return new AdvancedApiaryMenu(containerId, playerInventory, this);
     }
 }
