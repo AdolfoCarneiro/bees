@@ -49,6 +49,7 @@ public final class ModBlockEntities {
                             .of(SpeciesBeeNestBlockEntity::new,
                                     ModBlocks.MEADOW_BEE_NEST.get(),
                                     ModBlocks.FOREST_BEE_NEST.get(),
+                                    ModBlocks.FOREST_BEE_LOG_NEST.get(),
                                     ModBlocks.ARID_BEE_NEST.get())
                             .build(null));
 
