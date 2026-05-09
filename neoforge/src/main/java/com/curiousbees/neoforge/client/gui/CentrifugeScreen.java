@@ -23,10 +23,16 @@ public final class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMe
             ResourceLocation.fromNamespaceAndPath("curiousbees", "textures/gui/centrifuge.png");
 
     // Slot positions must match CentrifugeMenu
-    private static final int COMB_SLOT_X   = 30;
-    private static final int COMB_SLOT_Y   = 35;
-    private static final int BOTTLE_SLOT_X = 30;
-    private static final int BOTTLE_SLOT_Y = 60;
+    private static final int COMB_SLOT_X         = 30;
+    private static final int COMB_SLOT_Y         = 35;
+    private static final int BOTTLE_SLOT_X       = 30;
+    private static final int BOTTLE_SLOT_Y       = 60;
+    private static final int HONEY_BOTTLE_SLOT_X = 150;
+    private static final int HONEY_BOTTLE_SLOT_Y = 35;
+    private static final int OUTPUT_ORIGIN_X     = 80;
+    private static final int OUTPUT_ORIGIN_Y     = 17;
+    private static final int UPGRADE_ORIGIN_X    = 7;
+    private static final int UPGRADE_ORIGIN_Y    = 17;
 
     // Progress arrow (between inputs and 3x3 output grid)
     private static final int ARROW_X = 55;
@@ -73,8 +79,28 @@ public final class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMe
     @Override
     protected void renderBg(GuiGraphics g, float partialTick, int mouseX, int mouseY) {
         g.blit(BG_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        renderMachineSlots(g);
         renderProgressArrow(g);
         renderHoneyCounter(g);
+    }
+
+    private void renderMachineSlots(GuiGraphics g) {
+        renderSlotBg(g, COMB_SLOT_X, COMB_SLOT_Y);
+        renderSlotBg(g, BOTTLE_SLOT_X, BOTTLE_SLOT_Y);
+        renderSlotBg(g, HONEY_BOTTLE_SLOT_X, HONEY_BOTTLE_SLOT_Y);
+        for (int i = 0; i < 9; i++) {
+            renderSlotBg(g, OUTPUT_ORIGIN_X + (i % 3) * 18, OUTPUT_ORIGIN_Y + (i / 3) * 18);
+        }
+        for (int i = 0; i < 3; i++) {
+            renderSlotBg(g, UPGRADE_ORIGIN_X, UPGRADE_ORIGIN_Y + i * 18);
+        }
+    }
+
+    private void renderSlotBg(GuiGraphics g, int slotX, int slotY) {
+        int x = leftPos + slotX - 1;
+        int y = topPos  + slotY - 1;
+        g.fill(x, y, x + 18, y + 18, 0xFF_373737);
+        g.fill(x + 1, y + 1, x + 17, y + 17, 0xFF_8B8B8B);
     }
 
     @Override
