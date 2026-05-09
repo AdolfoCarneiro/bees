@@ -302,15 +302,15 @@ public class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements Menu
             storedField.setAccessible(true);
             @SuppressWarnings("unchecked")
             java.util.List<Object> stored = (java.util.List<Object>) storedField.get(this);
-            java.lang.reflect.Method toOccupantMethod = null;
+            if (stored.isEmpty()) return;
+            // Resolve toOccupant BEFORE removing any bees so a reflection failure loses nothing.
+            java.lang.reflect.Method toOccupantMethod =
+                    stored.get(0).getClass().getDeclaredMethod("toOccupant");
+            toOccupantMethod.setAccessible(true);
             BlockPos pos = getBlockPos();
             for (int i = 0; i < toRelease; i++) {
                 if (stored.isEmpty()) break;
                 Object beeData = stored.remove(stored.size() - 1);
-                if (toOccupantMethod == null) {
-                    toOccupantMethod = beeData.getClass().getDeclaredMethod("toOccupant");
-                    toOccupantMethod.setAccessible(true);
-                }
                 BeehiveBlockEntity.Occupant occ = (BeehiveBlockEntity.Occupant) toOccupantMethod.invoke(beeData);
                 net.minecraft.world.entity.Entity entity = occ.createEntity(level, pos);
                 if (entity != null) {
