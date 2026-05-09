@@ -35,10 +35,7 @@ public final class ExpandedApiaryScreen extends AbstractContainerScreen<Expanded
     private static final int BEE_SLOT_TEXT_X_OFFSET = 11;
     private static final int OCCUPANT_ICON_SIZE = 8;
 
-    private static final int HONEY_BAR_X  = 62;
-    private static final int HONEY_BAR_Y  = 93;
-    private static final int HONEY_BAR_W  = 54;
-    private static final int HONEY_BAR_H  = 6;
+    private static final int UPGRADES_LABEL_X = 62;
 
     private static final int FRAME_ORIGIN_X = 122;
     private static final int FRAME_ORIGIN_Y = 17;
@@ -47,7 +44,6 @@ public final class ExpandedApiaryScreen extends AbstractContainerScreen<Expanded
 
     private static final int COL_LABEL      = 0x404040;
     private static final int COL_WARN       = 0x8B2020;
-    private static final int COL_HONEY      = 0xB08020;
     private static final int COL_ANALYZED   = 0x1A7A1A;
     private static final int COL_UNANALYZED = 0x806020;
 
@@ -87,7 +83,6 @@ public final class ExpandedApiaryScreen extends AbstractContainerScreen<Expanded
         g.fill(x + 7, y + 7, x + imageWidth - 7, y + imageHeight - 7, 0xFF_8B8B8B);
         renderBeePanelBg(g, x, y);
         renderBeeInsertSlotHighlight(g, x, y);
-        renderHoneyBar(g, x, y);
         renderFrameDurabilityBars(g, x, y);
     }
 
@@ -108,17 +103,6 @@ public final class ExpandedApiaryScreen extends AbstractContainerScreen<Expanded
         g.fill(x + 1, y + 1, x + 17, y + 17, 0x55_000000);
     }
 
-    private void renderHoneyBar(GuiGraphics g, int ox, int oy) {
-        int honey = menu.honeyLevel();
-        int x = ox + HONEY_BAR_X;
-        int y = oy + HONEY_BAR_Y;
-        g.fill(x, y, x + HONEY_BAR_W, y + HONEY_BAR_H, 0xFF_6B4C0A);
-        int filled = (int) (HONEY_BAR_W * (honey / 5.0f));
-        if (filled > 0) {
-            g.fill(x, y, x + filled, y + HONEY_BAR_H, 0xFF_F0C030);
-        }
-    }
-
     private void renderFrameDurabilityBars(GuiGraphics g, int ox, int oy) {
         for (int i = 0; i < GeneticApiaryBlockEntity.FRAME_SLOTS; i++) {
             ItemStack frame = menu.getSlot(i).getItem();
@@ -137,11 +121,11 @@ public final class ExpandedApiaryScreen extends AbstractContainerScreen<Expanded
     @Override
     protected void renderLabels(GuiGraphics g, int mouseX, int mouseY) {
         g.drawString(font, title, titleLabelX, titleLabelY, COL_LABEL, false);
+        g.drawString(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, COL_LABEL, false);
         renderBeePanel(g, mouseX - leftPos, mouseY - topPos);
-        renderHoneyLabel(g);
         g.drawString(font,
                 Component.translatable("gui.curiousbees.expanded_apiary.upgrades"),
-                HONEY_BAR_X, 65, COL_LABEL, false);
+                UPGRADES_LABEL_X, 65, COL_LABEL, false);
     }
 
     private void renderBeePanel(GuiGraphics g, int relMouseX, int relMouseY) {
@@ -182,13 +166,6 @@ public final class ExpandedApiaryScreen extends AbstractContainerScreen<Expanded
                     Component.translatable("gui.curiousbees.genetic_apiary.output_full"),
                     px + 2, wy, COL_WARN, false);
         }
-    }
-
-    private void renderHoneyLabel(GuiGraphics g) {
-        g.drawString(font,
-                Component.translatable("gui.curiousbees.genetic_apiary.honey",
-                        menu.honeyLevel(), 5),
-                HONEY_BAR_X, HONEY_BAR_Y + HONEY_BAR_H + 2, COL_HONEY, false);
     }
 
     private List<Component> buildBeeTooltip(BeeOccupantData bee) {
