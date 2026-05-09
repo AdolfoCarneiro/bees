@@ -16,11 +16,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * GUI for the Genetic Apiary (and Advanced Apiary).
- * Layout: bee-panel left | 3×2 output centre | 3×1 frame column right.
+ * Layout: bee-panel left | 3×3 output centre | 3×1 frame column right.
  */
 public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticApiaryMenu> {
 
@@ -34,7 +35,7 @@ public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticAp
     private static final int BEE_PANEL_H = 56;
 
     private static final int HONEY_BAR_X = 62;
-    private static final int HONEY_BAR_Y = 57;
+    private static final int HONEY_BAR_Y = 73;  // moved down from 57 to clear 3rd output row (ADR-0018)
     private static final int HONEY_BAR_W = 54;
     private static final int HONEY_BAR_H = 6;
 
@@ -43,14 +44,21 @@ public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticAp
     private static final int DUR_BAR_W = 16;
     private static final int DUR_BAR_H = 3;
 
-    private static final int OCCUPANT_ICON_SIZE = 8;
-    private static final int OCCUPANT_ROW_H     = 10;
+    private static final int OCCUPANT_ICON_SIZE   = 8;
+    private static final int BEE_SLOT_H           = 16;
+    private static final int BEE_SLOT_GAP         = 2;
+    private static final int BEE_SLOT_TEXT_X_OFFSET = 11;
 
     private static final int COL_LABEL      = 0x404040;
     private static final int COL_WARN       = 0x8B2020;
     private static final int COL_HONEY      = 0xB08020;
     private static final int COL_ANALYZED   = 0x1A7A1A;
     private static final int COL_UNANALYZED = 0x806020;
+
+    // Set during renderBeePanel; consumed after super.render() to draw tooltip outside translated matrix.
+    private BeeOccupantData hoveredBee = null;
+    private int tooltipMouseX = 0;
+    private int tooltipMouseY = 0;
 
     public GeneticApiaryScreen(GeneticApiaryMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -67,8 +75,13 @@ public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticAp
 
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
+        hoveredBee = null;
         super.render(g, mouseX, mouseY, partialTick);
         renderTooltip(g, mouseX, mouseY);
+        if (hoveredBee != null) {
+            // Matrix is NOT translated here — use absolute coords.
+            g.renderComponentTooltip(font, buildBeeTooltip(hoveredBee), tooltipMouseX, tooltipMouseY);
+        }
     }
 
     @Override
@@ -97,7 +110,6 @@ public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticAp
     private void renderBeeInsertSlot(GuiGraphics g, int ox, int oy) {
         int x = ox + AdvancedApiaryMenu.BEE_INSERT_SLOT_X - 1;
         int y = oy + AdvancedApiaryMenu.BEE_INSERT_SLOT_Y - 1;
-        // Dashed border: outer bright, inner dark
         g.fill(x,      y,      x + 18, y + 18, 0x66_FFFFFF);
         g.fill(x + 1,  y + 1,  x + 17, y + 17, 0x55_000000);
     }
@@ -130,56 +142,77 @@ public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticAp
 
     @Override
     protected void renderLabels(GuiGraphics g, int mouseX, int mouseY) {
-        super.renderLabels(g, mouseX, mouseY);
-        renderBeePanel(g);
+        // Skip super.renderLabels: inventory label at y=72 conflicts with honey bar at y=73 (ADR-0018).
+        g.drawString(font, title, titleLabelX, titleLabelY, COL_LABEL, false);
+        renderBeePanel(g, mouseX - leftPos, mouseY - topPos);
         renderHoneyLabel(g);
     }
 
-    private void renderBeePanel(GuiGraphics g) {
-        int px = BEE_PANEL_X + 3;
-        int py = BEE_PANEL_Y + 4;
-
-        ApiaryState state = menu.getState();
+    private void renderBeePanel(GuiGraphics g, int relMouseX, int relMouseY) {
         List<BeeOccupantData> occupants = menu.getOccupants();
+        int px = BEE_PANEL_X + 2;
 
-        if (state == ApiaryState.IDLE) {
-            g.drawString(font,
-                    Component.translatable("gui.curiousbees.genetic_apiary.no_bees"),
-                    px, py, COL_WARN, false);
-            return;
+        for (int i = 0; i < 3; i++) {
+            int slotY = BEE_PANEL_Y + 2 + i * (BEE_SLOT_H + BEE_SLOT_GAP);
+
+            g.fill(px, slotY, px + BEE_PANEL_W - 4, slotY + BEE_SLOT_H, 0x22_000000);
+
+            if (i >= occupants.size()) {
+                g.drawString(font,
+                        Component.translatable("gui.curiousbees.genetic_apiary.bee_slot_empty"),
+                        px + 3, slotY + 4, 0x606060, false);
+                continue;
+            }
+
+            BeeOccupantData bee = occupants.get(i);
+
+            // Species icon — always shown, no analysis gate (ADR-0016)
+            ResourceLocation icon = SpeciesTextureResolver.resolveById(bee.speciesId());
+            g.blit(icon, px + 1, slotY + 4, 0, 0, OCCUPANT_ICON_SIZE, OCCUPANT_ICON_SIZE, 64, 64);
+
+            // Species name — green if purebred, orange if hybrid
+            Component name = resolveDisplayName(bee.speciesId());
+            int nameColor = bee.isPurebred() ? COL_ANALYZED : COL_UNANALYZED;
+            g.drawString(font, name, px + BEE_SLOT_TEXT_X_OFFSET, slotY + 4, nameColor, false);
+
+            // Track hover; tooltip rendered from render() outside translated matrix
+            if (relMouseX >= px && relMouseX < px + BEE_PANEL_W - 4
+                    && relMouseY >= slotY && relMouseY < slotY + BEE_SLOT_H) {
+                hoveredBee = bee;
+                tooltipMouseX = relMouseX + leftPos;
+                tooltipMouseY = relMouseY + topPos;
+            }
         }
 
-        int homedTotal = menu.homedBeeCount();
-        g.drawString(font,
-                Component.translatable("gui.curiousbees.genetic_apiary.bees", homedTotal),
-                px, py, COL_LABEL, false);
-        py += 11;
-
-        for (BeeOccupantData bee : occupants) {
-            if (py > BEE_PANEL_Y + BEE_PANEL_H - 12) break;
-
-            // Icon: species texture when analyzed, fallback when not (avoids leaking species before analysis).
-            // Blits UV (0,0)→(8,8) of 64×64 entity texture — uses bee face region as occupant icon.
-            ResourceLocation icon = bee.analyzed()
-                    ? SpeciesTextureResolver.resolveById(bee.speciesId())
-                    : SpeciesTextureResolver.MOD_FALLBACK;
-            g.blit(icon, px, py, 0, 0, OCCUPANT_ICON_SIZE, OCCUPANT_ICON_SIZE, 64, 64);
-
-            // Name only when analyzed — unanalyzed bees show "?" to avoid leaking species identity.
-            Component label = bee.analyzed()
-                    ? resolveDisplayName(bee.speciesId())
-                    : Component.literal("?");
-            int color = bee.analyzed() ? COL_ANALYZED : COL_UNANALYZED;
-            g.drawString(font, label, px + OCCUPANT_ICON_SIZE + 2, py, color, false);
-
-            py += OCCUPANT_ROW_H;
-        }
-
-        if (state == ApiaryState.OUTPUT_FULL) {
+        if (menu.getState() == ApiaryState.OUTPUT_FULL) {
+            // Overlay on bottom of panel — rendered last so it appears on top
+            int wy = BEE_PANEL_Y + BEE_PANEL_H - 11;
+            g.fill(px, wy - 1, px + BEE_PANEL_W - 4, wy + 9, 0xCC_000000);
             g.drawString(font,
                     Component.translatable("gui.curiousbees.genetic_apiary.output_full"),
-                    px, BEE_PANEL_Y + BEE_PANEL_H - 10, COL_WARN, false);
+                    px + 2, wy, COL_WARN, false);
         }
+    }
+
+    private List<Component> buildBeeTooltip(BeeOccupantData bee) {
+        List<Component> lines = new ArrayList<>();
+        lines.add(resolveDisplayName(bee.speciesId()));
+        lines.add(Component.translatable(
+                bee.isPurebred()
+                        ? "screen.curiousbees.bee_analyzer.purity.purebred"
+                        : "screen.curiousbees.bee_analyzer.purity.hybrid").withStyle(
+                style -> style.withColor(bee.isPurebred() ? 0x1A7A1A : 0x806020)));
+        if (!bee.productivityId().isEmpty()) {
+            String prod = formatSpeciesLabel(bee.productivityId());
+            lines.add(Component.translatable("screen.curiousbees.bee_analyzer.label.productivity")
+                    .append(Component.literal(": " + prod)));
+        }
+        if (!bee.flowerTypeId().isEmpty()) {
+            String flower = formatSpeciesLabel(bee.flowerTypeId());
+            lines.add(Component.translatable("screen.curiousbees.bee_analyzer.label.flower_type")
+                    .append(Component.literal(": " + flower)));
+        }
+        return lines;
     }
 
     private Component resolveDisplayName(String speciesId) {
