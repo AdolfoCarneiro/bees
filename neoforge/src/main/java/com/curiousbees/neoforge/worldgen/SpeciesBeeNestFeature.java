@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -68,14 +69,23 @@ public final class SpeciesBeeNestFeature extends Feature<SpeciesBeeNestConfigura
             List<String> pool = context.config().occupantSpeciesPool();
             String fallbackSpeciesId = speciesBlock.speciesId();
 
+            List<String> speciesToAdd = new ArrayList<>(beeCount);
             for (int i = 0; i < beeCount; i++) {
-                Bee bee = new Bee(EntityType.BEE, serverLevel);
-                String speciesId = pool.isEmpty()
+                speciesToAdd.add(pool.isEmpty()
                         ? fallbackSpeciesId
-                        : pool.get(context.random().nextInt(pool.size()));
-                stampNestSpeciesGenome(bee, speciesId);
-                beehive.addOccupant(bee);
+                        : pool.get(context.random().nextInt(pool.size())));
             }
+
+            // Defer entity creation to server thread: new Bee(level) accesses level.getRandom()
+            // (a LegacyRandomSource locked to the server thread) — doing so on the world gen
+            // worker thread triggers ThreadingDetector crash in NaturalSpawner.
+            serverLevel.getServer().execute(() -> {
+                for (String speciesId : speciesToAdd) {
+                    Bee bee = new Bee(EntityType.BEE, serverLevel);
+                    stampNestSpeciesGenome(bee, speciesId);
+                    beehive.addOccupant(bee);
+                }
+            });
         }
 
         placeAttachedVegetation(level, origin, context);
