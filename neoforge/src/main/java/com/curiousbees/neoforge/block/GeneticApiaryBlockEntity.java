@@ -308,15 +308,17 @@ public class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements Menu
                     stored.get(0).getClass().getDeclaredMethod("toOccupant");
             toOccupantMethod.setAccessible(true);
             BlockPos pos = getBlockPos();
-            for (int i = 0; i < toRelease; i++) {
-                if (stored.isEmpty()) break;
-                Object beeData = stored.remove(stored.size() - 1);
+            int released = 0;
+            while (released < toRelease && !stored.isEmpty()) {
+                // Peek before removing — bee NBT must not be lost if spawn fails.
+                Object beeData = stored.get(stored.size() - 1);
                 BeehiveBlockEntity.Occupant occ = (BeehiveBlockEntity.Occupant) toOccupantMethod.invoke(beeData);
                 net.minecraft.world.entity.Entity entity = occ.createEntity(level, pos);
-                if (entity != null) {
-                    entity.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-                    level.addFreshEntity(entity);
-                }
+                if (entity == null) break; // can't reconstruct — leave in storage
+                entity.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+                if (!level.addFreshEntity(entity)) break; // spawn rejected — leave in storage
+                stored.remove(stored.size() - 1); // only remove AFTER confirmed spawn
+                released++;
             }
         } catch (Exception e) {
             CuriousBeesMod.LOGGER.warn("Failed to release excess bees at {}: {}", getBlockPos(), e.getMessage());
