@@ -1,12 +1,10 @@
-<!-- generated-by: gsd-doc-writer -->
 # Curious Bees — Plano de Testes In-Game
 
 > Checklist manual para validar features antes de considerar um Epic concluído.
 > Cada seção corresponde a uma task do Epic PR.
 >
-> **Status do Epic PR:** todas as tasks estão com status `todo` — os cenários abaixo
-> descrevem o comportamento esperado *após* a implementação. Execute este plano
-> sempre que uma task for marcada como `done`.
+> **Status do Epic PR:** todas as tasks estão com status `done`. Execute este plano
+> para regressão completa antes de qualquer release ou merge significativo.
 
 ---
 
@@ -111,14 +109,25 @@
 
 ---
 
-### C6: Falha de spawn — posição inválida
+### C6: Abelha sem genoma — captura ignorada
 
-1. [ ] Tente fazer release de um Bee Jar ou Bee Transporter dentro de uma parede sólida
-       (teleporte para dentro de um bloco e use).
-2. [ ] **Resultado esperado:** abelha NÃO é spawnada; item NÃO é consumido/esvaziado;
-       mensagem de WARNING no log: `CapturedBeeItem: failed to spawn bee at ...`.
+1. [ ] Spawne uma abelha vanilla pura sem genoma (mundo legado ou `/summon minecraft:bee`).
+2. [ ] Tente capturar com Bee Jar vazio.
+3. [ ] **Resultado esperado:** nada acontece (retorna `PASS`); abelha permanece no mundo; Bee Jar permanece vazio.
 
-**Critério PASS:** sem perda silenciosa de abelha; log de WARNING presente.
+**Critério PASS:** captura só ocorre em abelhas com genoma; sem crash.
+
+---
+
+### C7: Falha de spawn — atomicidade garantida
+
+> **Nota:** `addFreshEntity` falhar dentro de um bloco sólido é difícil de acionar em-jogo pois
+> o MC geralmente resolve a colisão. O contrato real é verificável via log:
+> o item só deve ser consumido APÓS `addFreshEntity` retornar `true`.
+> Verifique via log FINE (`-Djava.util.logging.level=FINE`) que a mensagem de
+> "spawned bee" aparece ANTES da mensagem de "item consumed/cleared".
+
+**Critério PASS (log-based):** ordem de eventos no log confirma spawn antes de consumo do item.
 
 ---
 
@@ -296,11 +305,20 @@
 > **Nota:** com 3% de chance, pode ser necessário ~50+ cruzamentos para observar o fenômeno.
 > Use `/curiousbees debug roll_production` para verificar o sistema de mutação indiretamente.
 
-**Critério PASS:** mutação ocorre em biomas com pool de habitat definido; não ocorre ou é inefetiva
-em biomas sem pool (apenas Common disponível); fenômeno é probabilístico, não determinístico.
+**Critério PASS:** mutação ocorre em biomas com pool de habitat definido; fenômeno é probabilístico, não determinístico.
+
+---
+
+### C3: Sem mutação em bioma sem pool de habitat
+
+1. [ ] Localize um bioma sem pool de habitat definido (ex.: oceano profundo, End, Nether — verificar JSONs em `data/curiousbees/`).
+2. [ ] Realize 20+ cruzamentos Common + Common nesse bioma.
+3. [ ] **Resultado esperado:** todos os filhotes são Common; nenhuma mutação para espécie desconhecida; sem crash.
+
+**Critério PASS:** ausência de pool não causa crash; sem mutação para espécie inválida.
 
 **O que falha se quebrado:** filhotes *sempre* mutam (determinístico); filhotes *nunca* mutam;
-mutação ocorre fora do contexto Common + Common.
+mutação ocorre fora do contexto Common + Common; crash quando pool de habitat está vazio.
 
 ---
 
@@ -358,6 +376,26 @@ mutação ocorre fora do contexto Common + Common.
 
 **Critério PASS:** bee slots não expostos ao `IItemHandler` de automação.
 
+### C5: Frame insertion e durabilidade
+
+1. [ ] Abra o Advanced Beehive (sem Expansion Box).
+2. [ ] Insira um frame no slot de frame (drag or click com frame item).
+3. [ ] **Resultado esperado:** frame é aceito no slot; barra de durabilidade aparece abaixo do slot de frame.
+4. [ ] Aguarde produção de combs com frame instalado.
+5. [ ] **Resultado esperado:** frame perde durabilidade a cada output; ao chegar em 0, slot é esvaziado e log `debug` é emitido.
+
+**Critério PASS:** frame funcional; durabilidade visível; frame quebrado limpa o slot.
+
+---
+
+### C6: Estado "output full" — aviso no painel de abelhas
+
+1. [ ] Encha todos os 9 slots de output (use `/item give` ou aguarde produção intensa).
+2. [ ] Observe o painel de abelhas (esquerda do GUI).
+3. [ ] **Resultado esperado:** texto de aviso "Output Full" (ou equivalente) aparece no painel de abelhas.
+
+**Critério PASS:** aviso visível quando outputs lotados; desaparece ao esvaziar pelo menos um slot.
+
 **O que falha se quebrado:** GUI exibe slots errados; genética oculta sem análise; bee slots acessíveis por hopper.
 
 ---
@@ -414,6 +452,29 @@ mutação ocorre fora do contexto Common + Common.
 
 **Critério PASS:** Expansion Box sem hive não crasha o jogo.
 
+### C5: Upgrade slots rejeitam itens sem tag
+
+1. [ ] Com Expansion Box instalado, tente inserir um item qualquer (ex.: pedra, madeira) em um dos 3 slots de upgrade.
+2. [ ] **Resultado esperado:** item NÃO é aceito no slot de upgrade.
+3. [ ] Tente inserir um item com tag `curiousbees:beehive_upgrades` (quando disponível).
+4. [ ] **Resultado esperado:** item com tag correta é aceito.
+
+**Critério PASS:** `isItemValid` funcional; slots filtram por tag.
+
+---
+
+### C6: GUI aberta quando Expansion Box é removido (limitação conhecida)
+
+1. [ ] Abra o GUI do Advanced Beehive com Expansion Box instalado (layout expandido visível).
+2. [ ] Com o GUI aberto, peça a outro jogador (ou use /setblock) para remover o Expansion Box.
+3. [ ] **Resultado esperado (comportamento atual — MVP):** GUI permanece aberto com o layout expandido até ser fechado e reaberto; sem crash.
+4. [ ] Feche e reabra o GUI.
+5. [ ] **Resultado esperado:** GUI reabre com layout padrão (3 bee slots, 0 upgrade slots).
+
+> **Nota:** a atualização em tempo real do GUI ao remover a box não está implementada (limitação de MVP documentada no plano de PR-T07). O comportamento seguro (sem crash) é o critério.
+
+**Critério PASS:** sem crash; GUI correto após reabrir.
+
 **O que falha se quebrado:** abelhas deletadas silenciosamente ao remover Expansion Box; crash ao remover Advanced Beehive.
 
 ---
@@ -422,28 +483,23 @@ mutação ocorre fora do contexto Common + Common.
 
 **Referência:** ADR-0015
 
-> **Nota de divergência:** a implementação atual (`CentrifugeBlockEntity`) tem `OUTPUT_SLOTS = 4`
-> (não 9) e não tem slots de upgrade. Este cenário descreve o estado **alvo** (PR-T08 `todo`).
-> Ao testar a implementação atual, os valores encontrados serão diferentes — documente a diferença.
-
 ### Pré-condição
 
 - Centrifuge colocado no mundo; combs disponíveis.
 
 ---
 
-### C1: Layout de slots correto (estado alvo)
+### C1: Layout de slots correto
 
 1. [ ] Abra o GUI da Centrifuge (botão direito).
-2. [ ] **Resultado esperado (alvo):**
+2. [ ] **Resultado esperado:**
    - 1 slot de entrada de comb
    - 9 slots de output para itens
    - 1 slot de entrada de garrafa (glass bottle)
    - 1 slot de output dedicado para honey bottle
    - 3 slots de upgrade
-3. [ ] **Estado atual (implementação parcial):** 1 entrada + 4 outputs + 1 bottle input — documente se diferente.
 
-**Critério PASS (quando PR-T08 implementado):** contagem exata conforme ADR-0015.
+**Critério PASS:** contagem exata conforme ADR-0015.
 
 ---
 
@@ -508,10 +564,7 @@ mutação ocorre fora do contexto Common + Common.
 2. [ ] **Resultado esperado:** tooltip mostra espécie e dados genéticos.
 3. [ ] **Resultado esperado:** nenhum ID bruto (`curiousbees:*`) visível.
 
-> **Nota:** a implementação atual de `CapturedBeeItem.appendHoverText` mostra espécie/genética
-> *apenas* quando `data.analyzed() == true`. Após PR-T09, isso deve mudar para sempre exibir.
-
-**Critério PASS (alvo):** tooltip exibe dados sem depender de `isAnalyzed()`.
+**Critério PASS:** tooltip exibe dados sem depender de `isAnalyzed()` (ADR-0016 implementado).
 
 ---
 
@@ -607,6 +660,9 @@ Execute esta lista compacta antes de qualquer merge — deve completar em < 10 m
 - [ ] **R-13: Mutation feedback visual** — quando mutação ocorre no breeding, partícula e/ou som são disparados no server (`!level.isClientSide()`).
 - [ ] **R-14: Lifespan e Fertility ausentes** — nenhum UI de jogador exibe Lifespan ou Fertility.
 - [ ] **R-15: `/reload` não corrompe estado** — execute `/reload` com hive em funcionamento; abelhas e outputs intactos; sem crash.
+- [ ] **R-16: Upgrade slots rejeitam itens não-tagados** — com Expansion Box instalado, tente inserir pedra/madeira nos 3 slots de upgrade do Expanded GUI; nenhum item deve ser aceito.
+- [ ] **R-17: Expanded GUI com 7 abelhas** — instale Expansion Box; insira 7 abelhas via Bee Jar/Transporter; todos os 7 slots visuais devem exibir espécie e pureza sem sobreposição ou crash.
+- [ ] **R-18: releaseExcessOccupants preserva abelhas** — insira 5 abelhas com Expansion Box; quebre a box; verifique que exatamente 2 abelhas aparecem no mundo e 3 permanecem no hive ao reabrir o GUI.
 
 ---
 
