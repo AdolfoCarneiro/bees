@@ -71,7 +71,7 @@ import java.util.Random;
  */
 public class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements MenuProvider {
 
-    public static final int OUTPUT_SLOTS = 6;
+    public static final int OUTPUT_SLOTS = 9;
     public static final int FRAME_SLOTS = 3;
 
     private static final ProductionResolver PRODUCTION_RESOLVER = new ProductionResolver();
@@ -307,12 +307,23 @@ public class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements Menu
     }
 
     private void captureOccupantData(Bee bee) {
-        String speciesId = BeeGenomeStorage.getGenome(bee)
-                .map(g -> g.getActiveAllele(
-                        com.curiousbees.common.genetics.model.ChromosomeType.SPECIES).id())
+        Optional<Genome> genomeOpt = BeeGenomeStorage.getGenome(bee);
+        String speciesId = genomeOpt
+                .map(g -> g.getActiveAllele(com.curiousbees.common.genetics.model.ChromosomeType.SPECIES).id())
                 .orElse("unknown");
+        boolean isPurebred = genomeOpt
+                .map(g -> g.isPurebred(com.curiousbees.common.genetics.model.ChromosomeType.SPECIES))
+                .orElse(false);
+        String productivityId = genomeOpt
+                .filter(g -> g.hasChromosome(com.curiousbees.common.genetics.model.ChromosomeType.PRODUCTIVITY))
+                .map(g -> g.getActiveAllele(com.curiousbees.common.genetics.model.ChromosomeType.PRODUCTIVITY).id())
+                .orElse("");
+        String flowerTypeId = genomeOpt
+                .filter(g -> g.hasChromosome(com.curiousbees.common.genetics.model.ChromosomeType.FLOWER_TYPE))
+                .map(g -> g.getActiveAllele(com.curiousbees.common.genetics.model.ChromosomeType.FLOWER_TYPE).id())
+                .orElse("");
         boolean analyzed = BeeAnalysisStorage.isAnalyzed(bee);
-        cachedOccupantsInHive.add(new BeeOccupantData(speciesId, analyzed));
+        cachedOccupantsInHive.add(new BeeOccupantData(speciesId, analyzed, isPurebred, productivityId, flowerTypeId));
         setChanged();
     }
 
@@ -340,6 +351,9 @@ public class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements Menu
             CompoundTag entry = new CompoundTag();
             entry.putString("species", occupant.speciesId());
             entry.putBoolean("analyzed", occupant.analyzed());
+            entry.putBoolean("purebred", occupant.isPurebred());
+            entry.putString("productivity", occupant.productivityId());
+            entry.putString("flowerType", occupant.flowerTypeId());
             list.add(entry);
         }
         tag.put("OccupantsInHive", list);
@@ -353,7 +367,10 @@ public class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements Menu
             CompoundTag entry = list.getCompound(i);
             cachedOccupantsInHive.add(new BeeOccupantData(
                     entry.getString("species"),
-                    entry.getBoolean("analyzed")));
+                    entry.getBoolean("analyzed"),
+                    entry.contains("purebred") && entry.getBoolean("purebred"),
+                    entry.contains("productivity") ? entry.getString("productivity") : "",
+                    entry.contains("flowerType") ? entry.getString("flowerType") : ""));
         }
     }
 
