@@ -50,7 +50,7 @@ public final class SpeciesBeeNestFeature extends Feature<SpeciesBeeNestConfigura
         Direction facing = HORIZONTAL.get(context.random().nextInt(HORIZONTAL.size()));
 
         BlockState nestState = context.config().nestState()
-                .setValue(BlockStateProperties.FACING, facing)
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, facing)
                 .setValue(BlockStateProperties.LEVEL_HONEY, 0);
 
         if (!(nestState.getBlock() instanceof SpeciesBeeNestBlock speciesBlock)) return false;
