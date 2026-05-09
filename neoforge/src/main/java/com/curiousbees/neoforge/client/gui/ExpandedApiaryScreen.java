@@ -30,10 +30,12 @@ public final class ExpandedApiaryScreen extends AbstractContainerScreen<Expanded
     private static final int BEE_PANEL_Y  = 17;
     private static final int BEE_PANEL_W  = 52;
     private static final int BEE_PANEL_H  = 76;
-    private static final int BEE_SLOT_H   = 9;
-    private static final int BEE_SLOT_GAP = 1;
-    private static final int BEE_SLOT_TEXT_X_OFFSET = 11;
     private static final int OCCUPANT_ICON_SIZE = 8;
+    private static final int CELL_SIZE          = 16;
+
+    // Honeycomb 2-3-2 layout (GUI-relative coords): rows offset for hex feel
+    private static final int[] CELL_X = { 16, 34,  7, 25, 43, 16, 34 };
+    private static final int[] CELL_Y = { 19, 19, 38, 38, 38, 57, 57 };
 
     private static final int UPGRADES_LABEL_X = 62;
 
@@ -130,29 +132,28 @@ public final class ExpandedApiaryScreen extends AbstractContainerScreen<Expanded
 
     private void renderBeePanel(GuiGraphics g, int relMouseX, int relMouseY) {
         List<BeeOccupantData> occupants = menu.getOccupants();
-        int px = BEE_PANEL_X + 2;
 
         for (int i = 0; i < 7; i++) {
-            int slotY = BEE_PANEL_Y + 3 + i * (BEE_SLOT_H + BEE_SLOT_GAP);
-            g.fill(px, slotY, px + BEE_PANEL_W - 4, slotY + BEE_SLOT_H, 0x22_000000);
+            int cx = CELL_X[i];
+            int cy = CELL_Y[i];
+            boolean occupied = i < occupants.size();
 
-            if (i >= occupants.size()) {
-                g.drawString(font,
-                        Component.translatable("gui.curiousbees.genetic_apiary.bee_slot_empty"),
-                        px + 3, slotY + 1, 0x606060, false);
-                continue;
-            }
+            g.fill(cx, cy, cx + CELL_SIZE, cy + CELL_SIZE, occupied ? 0x33_000000 : 0x18_000000);
+            g.fill(cx,                  cy,                  cx + CELL_SIZE,     cy + 1,              0x55_000000);
+            g.fill(cx,                  cy + CELL_SIZE - 1,  cx + CELL_SIZE,     cy + CELL_SIZE,      0x55_000000);
+            g.fill(cx,                  cy,                  cx + 1,             cy + CELL_SIZE,      0x55_000000);
+            g.fill(cx + CELL_SIZE - 1,  cy,                  cx + CELL_SIZE,     cy + CELL_SIZE,      0x55_000000);
+
+            if (!occupied) continue;
 
             BeeOccupantData bee = occupants.get(i);
             ResourceLocation icon = SpeciesTextureResolver.resolveById(bee.speciesId());
-            g.blit(icon, px + 1, slotY, 0, 0, OCCUPANT_ICON_SIZE, OCCUPANT_ICON_SIZE, 64, 64);
+            int iconX = cx + (CELL_SIZE - OCCUPANT_ICON_SIZE) / 2;
+            int iconY = cy + (CELL_SIZE - OCCUPANT_ICON_SIZE) / 2;
+            g.blit(icon, iconX, iconY, 0, 0, OCCUPANT_ICON_SIZE, OCCUPANT_ICON_SIZE, 64, 64);
 
-            Component name = resolveDisplayName(bee.speciesId());
-            int nameColor = bee.isPurebred() ? COL_ANALYZED : COL_UNANALYZED;
-            g.drawString(font, name, px + BEE_SLOT_TEXT_X_OFFSET, slotY + 1, nameColor, false);
-
-            if (relMouseX >= px && relMouseX < px + BEE_PANEL_W - 4
-                    && relMouseY >= slotY && relMouseY < slotY + BEE_SLOT_H) {
+            if (relMouseX >= cx && relMouseX < cx + CELL_SIZE
+                    && relMouseY >= cy && relMouseY < cy + CELL_SIZE) {
                 hoveredBee = bee;
                 tooltipMouseX = relMouseX + leftPos;
                 tooltipMouseY = relMouseY + topPos;
@@ -161,10 +162,10 @@ public final class ExpandedApiaryScreen extends AbstractContainerScreen<Expanded
 
         if (menu.getState() == ApiaryState.OUTPUT_FULL) {
             int wy = BEE_PANEL_Y + BEE_PANEL_H - 11;
-            g.fill(px, wy - 1, px + BEE_PANEL_W - 4, wy + 9, 0xCC_000000);
+            g.fill(BEE_PANEL_X + 2, wy - 1, BEE_PANEL_X + BEE_PANEL_W - 2, wy + 9, 0xCC_000000);
             g.drawString(font,
                     Component.translatable("gui.curiousbees.genetic_apiary.output_full"),
-                    px + 2, wy, COL_WARN, false);
+                    BEE_PANEL_X + 4, wy, COL_WARN, false);
         }
     }
 

@@ -39,10 +39,12 @@ public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticAp
     private static final int DUR_BAR_W = 16;
     private static final int DUR_BAR_H = 3;
 
-    private static final int OCCUPANT_ICON_SIZE   = 8;
-    private static final int BEE_SLOT_H           = 16;
-    private static final int BEE_SLOT_GAP         = 2;
-    private static final int BEE_SLOT_TEXT_X_OFFSET = 11;
+    private static final int OCCUPANT_ICON_SIZE = 8;
+    private static final int CELL_SIZE          = 16;
+
+    // Honeycomb 2-1 layout: 2 cells top row, 1 centered below (GUI-relative coords)
+    private static final int[] CELL_X = { 16, 34, 25 };
+    private static final int[] CELL_Y = { 19, 19, 38 };
 
     private static final int COL_LABEL      = 0x404040;
     private static final int COL_WARN       = 0x8B2020;
@@ -131,34 +133,28 @@ public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticAp
 
     private void renderBeePanel(GuiGraphics g, int relMouseX, int relMouseY) {
         List<BeeOccupantData> occupants = menu.getOccupants();
-        int px = BEE_PANEL_X + 2;
 
         for (int i = 0; i < 3; i++) {
-            int slotY = BEE_PANEL_Y + 2 + i * (BEE_SLOT_H + BEE_SLOT_GAP);
+            int cx = CELL_X[i];
+            int cy = CELL_Y[i];
+            boolean occupied = i < occupants.size();
 
-            g.fill(px, slotY, px + BEE_PANEL_W - 4, slotY + BEE_SLOT_H, 0x22_000000);
+            g.fill(cx, cy, cx + CELL_SIZE, cy + CELL_SIZE, occupied ? 0x33_000000 : 0x18_000000);
+            g.fill(cx,                  cy,                  cx + CELL_SIZE,     cy + 1,              0x55_000000);
+            g.fill(cx,                  cy + CELL_SIZE - 1,  cx + CELL_SIZE,     cy + CELL_SIZE,      0x55_000000);
+            g.fill(cx,                  cy,                  cx + 1,             cy + CELL_SIZE,      0x55_000000);
+            g.fill(cx + CELL_SIZE - 1,  cy,                  cx + CELL_SIZE,     cy + CELL_SIZE,      0x55_000000);
 
-            if (i >= occupants.size()) {
-                g.drawString(font,
-                        Component.translatable("gui.curiousbees.genetic_apiary.bee_slot_empty"),
-                        px + 3, slotY + 4, 0x606060, false);
-                continue;
-            }
+            if (!occupied) continue;
 
             BeeOccupantData bee = occupants.get(i);
-
-            // Species icon — always shown, no analysis gate (ADR-0016)
             ResourceLocation icon = SpeciesTextureResolver.resolveById(bee.speciesId());
-            g.blit(icon, px + 1, slotY + 4, 0, 0, OCCUPANT_ICON_SIZE, OCCUPANT_ICON_SIZE, 64, 64);
+            int iconX = cx + (CELL_SIZE - OCCUPANT_ICON_SIZE) / 2;
+            int iconY = cy + (CELL_SIZE - OCCUPANT_ICON_SIZE) / 2;
+            g.blit(icon, iconX, iconY, 0, 0, OCCUPANT_ICON_SIZE, OCCUPANT_ICON_SIZE, 64, 64);
 
-            // Species name — green if purebred, orange if hybrid
-            Component name = resolveDisplayName(bee.speciesId());
-            int nameColor = bee.isPurebred() ? COL_ANALYZED : COL_UNANALYZED;
-            g.drawString(font, name, px + BEE_SLOT_TEXT_X_OFFSET, slotY + 4, nameColor, false);
-
-            // Track hover; tooltip rendered from render() outside translated matrix
-            if (relMouseX >= px && relMouseX < px + BEE_PANEL_W - 4
-                    && relMouseY >= slotY && relMouseY < slotY + BEE_SLOT_H) {
+            if (relMouseX >= cx && relMouseX < cx + CELL_SIZE
+                    && relMouseY >= cy && relMouseY < cy + CELL_SIZE) {
                 hoveredBee = bee;
                 tooltipMouseX = relMouseX + leftPos;
                 tooltipMouseY = relMouseY + topPos;
@@ -166,12 +162,11 @@ public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticAp
         }
 
         if (menu.getState() == ApiaryState.OUTPUT_FULL) {
-            // Overlay on bottom of panel — rendered last so it appears on top
             int wy = BEE_PANEL_Y + BEE_PANEL_H - 11;
-            g.fill(px, wy - 1, px + BEE_PANEL_W - 4, wy + 9, 0xCC_000000);
+            g.fill(BEE_PANEL_X + 2, wy - 1, BEE_PANEL_X + BEE_PANEL_W - 2, wy + 9, 0xCC_000000);
             g.drawString(font,
                     Component.translatable("gui.curiousbees.genetic_apiary.output_full"),
-                    px + 2, wy, COL_WARN, false);
+                    BEE_PANEL_X + 4, wy, COL_WARN, false);
         }
     }
 
