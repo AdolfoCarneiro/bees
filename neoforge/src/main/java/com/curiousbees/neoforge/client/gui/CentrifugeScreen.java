@@ -4,7 +4,6 @@ import com.curiousbees.neoforge.menu.CentrifugeMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 /**
@@ -18,9 +17,6 @@ import net.minecraft.world.entity.player.Inventory;
  * </pre>
  */
 public final class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
-
-    private static final ResourceLocation BG_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("curiousbees", "textures/gui/centrifuge.png");
 
     // Slot positions must match CentrifugeMenu
     private static final int COMB_SLOT_X         = 30;
@@ -78,7 +74,8 @@ public final class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMe
 
     @Override
     protected void renderBg(GuiGraphics g, float partialTick, int mouseX, int mouseY) {
-        g.blit(BG_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        g.fill(leftPos, topPos, leftPos + imageWidth, topPos + imageHeight, 0xFF_C6C6C6);
+        g.fill(leftPos + 7, topPos + 7, leftPos + imageWidth - 7, topPos + imageHeight - 7, 0xFF_8B8B8B);
         renderMachineSlots(g);
         renderProgressArrow(g);
         renderHoneyCounter(g);

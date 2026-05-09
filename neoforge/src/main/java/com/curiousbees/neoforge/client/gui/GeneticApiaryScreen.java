@@ -25,9 +25,6 @@ import java.util.List;
  */
 public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticApiaryMenu> {
 
-    private static final ResourceLocation BG_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("curiousbees", "textures/gui/genetic_apiary.png");
-
     // Layout constants (relative to GUI origin / leftPos,topPos)
     private static final int BEE_PANEL_X = 7;
     private static final int BEE_PANEL_Y = 17;
@@ -84,12 +81,28 @@ public final class GeneticApiaryScreen extends AbstractContainerScreen<GeneticAp
     protected void renderBg(GuiGraphics g, float partialTick, int mouseX, int mouseY) {
         int x = (width  - imageWidth)  / 2;
         int y = (height - imageHeight) / 2;
-        g.blit(BG_TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        g.fill(x, y, x + imageWidth, y + imageHeight, 0xFF_C6C6C6);
+        g.fill(x + 7, y + 7, x + imageWidth - 7, y + imageHeight - 7, 0xFF_8B8B8B);
         renderBeePanelBg(g, x, y);
+        renderMachineSlots(g, x, y);
         if (menu instanceof AdvancedApiaryMenu) {
             renderBeeInsertSlot(g, x, y);
         }
         renderFrameDurabilityBars(g, x, y);
+    }
+
+    private void renderMachineSlots(GuiGraphics g, int ox, int oy) {
+        for (int i = 0; i < GeneticApiaryBlockEntity.FRAME_SLOTS; i++) {
+            renderSlotBg(g, ox + 122, oy + 17 + i * 18);
+        }
+        for (int i = 0; i < GeneticApiaryBlockEntity.OUTPUT_SLOTS; i++) {
+            renderSlotBg(g, ox + 62 + (i % 3) * 18, oy + 17 + (i / 3) * 18);
+        }
+    }
+
+    private static void renderSlotBg(GuiGraphics g, int x, int y) {
+        g.fill(x - 1, y - 1, x + 17, y + 17, 0xFF_373737);
+        g.fill(x,     y,     x + 16, y + 16, 0xFF_8B8B8B);
     }
 
     private void renderBeePanelBg(GuiGraphics g, int ox, int oy) {
