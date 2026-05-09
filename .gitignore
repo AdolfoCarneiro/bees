@@ -20,6 +20,15 @@ run/
 # Claude Code local settings
 .claude/settings.local.json
 
+# AI-generated plan files (Superpowers plugin)
+docs/superpowers/
+
+# Eclipse IDE configs
+**/.eclipse/
+
+# NeoForge runtime logs
+neoforge/logs/
+
 # OS junk
 .DS_Store
 Thumbs.db
