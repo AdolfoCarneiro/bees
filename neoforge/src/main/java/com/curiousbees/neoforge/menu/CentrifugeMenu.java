@@ -25,7 +25,7 @@ import java.util.Objects;
  *   <li>1  — bottle input (insert-only via GUI)
  *   <li>2-10 — item output slots (9, extract-only, 3x3 grid)
  *   <li>11 — honey bottle output slot (extract-only)
- *   <li>12-14 — upgrade slots (3)
+ *   <li>12-14 — upgrade slots (3, left column at x=7, y=17/35/53)
  *   <li>15-41 — player inventory (27)
  *   <li>42-50 — hotbar (9)
  * </ul>
@@ -71,9 +71,9 @@ public final class CentrifugeMenu extends AbstractContainerMenu {
             public boolean mayPlace(ItemStack stack) { return false; }
         });
 
-        // Slots 12-14: Upgrade slots (right column)
+        // Slots 12-14: Upgrade slots (left column, above player inventory)
         for (int i = 0; i < CentrifugeBlockEntity.UPGRADE_SLOTS; i++) {
-            addSlot(new SlotItemHandler(blockEntity.upgradeInventory(), i, 155, 60 + i * 18));
+            addSlot(new SlotItemHandler(blockEntity.upgradeInventory(), i, 7, 17 + i * 18));
         }
 
         // Player inventory (slots 15-41)
