@@ -21,5 +21,8 @@ public final class ModTags {
 
         public static final TagKey<Item> CENTRIFUGE_UPGRADES = ItemTags.create(
                 ResourceLocation.fromNamespaceAndPath(CuriousBeesMod.MOD_ID, "centrifuge_upgrades"));
+
+        public static final TagKey<Item> BEEHIVE_UPGRADES = ItemTags.create(
+                ResourceLocation.fromNamespaceAndPath(CuriousBeesMod.MOD_ID, "beehive_upgrades"));
     }
 }

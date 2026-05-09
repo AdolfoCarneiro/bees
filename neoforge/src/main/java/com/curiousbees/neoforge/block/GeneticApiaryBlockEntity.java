@@ -16,11 +16,14 @@ import com.curiousbees.neoforge.content.NeoForgeContentRegistry;
 import com.curiousbees.neoforge.data.BeeAnalysisStorage;
 import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
+import com.curiousbees.neoforge.registry.ModBlocks;
 import com.curiousbees.neoforge.menu.GeneticApiaryMenu;
 import com.curiousbees.neoforge.registry.ModItems;
 import com.curiousbees.neoforge.registry.ModSounds;
 import com.curiousbees.neoforge.registry.ModTags;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.Level;
@@ -98,6 +101,17 @@ public class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements Menu
         public boolean isItemValid(int slot, ItemStack stack) {
             // Output-only inventory. Future automation/manual UI extracts from here.
             return false;
+        }
+    };
+    private final ItemStackHandler upgradeInventory = new ItemStackHandler(3) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return stack.is(ModTags.Items.BEEHIVE_UPGRADES);
         }
     };
     /**
@@ -254,6 +268,65 @@ public class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements Menu
         return outputExtractView;
     }
 
+    public ItemStackHandler upgradeInventory() {
+        return upgradeInventory;
+    }
+
+    /** True when an ApiaryExtensionBlock is placed directly below this hive. */
+    public boolean hasExpansionBox() {
+        if (level == null) return false;
+        return level.getBlockState(getBlockPos().below()).is(ModBlocks.APIARY_EXTENSION.get());
+    }
+
+    /** 7 with expansion box, 3 without. */
+    public int maxBeeCapacity() {
+        return hasExpansionBox() ? 7 : 3;
+    }
+
+    @Override
+    public boolean isFull() {
+        return getOccupantCount() >= maxBeeCapacity();
+    }
+
+    /**
+     * Releases bees beyond targetMax as entities in the world.
+     * Called when the expansion box is removed to bring capacity back to 3.
+     * Uses reflection to access BeehiveBlockEntity.stored (private) and BeeData.toOccupant().
+     */
+    public void releaseExcessOccupants(int targetMax) {
+        if (level == null || level.isClientSide()) return;
+        int toRelease = getOccupantCount() - targetMax;
+        if (toRelease <= 0) return;
+        try {
+            java.lang.reflect.Field storedField = BeehiveBlockEntity.class.getDeclaredField("stored");
+            storedField.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            java.util.List<Object> stored = (java.util.List<Object>) storedField.get(this);
+            java.lang.reflect.Method toOccupantMethod = null;
+            BlockPos pos = getBlockPos();
+            for (int i = 0; i < toRelease; i++) {
+                if (stored.isEmpty()) break;
+                Object beeData = stored.remove(stored.size() - 1);
+                if (toOccupantMethod == null) {
+                    toOccupantMethod = beeData.getClass().getDeclaredMethod("toOccupant");
+                    toOccupantMethod.setAccessible(true);
+                }
+                BeehiveBlockEntity.Occupant occ = (BeehiveBlockEntity.Occupant) toOccupantMethod.invoke(beeData);
+                net.minecraft.world.entity.Entity entity = occ.createEntity(level, pos);
+                if (entity != null) {
+                    entity.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+                    level.addFreshEntity(entity);
+                }
+            }
+        } catch (Exception e) {
+            CuriousBeesMod.LOGGER.warn("Failed to release excess bees at {}: {}", getBlockPos(), e.getMessage());
+        }
+        while (cachedOccupantsInHive.size() > getOccupantCount()) {
+            cachedOccupantsInHive.remove(cachedOccupantsInHive.size() - 1);
+        }
+        setChanged();
+    }
+
     public FrameModifiers.CombinedFrameModifier currentFrameModifiers() {
         return combinedFrameModifier();
     }
@@ -386,19 +459,29 @@ public class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements Menu
 
     @Override
     public void addOccupant(Entity occupant) {
+        // Bypass vanilla's hardcoded MAX_OCCUPANTS=3 guard to support capacity up to maxBeeCapacity().
+        if (getOccupantCount() >= maxBeeCapacity()) return;
+
         boolean hadNectar = occupant instanceof Bee bee && bee.hasNectar();
-        super.addOccupant(occupant);
-        cacheTicksRemaining = 0; // refresh cache on next tick after a bee enters
-        if (level == null || level.isClientSide()) {
-            return;
+
+        // Replicate vanilla addOccupant body (minus the capacity guard and flower-pos update).
+        occupant.stopRiding();
+        occupant.ejectPassengers();
+        storeBee(BeehiveBlockEntity.Occupant.of(occupant));
+        if (level != null) {
+            BlockPos pos = getBlockPos();
+            level.playSound(null, pos.getX(), pos.getY(), pos.getZ(),
+                    SoundEvents.BEEHIVE_ENTER, SoundSource.BLOCKS, 1.0F, 1.0F);
+            level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(occupant, getBlockState()));
         }
-        if (!(occupant instanceof Bee bee)) {
-            return;
-        }
+        occupant.discard();
+        super.setChanged();
+
+        cacheTicksRemaining = 0;
+        if (level == null || level.isClientSide()) return;
+        if (!(occupant instanceof Bee bee)) return;
         captureOccupantData(bee);
-        if (!hadNectar) {
-            return;
-        }
+        if (!hadNectar) return;
         if (!hasAnyOutputSpace()) {
             CuriousBeesMod.LOGGER.debug(
                     "Apiary {} has no output space; skipping production roll for bee {}.",
@@ -407,9 +490,7 @@ public class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements Menu
         }
 
         Optional<Genome> genome = resolveOrAssignGenome(bee);
-        if (genome.isEmpty()) {
-            return;
-        }
+        if (genome.isEmpty()) return;
 
         FrameModifiers.CombinedFrameModifier combinedFrameModifier = combinedFrameModifier();
         ProductionResult result = rollProduction(genome.get(), combinedFrameModifier.productionMultiplier());
@@ -612,6 +693,7 @@ public class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements Menu
         super.saveAdditional(tag, registries);
         tag.put("FrameInventory", frameInventory.serializeNBT(registries));
         tag.put("OutputInventory", outputInventory.serializeNBT(registries));
+        tag.put("UpgradeInventory", upgradeInventory.serializeNBT(registries));
         writeOccupantsToTag(tag);
     }
 
@@ -623,6 +705,9 @@ public class GeneticApiaryBlockEntity extends BeehiveBlockEntity implements Menu
         }
         if (tag.contains("OutputInventory")) {
             outputInventory.deserializeNBT(registries, tag.getCompound("OutputInventory"));
+        }
+        if (tag.contains("UpgradeInventory")) {
+            upgradeInventory.deserializeNBT(registries, tag.getCompound("UpgradeInventory"));
         }
         readOccupantsFromTag(tag);
     }

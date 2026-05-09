@@ -62,7 +62,10 @@ public class GeneticApiaryBlock extends BeehiveBlock {
         if (!state.is(newState.getBlock())) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof GeneticApiaryBlockEntity apiary) {
-                int totalSlots = GeneticApiaryBlockEntity.FRAME_SLOTS + GeneticApiaryBlockEntity.OUTPUT_SLOTS;
+                int upgradeSlots = apiary.upgradeInventory().getSlots();
+                int totalSlots = GeneticApiaryBlockEntity.FRAME_SLOTS
+                        + GeneticApiaryBlockEntity.OUTPUT_SLOTS
+                        + upgradeSlots;
                 SimpleContainer drops = new SimpleContainer(totalSlots);
                 for (int i = 0; i < apiary.frameInventory().getSlots(); i++) {
                     drops.setItem(i, apiary.frameInventory().getStackInSlot(i).copy());
@@ -70,6 +73,10 @@ public class GeneticApiaryBlock extends BeehiveBlock {
                 int outputOffset = apiary.frameInventory().getSlots();
                 for (int i = 0; i < apiary.outputInventory().getSlots(); i++) {
                     drops.setItem(outputOffset + i, apiary.outputInventory().getStackInSlot(i).copy());
+                }
+                int upgradeOffset = outputOffset + apiary.outputInventory().getSlots();
+                for (int i = 0; i < upgradeSlots; i++) {
+                    drops.setItem(upgradeOffset + i, apiary.upgradeInventory().getStackInSlot(i).copy());
                 }
                 Containers.dropContents(level, pos, drops);
             }
