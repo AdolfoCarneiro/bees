@@ -43,8 +43,12 @@ public abstract class CapturedBeeItem extends Item {
         if (player.level().isClientSide()) return InteractionResult.SUCCESS;
 
         var genomeOpt = BeeGenomeStorage.getGenome(bee);
-        if (genomeOpt.isEmpty()) return InteractionResult.PASS; // only capture bees with a genome
+        if (genomeOpt.isEmpty()) {
+            CuriousBeesMod.LOGGER.warn("CapturedBeeItem [DIAG]: bee {} has no genome — not capturing (PASS)", bee.getUUID());
+            return InteractionResult.PASS;
+        }
 
+        CuriousBeesMod.LOGGER.warn("CapturedBeeItem [DIAG]: capturing bee {}, setting component", bee.getUUID());
         CapturedBeeData data = new CapturedBeeData(
                 GenomeSerializer.toData(genomeOpt.get()),
                 BeeAnalysisStorage.isAnalyzed(bee));
@@ -54,6 +58,7 @@ public abstract class CapturedBeeItem extends Item {
             CuriousBeesMod.LOGGER.warn("CapturedBeeItem: failed to serialize bee data — bee not discarded. {}", e.getMessage());
             return InteractionResult.FAIL;
         }
+        CuriousBeesMod.LOGGER.warn("CapturedBeeItem [DIAG]: bee {} discarding, component in stack: {}", bee.getUUID(), stack.has(ModDataComponents.CAPTURED_BEE.get()));
         bee.discard();
         return InteractionResult.SUCCESS;
     }
