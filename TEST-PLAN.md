@@ -641,6 +641,263 @@ mutação ocorre fora do contexto Common + Common; crash quando pool de habitat 
 
 ---
 
+## SEC-01 — Quebrar Advanced Beehive com abelhas dentro
+
+**Referência:** vanilla BeehiveBlock.onRemove() + GeneticApiaryBlock.onRemove()
+
+### Pré-condição
+
+- Advanced Beehive com 1–3 abelhas ocupantes (inseridas via Bee Jar).
+
+---
+
+### C1: Abelhas liberadas ao quebrar hive (sem Silk Touch)
+
+1. [ ] Insira 2 abelhas no Advanced Beehive via Bee Jar.
+2. [ ] Quebre o bloco com ferramenta sem Silk Touch.
+3. [ ] **Resultado esperado:** as 2 abelhas surgem como entidades no mundo.
+4. [ ] Inspecione uma delas com `/curiousbees debug inspect_bee`.
+5. [ ] **Resultado esperado:** genoma preservado (espécie e alleles corretos).
+6. [ ] **Resultado esperado:** frames, outputs e upgrades dropam como itens no chão.
+
+**Critério PASS:** zero perda de abelha ao quebrar hive; itens dropam; genomas intactos.
+
+---
+
+### C2: Quebrando hive com Silk Touch — abelhas liberadas mesmo assim
+
+1. [ ] Insira abelhas no hive; quebre com ferramenta Silk Touch.
+2. [ ] **Resultado esperado (atual — vanilla não suporta hive Silk Touch com conteúdo customizado):**
+       comportamento igual ao C1 — abelhas liberadas como entidades; block não retorna como item.
+3. [ ] **Resultado NÃO esperado:** abelhas desaparecem silenciosamente.
+
+**Critério PASS:** sem perda de abelha independente da ferramenta usada.
+
+---
+
+### C3: Quebrando hive com 7 abelhas (layout expandido)
+
+1. [ ] Instale Expansion Box; insira 7 abelhas.
+2. [ ] Quebre o Advanced Beehive (não a Expansion Box).
+3. [ ] **Resultado esperado:** todas as 7 abelhas surgem no mundo; sem crash.
+
+**O que falha se quebrado:** abelhas se perdem silenciosamente; crash ao quebrar hive com mais de 3 abelhas.
+
+---
+
+## SEC-02 — Breeding — pares não-Common
+
+**Referência:** `BeeBreedingOrchestrator`, herança mendeliana
+
+### Pré-condição
+
+- Pelo menos 2 pares de espécies diferentes disponíveis (Meadow, Forest, Arid, Hardy, Cultivated).
+- Flores disponíveis; modo criativo para spawnar espécies específicas via spawn egg.
+
+---
+
+### C1: Mesmo par não-Common (Meadow + Meadow)
+
+1. [ ] Use `/curiousbees debug set_bee_genome meadow` em dois pares de abelhas próximas de flores.
+2. [ ] Aguarde cruzamento.
+3. [ ] **Resultado esperado:** filhote tem espécie Meadow ou híbrido Meadow/Meadow; não é Common.
+4. [ ] **Resultado NÃO esperado:** filhote nasce com espécie aleatória sem relação com os pais; crash.
+
+**Critério PASS:** herança mendeliana — filhote derive dos pais; não há override de bioma.
+
+---
+
+### C2: Par misto não-Common (Meadow + Forest)
+
+1. [ ] Force espécies diferentes nos dois pais.
+2. [ ] Aguarde cruzamento.
+3. [ ] **Resultado esperado:** filhote pode ser Meadow, Forest, ou híbrido Meadow/Forest; não é sempre o mesmo resultado (probabilístico).
+4. [ ] **Resultado NÃO esperado:** crash; filhote com espécie completamente alheia aos pais.
+
+**Critério PASS:** resultado dentro do espaço alélico dos pais; não determinístico.
+
+---
+
+### C3: Breeding com pai sem genoma + pai com genoma
+
+1. [ ] Spawne uma abelha vanilla sem genoma ao lado de uma Meadow.
+2. [ ] Aguarde cruzamento.
+3. [ ] **Resultado esperado:** filhote recebe fallback Common (pai sem genoma tratado como Common); sem crash.
+
+**Critério PASS:** genoma faltante em um pai não crasha o sistema de breeding.
+
+---
+
+## SEC-03 — Hive targeting — 5 espécies
+
+> **Ver também:** `architecture.md §9.4` — tabela completa de comportamento por espécie.
+
+**Referência:** `BeeSpeciesHiveTargetHandler` (event handler)
+
+### Pré-condição
+
+- Ninhos selvagens de diferentes espécies colocados próximos; 1 Advanced Beehive.
+- Abelhas de cada espécie no mundo.
+
+---
+
+### C1: Abelha entra no ninho correto
+
+1. [ ] Place um `meadow_bee_nest` e uma abelha Meadow solta no mundo próximo.
+2. [ ] Aguarde a abelha retornar para o ninho.
+3. [ ] **Resultado esperado:** abelha Meadow entra no `meadow_bee_nest`; ignora ninhos de outras espécies.
+
+**Critério PASS:** targeting por espécie funcional.
+
+---
+
+### C2: Abelha ignora ninho de espécie errada
+
+1. [ ] Place um `forest_bee_nest` próximo de uma abelha Meadow (sem ninho Meadow por perto).
+2. [ ] **Resultado esperado:** abelha Meadow NÃO entra no `forest_bee_nest`; vaga sem lar.
+3. [ ] **Resultado NÃO esperado:** abelha Meadow entra em ninho de espécie errada.
+
+**Critério PASS:** sem cross-species nest contamination.
+
+---
+
+### C3: Qualquer espécie aceita Advanced Beehive
+
+1. [ ] Place um Advanced Beehive; solte abelhas de espécies diferentes próximas.
+2. [ ] **Resultado esperado:** abelhas de qualquer espécie consideram o Advanced Beehive como lar válido.
+
+**Critério PASS:** Advanced Beehive aceita todas as espécies.
+
+---
+
+## SEC-04 — Wild nest — Silk Touch e quebra normal
+
+**Referência:** `SpeciesBeeNestBlock`, vanilla BeehiveBlock behavior
+
+### Pré-condição
+
+- Wild nests localizados no mundo (ou spawned via `/setblock`); ocupantes dentro.
+
+---
+
+### C1: Quebrar wild nest sem Silk Touch com ocupantes
+
+1. [ ] Localize um ninho selvagem com abelhas ocupantes.
+2. [ ] Quebre com qualquer ferramenta (sem Silk Touch).
+3. [ ] **Resultado esperado:** abelhas ocupantes são liberadas como entidades no mundo com genomas preservados.
+4. [ ] **Resultado NÃO esperado:** abelhas desaparecem; crash.
+
+**Critério PASS:** ocupantes liberados; genomas intactos.
+
+---
+
+### C2: Quebrar wild nest com Silk Touch
+
+1. [ ] Quebre ninho selvagem com Silk Touch.
+2. [ ] **Resultado esperado:** bloco dropa como item (vanilla behavior para ninhos vazios ou com ocupantes);
+       ou abelhas são liberadas se Silk Touch não preserva ocupantes — documento o comportamento observado.
+3. [ ] **Resultado NÃO esperado:** crash; abelhas perdidas silenciosamente sem liberação.
+
+**Critério PASS:** sem crash; sem perda silenciosa de abelhas.
+
+---
+
+### C3: Ninho sem ocupantes — quebra normal
+
+1. [ ] Quebre ninho selvagem vazio.
+2. [ ] **Resultado esperado:** ninho dropa (ou não, conforme configuração vanilla); sem crash.
+
+**Critério PASS:** sem crash em ninho vazio.
+
+---
+
+## SEC-05 — Population cap
+
+**Referência:** `CuriousBeesConfig.maxLocalBeeCount` (32-block radius; 0 = ilimitado)
+
+### Pré-condição
+
+- Config com `maxLocalBeeCount` ajustado para valor baixo (ex.: 5) para facilitar teste.
+- Múltiplas abelhas na área para triggerar o cap.
+
+---
+
+### C1: Breeding bloqueado pelo cap
+
+1. [ ] Configure `maxLocalBeeCount = 5` no arquivo de config.
+2. [ ] Spawn 5 abelhas em raio de 32 blocos com flores disponíveis.
+3. [ ] Aguarde tentativas de breeding.
+4. [ ] **Resultado esperado:** nenhum filhote nasce enquanto contagem local ≥ 5; breeding é silenciosamente pulado.
+5. [ ] **Resultado esperado:** WARNING ou FINE no log indicando breeding skipped due to cap.
+
+**Critério PASS:** cap previne bee soup; sem crash.
+
+---
+
+### C2: Cap = 0 — breeding irrestrito
+
+1. [ ] Configure `maxLocalBeeCount = 0`.
+2. [ ] **Resultado esperado:** breeding ocorre normalmente sem limite.
+
+**Critério PASS:** `0 = unlimited` funciona conforme doc do config.
+
+---
+
+### C3: Cap respeitado por raio de 32 blocos
+
+1. [ ] Com cap = 5, coloque 5 abelhas em chunk A e 5 abelhas em chunk B a >32 blocos de distância.
+2. [ ] **Resultado esperado:** breeding ocorre em ambos os grupos (caps independentes por área).
+
+**Critério PASS:** cap é local, não global.
+
+---
+
+## SEC-06 — Centrifuge — upgrade slots (tag `curiousbees:centrifuge_upgrades`)
+
+> **Nota:** Centrifuge usa a tag `curiousbees:centrifuge_upgrades` (distinta de `beehive_upgrades`).
+
+### Pré-condição
+
+- Centrifuge colocada no mundo.
+
+---
+
+### C1: Upgrade slots rejeitam itens sem tag
+
+1. [ ] Tente inserir pedra, madeira, ou qualquer item sem a tag `centrifuge_upgrades` nos 3 slots de upgrade.
+2. [ ] **Resultado esperado:** item NÃO é aceito.
+
+**Critério PASS:** `isItemValid` filtra por `CENTRIFUGE_UPGRADES`.
+
+---
+
+### C2: Upgrade slots não expostos à automação
+
+1. [ ] Coloque hopper ao lado e abaixo da Centrifuge.
+2. [ ] **Resultado esperado:** hopper não consegue inserir itens nos slots de upgrade (não expostos via `automationView`).
+
+**Critério PASS:** upgrade slots inacessíveis por automação.
+
+---
+
+## SEC-07 — Multiplayer smoke
+
+> **Checklist completo:** `docs/architecture.md §9.3` — executar em **servidor dedicado** (não LAN).
+> Esta seção é um resumo; o detalhamento está em `architecture.md`.
+
+### Checklist resumido
+
+- [ ] **Spawn** — abelha selvagem spawna com genoma no bioma correto; genoma visível no cliente.
+- [ ] **Breed** — dois clientes observam o mesmo cruzamento; filhote aparece para ambos com genoma.
+- [ ] **Hive insert** — cliente A insere abelha via Bee Jar; cliente B vê o slot atualizado imediatamente.
+- [ ] **GUI sync** — `ContainerData` (honey, occupancy) igual no servidor e no cliente após reconexão.
+- [ ] **Save/load** — reiniciar servidor; reconectar; genomas de abelhas e conteúdo do hive intactos.
+- [ ] **Client/server análise** — cliente usa Bee Analyzer; relatório mostrado ao cliente é idêntico ao que o servidor calculou.
+
+**Critério PASS:** zero estado stale no cliente; dados genéticos consistentes entre servidor e cliente.
+
+---
+
 ## Testes de regressão (rodar em todo PR do Epic PR)
 
 Execute esta lista compacta antes de qualquer merge — deve completar em < 10 minutos em modo criativo:
@@ -663,6 +920,12 @@ Execute esta lista compacta antes de qualquer merge — deve completar em < 10 m
 - [ ] **R-16: Upgrade slots rejeitam itens não-tagados** — com Expansion Box instalado, tente inserir pedra/madeira nos 3 slots de upgrade do Expanded GUI; nenhum item deve ser aceito.
 - [ ] **R-17: Expanded GUI com 7 abelhas** — instale Expansion Box; insira 7 abelhas via Bee Jar/Transporter; todos os 7 slots visuais devem exibir espécie e pureza sem sobreposição ou crash.
 - [ ] **R-18: releaseExcessOccupants preserva abelhas** — insira 5 abelhas com Expansion Box; quebre a box; verifique que exatamente 2 abelhas aparecem no mundo e 3 permanecem no hive ao reabrir o GUI.
+- [ ] **R-19: Advanced Beehive com bees — drop no chão** — quebre um Advanced Beehive com 3 abelhas dentro (sem Silk Touch); todas as 3 devem aparecer como entidades vivas no mundo, sem crash.
+- [ ] **R-20: Breeding — par não-Common produz híbrido** — coloque par Meadow × Forest no hive; aguarde ciclo; offspring deve existir e ter genoma válido (nenhum alelo ausente, nenhum NullPointerException no log).
+- [ ] **R-21: Hive targeting — espécie respeita tipo** — abelha Meadow retorna a ninho que aceite Meadow; não entra em ninho que só aceite Forest; Advanced Beehive aceita ambas.
+- [ ] **R-22: Wild nest Silk Touch preserva abelhas** — quebre ninho selvagem com ferramenta Silk Touch; item de ninho dropa; abelhas internas não são perdidas (re-breakando sem Silk Touch elas saem vivas).
+- [ ] **R-23: Population cap bloqueia breeding** — configure `maxBeesInRadius=5` e popule 5 abelhas num raio de 32 blocos; breeding event deve ser pulado (sem novas crias); log FINE deve registrar skip.
+- [ ] **R-24: Centrifuge aceita apenas `centrifuge_upgrades`** — tente inserir item com tag `curiousbees:beehive_upgrades` (mas sem `curiousbees:centrifuge_upgrades`) no slot de upgrade da Centrifuge; item deve ser rejeitado.
 
 ---
 
@@ -681,4 +944,4 @@ Todos os comandos requerem nível de permissão 2 (cheats on em mundo solo).
 
 ---
 
-_Última atualização: 2026-05-07. Baseado em Epic PR tasks PR-T01 a PR-T10 (todos `todo`) e ADRs 0014–0019._
+_Última atualização: 2026-05-09. Baseado em Epic PR tasks PR-T01 a PR-T10 (todos `done`) e ADRs 0014–0019. Inclui seções SEC-01 a SEC-07 de cenários in-game adicionais._
