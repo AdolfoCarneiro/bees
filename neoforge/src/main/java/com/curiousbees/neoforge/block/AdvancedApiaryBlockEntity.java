@@ -2,8 +2,11 @@ package com.curiousbees.neoforge.block;
 
 import com.curiousbees.neoforge.menu.AdvancedApiaryMenu;
 import com.curiousbees.neoforge.menu.ExpandedApiaryMenu;
+import com.curiousbees.neoforge.menu.GeneticApiaryMenu;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -34,5 +37,19 @@ public final class AdvancedApiaryBlockEntity extends GeneticApiaryBlockEntity {
             return new ExpandedApiaryMenu(containerId, playerInventory, this);
         }
         return new AdvancedApiaryMenu(containerId, playerInventory, this);
+    }
+
+    /** Called when the Extension Box is placed or removed while this container may be open. */
+    public void onExpansionChanged() {
+        if (level == null || level.isClientSide()) return;
+        ServerLevel serverLevel = (ServerLevel) level;
+        BlockPos pos = getBlockPos();
+        for (ServerPlayer player : serverLevel.players()) {
+            if (player.containerMenu instanceof GeneticApiaryMenu gam
+                    && gam.blockEntity() == this) {
+                player.closeContainer();
+                player.openMenu(this, buf -> buf.writeBlockPos(pos));
+            }
+        }
     }
 }

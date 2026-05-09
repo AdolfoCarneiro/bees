@@ -40,6 +40,21 @@ public final class ApiaryExtensionBlock extends BaseEntityBlock {
     }
 
     @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos,
+                           BlockState oldState, boolean movedByPiston) {
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+        if (!level.isClientSide()) {
+            for (Direction dir : new Direction[]{Direction.UP, Direction.DOWN}) {
+                BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
+                if (neighbor instanceof AdvancedApiaryBlockEntity apiary) {
+                    apiary.onExpansionChanged();
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos,
                             BlockState newState, boolean movedByPiston) {
         if (!state.is(newState.getBlock()) && !level.isClientSide()) {
@@ -47,6 +62,9 @@ public final class ApiaryExtensionBlock extends BaseEntityBlock {
                 BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
                 if (neighbor instanceof GeneticApiaryBlockEntity hive) {
                     hive.releaseExcessOccupants(3);
+                    if (hive instanceof AdvancedApiaryBlockEntity apiary) {
+                        apiary.onExpansionChanged();
+                    }
                     break;
                 }
             }
