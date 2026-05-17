@@ -55,7 +55,7 @@ Do **not** add new top-level markdown files under `docs/`. If something doesn't 
 1. Read **Readme.md** + the relevant section of **`docs/architecture.md`** + the **`docs/requirements.md`** rules that touch your area.
 2. Pick a task from **`docs/TASKS.md`**. If a phase-level question is unclear, check **`docs/roadmap.md`**.
 3. If your work touches a locked decision, read it in **`docs/decisions.md`**. If you are about to **change** one, add a new entry there in the same change.
-4. Restate scope, list files, implement the smallest complete slice, add tests for core Java where it matters, commit with a clear message (`docs:`, `neoforge:`, `core:`, etc.).
+4. Restate scope, list files, implement the smallest complete slice, add tests for core Java where it matters, commit with a clear message (see **Commit Messages** section for prefixes and format).
 
 ## Logging (services)
 
