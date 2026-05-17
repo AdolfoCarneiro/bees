@@ -79,6 +79,92 @@ Bees is a multi-project Gradle build. Always prefix tasks with the subproject.
 
 **Before opening a PR:** run `:common:test` and verify it passes. The genetics core must be unit-testable without a running game instance.
 
+## Code Style
+
+Formatting is enforced automatically by Spotless (see setup below). Run `./gradlew spotlessApply` before committing if the pre-commit hook is not installed.
+
+**Java conventions:**
+- Single-line `if`/`for` is allowed; braces preferred when body spans multiple lines
+- Maximum nesting depth: 3 levels — flatten with early returns or extracted methods
+- No magic numbers: extract to named `static final` constants
+- No Lombok, no Java records for game data classes (NBT serialization conflicts)
+- Prefer package-private over `public` when a type is not part of a public API
+
+**Spotless rules (automated):**
+- Remove unused imports
+- Trim trailing whitespace
+- End every file with a newline
+
+**Setup (one-time):**
+```bash
+./gradlew installGitHooks
+```
+This installs a pre-commit hook that checks formatting before every commit.
+
+**Manual formatting:**
+```bash
+./gradlew :common:spotlessApply :neoforge:spotlessApply :fabric:spotlessApply
+./gradlew :common:spotlessCheck  :neoforge:spotlessCheck  :fabric:spotlessCheck
+```
+
+## Commit Messages
+
+Format: `<prefix>: <imperative description>` (≤ 72 characters total)
+
+**Prefixes:**
+
+| Prefix | When to use |
+|--------|-------------|
+| `feat` | New player-visible feature |
+| `fix` | Bug fix |
+| `refactor` | Internal restructure, no behaviour change |
+| `test` | Adding or updating tests |
+| `docs` | Documentation only |
+| `core` | Change inside `common/` genetics or gameplay logic |
+| `neoforge` | NeoForge-specific platform code |
+| `assets` | Textures, models, sounds, lang files |
+| `chore` | Build, CI, deps, tooling |
+
+**Rules:**
+- Imperative mood: "Add bee species filter" not "Added bee species filter"
+- No period at the end
+- Body only when the *why* is not obvious from the subject line
+- No co-author trailers unless explicitly pair-programming with an AI tool
+
+**Examples:**
+```
+feat: add Valiant bee species with combat trait
+fix: sync captured bee genome to client on jar close
+core: extract MutationResolver from BreedingEngine
+neoforge: register BeeJar creative tab in correct order
+docs: document ADR-0013 mutation gate decision
+```
+
+## Pull Requests
+
+**Title:** use conventional commit format (same prefixes as commit messages):
+```
+feat: add Valiant bee species
+fix: correct genome sync on bee capture
+```
+
+**Body:** write as release notes — what changed and why it matters to players or contributors. Avoid low-level implementation details unless they affect behaviour or compatibility.
+
+```markdown
+## Summary
+- Added Valiant bee species with a combat-affinity trait
+- Trait expression triggers on hostile mob proximity within 8 blocks
+
+## Notes
+- Trait is purely cosmetic for now; damage modifier gated by ADR-0012
+- Textures are DEV-PLACEHOLDER — asset pass required before release
+```
+
+**Breaking changes:** append `!` to the prefix:
+```
+feat!: redesign genome serialisation format
+```
+
 ## Review quick-check
 
 - Genetics stays pure Java off the game API.
