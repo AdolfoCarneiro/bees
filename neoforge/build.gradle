@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'net.neoforged.moddev' version '2.0.141'
+    id 'com.diffplug.spotless' version '6.25.0'
 }
 
 base {
@@ -81,4 +82,12 @@ tasks.named('processResources').configure { dependsOn(generateModMetadata) }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+
+spotless {
+    java {
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
 }

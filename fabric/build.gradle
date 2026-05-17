@@ -1,5 +1,10 @@
 plugins {
     id 'java-library'
+    id 'com.diffplug.spotless' version '6.25.0'
+}
+
+repositories {
+    mavenCentral()
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -10,4 +15,12 @@ dependencies {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+
+spotless {
+    java {
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
 }

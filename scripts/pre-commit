@@ -1,0 +1,14 @@
+#!/bin/sh
+# Spotless formatting check — blocks commit if Java files are not formatted.
+# Fix: ./gradlew :common:spotlessApply :neoforge:spotlessApply :fabric:spotlessApply
+
+./gradlew :common:spotlessCheck :neoforge:spotlessCheck :fabric:spotlessCheck -q 2>&1
+STATUS=$?
+
+if [ $STATUS -ne 0 ]; then
+    echo ""
+    echo "Spotless: formatting issues found. Fix with:"
+    echo "  ./gradlew :common:spotlessApply :neoforge:spotlessApply :fabric:spotlessApply"
+    echo "Then re-stage your files and commit again."
+    exit 1
+fi

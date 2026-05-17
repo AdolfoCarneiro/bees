@@ -6,3 +6,10 @@ allprojects {
     group = mod_group_id
     version = mod_version
 }
+
+tasks.register('installGitHooks', Copy) {
+    description = 'Installs the Spotless pre-commit hook into .git/hooks'
+    from('scripts/pre-commit')
+    into('.git/hooks')
+    fileMode 0755
+}
