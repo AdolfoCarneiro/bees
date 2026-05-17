@@ -177,26 +177,47 @@ curious-bees/
 │   │   ├── random/        # Randomness abstraction (testable)
 │   │   └── serial/        # Genome ↔ serialisable form (no NBT here)
 │   ├── content/           # Bee definitions loaded from JSON/data packs
-│   │   ├── species/       # BeeSpecies, trait descriptors
+│   │   ├── builtin/       # Hard-coded default species, traits, mutations
+│   │   ├── conversion/    # JSON ↔ domain model conversion
+│   │   ├── data/          # DTO classes (SpeciesDefinitionData, etc.)
+│   │   ├── frames/        # Frame modifier definitions
+│   │   ├── habitat/       # Biome/climate compatibility rules
+│   │   ├── json/          # JSON parsing infrastructure
+│   │   ├── loading/       # Content reload and loading pipeline
 │   │   ├── products/      # Honeycomb and produce definitions
-│   │   ├── habitat/       # Climate/biome requirements
-│   │   ├── frames/        # Frame effect definitions
 │   │   ├── registry/      # Central content registry (no game registry)
-│   │   └── ...
+│   │   ├── species/       # BeeSpecies, trait descriptors
+│   │   ├── validation/    # Content integrity checks
+│   │   └── visual/        # Visual definition data
 │   └── gameplay/          # Game logic — may reference MC types via interfaces
-│       ├── breeding/      # Breeding event handlers (platform calls these)
-│       ├── analysis/      # Bee analyzer logic
-│       ├── production/    # Honey/comb production rates
-│       └── ...
+│       ├── analysis/      # Bee analyzer service and reports
+│       ├── breeding/      # Breeding orchestration (platform calls these)
+│       ├── frames/        # Frame effect application
+│       ├── production/    # Honey/comb production model
+│       └── spawn/         # Wild bee spawn service
 └── neoforge/src/main/java/com/curiousbees/
-    ├── CuriousBees.java   # NeoForge entry point
-    ├── block/             # Block and BlockEntity classes
-    ├── entity/            # Bee entity attachment, renderer
-    ├── gui/               # Screen, menu, container classes
-    ├── item/              # Item classes (BeeJar, etc.)
-    ├── network/           # Packets, payload types
-    ├── registry/          # NeoForge DeferredRegister entries
-    └── event/             # NeoForge event subscribers
+    ├── CuriousBeesMod.java    # NeoForge @Mod entry point
+    └── neoforge/
+        ├── bee/               # BeeParentResolver — genome lookup on entities
+        ├── block/             # Blocks and BlockEntities (beenest/, hive/ sub-packages)
+        ├── capability/        # NeoForge capability declarations
+        ├── client/            # Client-only code
+        │   ├── gui/           # GUI background rendering helpers
+        │   ├── render/        # Bee entity renderer and layers
+        │   ├── screen/        # Screen classes (BeeAnalyzerScreen, etc.)
+        │   └── texture/       # Programmatic texture generation
+        ├── command/           # Debug/admin commands
+        ├── config/            # NeoForge config registration
+        ├── content/           # NeoForge content registry and reload listener
+        ├── data/              # NeoForge data attachments (genome/analysis storage)
+        ├── event/             # NeoForge event subscribers
+        ├── gametest/          # In-game automated tests
+        ├── item/              # Items (BeeJar, BeeTransporter, etc.)
+        ├── menu/              # Container/Menu classes
+        ├── network/           # Packets and payload types
+        ├── recipe/            # Recipe types and serializers
+        ├── registry/          # NeoForge DeferredRegister entries
+        └── worldgen/          # World generation (biome modifiers, etc.)
 ```
 
 **The boundary:** `genetics/` must never import anything from `neoforge/` or any Minecraft class. `common/gameplay/` may depend on interfaces defined in `common/` and implemented by `neoforge/` platform code (Dependency Inversion). `neoforge/` may import everything in `common/`.

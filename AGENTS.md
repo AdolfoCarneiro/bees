@@ -99,16 +99,26 @@ curious-bees/
 │   │   ├── mutation/      # Mutation rules and probability
 │   │   ├── random/        # Randomness abstraction (testable)
 │   │   └── serial/        # Genome ↔ serialisable form (no NBT here)
-│   ├── content/           # Bee definitions loaded from JSON/data packs
+│   ├── content/           # Bee definitions from JSON/data packs
 │   └── gameplay/          # Game logic — may reference MC types via interfaces
 └── neoforge/src/main/java/com/curiousbees/
-    ├── block/             # Block and BlockEntity classes
-    ├── entity/            # Bee entity attachment, renderer
-    ├── gui/               # Screen, menu, container classes
-    ├── item/              # Item classes (BeeJar, etc.)
-    ├── network/           # Packets, payload types
-    ├── registry/          # NeoForge DeferredRegister entries
-    └── event/             # NeoForge event subscribers
+    ├── CuriousBeesMod.java    # NeoForge @Mod entry point
+    └── neoforge/
+        ├── bee/           # Entity genome lookup
+        ├── block/         # Blocks and BlockEntities
+        ├── capability/    # NeoForge capability declarations
+        ├── client/        # Rendering, screens, GUI (client-only)
+        ├── command/       # Debug commands
+        ├── config/        # Mod configuration
+        ├── content/       # NeoForge content registry and reload
+        ├── data/          # NeoForge data attachments (genome storage)
+        ├── event/         # NeoForge event subscribers
+        ├── item/          # Items (BeeJar, BeeTransporter, etc.)
+        ├── menu/          # Container/Menu classes
+        ├── network/       # Packets
+        ├── recipe/        # Recipe types
+        ├── registry/      # DeferredRegister entries
+        └── worldgen/      # World generation
 ```
 
 `genetics/` must never import MC classes. `neoforge/` may import everything in `common/`.
