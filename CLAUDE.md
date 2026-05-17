@@ -165,6 +165,42 @@ fix: correct genome sync on bee capture
 feat!: redesign genome serialisation format
 ```
 
+## Package Structure
+
+```
+curious-bees/
+├── common/src/main/java/com/curiousbees/common/
+│   ├── genetics/          # PURE JAVA — zero MC/NeoForge imports allowed
+│   │   ├── model/         # Genome, Allele, Gene — immutable value types
+│   │   ├── breeding/      # Mendelian logic, dominance resolution
+│   │   ├── mutation/      # Mutation rules and probability
+│   │   ├── random/        # Randomness abstraction (testable)
+│   │   └── serial/        # Genome ↔ serialisable form (no NBT here)
+│   ├── content/           # Bee definitions loaded from JSON/data packs
+│   │   ├── species/       # BeeSpecies, trait descriptors
+│   │   ├── products/      # Honeycomb and produce definitions
+│   │   ├── habitat/       # Climate/biome requirements
+│   │   ├── frames/        # Frame effect definitions
+│   │   ├── registry/      # Central content registry (no game registry)
+│   │   └── ...
+│   └── gameplay/          # Game logic — may reference MC types via interfaces
+│       ├── breeding/      # Breeding event handlers (platform calls these)
+│       ├── analysis/      # Bee analyzer logic
+│       ├── production/    # Honey/comb production rates
+│       └── ...
+└── neoforge/src/main/java/com/curiousbees/
+    ├── CuriousBees.java   # NeoForge entry point
+    ├── block/             # Block and BlockEntity classes
+    ├── entity/            # Bee entity attachment, renderer
+    ├── gui/               # Screen, menu, container classes
+    ├── item/              # Item classes (BeeJar, etc.)
+    ├── network/           # Packets, payload types
+    ├── registry/          # NeoForge DeferredRegister entries
+    └── event/             # NeoForge event subscribers
+```
+
+**The boundary:** `genetics/` must never import anything from `neoforge/` or any Minecraft class. `common/gameplay/` may depend on interfaces defined in `common/` and implemented by `neoforge/` platform code (Dependency Inversion). `neoforge/` may import everything in `common/`.
+
 ## Review quick-check
 
 - Genetics stays pure Java off the game API.
