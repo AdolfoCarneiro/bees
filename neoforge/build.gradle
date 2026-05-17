@@ -4,15 +4,9 @@ plugins {
     id 'com.diffplug.spotless' version '6.25.0'
 }
 
-repositories {
-    mavenCentral()
-}
-
 base {
     archivesName = mod_id
 }
-
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 sourceSets.main.resources.srcDir 'build/generated/sources/modMetadata'
 
@@ -83,10 +77,6 @@ def generateModMetadata = tasks.register('generateModMetadata', ProcessResources
 
 neoForge.ideSyncTask generateModMetadata
 tasks.named('processResources').configure { dependsOn(generateModMetadata) }
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-}
 
 spotless {
     java {
