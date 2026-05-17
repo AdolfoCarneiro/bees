@@ -113,6 +113,7 @@ curious-bees/
         ├── content/       # NeoForge content registry and reload
         ├── data/          # NeoForge data attachments (genome storage)
         ├── event/         # NeoForge event subscribers
+        ├── gametest/      # In-game automated tests
         ├── item/          # Items (BeeJar, BeeTransporter, etc.)
         ├── menu/          # Container/Menu classes
         ├── network/       # Packets
