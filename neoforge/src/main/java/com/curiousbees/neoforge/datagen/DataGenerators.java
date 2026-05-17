@@ -33,5 +33,10 @@ public final class DataGenerators {
             lookupProvider));
 
         gen.addProvider(event.includeServer(), new CuriousBeesRecipeProvider(output, lookupProvider));
+
+        CuriousBeesBlockTagProvider blockTags = new CuriousBeesBlockTagProvider(output, lookupProvider, efh);
+        gen.addProvider(event.includeServer(), blockTags);
+        gen.addProvider(event.includeServer(), new CuriousBeesItemTagProvider(output, lookupProvider, blockTags, efh));
+        gen.addProvider(event.includeServer(), new CuriousBeesPoiTagProvider(output, lookupProvider, efh));
     }
 }

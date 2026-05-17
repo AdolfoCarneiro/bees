@@ -1,0 +1,24 @@
+{
+  "values": [
+    {
+      "id": "curiousbees:genetic_apiary",
+      "required": false
+    },
+    {
+      "id": "curiousbees:meadow_bee_nest",
+      "required": false
+    },
+    {
+      "id": "curiousbees:forest_bee_nest",
+      "required": false
+    },
+    {
+      "id": "curiousbees:forest_bee_log_nest",
+      "required": false
+    },
+    {
+      "id": "curiousbees:arid_bee_nest",
+      "required": false
+    }
+  ]
+}
