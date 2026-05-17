@@ -31,5 +31,7 @@ public final class DataGenerators {
             List.of(new LootTableProvider.SubProviderEntry(
                 CuriousBeesBlockLootTableProvider::new, LootContextParamSets.BLOCK)),
             lookupProvider));
+
+        gen.addProvider(event.includeServer(), new CuriousBeesRecipeProvider(output, lookupProvider));
     }
 }

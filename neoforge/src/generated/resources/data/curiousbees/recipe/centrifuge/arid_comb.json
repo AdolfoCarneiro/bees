@@ -1,0 +1,22 @@
+{
+  "type": "curiousbees:centrifuge",
+  "honey_portions": 1,
+  "ingredient": {
+    "item": "curiousbees:arid_comb"
+  },
+  "outputs": [
+    {
+      "result": {
+        "count": 1,
+        "id": "minecraft:honeycomb"
+      }
+    },
+    {
+      "chance": 0.5,
+      "result": {
+        "count": 1,
+        "id": "minecraft:orange_dye"
+      }
+    }
+  ]
+}

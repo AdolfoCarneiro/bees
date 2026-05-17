@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "curiousbees:genetic_apiary"
+    },
+    "B": {
+      "item": "minecraft:glass_bottle"
+    },
+    "F": {
+      "item": "minecraft:blaze_powder"
+    },
+    "S": {
+      "item": "minecraft:shears"
+    }
+  },
+  "pattern": [
+    "SBS",
+    "FAF",
+    "SBS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "curiousbees:advanced_apiary"
+  }
+}

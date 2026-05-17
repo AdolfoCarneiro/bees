@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_genetic_apiary": {
+      "conditions": {
+        "items": [
+          {
+            "items": "curiousbees:genetic_apiary"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "curiousbees:advanced_apiary"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_genetic_apiary"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "curiousbees:advanced_apiary"
+    ]
+  }
+}
