@@ -12,7 +12,7 @@ Minecraft bee genetics mod (NeoForge 1.21.1): living bees, genomes, breeding, do
 
 ## Documentation order
 
-The repo uses **only seven** docs files. Do not add new top-level markdown files under `docs/`. (`docs/product-reset.md` is a Phase PR validation reference — temporary, retired after Epic PR passes.)
+The repo uses **eight** docs files. Do not add new top-level markdown files under `docs/`. (`docs/product-reset.md` is a Phase PR validation reference — temporary, retired after Epic PR passes.)
 
 1. [Readme.md](Readme.md)
 2. [docs/project-guide.md](docs/project-guide.md) — entry point + doc index
@@ -44,27 +44,78 @@ Frames with real effects; production tuning; analyzer/apiary UX; automation-frie
 1. Read AGENTS.md + CLAUDE.md.
 2. Read the relevant section of `docs/architecture.md` and any `docs/requirements.md` rules that apply.
 3. Pick a task from `docs/TASKS.md`; consult `docs/roadmap.md` if phase order is unclear; consult `docs/decisions.md` for any locked choice your work touches.
-4. Restate scope; list files; smallest complete change; tests for core Java where relevant; **commit** one focused task per commit when practical.
+4. Restate scope; list files; smallest complete change; tests for core Java where relevant; commit one focused task per commit (see **Commits** section for prefix format).
+
+## Build Commands
+
+```bash
+./gradlew :common:test              # Run pure-Java unit tests (fast, no MC needed)
+./gradlew :neoforge:build           # Build the NeoForge JAR
+./gradlew :neoforge:runClient       # Launch Minecraft client for manual testing
+./gradlew :neoforge:runServer       # Launch headless Minecraft server
+./gradlew :neoforge:runGameTestServer  # Run in-game automated tests
+```
+
+On Windows use `gradlew` instead of `./gradlew`. **Before opening a PR:** run `:common:test` and verify it passes.
+
+## Code Style
+
+Formatting enforced by Spotless. Run `./gradlew installGitHooks` once to install the pre-commit check.
+
+Key rules: no Lombok, no Java records for game data classes, max 3 levels nesting, no magic numbers (named constants), package-private over `public` when not part of a public API.
+
+Manual fix: `./gradlew :common:spotlessApply :neoforge:spotlessApply :fabric:spotlessApply`
 
 ## Commits
 
-Prefix examples: `core:`, `content:`, `neoforge:`, `client:`, `test:`, `docs:`, `build:`.
+Format: `<prefix>: <imperative description>` (≤ 72 characters)
 
-## Prompt template (short)
+| Prefix | When to use |
+|--------|-------------|
+| `feat` | New player-visible feature |
+| `fix` | Bug fix |
+| `refactor` | Internal restructure, no behaviour change |
+| `test` | Adding or updating tests |
+| `docs` | Documentation only |
+| `core` | Change inside `common/` genetics or gameplay logic |
+| `neoforge` | NeoForge-specific platform code |
+| `assets` | Textures, models, sounds, lang files |
+| `chore` | Build, CI, deps, tooling |
 
-Read AGENTS + CLAUDE → relevant `docs/architecture.md` section → `docs/requirements.md` for guardrails → `docs/decisions.md` for locked choices. No Minecraft inside `common/genetics`. New textures: follow [`docs/asset-generation-guidelines.md`](docs/asset-generation-guidelines.md); no silent placeholder finals.
+Imperative mood. No period. Body only when the *why* is not obvious.
 
-## Assets
+## Pull Requests
 
-No silent placeholder-as-final. Dev fallback only if crash-proofing and clearly marked. Full rules: [`docs/asset-generation-guidelines.md`](docs/asset-generation-guidelines.md).
+Title: same `<prefix>: <description>` format. Body: release notes style — what changed and why it matters. Breaking changes: `feat!:` prefix.
+
+## Packages
+
+```
+curious-bees/
+├── common/src/main/java/com/curiousbees/common/
+│   ├── genetics/          # PURE JAVA — zero MC/NeoForge imports allowed
+│   │   ├── model/         # Genome, Allele, Gene — immutable value types
+│   │   ├── breeding/      # Mendelian logic, dominance resolution
+│   │   ├── mutation/      # Mutation rules and probability
+│   │   ├── random/        # Randomness abstraction (testable)
+│   │   └── serial/        # Genome ↔ serialisable form (no NBT here)
+│   ├── content/           # Bee definitions loaded from JSON/data packs
+│   └── gameplay/          # Game logic — may reference MC types via interfaces
+└── neoforge/src/main/java/com/curiousbees/
+    ├── block/             # Block and BlockEntity classes
+    ├── entity/            # Bee entity attachment, renderer
+    ├── gui/               # Screen, menu, container classes
+    ├── item/              # Item classes (BeeJar, etc.)
+    ├── network/           # Packets, payload types
+    ├── registry/          # NeoForge DeferredRegister entries
+    └── event/             # NeoForge event subscribers
+```
+
+`genetics/` must never import MC classes. `neoforge/` may import everything in `common/`.
 
 ## Style and validation
 
 Prefer small classes, explicit validation, `Objects.requireNonNull` at boundaries, deterministic tests, services not stuffed in event handlers. **Logger** in services: WARNING on bad/skip, FINE on trace; models throw, no logging.
-
-## Packages
-
-`common/genetics` pure; `neoforge/` integration and client; keep rendering/UI out of core.
 
 ## Review checklist
 
@@ -73,3 +124,7 @@ Aligned with **Readme.md** / `docs/requirements.md`; genetics pure Java; no acci
 ## Growth line
 
 Validated genetics core → polish and production loop (frames, products, processing, advanced hive UX) → species expansion → later resource progression only with its own design → Fabric when scoped. Phases: [`docs/roadmap.md`](docs/roadmap.md).
+
+## Assets
+
+No silent placeholder-as-final. Dev fallback only if crash-proofing and clearly marked. Full rules: [`docs/asset-generation-guidelines.md`](docs/asset-generation-guidelines.md).
