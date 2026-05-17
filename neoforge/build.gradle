@@ -9,6 +9,7 @@ base {
 }
 
 sourceSets.main.resources.srcDir 'build/generated/sources/modMetadata'
+sourceSets.main.resources.srcDir 'src/generated/resources'
 
 neoForge {
     version = project.neo_version
@@ -30,6 +31,15 @@ neoForge {
         gameTestServer {
             server()
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+        data {
+            data()
+            programArguments.addAll(
+                '--mod', mod_id,
+                '--all',
+                '--output', file('src/generated/resources/').absolutePath,
+                '--existing', file('src/main/resources/').absolutePath
+            )
         }
     }
 
