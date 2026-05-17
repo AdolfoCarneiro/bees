@@ -61,6 +61,24 @@ Do **not** add new top-level markdown files under `docs/`. If something doesn't 
 
 Use `java.util.logging.Logger` in services: **WARNING** before skip/throw on bad input; **FINE** for trace; models throw without logging.
 
+## Build Commands
+
+Bees is a multi-project Gradle build. Always prefix tasks with the subproject.
+
+**Requirements:** Java 21 (JDK pinned via `gradle/gradle-daemon-jvm.properties`). On Windows use `gradlew` instead of `./gradlew`.
+
+```bash
+./gradlew :common:test              # Run pure-Java unit tests (fast, no MC needed)
+./gradlew :neoforge:build           # Build the NeoForge JAR
+./gradlew :neoforge:runClient       # Launch Minecraft client for manual testing
+./gradlew :neoforge:runServer       # Launch headless Minecraft server
+./gradlew :neoforge:runGameTestServer  # Run in-game automated tests
+```
+
+**Build output:** `neoforge/build/libs/curiousbees-{version}.jar`
+
+**Before opening a PR:** run `:common:test` and verify it passes. The genetics core must be unit-testable without a running game instance.
+
 ## Review quick-check
 
 - Genetics stays pure Java off the game API.
