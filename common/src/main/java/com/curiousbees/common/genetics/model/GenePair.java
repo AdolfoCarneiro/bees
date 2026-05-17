@@ -59,20 +59,22 @@ public final class GenePair {
         this.first = first;
         this.second = second;
 
-        Allele[] resolved = resolve(first, second, random);
-        this.active = resolved[0];
-        this.inactive = resolved[1];
+        ResolvedPair resolved = resolve(first, second, random);
+        this.active = resolved.active();
+        this.inactive = resolved.inactive();
     }
 
-    private static Allele[] resolve(Allele a, Allele b, GeneticRandom random) {
+    private record ResolvedPair(Allele active, Allele inactive) {}
+
+    private static ResolvedPair resolve(Allele a, Allele b, GeneticRandom random) {
         if (a.dominance() == Dominance.DOMINANT && b.dominance() == Dominance.RECESSIVE) {
-            return new Allele[]{a, b};
+            return new ResolvedPair(a, b);
         }
         if (a.dominance() == Dominance.RECESSIVE && b.dominance() == Dominance.DOMINANT) {
-            return new Allele[]{b, a};
+            return new ResolvedPair(b, a);
         }
         // equal dominance: DOMINANT+DOMINANT or RECESSIVE+RECESSIVE — random choice
-        return random.nextBoolean() ? new Allele[]{a, b} : new Allele[]{b, a};
+        return random.nextBoolean() ? new ResolvedPair(a, b) : new ResolvedPair(b, a);
     }
 
     public Allele first() {

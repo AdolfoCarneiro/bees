@@ -124,8 +124,14 @@ class CentrifugeRecipeDataTest {
     }
 
     private static Path resolveRecipeDir() {
-        Path candidate = Path.of("../neoforge/src/main/resources/" + RECIPE_DIR);
-        if (Files.isDirectory(candidate)) return candidate;
-        return Path.of("neoforge/src/main/resources/" + RECIPE_DIR);
+        for (String base : List.of(
+                "../neoforge/src/generated/resources/",
+                "neoforge/src/generated/resources/",
+                "../neoforge/src/main/resources/",
+                "neoforge/src/main/resources/")) {
+            Path candidate = Path.of(base + RECIPE_DIR);
+            if (Files.isDirectory(candidate)) return candidate;
+        }
+        return Path.of("neoforge/src/generated/resources/" + RECIPE_DIR);
     }
 }

@@ -45,6 +45,8 @@ public final class BeeBreedingEventHandler {
     private static final BeeBreedingOrchestrator ORCHESTRATOR =
             new BeeBreedingOrchestrator(new BreedingService(), new MutationService());
 
+    private static final int POPULATION_CHECK_RADIUS_BLOCKS = 32;
+
     private BeeBreedingEventHandler() {}
 
     @SubscribeEvent
@@ -56,7 +58,7 @@ public final class BeeBreedingEventHandler {
 
         int cap = CuriousBeesConfig.BEE_POPULATION_CAP.get();
         if (cap > 0) {
-            AABB searchBox = parentA.getBoundingBox().inflate(32);
+            AABB searchBox = parentA.getBoundingBox().inflate(POPULATION_CHECK_RADIUS_BLOCKS);
             long localCount = level.getEntitiesOfClass(Bee.class, searchBox,
                     b -> BeeGenomeStorage.hasGenome(b)).size();
             if (localCount >= cap) {
@@ -133,10 +135,11 @@ public final class BeeBreedingEventHandler {
         // Find matching habitat species (exclude Common itself)
         List<BeeSpeciesDefinition> candidates =
                 NeoForgeContentRegistry.current().allSpecies().stream()
-                        .filter(s -> s.habitat().isPresent())
-                        .filter(s -> s.habitat().get().spawnPredicate().isPresent())
                         .filter(s -> !COMMON_SPECIES_ID.equals(s.id()))
-                        .filter(s -> s.habitat().get().spawnPredicate().get().matchesBiomeTags(biomeTags))
+                        .filter(s -> s.habitat()
+                                .flatMap(h -> h.spawnPredicate())
+                                .map(p -> p.matchesBiomeTags(biomeTags))
+                                .orElse(false))
                         .collect(Collectors.toList());
 
         if (candidates.isEmpty()) {
@@ -144,7 +147,7 @@ public final class BeeBreedingEventHandler {
             return current;
         }
 
-        BeeSpeciesDefinition resultSpecies = candidates.get(new Random().nextInt(candidates.size()));
+        BeeSpeciesDefinition resultSpecies = candidates.get(random.nextInt(candidates.size()));
 
         Allele resultAllele = resultSpecies.speciesAllele();
         boolean partial = random.nextDouble() < config.partialChance();
