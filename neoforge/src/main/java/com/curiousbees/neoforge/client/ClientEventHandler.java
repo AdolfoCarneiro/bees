@@ -3,8 +3,6 @@ package com.curiousbees.neoforge.client;
 import com.curiousbees.neoforge.client.gui.CentrifugeScreen;
 import com.curiousbees.neoforge.client.gui.ExpandedApiaryScreen;
 import com.curiousbees.neoforge.client.gui.GeneticApiaryScreen;
-import com.curiousbees.neoforge.menu.CentrifugeMenu;
-import com.curiousbees.neoforge.menu.ExpandedApiaryMenu;
 import com.curiousbees.neoforge.menu.GeneticApiaryMenu;
 import com.curiousbees.neoforge.client.render.CuriousBeeBeeRenderer;
 import com.curiousbees.neoforge.item.CuriousBeeSpeciesSpawnEggItem;

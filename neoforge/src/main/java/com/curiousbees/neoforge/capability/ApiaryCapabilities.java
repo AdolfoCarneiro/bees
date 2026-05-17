@@ -1,7 +1,5 @@
 package com.curiousbees.neoforge.capability;
 
-import com.curiousbees.neoforge.block.ApiaryExtensionBlockEntity;
-import com.curiousbees.neoforge.block.GeneticApiaryBlockEntity;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import net.minecraft.core.Direction;
 import net.neoforged.neoforge.capabilities.Capabilities;

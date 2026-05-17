@@ -3,7 +3,6 @@ package com.curiousbees.common.genetics;
 import com.curiousbees.common.genetics.breeding.BreedingService;
 import com.curiousbees.common.genetics.fixtures.AlleleFixtures;
 import com.curiousbees.common.genetics.fixtures.GenomeFixtures;
-import com.curiousbees.common.genetics.model.ChromosomeType;
 import com.curiousbees.common.genetics.model.Genome;
 import com.curiousbees.common.genetics.mutation.MutationDefinition;
 import com.curiousbees.common.genetics.mutation.MutationResult;

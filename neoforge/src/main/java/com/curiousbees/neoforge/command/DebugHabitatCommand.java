@@ -1,7 +1,6 @@
 package com.curiousbees.neoforge.command;
 
 import com.curiousbees.common.content.builtin.BuiltinBeeSpecies;
-import com.curiousbees.common.content.habitat.HabitatPredicate;
 import com.curiousbees.common.content.species.BeeSpeciesDefinition;
 import com.curiousbees.common.gameplay.spawn.WildBeeSpawnService;
 import com.mojang.brigadier.context.CommandContext;

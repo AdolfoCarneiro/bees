@@ -9,7 +9,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 /** NeoForge/DFU Codec and StreamCodec definitions for GenomeData. */
 public final class GenomeCodec {

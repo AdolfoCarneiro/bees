@@ -1,7 +1,6 @@
 package com.curiousbees.common.genetics.model;
 
 import com.curiousbees.common.genetics.random.DeterministicGeneticRandom;
-import com.curiousbees.common.genetics.random.JavaGeneticRandom;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

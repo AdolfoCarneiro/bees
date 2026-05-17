@@ -4,7 +4,6 @@ import com.curiousbees.common.content.builtin.BuiltinBeeSpecies;
 import com.curiousbees.common.content.builtin.BuiltinBeeTraits;
 import com.curiousbees.common.genetics.model.Allele;
 import com.curiousbees.common.genetics.model.ChromosomeType;
-import com.curiousbees.common.genetics.model.Dominance;
 import org.junit.jupiter.api.Test;
 
 import java.util.EnumMap;

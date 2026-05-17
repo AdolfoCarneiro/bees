@@ -18,7 +18,6 @@ import com.curiousbees.neoforge.data.BeeGenomeStorage;
 import com.curiousbees.neoforge.registry.ModBlockEntities;
 import com.curiousbees.neoforge.registry.ModBlocks;
 import com.curiousbees.neoforge.menu.GeneticApiaryMenu;
-import com.curiousbees.neoforge.registry.ModItems;
 import com.curiousbees.neoforge.registry.ModSounds;
 import com.curiousbees.neoforge.registry.ModTags;
 import net.minecraft.sounds.SoundEvents;

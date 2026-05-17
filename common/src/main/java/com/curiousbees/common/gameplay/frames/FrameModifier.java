@@ -1,6 +1,5 @@
 package com.curiousbees.common.gameplay.frames;
 
-import java.util.Objects;
 
 /**
  * Immutable frame modifier model for tech apiary behavior tuning.

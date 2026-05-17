@@ -1,6 +1,5 @@
 package com.curiousbees.common.gameplay.production;
 
-import java.util.Objects;
 
 /**
  * Represents one possible output from a production roll.
